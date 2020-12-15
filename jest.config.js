@@ -5,6 +5,6 @@ module.exports = {
     "@openworld/(.*)": "<rootDir>/src/$1"
   },
   modulePathIgnorePatterns: [
-    "<rootDir>/bin/"
+    "<rootDir>/build/"
   ]
 };
