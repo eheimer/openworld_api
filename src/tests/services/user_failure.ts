@@ -1,11 +1,11 @@
 import jwt, {Secret, SignCallback, SignOptions} from 'jsonwebtoken'
 
-import {createDummy} from '../../../tests/user'
-import user from '../user'
+import {createDummy} from '../user'
+import user from '../../api/services/user'
 
 import { getConnection, getCustomRepository } from 'typeorm'
 
-import UserRepository from '../../repositories/UserRepository'
+import UserRepository from '../../api/repositories/UserRepository'
 
 const userRepo = getCustomRepository(UserRepository)
 

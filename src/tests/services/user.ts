@@ -1,12 +1,12 @@
 import faker from 'faker'
 
-import {createDummy, createDummyAndAuthorize} from '../../../tests/user'
+import {createDummy, createDummyAndAuthorize} from '../user'
 
-import user from '../user'
+import user from '../../api/services/user'
 
 import { getConnection, getCustomRepository } from 'typeorm'
 
-import UserRepository from '../../repositories/UserRepository'
+import UserRepository from '../../api/repositories/UserRepository'
 
 const userRepo = getCustomRepository(UserRepository)
 

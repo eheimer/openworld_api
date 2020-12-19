@@ -1,15 +1,16 @@
 import { getConnection } from 'typeorm'
 import logger from './utils/logger'
 //import { createServer } from './utils/server'
-import { createConnection } from 'typeorm'
+import { createConnection, ConnectionOptionsReader } from 'typeorm'
 
 import config from './config/index'
 
-console.log({env: config.env})
-createConnection('dev')
+console.log({ env: config.env })
+
+createConnection(config.env)
     .then(() => {
         console.log('creating server')
-        var server = require("./utils/server");
+        var server = require("./utils/server")
         return server.createServer()
     })
     .then(server => {
@@ -19,6 +20,5 @@ createConnection('dev')
         })
     })
     .catch(err => {
-        console.log('error')
-        logger.error(`Error: ${err}`)
+        logger.error(`Connection Error: ${err}`)
     })

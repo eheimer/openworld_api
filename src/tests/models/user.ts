@@ -2,7 +2,7 @@ import faker from 'faker'
 
 import { getConnection, getCustomRepository } from 'typeorm'
 
-import UserRepository from '../../repositories/UserRepository'
+import UserRepository from '../../api/repositories/UserRepository'
 
 const userRepo = getCustomRepository(UserRepository)
 

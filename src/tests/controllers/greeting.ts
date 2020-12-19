@@ -2,8 +2,8 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
 import { getConnection } from 'typeorm'
-import { createServer } from '../../../utils/server'
-import { createDummyAndAuthorize} from '../../../tests/user'
+import { createServer } from '../../utils/server'
+import { createDummyAndAuthorize} from '../user'
 
 let server: Express
 

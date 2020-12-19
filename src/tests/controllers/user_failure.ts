@@ -2,8 +2,8 @@ import faker from 'faker'
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
-import UserService from '../../../api/services/user'
-import { createServer } from '../../../utils/server'
+import UserService from '../../api/services/user'
+import { createServer } from '../../utils/server'
 
 jest.mock('../../../api/services/user')
 

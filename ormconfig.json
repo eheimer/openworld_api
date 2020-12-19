@@ -1,61 +1,46 @@
 [{
-    "environment": "dev",
-    "name": "dev",
-    "type": "sqlite",
-    "database": "./development.db",
-    "synchronize": true,
-    "logging": true,
-    "entities": [
-      "src/api/models/**/*.ts"
-    ],
-    "migrations": [
-      "src/migration/**/*.ts"
-    ],
-    "subscribers": [
-      "src/subscriber/**/*.ts"
-    ],
-    "cli": {
-      "entitiesDir": "src/api/models",
-      "migrationsDir": "src/migration",
-      "subscribersDir": "src/subscriber"
-    }
-  },
-  {
-    "environment": "test",
-    "name": "default",
-    "type": "sqlite",
-    "database": "./test.db",
-    "synchronize": true,
-    "logging": false,
-    "entities": [
-      "src/api/models/**/*.ts"
-    ],
-    "migrations": [
-      "src/migration/**/*.ts"
-    ],
-    "subscribers": [
-      "src/subscriber/**/*.ts"
-    ]
-  },
-  {
-    "environment": "prod",
-    "name": "prod",
-    "type": "mysql",
-    "host": "localhost",
-    "port": 3306,
-    "username": "openworld",
-    "password": "entranced",
-    "database": "openworld",
-    "synchronize": true,
-    "logging": false,
-    "entities": [
-      "src/api/models/**/*.ts"
-    ],
-    "migrations": [
-      "src/migration/**/*.ts"
-    ],
-    "subscribers": [
-      "src/subscriber/**/*.ts"
-    ]
-  }
-]
+  "name": "default",
+  "type": "sqlite",
+  "database": "./default.db",
+  "synchronize": true,
+  "logging": "all",
+  "entities": [
+    "src/api/models/**/*.ts"
+  ],
+  "migrations": [
+    "src/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/**/*.ts"
+  ]
+}, {
+  "name": "dev",
+  "type": "sqlite",
+  "database": "./development.db",
+  "synchronize": true,
+  "logging": "all",
+  "entities": [
+    "src/api/models/**/*.ts"
+  ],
+  "migrations": [
+    "src/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/**/*.ts"
+  ]
+}, {
+  "name": "prod",
+  "type": "sqlite",
+  "database": "./prod.db",
+  "synchronize": true,
+  "logging": "all",
+  "entities": [
+    "build/api/models/**/*.js"
+  ],
+  "migrations": [
+    "build/migration/**/*.js"
+  ],
+  "subscribers": [
+    "build/subscriber/**/*.js"
+  ]
+}]

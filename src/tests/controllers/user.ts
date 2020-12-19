@@ -1,12 +1,12 @@
 import faker from 'faker'
 
-import {createDummy} from '../../../tests/user'
+import {createDummy} from '../user'
 
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
 import { getConnection } from 'typeorm'
-import { createServer } from '../../../utils/server'
+import { createServer } from '../../utils/server'
 
 let server: Express
 beforeAll(async () => {
