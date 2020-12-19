@@ -7,10 +7,10 @@ import morganBody from 'morgan-body'
 import { connector, summarise } from 'swagger-routes-express'
 import YAML from 'yamljs'
 
-import * as api from '@openworld/api/controllers'
-import config from '@openworld/config'
-import { expressDevLogger } from '@openworld/utils/express_dev_logger'
-import logger from '@openworld/utils/logger'
+import * as api from '../api/controllers'
+import config from '../config'
+import { expressDevLogger } from '../utils/express_dev_logger'
+import logger from '../utils/logger'
 
 export async function createServer(): Promise<Express> {
     const yamlSpecFile = './config/openapi.yml'

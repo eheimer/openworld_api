@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 import winston from 'winston'
-import config from '@openworld/config'
+import config from '../config'
 
 // npm debug levels (winston default):
 // {

@@ -1,21 +1,21 @@
 import faker from 'faker'
 
-import {createDummy} from '@openworld/tests/user'
+import {createDummy} from '../../../tests/user'
 
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
-import db from '@openworld/utils/db'
-import { createServer } from '@openworld/utils/server'
+import { getConnection } from 'typeorm'
+import { createServer } from '../../../utils/server'
 
 let server: Express
 beforeAll(async () => {
-    await db.open()
+    await getConnection().connect()
     server = await createServer()
 })
 
 afterAll(async () => {
-    await db.close()
+    await getConnection().close()
 })
 
 describe('POST /api/v1/user', () => {

@@ -2,10 +2,10 @@ import faker from 'faker'
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
-import UserService from '@openworld//api/services/user'
-import { createServer } from '@openworld/utils/server'
+import UserService from '../../../api/services/user'
+import { createServer } from '../../../utils/server'
 
-jest.mock('@openworld/api/services/user')
+jest.mock('../../../api/services/user')
 
 let server: Express
 beforeAll(async () => {

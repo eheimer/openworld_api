@@ -1,7 +1,11 @@
 import faker from 'faker'
 
-import User from '@openworld/api/models/user'
-import UserService from '@openworld/api/services/user'
+import UserService from '../api/services/user'
+
+import UserRepository from '../api/repositories/UserRepository'
+import { getCustomRepository } from 'typeorm'
+
+const userRepo = getCustomRepository(UserRepository)
 
 type DummyUser = { email: string, password: string, name: string, userId: string }
 type AuthorizedDummyUser = { email: string, password: string, name: string, userId: string, token: string }
@@ -16,9 +20,8 @@ export function dummy() {
 
 export async function createDummy(): Promise<DummyUser> {
     const user = dummy()
-    const dbUser = new User(user)
-    await dbUser.save()
-    return { ...user, userId: dbUser._id.toString() }
+    const dbUser = await userRepo.create(user)
+    return { ...user, userId: dbUser.id.toString() }
 }
 
 export async function createDummyAndAuthorize(): Promise<AuthorizedDummyUser> {

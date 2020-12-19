@@ -1,16 +1,21 @@
 import faker from 'faker'
 
-import {createDummy, createDummyAndAuthorize} from '@openworld/tests/user'
+import {createDummy, createDummyAndAuthorize} from '../../../tests/user'
 
-import db from '@openworld/utils/db'
 import user from '../user'
 
+import { getConnection, getCustomRepository } from 'typeorm'
+
+import UserRepository from '../../repositories/UserRepository'
+
+const userRepo = getCustomRepository(UserRepository)
+
 beforeAll(async () => {
-    await db.open()
+    await getConnection().connect()
 })
 
 afterAll(async () => {
-    await db.close()
+    await getConnection().close()
 })
 
 describe('login', () => {

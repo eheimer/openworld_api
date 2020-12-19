@@ -1,9 +1,14 @@
 import fs from 'fs'
 import jwt, { SignOptions, VerifyErrors, VerifyOptions } from 'jsonwebtoken'
 
-import User from '@openworld/api/models/user'
-import config from '@openworld/config'
-import logger from '@openworld/utils/logger'
+import config from '../../config'
+import logger from '../../utils/logger'
+
+import { getCustomRepository } from 'typeorm'
+
+import UserRepository from '../repositories/UserRepository'
+
+const userRepo = getCustomRepository(UserRepository)
 
 export type ErrorResponse = { error: { type: string, message: string } }
 export type AuthResponse = ErrorResponse | { userId: string }
@@ -41,21 +46,17 @@ function auth(bearerToken: string): Promise<AuthResponse> {
 }
 
 async function createUser(email: string, password: string, name: string): Promise<CreateUserResponse> {
-    return new Promise(function (resolve, reject) {
-        const user = new User({ email: email, password: password, name: name })
-        user.save()
-            .then(u => {
-                resolve({ userId: u._id.toString() })
-            })
-            .catch(err => {
-                if (err.code === 11000) {
-                    resolve({ error: { type: 'account_already_exists', message: `${email} already exists` } })
-                } else {
-                    logger.error(`createUser: ${err}`)
-                    reject(err)
-                }
-            })
-    })
+    try {
+        const user = await userRepo.create({ email: email, password: password, name: name })
+        if (user) {
+            return { userId: user.id.toString() }
+        } else {
+            return { error: { type: 'account_already_exists', message: `${email} already exists` } }
+        }
+    } catch (err) {
+        logger.error(`createUser: ${err}`)
+        return err
+    }
 }
 
 function createAuthToken(userId: string): Promise<{ token: string, expireAt: Date }> {
@@ -75,18 +76,18 @@ function createAuthToken(userId: string): Promise<{ token: string, expireAt: Dat
 
 async function login(login: string, password: string): Promise<LoginUserResponse> {
     try {
-        const user = await User.findOne({ email: login })
+        const user = await userRepo.findOne({ email: login })
         if (!user) {
             return { error: { type: 'invalid_credentials', message: 'Invalid Login/Password' } }
         }
 
-        const passwordMatch = await user.comparePassword(password)
+        const passwordMatch = await userRepo.comparePassword(user.id, password)
         if (!passwordMatch) {
             return { error: { type: 'invalid_credentials', message: 'Invalid Login/Password' } }
         }
 
-        const authToken = await createAuthToken(user._id.toString())
-        return { userId: user._id.toString(), token: authToken.token, expireAt: authToken.expireAt }
+        const authToken = await createAuthToken(user.id.toString())
+        return { userId: user.id.toString(), token: authToken.token, expireAt: authToken.expireAt }
     } catch (err) {
         logger.error(`login: ${err}`)
         return Promise.reject({ error: { type: 'internal_server_error', message: 'Internal Server Error' } })

@@ -1,15 +1,20 @@
 import jwt, {Secret, SignCallback, SignOptions} from 'jsonwebtoken'
 
-import db from '@openworld/utils/db'
-import {createDummy} from '@openworld/tests/user'
+import {createDummy} from '../../../tests/user'
 import user from '../user'
 
+import { getConnection, getCustomRepository } from 'typeorm'
+
+import UserRepository from '../../repositories/UserRepository'
+
+const userRepo = getCustomRepository(UserRepository)
+
 beforeAll(async () => {
-  await db.open()
+    await getConnection().connect()
 })
 
 afterAll(async () => {
-  await db.close()
+    await getConnection().close()
 })
 
 describe('login', () => {

@@ -1,20 +1,19 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
-import db from '@openworld/utils/db'
-import { createServer } from '@openworld/utils/server'
-import { createDummyAndAuthorize} from '@openworld/tests/user'
-import { create } from 'domain'
+import { getConnection } from 'typeorm'
+import { createServer } from '../../../utils/server'
+import { createDummyAndAuthorize} from '../../../tests/user'
 
 let server: Express
 
 beforeAll(async () => {
-    await db.open()
+    await getConnection().connect()
     server = await createServer()
 })
 
 afterAll(async () => {
-    await db.close()
+    await getConnection().close()
 })
 
 describe('GET /hello', () => {

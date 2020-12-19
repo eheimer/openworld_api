@@ -1,14 +1,16 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../openworld/api/models"
-		},
-		{
-			"path": "../age_of_storms"
-		}
-	],
-	"settings": {}
+  "folders": [{
+      "path": "."
+    },
+    {
+      "path": "../openworld/api/models"
+    },
+    {
+      "path": "../age_of_storms"
+    },
+    {
+      "path": "../typeorm.test"
+    }
+  ],
+  "settings": {}
 }
