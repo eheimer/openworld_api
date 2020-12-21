@@ -4,11 +4,9 @@ import jwt, { SignOptions, VerifyErrors, VerifyOptions } from 'jsonwebtoken'
 import config from '../../config'
 import logger from '../../utils/logger'
 
-import { getCustomRepository } from 'typeorm'
+import repos from '../repositories'
 
-import UserRepository from '../repositories/UserRepository'
-
-const userRepo = getCustomRepository(UserRepository)
+const userRepo = repos.userRepo;
 
 export type ErrorResponse = { error: { type: string, message: string } }
 export type AuthResponse = ErrorResponse | { userId: string }
