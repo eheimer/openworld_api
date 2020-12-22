@@ -24,8 +24,6 @@ describe('save', () => {
 
         const after = Date.now()
 
-        console.log({before, save: user.createdAt.getTime(), after})
-
         const fetched = await userRepo.findOne(user.id) as User
 
         expect(fetched).not.toBeNull()
@@ -33,9 +31,9 @@ describe('save', () => {
         expect(fetched!.email).toBe(email)
         expect(fetched!.name).toBe(name)
         expect(fetched!.password).not.toBe(password)
+        expect(fetched!.isAdmin).toBe(false)
 
-        //TODO: these fail because mysql is truncating milliseconds in its dates
-        expect(before).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
 
@@ -53,17 +51,19 @@ describe('save', () => {
         expect(dbUser2!.name).toEqual(name2)
     })
 
-    //TODO: need a validator for this one
+    //TODO: these two tests don't test the database anymore, they are testing the validator
     it('should not save user with invalid email', async () => {
-        const user1 = { email: 'email@em.o', password: faker.internet.password() }
-        await expect(userRepo.save(user1)).rejects.toThrowError(/invalid email address/)
+        const user1 = userRepo.create({ email: 'email@em.o', name: faker.name.firstName() })
+        user1.password = faker.internet.password()
+        await expect(userRepo.save(user1)).rejects.toThrowError(/Validation failed!/)
     })
 
+    //TODO: these two tests don't test the database anymore, they are testing the validator
     it('should not save user without an email', async () => {
         const user = userRepo.create({ name: faker.name.firstName() })
         user.password = faker.internet.password()
 
-        await expect(userRepo.save(user)).rejects.toThrowError(/email/)
+        await expect(userRepo.save(user)).rejects.toThrowError(/Validation failed!/)
     })
 
     it('should not save user without a password', async () => {
@@ -113,18 +113,22 @@ describe('save', () => {
 describe('comparePassword', () => {
     it('should return true for valid password', async () => {
         const password = faker.internet.password()
-        const user = await userRepo.create({ email: faker.internet.email(), password: password, name: faker.name.firstName() })
+        const user = userRepo.create({ email: faker.internet.email(), name: faker.name.firstName() })
+        user.password = password;
+        await userRepo.save(user);
         expect(await userRepo.comparePassword(user.id, password)).toBe(true)
     })
 
     it('should return false for invalid password', async () => {
-        const user = await userRepo.create({ email: faker.internet.email(), password: faker.internet.password(), name: faker.name.firstName() })
+        const user = userRepo.create({ email: faker.internet.email(), password: faker.internet.password(), name: faker.name.firstName() })
         expect(await userRepo.comparePassword(user.id, faker.internet.password())).toBe(false)
     })
 
     it('should update password hash if password is updated', async () => {
         const password1 = faker.internet.password()
-        const dbUser1 = await userRepo.create({ email: faker.internet.email(), password: password1, name: faker.name.firstName() })
+        const dbUser1 = userRepo.create({ email: faker.internet.email(), name: faker.name.firstName() })
+        dbUser1.password = password1;
+        await userRepo.save(dbUser1)
         expect(await userRepo.comparePassword(dbUser1.id,password1)).toBe(true)
 
         const password2 = faker.internet.password()
@@ -141,7 +145,13 @@ describe('toJSON', () => {
         const password = faker.internet.password()
         const name = faker.name.firstName()
 
-        const user = await userRepo.create({ email: faker.internet.email(), password: faker.internet.password(), name: faker.name.firstName() })
-        expect(user.serialize()).toEqual({ email: email, name: name, created: expect.any(Number) })
+        const user = userRepo.create({ email: email, name: name })
+        user.password = password
+        await userRepo.save(user)
+        let json = JSON.stringify(user);
+        let obj = JSON.parse(json);
+        expect(Date.parse(obj.createdAt)).toBe<Number>(user.createdAt.getTime())
+        expect(Date.parse(obj.updatedAt)).toBe<Number>(user.updatedAt.getTime())
+        expect(obj).toMatchObject({email: email, name: name})
     })
 })

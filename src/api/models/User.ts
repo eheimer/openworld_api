@@ -1,6 +1,7 @@
 import {BeforeInsert, BeforeUpdate, Column, Entity, Unique } from "typeorm";
 import { EntityBase } from "../../utils/EntityBase"
 import bcrypt from 'bcrypt'
+import { IsEmail, IsDate } from 'class-validator'
 
 @Entity()
 export class User extends EntityBase
@@ -17,6 +18,7 @@ export class User extends EntityBase
     }
 
     @Column({ nullable: false, unique: true })
+    @IsEmail()
     email: string;
 
     @Column({nullable: false})
@@ -27,17 +29,6 @@ export class User extends EntityBase
 
     @Column({nullable: true})
     lastSeenAt: Date;
-
-    // @BeforeInsert()
-    // encryptPassword() {
-    //     this.password = bcrypt.hashSync(this.password,new Date().getTime().toString());
-    // }
-
-    // @BeforeUpdate()
-    // encryptPasswordIfChanged() {
-    //     let orig = 
-
-    // }
 
     //one-to-many and many-to-many associations
 }
