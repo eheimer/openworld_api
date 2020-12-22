@@ -1,9 +1,9 @@
 [{
   "name": "test",
   "type": "sqlite",
-  "database": "./default.db",
+  "database": "test.db",
   "synchronize": true,
-  "logging": "all",
+  "logging": "warn",
   "entities": [
     "src/api/models/**/*.ts"
   ],
@@ -16,7 +16,7 @@
 }, {
   "name": "dev",
   "type": "sqlite",
-  "database": "./development.db",
+  "database": "development.db",
   "synchronize": true,
   "logging": "all",
   "entities": [
@@ -30,10 +30,14 @@
   ]
 }, {
   "name": "prod",
-  "type": "sqlite",
-  "database": "./prod.db",
+  "type": "mysql",
+  "server": "localhost",
+  "port": "3306",
+  "username": "openworld",
+  "password": "entranced",
+  "database": "openworld",
   "synchronize": true,
-  "logging": "all",
+  "logging": "warn",
   "entities": [
     "build/api/models/**/*.js"
   ],

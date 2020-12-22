@@ -4,12 +4,15 @@ import { Express } from 'express-serve-static-core'
 
 import UserService from '../../api/services/user'
 import { createServer } from '../../utils/server'
+import DB from '../../utils/db'
 
-jest.mock('../../../api/services/user')
+jest.mock('../../api/services/user')
 
 let server: Express
 beforeAll(async () => {
+    await DB.init();
     server = await createServer()
+    console.log("done initializing server")
 })
 
 describe('auth failure', () => {

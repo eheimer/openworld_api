@@ -4,7 +4,10 @@ module.exports = {
   testMatch: ["<rootDir>/src/tests/**/*.[jt]s?(x)"],
   testPathIgnorePatterns: [
     "<rootDir>/build/",
-    "<rootDir>/node_modules/"
+    "<rootDir>/node_modules/",
+    "<rootDir>/src/tests/helpers/",
+    "<rootDir>/src/tests/controllers/",
+    "<rootDir>/src/tests/services/"
   ],
   moduleNameMapper: {},
 };

@@ -1,11 +1,8 @@
 import faker from 'faker'
 
-import UserService from '../api/services/user'
+import UserService from '../../api/services/user'
 
-import UserRepository from '../api/repositories/UserRepository'
-import { getCustomRepository } from 'typeorm'
-
-const userRepo = getCustomRepository(UserRepository)
+import UserRepository from '../../api/repositories/UserRepository'
 
 type DummyUser = { email: string, password: string, name: string, userId: string }
 type AuthorizedDummyUser = { email: string, password: string, name: string, userId: string, token: string }
@@ -18,14 +15,14 @@ export function dummy() {
     }
 }
 
-export async function createDummy(): Promise<DummyUser> {
+export async function createDummy(userRepo: UserRepository): Promise<DummyUser> {
     const user = dummy()
     const dbUser = await userRepo.create(user)
     return { ...user, userId: dbUser.id.toString() }
 }
 
-export async function createDummyAndAuthorize(): Promise<AuthorizedDummyUser> {
-    const user = await createDummy()
+export async function createDummyAndAuthorize(userRepo: UserRepository): Promise<AuthorizedDummyUser> {
+    const user = await createDummy(userRepo)
     const authToken = await UserService.createAuthToken(user.userId)
     return { ...user, token: authToken.token }
 }

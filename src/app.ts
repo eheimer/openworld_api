@@ -1,13 +1,9 @@
-import { getConnection } from 'typeorm'
 import logger from './utils/logger'
-//import { createServer } from './utils/server'
-import { createConnection, ConnectionOptionsReader } from 'typeorm'
+import DB from './utils/db'
 
-import config from './config/index'
-
-createConnection(config.env)
+DB.init()
     .then(() => {
-        var server = require("./utils/server")
+        var server = require('./utils/server')
         return server.createServer()
     })
     .then(server => {

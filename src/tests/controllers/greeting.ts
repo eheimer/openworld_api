@@ -1,19 +1,20 @@
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
-import { getConnection } from 'typeorm'
 import { createServer } from '../../utils/server'
-import { createDummyAndAuthorize} from '../user'
+import { createDummyAndAuthorize} from '../helpers/user'
+import DB, {getRepos} from '../../utils/db'
+
 
 let server: Express
 
 beforeAll(async () => {
-    await getConnection().connect()
+    await DB.init()
     server = await createServer()
 })
 
 afterAll(async () => {
-    await getConnection().close()
+    //await DB.getInstance().close();
 })
 
 describe('GET /hello', () => {
@@ -62,7 +63,7 @@ describe('GET /hello', () => {
 
 describe('GET /goodbye', () => {
     it('should return 200 & valid response to authorization with fakeToken request', async done => {
-        const dummy = await createDummyAndAuthorize()
+        const dummy = await createDummyAndAuthorize(getRepos().userRepo)
         request(server)
             .get(`/api/v1/goodbye`)
             .set('Authorization', `Bearer ${dummy.token}`)

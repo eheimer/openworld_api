@@ -1,21 +1,22 @@
 import faker from 'faker'
 
-import {createDummy} from '../user'
+import {createDummy} from '../helpers/user'
 
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
+import DB, { getRepos } from '../../utils/db'
 
-import { getConnection } from 'typeorm'
 import { createServer } from '../../utils/server'
 
 let server: Express
+
 beforeAll(async () => {
-    await getConnection().connect()
+    await DB.init()
     server = await createServer()
 })
 
 afterAll(async () => {
-    await getConnection().close()
+    //await DB.getInstance().close();
 })
 
 describe('POST /api/v1/user', () => {
@@ -87,7 +88,7 @@ describe('POST /api/v1/user', () => {
 
 describe('POST /api/v1/login', () => {
   it('should return 200 & valid response for a valid login request', async done => {
-    const dummy = await createDummy()
+    const dummy = await createDummy(getRepos().userRepo)
     request(server)
       .post(`/api/v1/login`)
       .send({

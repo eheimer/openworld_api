@@ -4,9 +4,7 @@ import jwt, { SignOptions, VerifyErrors, VerifyOptions } from 'jsonwebtoken'
 import config from '../../config'
 import logger from '../../utils/logger'
 
-import repos from '../repositories'
-
-const userRepo = repos.userRepo;
+import { getRepos } from '../../utils/db'
 
 export type ErrorResponse = { error: { type: string, message: string } }
 export type AuthResponse = ErrorResponse | { userId: string }
@@ -45,7 +43,7 @@ function auth(bearerToken: string): Promise<AuthResponse> {
 
 async function createUser(email: string, password: string, name: string): Promise<CreateUserResponse> {
     try {
-        const user = await userRepo.create({ email: email, password: password, name: name })
+        const user = await getRepos().userRepo.save({ email: email, password: password, name: name })
         if (user) {
             return { userId: user.id.toString() }
         } else {
@@ -74,12 +72,12 @@ function createAuthToken(userId: string): Promise<{ token: string, expireAt: Dat
 
 async function login(login: string, password: string): Promise<LoginUserResponse> {
     try {
-        const user = await userRepo.findOne({ email: login })
+        const user = await getRepos().userRepo.findOne({ email: login })
         if (!user) {
             return { error: { type: 'invalid_credentials', message: 'Invalid Login/Password' } }
         }
 
-        const passwordMatch = await userRepo.comparePassword(user.id, password)
+        const passwordMatch = await getRepos().userRepo.comparePassword(user.id, password)
         if (!passwordMatch) {
             return { error: { type: 'invalid_credentials', message: 'Invalid Login/Password' } }
         }

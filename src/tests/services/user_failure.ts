@@ -1,20 +1,16 @@
 import jwt, {Secret, SignCallback, SignOptions} from 'jsonwebtoken'
 
-import {createDummy} from '../user'
+import {createDummy} from '../helpers/user'
 import user from '../../api/services/user'
 
-import { getConnection, getCustomRepository } from 'typeorm'
-
-import UserRepository from '../../api/repositories/UserRepository'
-
-const userRepo = getCustomRepository(UserRepository)
+import DB, { getRepos } from '../../utils/db'
 
 beforeAll(async () => {
-    await getConnection().connect()
+    await DB.init()
 })
 
 afterAll(async () => {
-    await getConnection().close()
+    //await DB.getInstance().close()
 })
 
 describe('login', () => {
@@ -26,7 +22,7 @@ describe('login', () => {
         callback(new Error('failure'), undefined)
     }
 
-    const dummy = await createDummy()
+    const dummy = await createDummy(getRepos().userRepo)
     await expect(user.login(dummy.email, dummy.password)).rejects.toEqual({
       error: {type: 'internal_server_error', message: 'Internal Server Error'}
     })

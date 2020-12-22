@@ -1,26 +1,21 @@
 import faker from 'faker'
 
-import {createDummy, createDummyAndAuthorize} from '../user'
+import {createDummy, createDummyAndAuthorize} from '../helpers/user'
 
 import user from '../../api/services/user'
-
-import { getConnection, getCustomRepository } from 'typeorm'
-
-import UserRepository from '../../api/repositories/UserRepository'
-
-const userRepo = getCustomRepository(UserRepository)
+import DB, { getRepos } from 'src/utils/db'
 
 beforeAll(async () => {
-    await getConnection().connect()
+  await DB.init()
 })
 
 afterAll(async () => {
-    await getConnection().close()
+  //await DB.getInstance().close()
 })
 
 describe('login', () => {
   it('should return JWT token, userId, expireAt to a valid login/password', async () => {
-    const dummy = await createDummy()
+    const dummy = await createDummy(getRepos().userRepo)
     await expect(user.login(dummy.email, dummy.password)).resolves.toEqual({
       userId: dummy.userId,
       token: expect.stringMatching(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/),
@@ -35,7 +30,7 @@ describe('login', () => {
   })
 
   it('should reject with error if password is wrong', async () => {
-    const dummy = await createDummy()
+    const dummy = await createDummy(getRepos().userRepo)
     await expect(user.login(dummy.email, faker.internet.password())).resolves.toEqual({
       error: {type: 'invalid_credentials', message: 'Invalid Login/Password'}
     })
@@ -44,7 +39,7 @@ describe('login', () => {
 
 describe('auth', () => {
   it('should resolve with true and valid userId for hardcoded token', async () => {
-    const dummy = await createDummyAndAuthorize()
+    const dummy = await createDummyAndAuthorize(getRepos().userRepo)
     await expect(user.auth(dummy.token)).resolves.toEqual({userId: dummy.userId})
   })
 
@@ -54,7 +49,7 @@ describe('auth', () => {
   })
 
   it('auth perfromance test', async () => {
-    const dummy = await createDummyAndAuthorize()
+    const dummy = await createDummyAndAuthorize(getRepos().userRepo)
 
     const now = new Date().getTime()
     let i = 0

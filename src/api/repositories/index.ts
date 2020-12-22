@@ -1,9 +1,15 @@
 import UserRepository from './UserRepository'
-import { getCustomRepository } from 'typeorm'
-import conf from '../../config/index'
+import { getCustomRepository, Repository } from 'typeorm'
+import User from '../models/User'
 
-export class repos {
-    userRepo = getCustomRepository(UserRepository,conf.env);
+export class RepoContainer {
+    userRepo: UserRepository;
+    //otherRepo: Repository<Model>;
+
+    constructor(connection: string) {
+        this.userRepo=getCustomRepository(UserRepository,connection);
+        //this.otherRepo = getRepository(Model, connection);
+    }
 }
 
-export default new repos();
+export default RepoContainer;

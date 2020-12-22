@@ -1,17 +1,19 @@
 import faker from 'faker'
 
-import { getConnection, getCustomRepository } from 'typeorm'
+import DB, {getRepos, getRepo} from '../../utils/db'
 
 import UserRepository from '../../api/repositories/UserRepository'
+import User from '../../api/models/User'
 
-const userRepo = getCustomRepository(UserRepository)
+let userRepo: UserRepository;
 
 beforeAll(async () => {
-    await getConnection().connect()
+    await DB.init();
+    userRepo = getRepos().userRepo;
 })
 
 afterAll(async () => {
-    await getConnection().close()
+    //await DB.getInstance().close()
 })
 
 describe('save', () => {
@@ -20,12 +22,16 @@ describe('save', () => {
         const password = faker.internet.password()
         const name = faker.name.firstName()
         const before = Date.now()
-        
-        const user = await userRepo.create({ email: email, password: password, name: name})
+
+        const user = await userRepo.save({ email: email, password: password, name: name})
+
+        console.log({user})
 
         const after = Date.now()
 
-        const fetched = await userRepo.findOne(user.id)
+        const fetched = await userRepo.findOne(user.id) as User
+
+        console.log({fetched})
 
         expect(fetched).not.toBeNull()
 

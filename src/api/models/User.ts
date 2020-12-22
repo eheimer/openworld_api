@@ -16,7 +16,7 @@ export class User extends EntityBase
     @Column({ default: false })
     isAdmin: boolean;
 
-    @Column()
+    @Column({nullable: true})
     lastSeenAt: Date;
 
     //one-to-many and many-to-many associations
