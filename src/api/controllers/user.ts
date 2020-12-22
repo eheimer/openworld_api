@@ -1,8 +1,8 @@
 import * as express from 'express'
 
-import UserService, { ErrorResponse } from '@openworld/api/services/user'
-import { writeJsonResponse } from '@openworld/utils/express'
-import logger from '@openworld/utils/logger'
+import UserService, { ErrorResponse } from '../../api/services/user'
+import { writeJsonResponse } from '../../utils/express'
+import logger from '../../utils/logger'
 
 export function login(req: express.Request, res: express.Response): void {
   const {email, password} = req.body

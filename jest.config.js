@@ -1,10 +1,13 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  moduleNameMapper: {
-    "@openworld/(.*)": "<rootDir>/src/$1"
-  },
-  modulePathIgnorePatterns: [
-    "<rootDir>/bin/"
-  ]
+  testMatch: ["<rootDir>/src/tests/**/*.[jt]s?(x)"],
+  testPathIgnorePatterns: [
+    "<rootDir>/build/",
+    "<rootDir>/node_modules/",
+    "<rootDir>/src/tests/helpers/",
+    "<rootDir>/src/tests/controllers/",
+    "<rootDir>/src/tests/services/"
+  ],
+  moduleNameMapper: {},
 };

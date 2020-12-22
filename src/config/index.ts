@@ -1,5 +1,6 @@
 import dotenvExtended from 'dotenv-extended'
 import dotenvParseVariables from 'dotenv-parse-variables'
+import { ConnectionOptions } from 'typeorm'
 
 const env = dotenvExtended.load({
     path: process.env.ENV_FILE,
@@ -15,11 +16,7 @@ const parsedEnv = dotenvParseVariables(env)
 type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly'
 
 interface Config {
-    mongo: {
-        url: string,
-        useCreateIndex: boolean,
-        autoIndex: boolean
-    }
+    env: string
     morganLogger: boolean
     morganBodyLogger: boolean
     openworldDevLogger: boolean
@@ -30,11 +27,7 @@ interface Config {
 }
 
 const config: Config = {
-    mongo: {
-        url: parsedEnv.MONGO_URL as string,
-        useCreateIndex: parsedEnv.MONGO_CREATE_INDEX as boolean,
-        autoIndex: parsedEnv.MONGO_AUTO_INDEX as boolean
-    },
+    env: parsedEnv.ENV as string,
     morganLogger: parsedEnv.MORGAN_LOGGER as boolean,
     morganBodyLogger: parsedEnv.MORGAN_BODY_LOGGER as boolean,
     openworldDevLogger: parsedEnv.OPENWORLD_DEV_LOGGER as boolean,

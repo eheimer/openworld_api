@@ -1,14 +1,16 @@
-import db from '@openworld/utils/db'
-import logger from '@openworld/utils/logger'
-import { createServer } from './utils/server'
+import logger from './utils/logger'
+import DB from './utils/db'
 
-db.open()
-    .then(() => createServer())
+DB.init()
+    .then(() => {
+        var server = require('./utils/server')
+        return server.createServer()
+    })
     .then(server => {
         server.listen(3000, () => {
             logger.info(`Listening on http://localhost:3000`)
         })
     })
     .catch(err => {
-        logger.error(`Error: ${err}`)
+        logger.error(`Connection Error: ${err}`)
     })

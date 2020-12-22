@@ -1,82 +1,42 @@
-/* istanbul ignore file */
+import { createConnection, getConnection, getCustomRepository, getRepository, Repository } from 'typeorm'
+import conf from '../config'
 
-import mongoose from 'mongoose'
-import { MongoMemoryServer } from 'mongodb-memory-server'
+import RepoContainer from '../api/repositories'
+import logger from './logger'
 
-import config from '@openworld/config'
-import logger from '@openworld/utils/logger'
+export class DB {
 
-mongoose.Promise = global.Promise
-mongoose.set('debug', process.env.DEBUG != undefined)
+    private static _instance: DB
 
-const opts = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: config.mongo.useCreateIndex,
-    keepAlive: true,
-    keepAliveInitialDelay: 300000,
-    autoIndex: config.mongo.autoIndex,
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000
+    static getInstance(): DB {
+        if (!DB._instance) {
+            logger.warn('Attempting to retrieve database instance before it has been initialized.')
+        }
+        return DB._instance
+    }
+
+    repos: RepoContainer
+
+    static async init(): Promise<DB> {
+        if (DB._instance) {
+            logger.warn('Attempting to re-initialize the database')
+            return null
+        } else {
+            let conn = await createConnection(conf.env)
+            DB._instance = new DB()
+            DB.getInstance().repos = new RepoContainer(conf.env)
+        }
+        return DB._instance
+    }
+
 }
 
-class MongoConnection {
-    private static _instance: MongoConnection
-
-    private _mongoServer?: MongoMemoryServer
-
-    static getInstance(): MongoConnection {
-        if (!MongoConnection._instance) {
-            MongoConnection._instance = new MongoConnection()
-        }
-        return MongoConnection._instance
-    }
-
-    public async open(): Promise<void> {
-        try {
-            if (config.mongo.url === 'inmemory') {
-                logger.debug('connecting to inmemory mongo db')
-                this._mongoServer = new MongoMemoryServer()
-                const mongoUrl = await this._mongoServer.getUri()
-                await mongoose.connect(mongoUrl, opts)
-            } else {
-                logger.debug('connecting to mongo db: ' + config.mongo.url)
-                mongoose.connect(config.mongo.url, opts)
-            }
-
-            mongoose.connection.on('connected', () => {
-                logger.info('Mongo: connected')
-            })
-
-            mongoose.connection.on('disconnected', () => {
-                logger.info('Mongo: disconnected')
-            })
-
-            mongoose.connection.on('error', (err) => {
-                logger.error(`Mongo: ${String(err)}`)
-                if (err.name === "MongoNetworkError") {
-                    setTimeout(function () {
-                        mongoose.connect(config.mongo.url, opts).catch(() => { })
-                    }, 5000)
-                }
-            })
-        } catch (err) {
-            logger.error(`db.open: ${err}`)
-            throw err
-        }
-    }
-
-    public async close(): Promise<void> {
-        try {
-            await mongoose.disconnect()
-            if (config.mongo.url === 'inmemory') {
-                await this._mongoServer!.stop()
-            }
-        } catch (err) {
-            logger.error(`db.close: ${err}`)
-            throw err
-        }
-    }
+export function getRepos() {
+    return DB.getInstance().repos
 }
 
-export default MongoConnection.getInstance()
+export function getRepo(e) {
+    return getRepository(e,conf.env)
+}
+
+export default DB
