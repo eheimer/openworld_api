@@ -1,7 +1,9 @@
-import {BeforeInsert, BeforeUpdate, Column, Entity, Unique } from "typeorm";
-import { EntityBase } from "../../utils/EntityBase"
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany} from "typeorm";
+import { EntityBase } from "../../utils/entities/EntityBase"
 import bcrypt from 'bcrypt'
-import { IsEmail, IsDate } from 'class-validator'
+import { IsEmail } from 'class-validator'
+import { Game } from "./Game"
+import { Character } from "./Character"
 
 @Entity()
 export class User extends EntityBase
@@ -30,7 +32,16 @@ export class User extends EntityBase
     @Column({nullable: true})
     lastSeenAt: Date;
 
-    //one-to-many and many-to-many associations
+    @ManyToMany(() => Game, game => game.players)
+    @JoinTable()
+    games: Game[]
+
+    @ManyToOne(() => Game)
+    currentGame: Game
+
+    @OneToMany(() => Character, character => character.player )
+    characters: Character[]
+
 }
 
 export default User;
