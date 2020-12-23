@@ -32,7 +32,7 @@ describe('POST /api/v1/user', () => {
             .end(function (err, res) {
                 if (err) return done(err)
                 expect(res.body).toMatchObject({
-                    userId: expect.stringMatching(/^[a-f0-9]{24}$/)
+                    userId: expect.stringMatching(/^[a-f0-9\-]{36}$/)
                 })
                 done()
             })
@@ -100,7 +100,7 @@ describe('POST /api/v1/login', () => {
         if (err) return done(err)
         expect(res.header['x-expires-after']).toMatch(/^(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))|(\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z))$/)
         expect(res.body).toEqual({
-          userId: expect.stringMatching(/^[a-f0-9]{24}$/),
+          userId: expect.stringMatching(/^[a-f0-9\-]{36}$/),
           token: expect.stringMatching(/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/)
         })
         done()

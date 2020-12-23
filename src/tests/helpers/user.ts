@@ -17,7 +17,10 @@ export function dummy() {
 
 export async function createDummy(userRepo: UserRepository): Promise<DummyUser> {
     const user = dummy()
-    const dbUser = await userRepo.create(user)
+    const dbUser = userRepo.create(user)
+    dbUser.password = user.password
+    await userRepo.save(dbUser)
+
     return { ...user, userId: dbUser.id.toString() }
 }
 

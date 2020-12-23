@@ -6,3 +6,4 @@ build/
 tmp/
 temp/
 coverage/
+test.db

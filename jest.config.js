@@ -6,8 +6,6 @@ module.exports = {
     "<rootDir>/build/",
     "<rootDir>/node_modules/",
     "<rootDir>/src/tests/helpers/",
-    "<rootDir>/src/tests/controllers/",
-    "<rootDir>/src/tests/services/"
   ],
   moduleNameMapper: {},
 };

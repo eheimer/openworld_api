@@ -8,8 +8,8 @@
     "build": "tsc",
     "dev": "ENV_FILE=./config/.env.dev ts-node ./src/app.ts",
     "test": "npm run test:unit",
-    "test:unit": "ENV_FILE=./config/.env.test jest --coverage",
-    "test:verbose": "ENV_FILE=./config/.env.test jest --verbose --coverage"
+    "test:unit": "rm test.db & ENV_FILE=./config/.env.test jest --coverage",
+    "test:verbose": "rm test.db & ENV_FILE=./config/.env.test jest --verbose --coverage"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +23,7 @@
     "@types/validator": "^13.1.1",
     "@types/yamljs": "^0.2.31",
     "bcrypt": "^5.0.0",
+    "class-validator": "^0.12.2",
     "connect": "^3.7.0",
     "dotenv-extended": "^2.9.0",
     "dotenv-parse-variables": "^1.0.1",

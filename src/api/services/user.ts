@@ -43,15 +43,18 @@ function auth(bearerToken: string): Promise<AuthResponse> {
 
 async function createUser(email: string, password: string, name: string): Promise<CreateUserResponse> {
     try {
-        const user = await getRepos().userRepo.save({ email: email, password: password, name: name })
+        const found = await getRepos().userRepo.findOne({email})
+        if(found) return { error: { type: 'account_already_exists', message: `${email} already exists` } }
+
+        const user = getRepos().userRepo.create({ email, name })
+        user.password = password
+        await getRepos().userRepo.save(user)
         if (user) {
             return { userId: user.id.toString() }
-        } else {
-            return { error: { type: 'account_already_exists', message: `${email} already exists` } }
         }
     } catch (err) {
         logger.error(`createUser: ${err}`)
-        return err
+        throw err
     }
 }
 
