@@ -3,10 +3,14 @@ import faker from 'faker'
 import {createDummy, createDummyAndAuthorize} from '../helpers/user'
 
 import user from '../../api/services/user'
-import DB, { getRepos } from 'src/utils/db'
+import DB, { getRepos } from '../../utils/db'
+import UserRepository from 'src/api/repositories/UserRepository'
+
+let userRepo: UserRepository;
 
 beforeAll(async () => {
   await DB.init()
+  userRepo = getRepos().userRepo;
 })
 
 afterAll(async () => {
@@ -69,7 +73,7 @@ describe('createUser', () => {
         const name = faker.name.firstName()
 
         await expect(user.createUser(email, password, name)).resolves.toEqual({
-            userId: expect.stringMatching(/^[a-f0-9]{24}$/)
+            userId: expect.stringMatching(/^[a-f0-9\-]{36}$/)
         })
     })
 
@@ -80,12 +84,12 @@ describe('createUser', () => {
 
         await user.createUser(email, password, name)
 
-        await expect(user.createUser(email, password, name)).resolves.toEqual({
+      await expect(user.createUser(email, password, name)).resolves.toEqual({
             error: {
                 type: 'account_already_exists',
                 message: `${email} already exists`
             }
-        })
+      })
     })
 
     it('should reject if invalid input', async () => {
@@ -93,6 +97,6 @@ describe('createUser', () => {
         const password = faker.internet.password()
         const name = faker.name.firstName()
 
-        await expect(user.createUser(email, password, name)).rejects.toThrowError('validation failed')
+      await expect(user.createUser(email, password, name)).rejects.toThrowError(/Validation failed!/)
     })
 })

@@ -3,7 +3,7 @@ import { validate } from 'class-validator'
 import logger from "./logger"
 
 export class EntityBase {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: number;
 
     @CreateDateColumn()
