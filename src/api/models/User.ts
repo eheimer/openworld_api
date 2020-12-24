@@ -5,6 +5,9 @@ import { IsEmail } from 'class-validator'
 import { Game } from "./Game"
 import { Character } from "./Character"
 
+/**
+ * @description represents a real person with login credentials for the game
+ */
 @Entity()
 export class User extends EntityBase
 {
@@ -29,7 +32,10 @@ export class User extends EntityBase
     @Column({ default: false })
     isAdmin: boolean;
 
-    @Column({nullable: true})
+    /**
+     * The last time the user successfully logged in
+     */
+    @Column({ nullable: true })
     lastSeenAt: Date;
 
     @ManyToMany(() => Game, game => game.players)

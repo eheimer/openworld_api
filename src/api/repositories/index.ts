@@ -1,14 +1,14 @@
 import UserRepository from './UserRepository'
-import { getCustomRepository, Repository } from 'typeorm'
-import User from '../models/User'
+import { getCustomRepository, getRepository, Repository } from 'typeorm'
+import { ActiveCondition } from '../models/ActiveCondition'
 
 export class RepoContainer {
     userRepo: UserRepository;
-    //otherRepo: Repository<Model>;
+    activeConditionRepo: Repository<ActiveCondition>
 
     constructor(connection: string) {
         this.userRepo=getCustomRepository(UserRepository,connection);
-        //this.otherRepo = getRepository(Model, connection);
+        this.activeConditionRepo = getRepository(ActiveCondition, connection);
     }
 }
 

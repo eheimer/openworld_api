@@ -1,15 +1,13 @@
 {
-  "folders": [{
+  "folders": [
+    {
       "path": "."
     },
     {
       "path": "../openworld/api/models"
     },
     {
-      "path": "../age_of_storms"
-    },
-    {
-      "path": "../typeorm.test"
+      "path": "../openworld/backup/db_2020-11-5_19-51-46"
     }
   ],
   "settings": {}

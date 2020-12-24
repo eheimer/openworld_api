@@ -9,6 +9,9 @@ import { CreatureInstance } from "./CreatureInstance"
 import { ActiveCondition } from "./ActiveCondition"
 import { Inventory } from "./Inventory"
 
+/**
+ * @description the Character created by a User for a particular Game.  Each user can have only one per game.
+ */
 @Entity()
 export class Character extends EntityBase{
     @Column() name: string
@@ -18,15 +21,11 @@ export class Character extends EntityBase{
     @Column() baseDmgIncrease: number
     @Column() spellDmgIncrease: number
     @Column() baseResist: number
-    
-    //ResistHaver members
     @Column() resistPh: number
     @Column() resistC: number
     @Column() resistF: number
     @Column() resistE: number
     @Column() resistP: number
-
-    //DamageEaterHaver members
     @Column() dePh: number
     @Column() deC: number
     @Column() deF: number

@@ -1,6 +1,6 @@
 import faker, { date } from 'faker'
 
-import DB, {getRepos, getRepo} from '../../utils/db'
+import DB, {getRepos} from '../../utils/db'
 
 import UserRepository from '../../api/repositories/UserRepository'
 import User from '../../api/models/User'
@@ -51,14 +51,12 @@ describe('save', () => {
         expect(dbUser2!.name).toEqual(name2)
     })
 
-    //TODO: these two tests don't test the database anymore, they are testing the validator
     it('should not save user with invalid email', async () => {
         const user1 = userRepo.create({ email: 'email@em.o', name: faker.name.firstName() })
         user1.password = faker.internet.password()
         await expect(userRepo.save(user1)).rejects.toThrowError(/Validation failed!/)
     })
 
-    //TODO: these two tests don't test the database anymore, they are testing the validator
     it('should not save user without an email', async () => {
         const user = userRepo.create({ name: faker.name.firstName() })
         user.password = faker.internet.password()

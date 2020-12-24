@@ -4,6 +4,9 @@ import { Character } from "./Character"
 import { Game } from "./Game"
 import { CreatureInstance } from "./CreatureInstance"
 
+/**
+ * @description container for battle participants
+ */
 @Entity()
 export class Battle extends EntityBase{
     @Column() round: number

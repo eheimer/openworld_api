@@ -35,8 +35,4 @@ export function getRepos() {
     return DB.getInstance().repos
 }
 
-export function getRepo(e) {
-    return getRepository(e,conf.env)
-}
-
 export default DB
