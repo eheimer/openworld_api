@@ -1,5 +1,5 @@
 import { EntityBase } from "../../utils/entities/EntityBase"
-import { Column, Entity, ManyToOne } from "typeorm"
+import { Column, Entity, OneToOne } from "typeorm"
 import { EquipLocation } from "./EquipLocation"
 
 /**
@@ -9,6 +9,6 @@ import { EquipLocation } from "./EquipLocation"
 export class ArmorLocation extends EntityBase{
     @Column() name: string
 
-    @ManyToOne(()=>EquipLocation)
+    @OneToOne(()=>EquipLocation)
     location: EquipLocation
 }

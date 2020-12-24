@@ -7,9 +7,16 @@
     "start": "npm run build && ENV_FILE=./config/.env.prod node ./build/app.js",
     "build": "tsc",
     "dev": "ENV_FILE=./config/.env.dev ts-node ./src/app.ts",
+    "dev:reseed": "npm run seed:dev && npm run dev",
     "test": "npm run test:unit",
-    "test:unit": "ENV_FILE=./config/.env.test jest --coverage",
-    "test:verbose": "rm test.db & ENV_FILE=./config/.env.test jest --verbose --coverage"
+    "test:unit": "npm run seed:test && ENV_FILE=./config/.env.test jest --coverage",
+    "test:verbose": "npm run seed:test && ENV_FILE=./config/.env.test jest --verbose --coverage",
+    "seed:test": "ENV_FILE=./config/.env.test ts-node ./src/utils/seedTestData.ts",
+    "seed:dev": "npm run schema:drop:dev && ENV_FILE=./config/.env.dev ts-node ./src/utils/seedDevelopmentData.ts",
+    "schema:drop:test": "ENV_FILE=./config/.env.test ts-node ./node_modules/typeorm/cli.js schema:drop",
+    "schema:sync:test": "ENV_FILE=./config/.env.test ts-node ./node_modules/typeorm/cli.js schema:sync",
+    "schema:drop:dev": "ENV_FILE=./config/.env.dev ts-node ./node_modules/typeorm/cli.js schema:drop",
+    "schema:sync:dev": "ENV_FILE=./config/.env.dev ts-node ./node_modules/typeorm/cli.js schema:sync"
   },
   "author": "",
   "license": "ISC",
