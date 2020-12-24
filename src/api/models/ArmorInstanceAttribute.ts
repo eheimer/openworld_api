@@ -4,8 +4,14 @@ import { ArmorAttribute } from "./ArmorAttribute"
 import { ArmorInstance } from "./ArmorInstance"
 import { DamageType } from "./DamageType"
 
+/**
+ * @description an ArmorAttribute that is applied to an ArmorInstance
+ */
 @Entity()
 export class ArmorInstanceAttribute extends EntityBase{
+    /**
+     * the calculated value of the attribute
+     */
     @Column() value: number
 
     @ManyToOne(()=>ArmorInstance)

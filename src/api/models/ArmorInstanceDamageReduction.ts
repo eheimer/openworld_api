@@ -3,6 +3,9 @@ import { Column, Entity, ManyToOne } from "typeorm"
 import { ArmorInstance } from "./ArmorInstance"
 import { DamageType } from "./DamageType"
 
+/**
+ * @description a damage reduction that is applied to an ArmorInstance
+ */
 @Entity()
 export class ArmorInstanceDamageReduction extends EntityBase{
     @Column() name: string
