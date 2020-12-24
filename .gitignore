@@ -7,3 +7,4 @@ tmp/
 temp/
 coverage/
 test.db
+development.db

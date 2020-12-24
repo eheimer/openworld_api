@@ -37,7 +37,7 @@
   "password": "entranced",
   "database": "openworld",
   "synchronize": true,
-  "logging": "warn",
+  "logging": "all",
   "entities": [
     "build/api/models/**/*.js"
   ],

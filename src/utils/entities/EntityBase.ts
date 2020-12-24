@@ -1,8 +1,8 @@
 import {BeforeInsert, BeforeUpdate, CreateDateColumn, getRepository, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
 import { validate } from 'class-validator'
-import logger from "./logger"
+import logger from "../logger"
 
-export class EntityBase {
+export abstract class EntityBase {
     @PrimaryGeneratedColumn("uuid")
     id: number;
 

@@ -8,7 +8,7 @@
     "build": "tsc",
     "dev": "ENV_FILE=./config/.env.dev ts-node ./src/app.ts",
     "test": "npm run test:unit",
-    "test:unit": "rm test.db & ENV_FILE=./config/.env.test jest --coverage",
+    "test:unit": "ENV_FILE=./config/.env.test jest --coverage",
     "test:verbose": "rm test.db & ENV_FILE=./config/.env.test jest --verbose --coverage"
   },
   "author": "",
