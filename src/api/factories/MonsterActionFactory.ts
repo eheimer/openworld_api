@@ -3,6 +3,7 @@ import defaultFaker from 'faker'
 import { MonsterAction } from "../models/MonsterAction"
 
 export class MonsterActionFactory extends EntityFactory<MonsterAction>{
+    constructor(){super(MonsterAction)}
     makeDummy(faker?: Faker.FakerStatic): MonsterAction {
         if (!faker) faker = defaultFaker;
         const m = new MonsterAction()

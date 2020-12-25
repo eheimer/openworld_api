@@ -3,6 +3,7 @@ import { EntityFactory } from "./EntityFactory"
 import defaultFaker from 'faker'
 
 export class DamageTypeFactory extends EntityFactory<DamageType>{
+    constructor(){super(DamageType)}
     makeDummy(faker?: Faker.FakerStatic): DamageType {
         if (!faker) faker = defaultFaker;
         const d = new DamageType()

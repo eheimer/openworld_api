@@ -3,11 +3,13 @@ import defaultFaker from 'faker'
 import { WeaponAttribute } from "../models/WeaponAttribute"
 
 export class WeaponAttributeFactory extends EntityFactory<WeaponAttribute>{
+    constructor(){super(WeaponAttribute)}
     makeDummy(faker?: Faker.FakerStatic): WeaponAttribute {
         if (!faker) faker = defaultFaker;
         const w = new WeaponAttribute()
         w.name = faker.fake("{{hacker.adjective}} {{hacker.noun}}")
         w.value = `${faker.random.number({min:1,max:3})}-${faker.random.number({min:4,max:10})}`
+        w.hand = faker.random.number(2)
         return w
     }
 

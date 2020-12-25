@@ -1,4 +1,4 @@
-import { createConnection, getConnection, getCustomRepository, getRepository, Repository } from 'typeorm'
+import { Connection, createConnection, getConnection, getCustomRepository, getRepository, Repository } from 'typeorm'
 import conf from '../config'
 
 import RepoContainer from '../api/repositories'
@@ -15,6 +15,7 @@ export class DB {
         return DB._instance
     }
 
+    conn: string
     repos: RepoContainer
 
     static async init(): Promise<DB> {
@@ -22,9 +23,10 @@ export class DB {
             logger.warn('Attempting to re-initialize the database')
             return null
         } else {
-            let conn = await createConnection(conf.env)
             DB._instance = new DB()
-            DB.getInstance().repos = new RepoContainer(conf.env)
+            await createConnection(conf.env)
+            DB._instance.conn = conf.env;
+            DB._instance.repos = new RepoContainer(conf.env)
         }
         return DB._instance
     }

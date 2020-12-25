@@ -3,6 +3,7 @@ import defaultFaker from 'faker'
 import { SpellbookAttribute } from "../models/SpellbookAttribute"
 
 export class SpellbookAttributeFactory extends EntityFactory<SpellbookAttribute>{
+    constructor(){super(SpellbookAttribute)}
     makeDummy(faker?: Faker.FakerStatic): SpellbookAttribute {
         if (!faker) faker = defaultFaker;
         const s = new SpellbookAttribute()

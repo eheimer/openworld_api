@@ -3,6 +3,7 @@ import defaultFaker from 'faker'
 import { ArmorAttribute } from "../models/ArmorAttribute"
 
 export class ArmorAttributeFactory extends EntityFactory<ArmorAttribute>{
+    constructor() { super(ArmorAttribute) }
     makeDummy(faker?: Faker.FakerStatic): ArmorAttribute {
         if (!faker) faker = defaultFaker;
         const a = new ArmorAttribute()

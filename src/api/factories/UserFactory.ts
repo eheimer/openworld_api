@@ -4,7 +4,7 @@ import { EntityFactory } from './EntityFactory'
 import { DeepPartial, Repository } from 'typeorm'
 
 export class UserFactory extends EntityFactory<User>{
-    protected async postCreate(entity: User, data: DeepPartial<User>, repo: Repository<User>) {
+    protected async postCreate(entity: User, data: DeepPartial<User>) {
         entity.password = data.password
     }
     makeDummy(faker?: Faker.FakerStatic): User {
