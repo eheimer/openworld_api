@@ -2,12 +2,14 @@ import User from '../models/User'
 import defaultFaker from 'faker'
 import { EntityFactory } from './EntityFactory'
 import { DeepPartial } from 'typeorm'
+import UserRepository from '../repositories/UserRepository'
 
 export class UserFactory extends EntityFactory<User>{
     constructor(){super(User)}
     protected async postCreate(entity: User, data: DeepPartial<User>) {
         if (data.password) {
-            entity.updatePasswordHash()
+            const repo: UserRepository = this.getRepository() as UserRepository
+            entity.password = repo.generatePasswordHash(data.password)
         }
     }
     makeDummy(faker?: Faker.FakerStatic): User {

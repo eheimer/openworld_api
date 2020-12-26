@@ -18,6 +18,18 @@ export class UserRepository extends Repository<User>{
             return false
         }
     }
+
+    generatePasswordHash(password: string): string {
+        return bcrypt.hashSync(password,10)
+    }
+
+    async updatePassword(userId: number, password: string) {
+        let user = await this.findOne(userId)
+        if (user) {
+            user.password = this.generatePasswordHash(password);
+            return await this.save(user);
+        }
+    }
 }
 
 export default UserRepository

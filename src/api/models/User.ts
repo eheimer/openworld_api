@@ -39,12 +39,6 @@ export class User extends EntityBase
 
     @OneToMany(() => Character, character => character.player )
     characters: Character[]
-
-    updatePasswordHash(newPassword?: string) {
-        if(newPassword){ this.password = newPassword}
-        this.password = bcrypt.hashSync(this.password,10)
-    }
-
 }
 
 export default User;
