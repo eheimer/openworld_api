@@ -11,16 +11,8 @@ import { Character } from "./Character"
 @Entity()
 export class User extends EntityBase
 {
-    @Column({ nullable: false, name: 'password' })
-    private _password: string;
-
-    get password(): string {
-        return this._password;
-    }
-
-    set password(password: string) {
-        this._password = bcrypt.hashSync(password, 10);
-    }
+    @Column({ nullable: false })
+    password: string;
 
     @Column({ nullable: false, unique: true })
     @IsEmail()
@@ -47,6 +39,11 @@ export class User extends EntityBase
 
     @OneToMany(() => Character, character => character.player )
     characters: Character[]
+
+    updatePasswordHash(newPassword?: string) {
+        if(newPassword){ this.password = newPassword}
+        this.password = bcrypt.hashSync(this.password,10)
+    }
 
 }
 

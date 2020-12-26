@@ -39,8 +39,6 @@ export class CreatureInstance extends EntityBase implements iResistHaver{
     @Column() appetite: number
     @Column() obedience: number
     @Column() tracking: number
-
-    //ResistHaver members
     @Column() resistPh: number
     @Column() resistC: number
     @Column() resistE: number

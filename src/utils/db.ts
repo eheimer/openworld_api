@@ -1,4 +1,4 @@
-import { Connection, createConnection, getConnection, getCustomRepository, getRepository, Repository } from 'typeorm'
+import { Connection, createConnection, EntityTarget, getRepository, Repository } from 'typeorm'
 import conf from '../config'
 
 import RepoContainer from '../api/repositories'
@@ -35,6 +35,15 @@ export class DB {
 
 export function getRepos() {
     return DB.getInstance().repos
+}
+
+export function getRepo<Entity>(classname: string, entityType?: EntityTarget<Entity>): Repository<Entity> {
+    let repo = DB.getInstance().repos[classname]
+    if (!repo) {
+        repo = getRepository(entityType, DB.getInstance().conn)
+        DB.getInstance().repos[classname] = repo;
+    }
+    return repo
 }
 
 export default DB
