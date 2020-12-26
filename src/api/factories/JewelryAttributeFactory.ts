@@ -3,6 +3,7 @@ import defaultFaker from 'faker'
 import { JewelryAttribute } from "../models/JewelryAttribute"
 
 export class JewelryAttributeFactory extends EntityFactory<JewelryAttribute>{
+    constructor(){super(JewelryAttribute)}
     makeDummy(faker?: Faker.FakerStatic): JewelryAttribute {
         if (!faker) faker = defaultFaker;
         const j = new JewelryAttribute()

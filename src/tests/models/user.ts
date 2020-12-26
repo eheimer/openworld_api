@@ -1,15 +1,17 @@
 import faker, { date } from 'faker'
 
-import DB, {getRepos} from '../../utils/db'
+import DB from '../../utils/db'
 
 import UserRepository from '../../api/repositories/UserRepository'
 import User from '../../api/models/User'
+import { UserFactory } from '../../api/factories/UserFactory'
 
-let userRepo: UserRepository;
+const factory = new UserFactory()
+let userRepo: UserRepository
 
 beforeAll(async () => {
     await DB.init();
-    userRepo = getRepos().userRepo;
+    userRepo = factory.getRepository() as UserRepository
 })
 
 describe('save', () => {
@@ -18,13 +20,11 @@ describe('save', () => {
         const password = faker.internet.password()
         const name = faker.name.firstName()
         const before = Date.now()
-        const user = userRepo.create({ email: email, name: name})
-        user.password = password;
-        await userRepo.save(user);
+        const dbuser = await factory.create({email,password,name})
 
         const after = Date.now()
 
-        const fetched = await userRepo.findOne(user.id) as User
+        const fetched = await userRepo.findOne(dbuser.id) as User
 
         expect(fetched).not.toBeNull()
 
@@ -38,118 +38,92 @@ describe('save', () => {
     })
 
     it('should update user', async () => {
-        const name1 = faker.name.firstName()
-        const user = userRepo.create({ email: faker.internet.email(), name: name1 })
-        user.password = faker.internet.password()
-        const dbUser1 = await userRepo.save(user);
+        const user = await factory.createDummy();
+        const newname = faker.name.firstName()
+        user.name = newname
+        await userRepo.update(user.id,user)
+        const user2 = await userRepo.findOne(user.id);
 
-        const name2 = faker.name.firstName()
-        dbUser1.name = name2
-        await userRepo.update(dbUser1.id,dbUser1)
-        const dbUser2 = await userRepo.findOne(dbUser1.id);
-
-        expect(dbUser2!.name).toEqual(name2)
+        expect(user2!.name).toEqual(newname)
     })
 
     it('should not save user with invalid email', async () => {
-        const user1 = userRepo.create({ email: 'email@em.o', name: faker.name.firstName() })
-        user1.password = faker.internet.password()
-        await expect(userRepo.save(user1)).rejects.toThrowError(/Validation failed!/)
+        const user = factory.makeDummy()
+        user.email = 'email@em.o' //invalid email address
+        await expect(factory.create(user)).rejects.toThrowError(/Validation failed!/)
     })
 
     it('should not save user without an email', async () => {
-        const user = userRepo.create({ name: faker.name.firstName() })
-        user.password = faker.internet.password()
-
-        await expect(userRepo.save(user)).rejects.toThrowError(/Validation failed!/)
+        const user = factory.makeDummy()
+        delete user.email
+        await expect(factory.create(user)).rejects.toThrowError(/Validation failed!/)
     })
 
     it('should not save user without a password', async () => {
-        const user2 = { email: faker.internet.email(), name: faker.name.firstName() }
-        await expect(userRepo.save(user2)).rejects.toThrowError(/password/)
+        const user = factory.makeDummy()
+        user.password = null
+        await expect(factory.create(user)).rejects.toThrowError(/password/)
     })
 
     it('should not save user without a name', async () => {
-        const user1 = userRepo.create({ email: faker.internet.email()})
-        user1.password = faker.internet.password()
-        await expect(userRepo.save(user1)).rejects.toThrowError(/name/)
+        const user = factory.makeDummy()
+        delete user.name
+        await expect(factory.create(user)).rejects.toThrowError(/name/)
     })
 
     it('should not save user with the same email', async () => {
-        const email = faker.internet.email()
-        const password = faker.internet.password()
-        const name = faker.name.firstName()
-        const userData = {email: email, name: name}
-
-        const user1 = userRepo.create(userData)
-        user1.password = password
-        await userRepo.save(user1)
-
-        const user2 = userRepo.create(userData)
-        user2.password = password
-
-        await expect(userRepo.save(user2)).rejects.toThrowError(/UNIQUE constraint/)
+        const user1 = await factory.createDummy()
+        const user2 = factory.makeDummy()
+        user2.email = user1.email
+        await expect(factory.create(user2)).rejects.toThrowError(/UNIQUE constraint/)
     })
 
     it('should not save password in a readable form', async () => {
-        const password = faker.internet.password()
+        const user1 = factory.makeDummy()
+        let dbuser1 = await factory.create(user1)
+        expect(dbuser1.password).not.toBe(user1.password)
 
-        const user1 = userRepo.create({ email: faker.internet.email(), name: faker.name.firstName() })
-        user1.password = password
-        await userRepo.save(user1)
-        expect(user1.password).not.toBe(password)
+        const user2 = factory.makeDummy()
+        let dbuser2 = await factory.create(user2)
+        expect(dbuser2.password).not.toBe(user2.password)
 
-        const user2 = userRepo.create({ email: faker.internet.email(), name: faker.name.firstName() })
-        user2.password = password
-        await userRepo.save(user2)
-        expect(user2.password).not.toBe(password)
-
-        expect(user1.password).not.toBe(user2.password)
+        expect(dbuser1.password).not.toBe(dbuser2.password)
     })
 })
 
 describe('comparePassword', () => {
     it('should return true for valid password', async () => {
-        const password = faker.internet.password()
-        const user = userRepo.create({ email: faker.internet.email(), name: faker.name.firstName() })
-        user.password = password;
-        await userRepo.save(user);
-        expect(await userRepo.comparePassword(user.id, password)).toBe(true)
+        const user = factory.makeDummy()
+        let dbuser = await factory.create(user)
+        expect(await userRepo.comparePassword(dbuser.id, user.password)).toBe(true)
     })
 
     it('should return false for invalid password', async () => {
-        const user = userRepo.create({ email: faker.internet.email(), password: faker.internet.password(), name: faker.name.firstName() })
+        const user = await factory.createDummy()
         expect(await userRepo.comparePassword(user.id, faker.internet.password())).toBe(false)
     })
 
     it('should update password hash if password is updated', async () => {
-        const password1 = faker.internet.password()
-        const dbUser1 = userRepo.create({ email: faker.internet.email(), name: faker.name.firstName() })
-        dbUser1.password = password1;
-        await userRepo.save(dbUser1)
-        expect(await userRepo.comparePassword(dbUser1.id,password1)).toBe(true)
+        const user1 = factory.makeDummy()
+        let dbuser1 = await factory.create(user1)
+        expect(await userRepo.comparePassword(dbuser1.id,user1.password)).toBe(true)
 
         const password2 = faker.internet.password()
-        dbUser1.password = password2
-        const dbUser2 = await userRepo.save(dbUser1);
+        dbuser1.updatePasswordHash(password2)
+        const dbUser2 = await userRepo.save(dbuser1);
         expect(await userRepo.comparePassword(dbUser2.id, password2)).toBe(true)
-        expect(await userRepo.comparePassword(dbUser2.id, password1)).toBe(false)
+        expect(await userRepo.comparePassword(dbUser2.id, user1.password)).toBe(false)
     })
 })
 
 describe('toJSON', () => {
     it('should return valid JSON', async () => {
-        const email = faker.internet.email()
-        const password = faker.internet.password()
-        const name = faker.name.firstName()
+        const user = await factory.createDummy()
 
-        const user = userRepo.create({ email: email, name: name })
-        user.password = password
-        await userRepo.save(user)
         let json = JSON.stringify(user);
         let obj = JSON.parse(json);
         expect(Date.parse(obj.createdAt)).toBe<Number>(user.createdAt.getTime())
         expect(Date.parse(obj.updatedAt)).toBe<Number>(user.updatedAt.getTime())
-        expect(obj).toMatchObject({email: email, name: name})
+        expect(obj).toMatchObject({email:user.email, name:user.name})
     })
 })

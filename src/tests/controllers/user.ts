@@ -1,14 +1,14 @@
 import faker from 'faker'
 
-import {createDummy} from '../helpers/user'
-
 import request from 'supertest'
 import { Express } from 'express-serve-static-core'
-import DB, { getRepos } from '../../utils/db'
+import DB from '../../utils/db'
 
 import { createServer } from '../../utils/server'
+import { UserFactory } from '../../api/factories/UserFactory'
 
 let server: Express
+const factory: UserFactory = new UserFactory()
 
 beforeAll(async () => {
     await DB.init()
@@ -16,7 +16,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-    //await DB.getInstance().close();
 })
 
 describe('POST /api/v1/user', () => {
@@ -88,12 +87,14 @@ describe('POST /api/v1/user', () => {
 
 describe('POST /api/v1/login', () => {
   it('should return 200 & valid response for a valid login request', async done => {
-    const dummy = await createDummy(getRepos().userRepo)
+    const dummy = factory.makeDummy()
+    const password = dummy.password
+    await factory.create(dummy)
     request(server)
       .post(`/api/v1/login`)
       .send({
         email: dummy.email,
-        password: dummy.password
+        password: password
       })
       .expect(200)
       .end(function(err, res) {

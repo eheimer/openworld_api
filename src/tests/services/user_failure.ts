@@ -1,16 +1,17 @@
 import jwt, {Secret, SignCallback, SignOptions} from 'jsonwebtoken'
 
-import {createDummy} from '../helpers/user'
 import user from '../../api/services/user'
 
-import DB, { getRepos } from '../../utils/db'
+import DB from '../../utils/db'
+import { UserFactory } from '../../api/factories/UserFactory'
+
+const factory = new UserFactory()
 
 beforeAll(async () => {
     await DB.init()
 })
 
 afterAll(async () => {
-    //await DB.getInstance().close()
 })
 
 describe('login', () => {
@@ -22,7 +23,9 @@ describe('login', () => {
         callback(new Error('failure'), undefined)
     }
 
-    const dummy = await createDummy(getRepos().userRepo)
+    const dummy = factory.makeDummy()
+    const dummydb = await factory.create(dummy)
+
     await expect(user.login(dummy.email, dummy.password)).rejects.toEqual({
       error: {type: 'internal_server_error', message: 'Internal Server Error'}
     })

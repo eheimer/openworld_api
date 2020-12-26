@@ -1,14 +1,19 @@
-import logger from './logger'
 import DB from './db'
 import { TestSeeder } from '../seed/TestSeeder'
 
+console.info('Starting....')
+
 DB.init()
     .then(() => {
-        return TestSeeder.seed(DB.getInstance())
-    })
-    .then(() => {
-        return
+        console.info('DB initialized')
+        TestSeeder.seed()
+            .then(() => {
+                console.info('Seeding complete')
+            })
+            .catch(err => {
+                console.error(`Seeding error: ${err}`)
+            })
     })
     .catch(err => {
-        logger.error(`Database Init error: ${err}`)
+        console.error(`Database Init error: ${err}`)
     })

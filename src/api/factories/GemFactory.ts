@@ -3,6 +3,7 @@ import { EntityFactory } from "./EntityFactory"
 import defaultFaker from 'faker'
 
 export class GemFactory extends EntityFactory<Gem>{
+    constructor(){super(Gem)}
     makeDummy(faker?: Faker.FakerStatic): Gem {
         if (!faker) faker = defaultFaker;
         const g = new Gem()

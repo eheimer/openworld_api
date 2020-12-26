@@ -3,12 +3,10 @@ import { getCustomRepository, getRepository, Repository } from 'typeorm'
 import { ActiveCondition } from '../models/ActiveCondition'
 
 export class RepoContainer {
-    userRepo: UserRepository;
-    activeConditionRepo: Repository<ActiveCondition>
+    User: UserRepository;
 
     constructor(connection: string) {
-        this.userRepo=getCustomRepository(UserRepository,connection);
-        this.activeConditionRepo = getRepository(ActiveCondition, connection);
+        this.User=getCustomRepository(UserRepository,connection);
     }
 }
 

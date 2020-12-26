@@ -3,6 +3,7 @@ import { EntityFactory } from "./EntityFactory"
 import defaultFaker from 'faker'
 
 export class ConditionFactory extends EntityFactory<Condition>{
+    constructor(){super(Condition)}
     makeDummy(faker?: Faker.FakerStatic): Condition {
         if (!faker) faker = defaultFaker;
         const c = new Condition()
@@ -14,6 +15,7 @@ export class ConditionFactory extends EntityFactory<Condition>{
         c.cooldown = faker.random.number(3)
         c.removeOnHit = faker.random.boolean()
         c.removeOnHit = faker.random.boolean()
+        c.allowMultiple = faker.random.boolean()
         return c
     }
 

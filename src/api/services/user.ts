@@ -3,8 +3,8 @@ import jwt, { SignOptions, VerifyErrors, VerifyOptions } from 'jsonwebtoken'
 
 import config from '../../config'
 import logger from '../../utils/logger'
-
-import { getRepos } from '../../utils/db'
+import { UserFactory } from '../factories/UserFactory'
+import UserRepository from '../repositories/UserRepository'
 
 export type ErrorResponse = { error: { type: string, message: string } }
 export type AuthResponse = ErrorResponse | { userId: string }
@@ -25,6 +25,8 @@ const verifyOptions: VerifyOptions = {
     algorithms: ['RS256']
 }
 
+const factory: UserFactory = new UserFactory()
+
 function auth(bearerToken: string): Promise<AuthResponse> {
   return new Promise(function(resolve, reject) {
     const token = bearerToken.replace('Bearer ', '')
@@ -43,12 +45,10 @@ function auth(bearerToken: string): Promise<AuthResponse> {
 
 async function createUser(email: string, password: string, name: string): Promise<CreateUserResponse> {
     try {
-        const found = await getRepos().userRepo.findOne({email})
+        const found = await factory.getRepository().findOne({email})
         if(found) return { error: { type: 'account_already_exists', message: `${email} already exists` } }
 
-        const user = getRepos().userRepo.create({ email, name })
-        user.password = password
-        await getRepos().userRepo.save(user)
+        const user = await factory.create({ email, name, password })
         if (user) {
             return { userId: user.id.toString() }
         }
@@ -58,7 +58,7 @@ async function createUser(email: string, password: string, name: string): Promis
     }
 }
 
-function createAuthToken(userId: string): Promise<{ token: string, expireAt: Date }> {
+function createAuthToken(userId: number): Promise<{ token: string, expireAt: Date }> {
     return new Promise(function (resolve, reject) {
         jwt.sign({ userId: userId }, privateSecret, signOptions, (err: Error | null, encoded: string | undefined) => {
             if (err === null && encoded !== undefined) {
@@ -75,17 +75,18 @@ function createAuthToken(userId: string): Promise<{ token: string, expireAt: Dat
 
 async function login(login: string, password: string): Promise<LoginUserResponse> {
     try {
-        const user = await getRepos().userRepo.findOne({ email: login })
+        const repo = factory.getRepository() as UserRepository
+        const user = await repo.findOne({ email: login })
         if (!user) {
             return { error: { type: 'invalid_credentials', message: 'Invalid Login/Password' } }
         }
 
-        const passwordMatch = await getRepos().userRepo.comparePassword(user.id, password)
+        const passwordMatch = await repo.comparePassword(user.id, password)
         if (!passwordMatch) {
             return { error: { type: 'invalid_credentials', message: 'Invalid Login/Password' } }
         }
 
-        const authToken = await createAuthToken(user.id.toString())
+        const authToken = await createAuthToken(user.id)
         return { userId: user.id.toString(), token: authToken.token, expireAt: authToken.expireAt }
     } catch (err) {
         logger.error(`login: ${err}`)

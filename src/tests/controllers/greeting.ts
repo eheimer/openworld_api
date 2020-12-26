@@ -2,11 +2,12 @@ import request from 'supertest'
 import { Express } from 'express-serve-static-core'
 
 import { createServer } from '../../utils/server'
-import { createDummyAndAuthorize} from '../helpers/user'
-import DB, {getRepos} from '../../utils/db'
-
+import DB from '../../utils/db'
+import user from '../../api/services/user'
+import { UserFactory } from '../../api/factories/UserFactory'
 
 let server: Express
+const factory: UserFactory = new UserFactory()
 
 beforeAll(async () => {
     await DB.init()
@@ -14,7 +15,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-    //await DB.getInstance().close();
 })
 
 describe('GET /hello', () => {
@@ -63,15 +63,16 @@ describe('GET /hello', () => {
 
 describe('GET /goodbye', () => {
     it('should return 200 & valid response to authorization with fakeToken request', async done => {
-        const dummy = await createDummyAndAuthorize(getRepos().userRepo)
+        const dummy = await factory.createDummy();
+        const authToken = await user.createAuthToken(dummy.id)
         request(server)
             .get(`/api/v1/goodbye`)
-            .set('Authorization', `Bearer ${dummy.token}`)
+            .set('Authorization', `Bearer ${authToken.token}`)
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err)
-                expect(res.body).toMatchObject({ 'message': `Goodbye, ${dummy.userId}!` })
+                expect(res.body).toMatchObject({ 'message': `Goodbye, ${dummy.id}!` })
                 done()
             })
     })
