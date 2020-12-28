@@ -1,58 +1,83 @@
-// import { ActiveCondition } from "../../api/models/ActiveCondition"
-// import DB, {getRepos} from "../../utils/db"
-// import { Repository } from "typeorm"
-// import faker from 'faker'
-// import { EntityFactory } from "src/api/factories/EntityFactory"
+import { ActiveCondition } from "../../api/models/ActiveCondition"
+import DB from "../../utils/db"
+import { Repository } from "typeorm"
+import { ActiveConditionFactory } from "../../api/factories/ActiveConditionFactory"
+import { CharacterFactory } from "../../api/factories/CharacterFactory"
 
-// let repo: Repository<ActiveCondition>
-// let factory: EntityFactory<ActiveCondition>
+let repo: Repository<ActiveCondition>
+let factory = new ActiveConditionFactory()
 
-// beforeAll(async () => {
-//     await DB.init();
-//     repo = 
-// })
-// describe('save', () => {
-//     it('should create activeCondition', async () => {
-//         const rr = faker.random.number(20)
-//         const cr = faker.random.number(20)
-//         const before = Date.now()
-//         const ac = repo.create({roundsRemaining: rr,cooldownRemaining:cr})
-//         await repo.save(ac);
-//         const after = Date.now()
-//         const fetched = await repo.findOne(ac.id)
+beforeAll(async () => {
+    await DB.init();
+    repo = factory.getRepository()
+})
+describe('save', () => {
+    it('should create activeCondition', async () => {
+        const before = Date.now()
+        const ac = await factory.makeDummyWithAll()
+        let acdb = await factory.create(ac)
+        const after = Date.now()
+        const fetched = await repo.findOne(acdb.id)
 
-//         expect(fetched).not.toBeNull()
+        expect(fetched).not.toBeNull()
 
-//         expect(fetched.roundsRemaining).toBe(rr)
-//         expect(fetched.cooldownRemaining).toBe(cr)
+        expect(fetched.roundsRemaining).toBe(ac.roundsRemaining)
+        expect(fetched.cooldownRemaining).toBe(ac.cooldownRemaining)
 
-//         expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
-//         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
-//     })
-//     it('should update activeCondition', async () => {
-//         const rr = faker.random.number(20)
-//         const cr = faker.random.number(20)
-//         const ac = repo.create({ roundsRemaining: rr, cooldownRemaining: cr })
-//         const ac1 = await repo.save(ac)
+        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
+    })
+    it('should update activeCondition', async () => {
+        const ac = await factory.makeDummyWithAll()
+        let acdb = await factory.create(ac)
         
-//         ac1.roundsRemaining = 21
-//         await repo.update(ac1.id, ac1);
+        acdb.roundsRemaining = 21
+        await repo.save(acdb);
 
-//         const ac2 = await repo.findOne(ac1.id);
+        const acdb2 = await repo.findOne(acdb.id);
 
-//         expect(ac2.roundsRemaining).toEqual(21);
+        expect(acdb2.roundsRemaining).toEqual(21);
 
-//     })
-//     it('should not save activeCondition without condition', async () => {
-
-//     })
-//     it('should not save if neither character nor creatureInstance are populated', async () => {
-//         //we only validate that both are not empty here.  Our repo test
-//         //will need to make sure that only one or the other is populated
-
-//     })
-//     it('should save without target', async () => {
-
-//     })
-// })
+    })
+    it('should not save activeCondition without condition', async () => {
+        const ac = await factory.makeDummyWithAll()
+        delete ac.condition
+        await expect(factory.create(ac)).rejects.toThrowError(/active_condition.conditionId/)
+    })
+    it('should save if either character or creatureInstance are not populated', async () => {
+        const ac = await factory.makeDummyWithAll()
+        delete ac.character
+        let acdb1 = await factory.create(ac)
+        expect(acdb1.id).not.toBeNull()
+        const ac2 = await factory.makeDummyWithAll()
+        delete ac2.creature
+        let acdb2 = await factory.create(ac2)
+        expect(acdb2.id).not.toBeNull()
+    })
+    it('should not save if neither character nor creatureInstance are populated', async () => {
+        const ac = await factory.makeDummyWithAll()
+        delete ac.character
+        delete ac.creature
+        await expect(factory.create(ac)).rejects.toThrowError(/Validation failed!/)
+    })
+    it('should not save if both character and creatureInstance are populated', async () => {
+        //TODO: not sure if there is a validation I can use for this.  This might need to go in the service test
+    })
+    it('should create a reciprocal link on character', async () => {
+        const ac = await factory.makeDummyWithAll()
+        delete ac.creature
+        let characterRepo = new CharacterFactory().getRepository();
+        let acdb = await factory.create(ac)
+        let character = await characterRepo.findOne(acdb.character.id, { loadRelationIds: { relations: ['conditions'] } })
+        expect(acdb.character.id).not.toBeNull()
+        expect(character).not.toBeNull()
+        expect(character.conditions[0]).toContain(acdb.id)
+    })
+    it('should save without target', async () => {
+        const ac = await factory.makeDummyWithAll()
+        delete ac.target
+        let acdb = await factory.create(ac)
+        expect(acdb.id).not.toBeNull()
+    })
+})
 

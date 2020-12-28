@@ -1,4 +1,4 @@
-import { Action } from "src/api/models/Action"
+import { UserFactory } from "src/api/factories/UserFactory"
 import { EntityBase } from "src/utils/entities/EntityBase"
 import { ActionFactory } from "../api/factories/ActionFactory"
 import { ArmorAttributeFactory } from "../api/factories/ArmorAttributeFactory"
@@ -28,7 +28,9 @@ import { WeaponAttributeFactory } from "../api/factories/WeaponAttributeFactory"
 import { WeaponFactory } from "../api/factories/WeaponFactory"
 import { WeaponSkillFactory } from "../api/factories/WeaponSkillFactory"
 
-//this should seed the database with random data
+/**
+ * Seeds the database with fabricated test data
+ */
 export class TestSeeder {
     static async seed(): Promise<boolean> {
         const factories: EntityFactory<EntityBase>[] = [new ActionFactory, new ArmorAttributeFactory, new ArmorClassFactory,
@@ -36,8 +38,8 @@ export class TestSeeder {
             new EquipLocationFactory, new GemFactory, new GemRarityFactory, new ItemCategoryFactory, new JewelryAttributeFactory,
             new JewelryLocationFactory, new MaterialFactory, new MaterialTypeFactory, new MonsterActionFactory,
             new MonsterClueFactory, new MonsterFactory, new MonsterLootFactory, new SkillFactory, new SlayerTypeFactory,
-            new SpecialMoveFactory, new SpellbookAttributeFactory, new WeaponAttributeFactory, new WeaponFactory,
-            new WeaponSkillFactory
+            new SpecialMoveFactory, new SpellbookAttributeFactory, new UserFactory, new WeaponAttributeFactory, new WeaponFactory,
+            new WeaponSkillFactory,
         ]
         factories.forEach(async factory => {
             for (let i = 0; i < 10; i++){

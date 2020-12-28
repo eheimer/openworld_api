@@ -14,12 +14,12 @@ export class ArmorInstanceAttribute extends EntityBase{
      */
     @Column() value: number
 
-    @ManyToOne(()=>ArmorInstance)
+    @ManyToOne(()=>ArmorInstance,{nullable: true})
     armor: ArmorInstance
 
-    @ManyToOne(() => ArmorAttribute)
+    @ManyToOne(() => ArmorAttribute,{nullable:false})
     attribute: ArmorAttribute
 
-    @ManyToOne(() => DamageType)
+    @ManyToOne(() => DamageType,{nullable:true})
     damageType: DamageType
 }

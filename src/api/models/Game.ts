@@ -3,6 +3,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typ
 import User from "./User"
 import { Battle } from "./Battle"
 import { Character } from "./Character"
+import { ArrayNotEmpty } from "class-validator"
 
 @Entity()
 export class Game extends EntityBase{
@@ -12,16 +13,17 @@ export class Game extends EntityBase{
     @Column()
     maxPlayers: number
 
-    @ManyToOne(type=> User)
+    @ManyToOne(() => User,{nullable:false})
     owner: User
 
-    @ManyToMany(() => User, user => user.games)
+    @ArrayNotEmpty()
+    @ManyToMany(() => User, user => user.games, {nullable: false})
     players: User[]
 
-    @OneToMany(() => Character, character => character.game)
+    @OneToMany(() => Character, character => character.game,{nullable: true})
     characters: Character[]
     
-    @OneToMany(()=> Battle,battle=> battle.game)
+    @OneToMany(()=> Battle,battle=> battle.game,{nullable: true})
     battles: Battle[]
     
 }

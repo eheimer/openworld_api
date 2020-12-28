@@ -109,8 +109,7 @@ describe('comparePassword', () => {
         expect(await userRepo.comparePassword(dbuser1.id,user1.password)).toBe(true)
 
         const password2 = faker.internet.password()
-        dbuser1.updatePasswordHash(password2)
-        const dbUser2 = await userRepo.save(dbuser1);
+        const dbUser2 = await userRepo.updatePassword(dbuser1.id,password2)
         expect(await userRepo.comparePassword(dbUser2.id, password2)).toBe(true)
         expect(await userRepo.comparePassword(dbUser2.id, user1.password)).toBe(false)
     })

@@ -1,6 +1,6 @@
 import { EntityBase } from "../../utils/entities/EntityBase"
 import { iResistHaver } from "../../utils/entities/iResistHaver"
-import { Column, Entity, ManyToOne, OneToMany, OneToOne } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm"
 import { ActiveCondition } from "./ActiveCondition"
 import { Battle } from "./Battle"
 import { Character } from "./Character"
@@ -45,27 +45,28 @@ export class CreatureInstance extends EntityBase implements iResistHaver{
     @Column() resistF: number
     @Column() resistP: number
 
-    @ManyToOne(()=> Battle, battle => battle.enemies)
+    @ManyToOne(()=> Battle, battle => battle.enemies,{nullable:true})
     battleAsEnemy: Battle
 
-    @ManyToOne(() => Battle, battle => battle.friendlies)
+    @ManyToOne(() => Battle, battle => battle.friendlies,{nullable:true})
     battleAsFriendly: Battle
 
-    @ManyToOne(()=> Character, character=> character.pets)
+    @ManyToOne(()=> Character, character=> character.pets,{nullable:true})
     owner: Character
 
-    @ManyToOne(()=> Monster)
+    @ManyToOne(()=> Monster,{nullable:false})
     monster: Monster
 
-    @ManyToOne(()=>MonsterAction)
+    @ManyToOne(()=>MonsterAction,{nullable:true})
     nextAction: MonsterAction
 
-    @OneToMany(()=>ActiveCondition,ac=>ac.creature)
+    @OneToMany(()=>ActiveCondition,ac=>ac.creature,{nullable:true})
     conditions: ActiveCondition[]
 
-    @ManyToOne(()=>DamageType)
+    @ManyToOne(()=>DamageType,{nullable:true})
     actionDamageType: DamageType
 
-    @OneToOne(()=>Inventory)
+    @OneToOne(()=>Inventory,{nullable:true})
+    @JoinColumn()
     loot: Inventory
 }

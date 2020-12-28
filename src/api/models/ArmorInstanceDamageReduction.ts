@@ -14,6 +14,6 @@ export class ArmorInstanceDamageReduction extends EntityBase{
     @ManyToOne(()=>ArmorInstance)
     armor: ArmorInstance
 
-    @ManyToOne(() => DamageType)
+    @ManyToOne(() => DamageType,{nullable: false})
     damageType: DamageType
 }

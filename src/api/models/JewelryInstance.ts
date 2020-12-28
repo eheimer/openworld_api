@@ -10,16 +10,16 @@ export class JewelryInstance extends EntityBase{
     @Column() equipped: boolean
     @Column() damaged: boolean
 
-    @ManyToOne(()=> Gem)
+    @ManyToOne(()=> Gem,{nullable: false})
     gem: Gem
 
-    @ManyToOne(() => JewelryLocation)
+    @ManyToOne(() => JewelryLocation,{nullable: false})
     location: JewelryLocation
 
-    @OneToMany(() => JewelryInstanceAttribute, jia => jia.jewelry)
-    attributes: JewelryInstanceAttribute
+    @OneToMany(() => JewelryInstanceAttribute, jia => jia.jewelry,{nullable: true})
+    attributes: JewelryInstanceAttribute[]
 
-    @ManyToOne(() => Inventory, i => i.jewelry)
+    @ManyToOne(() => Inventory, i => i.jewelry,{nullable:false})
     inventory: Inventory
 
 }

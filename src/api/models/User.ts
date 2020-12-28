@@ -30,21 +30,15 @@ export class User extends EntityBase
     @Column({ nullable: true })
     lastSeenAt: Date;
 
-    @ManyToMany(() => Game, game => game.players)
+    @ManyToMany(() => Game, game => game.players,{nullable: true})
     @JoinTable()
     games: Game[]
 
-    @ManyToOne(() => Game)
+    @ManyToOne(() => Game,{nullable:true})
     currentGame: Game
 
-    @OneToMany(() => Character, character => character.player )
+    @OneToMany(() => Character, character => character.player,{nullable:true} )
     characters: Character[]
-
-    updatePasswordHash(newPassword?: string) {
-        if(newPassword){ this.password = newPassword}
-        this.password = bcrypt.hashSync(this.password,10)
-    }
-
 }
 
 export default User;
