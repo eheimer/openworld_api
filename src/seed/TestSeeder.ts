@@ -1,5 +1,5 @@
-import { UserFactory } from "src/api/factories/UserFactory"
-import { EntityBase } from "src/utils/entities/EntityBase"
+import { UserFactory } from "../api/factories/UserFactory"
+import { EntityBase } from "../utils/entities/EntityBase"
 import { ActionFactory } from "../api/factories/ActionFactory"
 import { ArmorAttributeFactory } from "../api/factories/ArmorAttributeFactory"
 import { ArmorClassFactory } from "../api/factories/ArmorClassFactory"
