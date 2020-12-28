@@ -1,4 +1,4 @@
-import {BeforeInsert, BeforeUpdate, CreateDateColumn, getRepository, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
+import {BeforeInsert, BeforeUpdate, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
 import { validate } from 'class-validator'
 import logger from "../logger"
 

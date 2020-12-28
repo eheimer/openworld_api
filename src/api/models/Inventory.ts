@@ -11,15 +11,15 @@ export class Inventory extends EntityBase {
     @Column() limit: boolean
     @Column() gold: number
 
-    @OneToMany(() => WeaponInstance, wi => wi.inventory)
+    @OneToMany(() => WeaponInstance, wi => wi.inventory,{nullable:true})
     weapons: WeaponInstance[]
 
-    @OneToMany(() => ArmorInstance, ai => ai.inventory)
+    @OneToMany(() => ArmorInstance, ai => ai.inventory,{nullable:true})
     armor: ArmorInstance[]
 
-    @OneToMany(() => JewelryInstance, ji => ji.inventory)
+    @OneToMany(() => JewelryInstance, ji => ji.inventory,{nullable:true})
     jewelry: JewelryInstance[]
 
-    @OneToMany(() => SpellbookInstance, si => si.inventory)
+    @OneToMany(() => SpellbookInstance, si => si.inventory,{nullable:true})
     spellbooks: SpellbookInstance[]
 }

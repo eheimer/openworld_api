@@ -10,15 +10,15 @@ export class WeaponInstance extends EntityBase{
     @Column() equipped: boolean
     @Column() damaged: boolean
 
-    @ManyToOne(() => Weapon)
+    @ManyToOne(() => Weapon,{nullable:false})
     weapon: Weapon
 
-    @OneToMany(() => WeaponInstanceAttribute, wia=>wia.weapon)
+    @OneToMany(() => WeaponInstanceAttribute, wia=>wia.weapon,{nullable:true})
     attributes: WeaponInstanceAttribute[]
 
-    @ManyToOne(() => Material)
+    @ManyToOne(() => Material,{nullable:false})
     material: Material
 
-    @ManyToOne(()=>Inventory,i=>i.weapons)
+    @ManyToOne(()=>Inventory,i=>i.weapons,{nullable:false})
     inventory: Inventory
 }

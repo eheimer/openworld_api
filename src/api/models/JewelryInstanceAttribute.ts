@@ -8,12 +8,12 @@ import { Skill } from "./Skill"
 export class JewelryInstanceAttribute extends EntityBase{
     @Column() value: number
 
-    @ManyToOne(()=>JewelryInstance,ji=>ji.attributes)
+    @ManyToOne(()=>JewelryInstance,ji=>ji.attributes,{nullable: true})
     jewelry: JewelryInstance
 
-    @ManyToOne(() => JewelryAttribute)
+    @ManyToOne(() => JewelryAttribute,{nullable: false})
     attribute: JewelryAttribute
 
-    @ManyToOne(() => Skill)
+    @ManyToOne(() => Skill,{nullable: true})
     skill: Skill
 }

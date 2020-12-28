@@ -1,10 +1,8 @@
 import { EntityBase } from "../../utils/entities/EntityBase"
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne } from "typeorm"
 import { Game } from "./Game"
 import User from "./User"
 import { Battle } from "./Battle"
-import { iDamageEaterHaver} from "../../utils/entities/iDamageEaterHaver"
-import { iResistHaver } from "../../utils/entities/iResistHaver"
 import { CreatureInstance } from "./CreatureInstance"
 import { ActiveCondition } from "./ActiveCondition"
 import { Inventory } from "./Inventory"
@@ -32,22 +30,23 @@ export class Character extends EntityBase{
     @Column() deE: number
     @Column() deP: number 
 
-    @ManyToOne(()=> Game)
+    @ManyToOne(()=> Game,{nullable:false})
     game: Game
 
-    @ManyToOne(() => User, user => user.characters)
+    @ManyToOne(() => User, user => user.characters,{nullable: false})
     player: User
 
-    @ManyToMany(()=> Battle, battle => battle.participants)
+    @ManyToMany(()=> Battle, battle => battle.participants,{nullable: true})
     battles: Battle[]
 
-    @OneToOne(()=>Inventory)
+    @OneToOne(()=>Inventory,{nullable: false})
+    @JoinColumn()
     inventory: Inventory
 
-    @OneToMany(()=>ActiveCondition, ac=>ac.character)
+    @OneToMany(()=>ActiveCondition, ac=>ac.character, {nullable:true})
     conditions: ActiveCondition[]
 
-    @OneToMany(()=>CreatureInstance, ci=>ci.owner)
+    @OneToMany(()=>CreatureInstance, ci=>ci.owner, {nullable:true})
     pets: CreatureInstance[]
 
 }

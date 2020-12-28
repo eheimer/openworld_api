@@ -8,12 +8,12 @@ import { WeaponInstance } from "./WeaponInstance"
 export class WeaponInstanceAttribute extends EntityBase{
     @Column() value: number
 
-    @ManyToOne(() => WeaponInstance)
+    @ManyToOne(() => WeaponInstance,{nullable: true})
     weapon: WeaponInstance
 
-    @ManyToOne(() => WeaponAttribute)
+    @ManyToOne(() => WeaponAttribute,{nullable: false})
     attribute: WeaponAttribute
 
-    @ManyToOne(() => SlayerType)
+    @ManyToOne(() => SlayerType,{nullable: true})
     slayer:SlayerType
 }

@@ -9,16 +9,16 @@ import { SpellbookInstance } from "./SpellbookInstance"
 export class SpellbookInstanceAttribute extends EntityBase{
     @Column() value: number
     
-    @ManyToOne(() => SpellbookAttribute)
+    @ManyToOne(() => SpellbookAttribute,{nullable: false})
     attribute: SpellbookAttribute
 
-    @ManyToOne(() => Skill)
+    @ManyToOne(() => Skill,{nullable: true})
     skill: Skill
 
-    @ManyToOne(() => SlayerType)
+    @ManyToOne(() => SlayerType,{nullable: true})
     slayer: SlayerType
 
-    @ManyToOne(()=>SpellbookInstance)
+    @ManyToOne(()=>SpellbookInstance,{nullable: true})
     spellbook: SpellbookInstance
 
 }

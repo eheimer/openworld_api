@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne } from "typeorm"
 import { Character } from "./Character"
 import { Condition } from "./Condition"
 import { CreatureInstance } from "./CreatureInstance"
-import { IsNotEmpty, ValidateIf } from "class-validator"
+import { ArrayNotEmpty, IsEthereumAddress, IsNotEmpty, ValidateIf } from "class-validator"
 
 /**
  * @description a Condition that is currently active on a CreatureInstance or Character
@@ -26,18 +26,17 @@ export class ActiveCondition extends EntityBase{
     @ManyToOne(()=> Condition,{nullable: false})
     condition: Condition
 
-    @ValidateIf(o => o.character === null)
+    @ValidateIf(o => o.character == null)
     @IsNotEmpty()
     @ManyToOne(()=>CreatureInstance, ci=>ci.conditions)
     creature: CreatureInstance
 
-    @ValidateIf(o => o.creature === null)
+    @ValidateIf(o => o.creature == null)
     @IsNotEmpty()
     @ManyToOne(()=>Character, character=>character.conditions)
     character: Character
 
     @ManyToOne(()=>CreatureInstance)
     target: CreatureInstance
-
 
 }

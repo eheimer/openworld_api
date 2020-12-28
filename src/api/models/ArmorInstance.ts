@@ -5,6 +5,7 @@ import { ArmorInstanceAttribute } from "./ArmorInstanceAttribute"
 import { ArmorInstanceDamageReduction } from "./ArmorInstanceDamageReduction"
 import { ArmorLocation } from "./ArmorLocation"
 import { Inventory } from "./Inventory"
+import { ArrayNotEmpty, IsArray, isArray, IsNotEmpty } from "class-validator"
 
 /**
  * @description an instance of Armor that exists somewhere
@@ -22,19 +23,19 @@ export class ArmorInstance extends EntityBase{
      */
     @Column() damaged: boolean
 
-    @ManyToOne(() => ArmorClass)
+    @ManyToOne(() => ArmorClass,{nullable: false})
     armorClass: ArmorClass
 
-    @ManyToOne(() => ArmorLocation)
+    @ManyToOne(() => ArmorLocation,{nullable: false})
     location: ArmorLocation
 
-    @OneToMany(() => ArmorInstanceAttribute, aia => aia.armor)
+    @OneToMany(() => ArmorInstanceAttribute, aia => aia.armor,{nullable:true})
     attributes: ArmorInstanceAttribute[]
 
-    @ManyToOne(() => Inventory,i=>i.armor)
+    @ManyToOne(() => Inventory,i=>i.armor,{nullable:false})
     inventory: Inventory
 
-    @OneToMany(()=> ArmorInstanceDamageReduction, aidr=>aidr.armor)
+    @OneToMany(()=> ArmorInstanceDamageReduction, aidr=>aidr.armor,{nullable:true})
     reductions: ArmorInstanceDamageReduction[]
     
 }

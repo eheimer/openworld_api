@@ -46,6 +46,10 @@ export abstract class EntityFactory<T>{
      */
     abstract makeDummy(faker?: Faker.FakerStatic): T
 
+    async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<T>{
+        return this.makeDummy(faker)
+    }
+
     /**
      * Generates and persists a fabricated object useing the default faker, or a custom one you pass
      * 
@@ -54,8 +58,19 @@ export abstract class EntityFactory<T>{
      * @returns the persisted entity
      */
     async createDummy(faker?: Faker.FakerStatic): Promise<T> {
-        const t = this.makeDummy(faker)
+        const t = await this.makeDummyWithAll(faker)
         await this.getRepository().save(t);
         return t;
+    }
+
+    /**
+     * 
+     */
+    async findOrCreateDummy(faker?: Faker.FakerStatic): Promise<T>{
+        let t = await this.getRepository().findOne()
+        if (!t) {
+            t = await this.createDummy()
+        }
+        return t
     }
 }
