@@ -87,13 +87,7 @@ paths:
         in: path
         description: The player id to retrieve
         schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
+          type: string
       responses:
         200:
           description: Success
@@ -115,32 +109,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  /games:
-    post:
-      summary: create a new game
-      tags:
-        - game
-      operationId: createGame
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameRequest'
-      responses:
-        201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the game
-              schema:
-                type: string
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+  # /games:
+  #   post:
+  #     summary: create a new game
+  #     tags:
+  #       - game
+  #     operationId: createGame
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/GameRequest'
+  #     responses:
+  #       201:
+  #         description: Success
+  #         headers:
+  #           Location:
+  #             description: the uri to retrieve the game
+  #             schema:
+  #               type: string
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
   /login:
     post:
       security: []
@@ -184,1282 +178,1282 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}:
-    parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: The gameId to delete
-      schema:
-        type: number
-    patch:
-      summary: update game partial
-      operationId: updateGame
-      tags:
-        - game
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    delete:
-      summary: remove a game
-      description: deletes the game, all battles, characters, creatureInstances, inventories, etc
-      tags:
-        - game
-      operationId: deleteGame
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/players/{playerId}:
-    parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId to remove the player from
-      schema:
-        type: number
-    - name: playerId
-      required: true
-      in: path
-      description: the playerId to remove
-      schema:
-        type: number
-    post:
-      summary: add a player to a game
-      description: player id must exist at /players/{playerId}
-      tags:
-        - game
-      operationId: joinGame
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    delete:
-      summary: remove a player from a game
-      description: player id must exist at /players/{playerId}
-      tags:
-        - game
-      operationId: leaveGame
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles:
-    parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId to add the battle to
-      schema:
-        type: number
-    post:
-      summary: create a new battle
-      description: creates a new battle, adding the player's character associated with /games/{gameId} to the battle
-      tags:
-        - battle
-      operationId: createBattle
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the game
-              schema:
-                type: string
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    get:
-      summary: get battles
-      tags: 
-        - battle
-      operationId: getBattles
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: number
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}:
-    parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId of the battle to retrieve
-      schema:
-        type: number
-    - name: battleId
-      required: true
-      in: path
-      description: the battle to retrieve
-      schema:
-        type: number
-    get:
-      summary: retrieve a battle
-      tags:
-        - battle
-      operationId: getBattle
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Battle'
-        404:
-          description: resource not found
-          content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    delete:
-      summary: delete a battle
-      tags:
-        - battle
-      operationId: deleteBattle
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}/enemies:
-    post:
-      summary: add enemy to battle
-      description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
-      tags:
-        - battle
-      operationId: createEnemy
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle to modify
-        schema:
-          type: number
-      - name: battleId
-        required: true
-        in: path
-        description: the battle to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MonsterRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}/friendlies:
-    post:
-      summary: add friendly to battle
-      description: creates a new creatureInstance from the specified monsterId and adds it to the battle as a friendly
-      tags:
-        - battle
-      operationId: createFriendly
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle to modify
-        schema:
-          type: number
-      - name: battleId
-        required: true
-        in: path
-        description: the battle to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MonsterRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}/pets/{creatureId}:
-    parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId of the battle to modify
-      schema:
-        type: number
-    - name: battleId
-      required: true
-      in: path
-      description: the battle to modify
-      schema:
-        type: number
-    - name: creatureId
-      required: true
-      in: path
-      description: the creatureInstanceId to add
-      schema:
-        type: number
-    post:
-      summary: add pet to battle
-      description: adds a player's pet to the battle as a friendly
-      tags:
-        - battle
-      operationId: addPet
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    delete:
-      summary: remove pet from battle
-      description: removes the player's pet from the battle
-      tags:
-        - battle
-      operationId: removePet
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}/nextRound:
-    post:
-      summary: advance battle to next round
-      description: advances battle to the next round, generates new actions for creatures, etc
-      tags:
-        - battle
-      operationId: nextRound
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle to modify
-        schema:
-          type: number
-      - name: battleId
-        required: true
-        in: path
-        description: the battle to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}/dealDamage:
-    post:
-      summary: deal damage
-      description:  calculates damage dealt to specified creatures/characters
-      tags:
-        - battle
-      operationId: dealDamage
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle to modify
-        schema:
-          type: number
-      - name: battleId
-        required: true
-        in: path
-        description: the battle to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BattleDamageRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/battles/{battleId}/join:
-    post:
-      summary: join a battle
-      description: adds the player's character for the game to the battle
-      tags:
-        - battle
-      operationId: joinBattle
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle to modify
-        schema:
-          type: number
-      - name: battleId
-        required: true
-        in: path
-        description: the battle to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/creatures/{creatureId}/conditions:
-    post:
-      summary: add condition to creature
-      description: creates a new activeCondition and applies it to the creature
-      tags:
-        - creature
-      operationId: creatureAddCondition
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to modify
-        schema:
-          type: number
-      - name: creatureId
-        required: true
-        in: path
-        description: the creature to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the activeCondition
-              schema:
-                type: string
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/creatures/{creatureId}/conditions/{conditionId}:
-    delete:
-      summary: remove activeCondition from creature
-      tags:
-        - creature
-      operationId: creatureRemoveCondition
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to modify
-        schema:
-          type: number
-      - name: creatureId
-        required: true
-        in: path
-        description: the creature to modify
-        schema:
-          type: number
-      - name: conditionId
-        required: true
-        in: path
-        description: the condition to remove
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/creatures/{creatureId}/tame:
-    post:
-      summary: tame creature
-      description: marks the creature as tamed, adds it to the player as a pet, moves it from the battle's enemies to friendlies
-      tags:
-        - creature
-      operationId: tameCreature
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle of the creature to modify
-        schema:
-          type: number
-      - name: creatureId
-        required: true
-        in: path
-        description: the creature to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/creatures/{creatureId}/release:
-    post:
-      summary: release tamed creature
-      description: marks the creature as untamed, removes it from the player's pets, moves it from the battle's friendlies to enemies
-      tags:
-        - creature
-      operationId: releasePet
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle of the creature to modify
-        schema:
-          type: number
-      - name: battleId
-        required: true
-        in: path
-        description: the battle of the creature to modify
-        schema:
-          type: number
-      - name: creatureId
-        required: true
-        in: path
-        description: the creature to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/creatures/{creatureId}/resurrect:
-    post:
-      summary: resurrect player's pet
-      tags:
-        - creature
-      operationId: resurrectPet
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to modify
-        schema:
-          type: number
-      - name: creatureId
-        required: true
-        in: path
-        description: the creature to modify
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/creatures/{creatureId}:
-    parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to delete
-        schema:
-          type: number
-      - name: creatureId
-        required: true
-        in: path
-        description: the creature to delete
-        schema:
-          type: number
-    patch:
-      summary: update pet partial
-      description: used to rename pets
-      tags:
-        - creature
-      operationId: updatePet
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreatureRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    delete:
-      summary: delete creature
-      description: deletes creature, its inventory and conditions
-      tags:
-        - creature
-      operationId: destroyCreature
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/monsters:
-    get:
-      summary: get monsters
-      tags: 
-        - lists
-      operationId: getMonsters
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to delete
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: number
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/damageTypes:
-    get:
-      summary: get damage types
-      tags: 
-        - lists
-      operationId: getDamageTypes
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to delete
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: number
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/conditions:
-    get:
-      summary: get conditions
-      tags: 
-        - lists
-      operationId: getConditions
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to delete
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: number
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/characters:
-    post:
-      summary: create character
-      tags:
-        - character
-      operationId: createCharacter
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to delete
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CharacterRequest'
-      responses:
-        201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the character
-              schema:
-                type: string
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/characters/{characterId}:
-    parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: number
-      - name: characterId
-        required: true
-        in: path
-        description: the characterId
-        schema:
-          type: number
-    get:
-      summary: retrieve character
-      description: retrieves either the public character or detail, depending on the player making the request
-      tags:
-        - character
-      operationId: getCharacter
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Character'
-                  - $ref: '#/components/schemas/CharacterDetail'
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-    patch:
-      summary: update character partial
-      tags:
-        - character
-      operationId: updateCharacter
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CharacterRequest'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/characters/{characterId}/resurrect:
-    post:
-      summary: resurrect character
-      tags:
-        - character
-      operationId: resurrectCharacter
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: number
-      - name: characterId
-        required: true
-        in: path
-        description: the characterId
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/items/{itemType}/{itemId}/take:
-    post:
-      summary: take item
-      description: removes item from source inventory, and adds it to player/character inventory
-      tags:
-        - item
-      operationId: takeItem
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: number
-      - name: itemType
-        required: true
-        in: path
-        description: item type
-        schema:
-          $ref: '#/components/schemas/ItemType'
-      - name: itemId
-        required: true
-        in: path
-        description: itemId
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/items/{itemType}/{itemId}/equip:
-    post:
-      summary: equip item
-      tags:
-        - item
-      operationId: equipItem
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: number
-      - name: itemType
-        required: true
-        in: path
-        description: item type
-        schema:
-          $ref: '#/components/schemas/EquipableType'
-      - name: itemId
-        required: true
-        in: path
-        description: itemId
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/items/{itemType}/{itemId}/damage:
-    post:
-      summary: damage item
-      description: marks item as damaged, or if the item was already damage, destroys it
-      tags:
-        - item
-      operationId: damageItem
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: number
-      - name: itemType
-        required: true
-        in: path
-        description: item type
-        schema:
-          $ref: '#/components/schemas/DamageableType'
-      - name: itemId
-        required: true
-        in: path
-        description: itemId
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DamageResponse'
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/items/{itemType}/{itemId}/repair:
-    post:
-      summary: repair item
-      tags:
-        - item
-      operationId: repairItem
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: number
-      - name: itemType
-        required: true
-        in: path
-        description: item type
-        schema:
-          $ref: '#/components/schemas/DamageableType'
-      - name: itemId
-        required: true
-        in: path
-        description: itemId
-        schema:
-          type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
-      responses:
-        204:
-          description: Success
-        404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
-        500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}:
+  #   parameters:
+  #   - name: gameId
+  #     required: true
+  #     in: path
+  #     description: The gameId to delete
+  #     schema:
+  #       type: number
+  #   patch:
+  #     summary: update game partial
+  #     operationId: updateGame
+  #     tags:
+  #       - game
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/GameRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   delete:
+  #     summary: remove a game
+  #     description: deletes the game, all battles, characters, creatureInstances, inventories, etc
+  #     tags:
+  #       - game
+  #     operationId: deleteGame
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/GameRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/players/{playerId}:
+  #   parameters:
+  #   - name: gameId
+  #     required: true
+  #     in: path
+  #     description: the gameId to remove the player from
+  #     schema:
+  #       type: number
+  #   - name: playerId
+  #     required: true
+  #     in: path
+  #     description: the playerId to remove
+  #     schema:
+  #       type: number
+  #   post:
+  #     summary: add a player to a game
+  #     description: player id must exist at /players/{playerId}
+  #     tags:
+  #       - game
+  #     operationId: joinGame
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   delete:
+  #     summary: remove a player from a game
+  #     description: player id must exist at /players/{playerId}
+  #     tags:
+  #       - game
+  #     operationId: leaveGame
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles:
+  #   parameters:
+  #   - name: gameId
+  #     required: true
+  #     in: path
+  #     description: the gameId to add the battle to
+  #     schema:
+  #       type: number
+  #   post:
+  #     summary: create a new battle
+  #     description: creates a new battle, adding the player's character associated with /games/{gameId} to the battle
+  #     tags:
+  #       - battle
+  #     operationId: createBattle
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       201:
+  #         description: Success
+  #         headers:
+  #           Location:
+  #             description: the uri to retrieve the game
+  #             schema:
+  #               type: string
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   get:
+  #     summary: get battles
+  #     tags: 
+  #       - battle
+  #     operationId: getBattles
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: number
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}:
+  #   parameters:
+  #   - name: gameId
+  #     required: true
+  #     in: path
+  #     description: the gameId of the battle to retrieve
+  #     schema:
+  #       type: number
+  #   - name: battleId
+  #     required: true
+  #     in: path
+  #     description: the battle to retrieve
+  #     schema:
+  #       type: number
+  #   get:
+  #     summary: retrieve a battle
+  #     tags:
+  #       - battle
+  #     operationId: getBattle
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Battle'
+  #       404:
+  #         description: resource not found
+  #         content:
+  #             application/json:
+  #               schema:
+  #                 $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   delete:
+  #     summary: delete a battle
+  #     tags:
+  #       - battle
+  #     operationId: deleteBattle
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}/enemies:
+  #   post:
+  #     summary: add enemy to battle
+  #     description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
+  #     tags:
+  #       - battle
+  #     operationId: createEnemy
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle to modify
+  #       schema:
+  #         type: number
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/MonsterRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}/friendlies:
+  #   post:
+  #     summary: add friendly to battle
+  #     description: creates a new creatureInstance from the specified monsterId and adds it to the battle as a friendly
+  #     tags:
+  #       - battle
+  #     operationId: createFriendly
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle to modify
+  #       schema:
+  #         type: number
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/MonsterRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}/pets/{creatureId}:
+  #   parameters:
+  #   - name: gameId
+  #     required: true
+  #     in: path
+  #     description: the gameId of the battle to modify
+  #     schema:
+  #       type: number
+  #   - name: battleId
+  #     required: true
+  #     in: path
+  #     description: the battle to modify
+  #     schema:
+  #       type: number
+  #   - name: creatureId
+  #     required: true
+  #     in: path
+  #     description: the creatureInstanceId to add
+  #     schema:
+  #       type: number
+  #   post:
+  #     summary: add pet to battle
+  #     description: adds a player's pet to the battle as a friendly
+  #     tags:
+  #       - battle
+  #     operationId: addPet
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   delete:
+  #     summary: remove pet from battle
+  #     description: removes the player's pet from the battle
+  #     tags:
+  #       - battle
+  #     operationId: removePet
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}/nextRound:
+  #   post:
+  #     summary: advance battle to next round
+  #     description: advances battle to the next round, generates new actions for creatures, etc
+  #     tags:
+  #       - battle
+  #     operationId: nextRound
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle to modify
+  #       schema:
+  #         type: number
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}/dealDamage:
+  #   post:
+  #     summary: deal damage
+  #     description:  calculates damage dealt to specified creatures/characters
+  #     tags:
+  #       - battle
+  #     operationId: dealDamage
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle to modify
+  #       schema:
+  #         type: number
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BattleDamageRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/battles/{battleId}/join:
+  #   post:
+  #     summary: join a battle
+  #     description: adds the player's character for the game to the battle
+  #     tags:
+  #       - battle
+  #     operationId: joinBattle
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle to modify
+  #       schema:
+  #         type: number
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/creatures/{creatureId}/conditions:
+  #   post:
+  #     summary: add condition to creature
+  #     description: creates a new activeCondition and applies it to the creature
+  #     tags:
+  #       - creature
+  #     operationId: creatureAddCondition
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: creatureId
+  #       required: true
+  #       in: path
+  #       description: the creature to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       201:
+  #         description: Success
+  #         headers:
+  #           Location:
+  #             description: the uri to retrieve the activeCondition
+  #             schema:
+  #               type: string
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/creatures/{creatureId}/conditions/{conditionId}:
+  #   delete:
+  #     summary: remove activeCondition from creature
+  #     tags:
+  #       - creature
+  #     operationId: creatureRemoveCondition
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: creatureId
+  #       required: true
+  #       in: path
+  #       description: the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: conditionId
+  #       required: true
+  #       in: path
+  #       description: the condition to remove
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/creatures/{creatureId}/tame:
+  #   post:
+  #     summary: tame creature
+  #     description: marks the creature as tamed, adds it to the player as a pet, moves it from the battle's enemies to friendlies
+  #     tags:
+  #       - creature
+  #     operationId: tameCreature
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle of the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: creatureId
+  #       required: true
+  #       in: path
+  #       description: the creature to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/creatures/{creatureId}/release:
+  #   post:
+  #     summary: release tamed creature
+  #     description: marks the creature as untamed, removes it from the player's pets, moves it from the battle's friendlies to enemies
+  #     tags:
+  #       - creature
+  #     operationId: releasePet
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle of the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle of the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: creatureId
+  #       required: true
+  #       in: path
+  #       description: the creature to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/creatures/{creatureId}/resurrect:
+  #   post:
+  #     summary: resurrect player's pet
+  #     tags:
+  #       - creature
+  #     operationId: resurrectPet
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to modify
+  #       schema:
+  #         type: number
+  #     - name: creatureId
+  #       required: true
+  #       in: path
+  #       description: the creature to modify
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/creatures/{creatureId}:
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to delete
+  #       schema:
+  #         type: number
+  #     - name: creatureId
+  #       required: true
+  #       in: path
+  #       description: the creature to delete
+  #       schema:
+  #         type: number
+  #   patch:
+  #     summary: update pet partial
+  #     description: used to rename pets
+  #     tags:
+  #       - creature
+  #     operationId: updatePet
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/CreatureRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   delete:
+  #     summary: delete creature
+  #     description: deletes creature, its inventory and conditions
+  #     tags:
+  #       - creature
+  #     operationId: destroyCreature
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/monsters:
+  #   get:
+  #     summary: get monsters
+  #     tags: 
+  #       - lists
+  #     operationId: getMonsters
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to delete
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: number
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/damageTypes:
+  #   get:
+  #     summary: get damage types
+  #     tags: 
+  #       - lists
+  #     operationId: getDamageTypes
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to delete
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: number
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/conditions:
+  #   get:
+  #     summary: get conditions
+  #     tags: 
+  #       - lists
+  #     operationId: getConditions
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to delete
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 type: number
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/characters:
+  #   post:
+  #     summary: create character
+  #     tags:
+  #       - character
+  #     operationId: createCharacter
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the creature to delete
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/CharacterRequest'
+  #     responses:
+  #       201:
+  #         description: Success
+  #         headers:
+  #           Location:
+  #             description: the uri to retrieve the character
+  #             schema:
+  #               type: string
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/characters/{characterId}:
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: number
+  #     - name: characterId
+  #       required: true
+  #       in: path
+  #       description: the characterId
+  #       schema:
+  #         type: number
+  #   get:
+  #     summary: retrieve character
+  #     description: retrieves either the public character or detail, depending on the player making the request
+  #     tags:
+  #       - character
+  #     operationId: getCharacter
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               oneOf:
+  #                 - $ref: '#/components/schemas/Character'
+  #                 - $ref: '#/components/schemas/CharacterDetail'
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #   patch:
+  #     summary: update character partial
+  #     tags:
+  #       - character
+  #     operationId: updateCharacter
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/CharacterRequest'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/characters/{characterId}/resurrect:
+  #   post:
+  #     summary: resurrect character
+  #     tags:
+  #       - character
+  #     operationId: resurrectCharacter
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: number
+  #     - name: characterId
+  #       required: true
+  #       in: path
+  #       description: the characterId
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/items/{itemType}/{itemId}/take:
+  #   post:
+  #     summary: take item
+  #     description: removes item from source inventory, and adds it to player/character inventory
+  #     tags:
+  #       - item
+  #     operationId: takeItem
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: number
+  #     - name: itemType
+  #       required: true
+  #       in: path
+  #       description: item type
+  #       schema:
+  #         $ref: '#/components/schemas/ItemType'
+  #     - name: itemId
+  #       required: true
+  #       in: path
+  #       description: itemId
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/items/{itemType}/{itemId}/equip:
+  #   post:
+  #     summary: equip item
+  #     tags:
+  #       - item
+  #     operationId: equipItem
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: number
+  #     - name: itemType
+  #       required: true
+  #       in: path
+  #       description: item type
+  #       schema:
+  #         $ref: '#/components/schemas/EquipableType'
+  #     - name: itemId
+  #       required: true
+  #       in: path
+  #       description: itemId
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/items/{itemType}/{itemId}/damage:
+  #   post:
+  #     summary: damage item
+  #     description: marks item as damaged, or if the item was already damage, destroys it
+  #     tags:
+  #       - item
+  #     operationId: damageItem
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: number
+  #     - name: itemType
+  #       required: true
+  #       in: path
+  #       description: item type
+  #       schema:
+  #         $ref: '#/components/schemas/DamageableType'
+  #     - name: itemId
+  #       required: true
+  #       in: path
+  #       description: itemId
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/DamageResponse'
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  # /games/{gameId}/items/{itemType}/{itemId}/repair:
+  #   post:
+  #     summary: repair item
+  #     tags:
+  #       - item
+  #     operationId: repairItem
+  #     parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: number
+  #     - name: itemType
+  #       required: true
+  #       in: path
+  #       description: item type
+  #       schema:
+  #         $ref: '#/components/schemas/DamageableType'
+  #     - name: itemId
+  #       required: true
+  #       in: path
+  #       description: itemId
+  #       schema:
+  #         type: number
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/BasicTokenObject'
+  #     responses:
+  #       204:
+  #         description: Success
+  #       404:
+  #         description: resource not found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
+  #       500:
+  #         description: Internal Server Error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FailResponse'
 security:
   - bearerAuth: []
 components:

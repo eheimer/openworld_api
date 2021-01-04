@@ -6,6 +6,8 @@ import PlayerService from '../services/player'
 import { writeJsonResponse } from '../../utils/express'
 import logger from '../../utils/logger'
 import { makeRoutePath, routes } from '../../utils/server'
+import UserRepository from '../repositories/UserRepository'
+import { UserFactory } from '../factories/UserFactory'
 
 export async function register(req: express.Request, res: express.Response): Promise<void> {
     const { email, password, name } = req.body
@@ -30,4 +32,16 @@ export async function register(req: express.Request, res: express.Response): Pro
 }
 
 export async function getPlayer(req: express.Request, res: express.Response): Promise<void> {
+    const { playerId } = req.params
+    console.log({playerId, auth: res.locals.auth})
+    if (playerId && res.locals.auth.userId) {
+        let repo = await new UserFactory().getRepository() as UserRepository
+        if (playerId === res.locals.auth.userId) {
+            respond.OK(res, await repo.getPlayer(playerId))
+        } else {
+            respond.OK(res, await repo.getPublicPlayer(playerId))
+        }
+    } else {
+        respond.NOT_FOUND(res)
+    }
 }

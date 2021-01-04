@@ -19,4 +19,11 @@ async function createPlayer(email: string, password: string, name: string): Prom
     }
 }
 
-export default { createPlayer }
+async function updatePlayerLastSeen(playerId: string, when?: Date): Promise<void> {
+    if (!when) {
+        when = new Date(Date.now())
+    }
+    await factory.getRepository().update(playerId, { lastSeenAt: when})
+}
+
+export default { createPlayer, updatePlayerLastSeen }

@@ -2,6 +2,15 @@ import { EntityRepository, Repository } from 'typeorm'
 import { User } from '../models/User'
 import bcrypt from 'bcrypt'
 
+export class PublicPlayer {
+    id: number; name: string; lastSeenAt: Date
+    constructor(player: User) {
+        this.id = player.id
+        this.name = player.name
+        this.lastSeenAt = player.lastSeenAt
+    }
+}
+
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
     async comparePassword(userId: number, candidatePassword: string): Promise<boolean> {
@@ -28,6 +37,24 @@ export class UserRepository extends Repository<User>{
         if (user) {
             user.password = this.generatePasswordHash(password);
             return await this.save(user);
+        }
+    }
+
+    async getPublicPlayer(userId: string): Promise<PublicPlayer> {
+        try {
+            const player = await this.findOne(userId)
+            return new PublicPlayer(player)
+        } catch (err) {
+            console.log({err})
+        }
+    }
+
+    async getPlayer(userId: string): Promise<User> {
+        try {
+            const player: User = await this.findOne(userId)
+            return player
+        } catch (err) {
+            console.log({err})
         }
     }
 }
