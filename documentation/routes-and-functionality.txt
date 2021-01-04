@@ -1,0 +1,276 @@
+routes and functionality
+
+- ignore views, these will be dealt with by the unity client
+- ignore /data/ for now, as that is all CRUD-related routes
+- GET (READ) idempotent, used for retrieving data only, never updating
+	target resource:
+		collection: (/users)
+			200 (OK) with entire collection (consider pagination, sorting, filtering)
+		single item: (/users/123)
+			200 (OK) with single item
+			404 (Not Found) if id is not found or invalid
+- POST (CREATE) create new child object where collection resource already exists
+	target resource:
+		collection: (/users)
+			201 (Created), 'Location' header with link to /api/users/{id}
+			200 (OK) or 204 (No Content) if result cannot be represented by a URI
+		single item: (/users/123)
+			405 (Method not allowed)
+- PUT (UPDATE/REPLACE) update an existing resource - possibly creating a new one if it doesn't exist
+	should replace the resource in its entirety, to differentiate between PUT from PATCH
+	target resource:
+		collection: (/users)
+			405 (Method not allowed), unless you want to update every resource in the entire collection
+		single item: (/users/123)
+			200 (OK) or 204 (No Content)
+			404 (Not Found) if id is not found or invalid
+- PATCH (PARTIAL UPDATE/MODIFY) make a partial update on a resource
+	should only update partially an existing resource, to differentiate PATCH from PUT
+	target resource:
+		collection: (/users)
+			405 (Method not allowed), unless you want to modify the collection itself
+		single item: (/users/123)
+			200 (OK) or 204 (No Content)
+			404 (Not Found) if id is not found or invalid
+- DELETE (DELETE) delete resources
+	target resource:
+		collection: (/users)
+			405 (Method not allowed), unless you want to delete the entire collection
+		single item: (/users/123)
+			200 (OK) if the response includes an entity describing the status
+			202 (Accepted) if the action has been queued
+			204 (No Content) if the action was performed, but the response doesn't include an entity
+			404 (Not Found) if id is not found or invalid
+
+
+POST /games/{id}/login
+	controller/method: login
+	description: login the player to the specified game, initiate socket if successful
+	validation: player must already be a valid member of the specified game, email and password must be validated
+	req: { email, password }
+	res: { token, player }, 200 (OK)
+
+POST /games
+	controller/method: game/create
+	description: create a new game
+	req: { token, player, gameDTO }
+	res: { }, 201 (Created), 'Location' header: '/games/{id}'
+
+PATCH /games/{id}
+	controller/method: game/update
+	description: partially update the game
+	validation: must be the player that created the game (owner)
+	req: { token, player, gameDTO }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/players/{id}
+	controller/method: game/addPlayer
+	description: add a player to the game
+	validation: must be the player that created the game (owner)
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+DELETE /games/{id}/players/{id}
+	controller/method: game/removePlayer
+	description: delete the character associated with the player/game, remove the player from the game
+	validation: must be the player that created the game (owner)
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+DELETE /games/{id}
+	controller/method: game/delete
+	description: deletes the game, all battles, characters, creatureInstances, inventories, etc
+	validation: must be the player that created the game (owner)
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles
+	controller/method: battle/create
+	description: create a new battle, add player's character associated with game/{id} to the battle
+	req: { token, player }
+	res: { }, 201 (Created), 'Location' header: '/games/{id}/battles/{id}'
+
+GET /games/{id}/battles/{id}
+	controller/method: battle/get
+	description: retrieve the specified battle data
+	validation: must be a participant in the battle
+	req: { token, player }
+	res: { battleDTO }, 200 (OK)
+
+POST /games/{id}/battles/{id}/enemies
+	controller/method: battle/createEnemy
+	description: create a new creatureInstance from the specified monsterId and add it to the battle as an enemy
+	validation: must be the player that created the battle
+	req: { token, player, monsterId }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/friendlies
+	controller/method: battle/createFriendly
+	description: create a new creatureInstance from the specified monsterId and add it to the battle as a friendly
+	validation: must be a participant in the battle
+	req: { token, player, monsterId }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/pets
+	controller/method: battle/addFriendly
+	description: adds a player's pet to the battle as a friendly
+	validation: must be a participant in the battle and owner of the creatureInstanceId
+	req: { token, player, creatureInstanceId }
+	res: { }, 204 (No Content)
+
+DELETE /games/{id}/battles/{id}/pets/{id}
+	controller/method: battle/removeFriendly
+	description: removes a player's pet from the battle
+	validation: must be a participant in the battle and owner of the creatureInstanceId
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/nextRound
+	controller/method: battle/nextRound
+	description: advances the battle to the next round, generates new actions for creatures, etc.
+	validation: must be the player that created the battle
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/dealDamage
+	controller/method: battle/dealDamage
+	description: calculates damage dealt to specified creatures/characters
+	validation: must be a participant in the battle
+	req: { token, player, creatures: [], characters: [] }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/join
+	controller/method: battle/join
+	description: adds the players character for the specified game to the specified battle
+	validation: must be a player in the game
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+DELETE /games/{id}/battles/{id}
+	controller/method: battle/delete
+	description: deletes the battle and all creatureInstances (except pets), etc
+	validation: must be the player that created the battle
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/creatures/{id}/conditions
+	controller/method: creature/addCondition
+	description: creates a new activeCondition and applies it to the creature
+	validation: must be a participant in the battle
+	req: { token, player, conditionId }
+	res: { }, 201 (Created), 'Location' header: '/games/{id}/battles/{id}/creatures/{id}/conditions/{id}'
+
+DELETE /games/{id}/battles/{id}/creatures/{id}/conditions/{id}
+	controller/method: creature/removeCondition
+	description: removes the activeCondition from the creature
+	validation: must be a participant in the battle
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/creatures/{id}/tame
+	controller/method: creature/tame
+	description: marks the creature as tamed, adds it to the player as a pet, moves it from the battle's enemies to friendlies
+	validation: must be a participant in the battle
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/creatures/{id}/release
+	controller/method: creature/release
+	description: marks the creature as untamed, removes it from player's pets, moves it from the battle's friendlies to enemies
+	validation: must be a participant in the battle and owner of the pet
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+DELETE /games/{id}/battles/{id}/creatures/{id}
+	controller/method: creature/destroy
+	description: deletes the creature, its inventory and conditions
+	validation: must be a participant in the battle
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/battles/{id}/creatures/{id}/resurrect
+	controller/method: creature/resurrect
+	description: resurrects a player's pet
+	validation: creature must be tame and present in the battle
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+PATCH /games/{id}/characters/{id}/pets/{id}
+	controller/method: creature/update
+	description partially update the creature
+	validation: player must own the creature
+	req: { token, player, creatureInstanceDTO }
+	res: { }, 204 (No Content)
+
+GET /games/{id}/monsters
+	controller/method: lists/monsters
+	description: retrieve all of the monsters valid for the specified game
+	req: { token, player }
+	res: { monsters: [] }, 200 (OK)
+
+GET /games/{id}/damageTypes
+	controller/method: lists/damageTypes
+	description: retrieve all of the damageTypes valid for the specified game
+	req: { token, player }
+	res: { damageTypes: [] }, 200 (OK)
+
+GET /games/{id}/conditions
+	controller/method: lists/conditions
+	description: retrieve all of the conditions valid for the specified game
+	req: { token, player }
+	res: { conditions: [] }, 200 (OK)
+
+POST /games/{id}/characters
+	controller/method: character/create
+	description: create a new character for the player, in the specified game
+	req: { token, player, characterDTO }
+	res: { }, 201 (Created), 'Location' header: '/games/{id}/characters/{id}'
+
+GET /games/{id}/characters/{id}
+	controller/method: character/get
+	description: retrieve either the character detail or public character, depending on who made the request
+	validation: only player that created character can retreive details, all others will receive the public character
+	req: { token, player }
+	res: { characterDTO }, 200 (OK)
+
+PATCH /games/{id}/characters/{id}
+	controller/method: character/update
+	description: partially update the character
+	req: { token, player, characterDTO }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/characters/{id}/resurrect
+	controller/method: character/resurrect
+	description: resurrects the character
+	validation: player/character must have proximity to target character
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/items/{id}/take
+	controller/method: item/take
+	description: removes item from source inventory, and adds it to player/character inventory
+	validation: player/character must have proximity to source inventory and owner of inventory must be dead
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/items/{id}/equip
+	controller/method: item/equip
+	description: equips the specified item
+	validation: item must exist in the player/character inventory
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/item/{id}/damage
+	controller/method: item/damage
+	description: marks the specified item as 'damaged', or if the item was already damaged, destroys it
+	validation: item must exist in the player/character inventory
+	req: { token, player }
+	res: { }, 204 (No Content)
+
+POST /games/{id}/item/{id}/repair
+	controller/method: item/repair
+	description: clears the 'damaged' flag from the item
+	validation: item must exist in the player/character inventory
+	req: { token, player }
+	res: { }, 204 (No Content)
+

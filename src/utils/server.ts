@@ -4,6 +4,7 @@ import * as OpenApiValidator from 'express-openapi-validator'
 import { Express } from 'express-serve-static-core'
 import morgan from 'morgan'
 import morganBody from 'morgan-body'
+import { UserFactory } from '../../src/api/factories/UserFactory'
 import { connector, summarise } from 'swagger-routes-express'
 import YAML from 'yamljs'
 
@@ -12,6 +13,19 @@ import config from '../config'
 import { expressDevLogger } from '../utils/express_dev_logger'
 import logger from '../utils/logger'
 
+export const routes = {}
+
+export function makeRoutePath(route: string, props: any): string {
+    let path = ''
+    if (routes[route]) {
+        path = routes[route]
+        for (let prop in props) {
+            path = path.replace(`:${prop}`,props[prop])
+        }
+    }
+    return path
+}
+
 export async function createServer(): Promise<Express> {
     const yamlSpecFile = './config/openapi.yml'
     const apiDefinition = YAML.load(yamlSpecFile)
@@ -19,6 +33,9 @@ export async function createServer(): Promise<Express> {
     logger.info(apiSummary)
 
     const server = express()
+
+    //will need this later for the socket.io stuff
+    const httpServer = require('http').createServer(server)
 
     // middleware
     server.use(bodyParser.json())
@@ -44,6 +61,17 @@ export async function createServer(): Promise<Express> {
 
     server.use(OpenApiValidator.middleware(validatorOptions))
 
+    // attach player and token to request, if possible
+    server.use(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        const { player, token } = req.body
+        if (player) {
+            req.me = await new UserFactory().getRepository().findOne(player);
+        }
+        req.token = token
+        logger.verbose(`${req.method}: ${req.url}, params: ${JSON.stringify(req.params)}, body: ${JSON.stringify(req.body)}`)
+        next()
+    })
+
     // error customization, if request is invalid
     server.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
         res.status(err.status).json({
@@ -57,8 +85,12 @@ export async function createServer(): Promise<Express> {
 
     const connect = connector(api, apiDefinition, {
         onCreateRoute: (method: string, descriptor: any[]) => {
-            descriptor.shift()
-            logger.verbose(`${method}: ${descriptor.map((d: any) => d.name).join(', ')}`)
+            const [path, ...handlers] = descriptor
+            const handlerName = handlers[handlers.length - 1].name
+            if (handlerName !== 'notImplemented' && handlerName !== 'notFound' && handlerName !== 'auth') {
+                routes[handlerName] = path
+            }
+            logger.verbose(`${method}: ${handlers.map((d: any) => d.name).join(', ')}`)
         },
         security: {
             bearerAuth: api.auth
