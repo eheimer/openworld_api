@@ -1,16 +1,21 @@
 import * as express from 'express'
 import logger from '../../utils/logger'
-import AuthService from '../../api/services/auth'
+import AuthService from '../services/auth'
 import * as respond from '../../utils/express'
-import { UserFactory } from '../factories/UserFactory'
-import { ErrorResponse } from 'types'
+import { ErrorResponse } from '../../../types'
 
+/**
+ * Security controller - attach playerId to the response to make further authorization tests possible
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 export async function auth(req: express.Request, res: express.Response, next: express.NextFunction): Promise<void> {
     const token = req.headers.authorization!
     try {
         let authResponse = await AuthService.auth(token)
         if (!(authResponse as any).error) {
-            //is this necessary?  I don't think I need it
             res.locals.auth = {
                 userId: (authResponse as { playerId: string }).playerId
             }

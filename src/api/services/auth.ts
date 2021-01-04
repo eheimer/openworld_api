@@ -19,7 +19,7 @@ const privateSecret = {
 }
 const signOptions: SignOptions = {
     algorithm: 'RS256',
-    expiresIn: '14d'
+    expiresIn: '24h'
 }
 const publicKey = fs.readFileSync(config.publicKeyFile)
 const verifyOptions: VerifyOptions = {
@@ -48,7 +48,7 @@ function createAuthToken(userId: number): Promise<{ token: string, expireAt: Dat
     return new Promise(function (resolve, reject) {
         jwt.sign({ userId: userId }, privateSecret, signOptions, (err: Error | null, encoded: string | undefined) => {
             if (err === null && encoded !== undefined) {
-                const expireAfter = 14 * 24 * 60 * 60 // 14 days
+                const expireAfter = 24 * 60 * 60 // 24 hours
                 const expireAt = new Date()
                 expireAt.setSeconds(expireAt.getSeconds() + expireAfter);
                 resolve({ token: encoded, expireAt: expireAt })

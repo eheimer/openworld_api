@@ -4,7 +4,6 @@ import * as OpenApiValidator from 'express-openapi-validator'
 import { Express } from 'express-serve-static-core'
 import morgan from 'morgan'
 import morganBody from 'morgan-body'
-import { UserFactory } from '../../src/api/factories/UserFactory'
 import { connector, summarise } from 'swagger-routes-express'
 import YAML from 'yamljs'
 
@@ -61,13 +60,7 @@ export async function createServer(): Promise<Express> {
 
     server.use(OpenApiValidator.middleware(validatorOptions))
 
-    // attach player and token to request, if possible
     server.use(async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const { player, token } = req.body
-        if (player) {
-            req.me = await new UserFactory().getRepository().findOne(player);
-        }
-        req.token = token
         logger.verbose(`${req.method}: ${req.url}, params: ${JSON.stringify(req.params)}, body: ${JSON.stringify(req.body)}`)
         next()
     })

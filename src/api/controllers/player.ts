@@ -2,7 +2,7 @@ import * as express from 'express'
 import { CreatePlayerResponse, ErrorResponse } from 'types'
 import * as respond from '../../utils/express'
 
-import PlayerService from '../../api/services/player'
+import PlayerService from '../services/player'
 import { writeJsonResponse } from '../../utils/express'
 import logger from '../../utils/logger'
 import { makeRoutePath, routes } from '../../utils/server'
