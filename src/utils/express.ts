@@ -6,3 +6,24 @@ export function writeJsonResponse(res: express.Response, code: any, payload: any
     res.writeHead(code, { ...headers, 'Content-Type': 'application/json' })
     res.end(data)
 }
+
+export function INTERNAL_SERVER_ERROR(res: express.Response, message: any): void {
+    writeJsonResponse(res, 500, { error: { type: 'internal_server_error', message }})
+}
+
+export function UNAUTHORIZED(res: express.Response, message?: any): void {
+    writeJsonResponse(res, 401, { error: { type: 'authorization_failed', message }})
+}
+
+export function CREATED(res: express.Response, location: string): void {
+    res.setHeader('Location', location)
+    writeJsonResponse(res, 201, {})
+}
+
+export function OK(res: express.Response, payload: any, headers?: OutgoingHttpHeaders | undefined): void {
+    writeJsonResponse(res,200,payload,headers)
+}
+
+export function NOT_FOUND(res: express.Response, message?: any): void {
+    writeJsonResponse(res, 404, message)
+}

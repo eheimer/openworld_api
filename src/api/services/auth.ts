@@ -1,15 +1,16 @@
+/**
+ *  services/auth.ts
+ *    Authentication Service
+ */
+
 import fs from 'fs'
 import jwt, { SignOptions, VerifyErrors, VerifyOptions } from 'jsonwebtoken'
+import { AuthResponse, LoginResponse } from 'types'
 
 import config from '../../config'
 import logger from '../../utils/logger'
 import { UserFactory } from '../factories/UserFactory'
 import UserRepository from '../repositories/UserRepository'
-
-export type ErrorResponse = { error: { type: string, message: string } }
-export type AuthResponse = ErrorResponse | { userId: string }
-export type CreateUserResponse = ErrorResponse | { userId: string }
-export type LoginUserResponse = ErrorResponse | { token: string, userId: string, expireAt: Date }
 
 const privateKey = fs.readFileSync(config.privateKeyFile)
 const privateSecret = {
@@ -34,28 +35,13 @@ function auth(bearerToken: string): Promise<AuthResponse> {
       if (err === null && decoded !== undefined) {
         const d = decoded as {userId?: string, exp: number}
         if (d.userId) {
-          resolve({userId: d.userId})
+          resolve({playerId: d.userId})
           return
         }
       }
       resolve({error: {type: 'unauthorized', message: 'Authentication Failed'}})
     })
   })
-}
-
-async function createUser(email: string, password: string, name: string): Promise<CreateUserResponse> {
-    try {
-        const found = await factory.getRepository().findOne({email})
-        if(found) return { error: { type: 'account_already_exists', message: `${email} already exists` } }
-
-        const user = await factory.create({ email, name, password })
-        if (user) {
-            return { userId: user.id.toString() }
-        }
-    } catch (err) {
-        logger.error(`createUser: ${err}`)
-        throw err
-    }
 }
 
 function createAuthToken(userId: number): Promise<{ token: string, expireAt: Date }> {
@@ -73,7 +59,7 @@ function createAuthToken(userId: number): Promise<{ token: string, expireAt: Dat
     })
 }
 
-async function login(login: string, password: string): Promise<LoginUserResponse> {
+async function login(login: string, password: string): Promise<LoginResponse> {
     try {
         const repo = factory.getRepository() as UserRepository
         const user = await repo.findOne({ email: login })
@@ -87,11 +73,11 @@ async function login(login: string, password: string): Promise<LoginUserResponse
         }
 
         const authToken = await createAuthToken(user.id)
-        return { userId: user.id.toString(), token: authToken.token, expireAt: authToken.expireAt }
+        return { player: user.id.toString(), token: authToken.token }
     } catch (err) {
         logger.error(`login: ${err}`)
         return Promise.reject({ error: { type: 'internal_server_error', message: 'Internal Server Error' } })
     }
 }
 
-export default { auth, createAuthToken, login, createUser }
+export default { auth, createAuthToken, login }
