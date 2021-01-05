@@ -1,13 +1,10 @@
 import * as express from 'express'
-import { CreatePlayerResponse, ErrorResponse } from 'types'
+import { ErrorResponse } from 'types'
 import * as respond from '../../utils/express'
 
 import PlayerService from '../services/player'
 import { writeJsonResponse } from '../../utils/express'
-import logger from '../../utils/logger'
-import { makeRoutePath, routes } from '../../utils/server'
-import UserRepository from '../repositories/UserRepository'
-import { UserFactory } from '../factories/UserFactory'
+import { makeRoutePath } from '../../utils/server'
 
 export async function register(req: express.Request, res: express.Response): Promise<void> {
     const { email, password, name } = req.body
@@ -26,21 +23,26 @@ export async function register(req: express.Request, res: express.Response): Pro
             respond.CREATED(res, path)
         }
     } catch(err) {
-        logger.error(`register: ${err}`)
         respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }
 
 export async function getPlayer(req: express.Request, res: express.Response): Promise<void> {
     const { playerId } = req.params
-    console.log({playerId, auth: res.locals.auth})
+    let player
     if (playerId && res.locals.auth.userId) {
-        let repo = await new UserFactory().getRepository() as UserRepository
-        if (playerId === res.locals.auth.userId) {
-            respond.OK(res, await repo.getPlayer(playerId))
-        } else {
-            respond.OK(res, await repo.getPublicPlayer(playerId))
+        try {
+            if (playerId === res.locals.auth.userId) {
+                player = await PlayerService.getPlayer(playerId)
+            } else {
+                player = await PlayerService.getPublicPlayer(playerId)
+            }
+        } catch (err) {
+            respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
         }
+    }
+    if (player) {
+        respond.OK(res,player)
     } else {
         respond.NOT_FOUND(res)
     }

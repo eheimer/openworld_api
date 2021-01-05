@@ -1,5 +1,4 @@
 import * as express from 'express'
-import logger from '../../utils/logger'
 import AuthService from '../services/auth'
 import PlayerService from '../services/player'
 import * as respond from '../../utils/express'
@@ -46,7 +45,6 @@ export async function login(req: express.Request, res: express.Response): Promis
             respond.OK(res, { player, token })
         }
     } catch (err) {
-      logger.error(`login: ${err}`)
       respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }

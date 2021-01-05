@@ -109,39 +109,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  # /games:
-  #   post:
-  #     summary: create a new game
-  #     tags:
-  #       - game
-  #     operationId: createGame
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/GameRequest'
-  #     responses:
-  #       201:
-  #         description: Success
-  #         headers:
-  #           Location:
-  #             description: the uri to retrieve the game
-  #             schema:
-  #               type: string
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  /games:
+    post:
+      summary: create a new game
+      tags:
+        - game
+      operationId: createGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+      responses:
+        201:
+          description: Success
+          headers:
+            Location:
+              description: the uri to retrieve the game
+              schema:
+                type: string
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   /login:
     post:
       security: []
       summary: login
       description: login the player to the specified game, initiate a socket if successful
       tags:
-        - game
+        - player
       operationId: login
       requestBody:
         required: true
@@ -178,67 +178,92 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  # /games/{gameId}:
-  #   parameters:
-  #   - name: gameId
-  #     required: true
-  #     in: path
-  #     description: The gameId to delete
-  #     schema:
-  #       type: number
-  #   patch:
-  #     summary: update game partial
-  #     operationId: updateGame
-  #     tags:
-  #       - game
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/GameRequest'
-  #     responses:
-  #       204:
-  #         description: Success
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #   delete:
-  #     summary: remove a game
-  #     description: deletes the game, all battles, characters, creatureInstances, inventories, etc
-  #     tags:
-  #       - game
-  #     operationId: deleteGame
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/GameRequest'
-  #     responses:
-  #       204:
-  #         description: Success
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}:
+    parameters:
+    - name: gameId
+      required: true
+      in: path
+      description: The gameId to delete
+      schema:
+        type: string
+    get:
+      summary: retrieve game
+      operationId: getGame
+      tags:
+        - game
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Game'
+        404:
+          description: Player not found
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+    patch:
+      summary: update game partial
+      operationId: updateGame
+      tags:
+        - game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+      responses:
+        204:
+          description: Success
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+    delete:
+      summary: remove a game
+      description: deletes the game, all battles, characters, creatureInstances, inventories, etc
+      tags:
+        - game
+      operationId: deleteGame
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameRequest'
+      responses:
+        204:
+          description: Success
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   # /games/{gameId}/players/{playerId}:
   #   parameters:
   #   - name: gameId
@@ -1514,9 +1539,7 @@ components:
     GameRequest:
       description: Game requests
       type: object
-      additionalProperties: false
       allOf:
-        - $ref: '#/components/schemas/BasicTokenObject'
         - $ref: '#/components/schemas/Game'
     Battle:
       description: Battle object

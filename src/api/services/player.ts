@@ -1,6 +1,7 @@
 import { CreatePlayerResponse } from "../../../types"
 import logger from "../../utils/logger"
-import { UserFactory } from "../factories/UserFactory"
+import { UserFactory, PublicPlayer } from "../factories/UserFactory"
+import User from "../models/User"
 
 const factory: UserFactory = new UserFactory()
 
@@ -14,7 +15,7 @@ async function createPlayer(email: string, password: string, name: string): Prom
             return { playerId: user.id.toString() }
         }
     } catch (err) {
-        logger.error(`createUser: ${err}`)
+        logger.error(`createPlayer: ${err}`)
         throw err
     }
 }
@@ -23,7 +24,31 @@ async function updatePlayerLastSeen(playerId: string, when?: Date): Promise<void
     if (!when) {
         when = new Date(Date.now())
     }
-    await factory.getRepository().update(playerId, { lastSeenAt: when})
+    try {
+        await factory.getRepository().update(playerId, { lastSeenAt: when })
+    } catch (err) {
+        logger.error(`updatePlayerLastSeen: ${err}`)
+        throw err
+    }
 }
 
-export default { createPlayer, updatePlayerLastSeen }
+async function getPlayer(playerId: string): Promise<User> {
+    try {
+        return await factory.getRepository().findOne(playerId)
+    } catch (err) {
+        logger.error(`getPlayer: ${err}`)
+        throw err
+    }
+    
+}
+
+async function getPublicPlayer(playerId: string): Promise<PublicPlayer> {
+    try {
+        return new PublicPlayer(await factory.getRepository().findOne(playerId))
+    } catch (err) {
+        logger.error(`getPublicPlayer: ${err}`)
+        throw err
+    }
+}
+
+export default { createPlayer, updatePlayerLastSeen, getPlayer, getPublicPlayer }

@@ -4,7 +4,6 @@
 /config> app startup configuration
 /coverage> test coverage reports
 /node_modules> required dependencies
-/scripts> utility shell scripts
 /src> typescript code
     /api> all api code
         /controllers> route controllers
@@ -18,19 +17,48 @@
     /subscriber> typeorm subscriber objects
     /tests> all test
     /utils> utilitiy scripts
+/types> custom type definitions
 
 --== logic separation ==--
 
-Services should encapsulate the vast bulk of the game logic.
+Services
+- encapsulate the vast bulk of the game logic
+- responsible for all error logging
+- need to know nothing about the request
+- if a decision is to be made about what data to collect based on the
+  request, that logic should reside in the controller, not the service.
 
-Controllers should be responsible exclusively for receiving and parsing
-requests, passing the data off to appropriate services, and parsing and
-returning data back in the response
+Controllers
+- are strictly responsible for receiving and parsing requests, passing
+  the data off to appropriate services, and parsing and returning data
+  back in the response.
+- should not deal directly with factories and repositories
 
-Factories should be used for creating/building entities, as well as mock
-data for tests.
+Factories
+- should be used for creating/building entities, as well as mock
+  data for tests.
+- NOTE: Currently, repositories need to be built from an instantiated
+  factory.  This is not ideal, and should be refactored at some point.
 
-Models should contain entity definitions only, no logic of any kind
+Models
+- should contain entity definitions only
+- no logic of any kind
 
-Repositories should contain database logic for retrieval of records,
-associations, etc
+Repositories
+- should contain all database logic for retrieval of records,
+  associations, etc.
+  
+--= error handling =--
+
+Controller methods should utilize try/catch blocks around service
+calls.  Any caught errors should result in a 500 response. These caught
+errors should not be logged, and details of the error should not be
+included in the response.
+
+Service methods should utilize try/catch blocks around factory,
+repository, and other service calls. Any caught errors should be logged
+with as much detail as possible and rethrown.
+
+Factory and repository methods should use try/catch blocks as necessary.
+Unlike services, caught errors should not be logged, but should be
+rethrown so that the calling service can log them.

@@ -27,3 +27,5 @@ export class Game extends EntityBase{
     battles: Battle[]
     
 }
+
+export default Game
