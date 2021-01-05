@@ -33,3 +33,37 @@ export async function createGame(req: express.Request, res: express.Response): P
         }
     }
 }
+
+export async function updateGame(req: express.Request, res: express.Response): Promise<void> {
+    const { gameId } = req.params
+    try {
+        const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
+        if (!game) {
+            respond.NOT_FOUND(res)
+        }
+        if ((game as {error}).error === 'unauthorized') {
+            respond.UNAUTHORIZED(res)
+        }
+        await GameService.updateGame(gameId, req.body)
+        respond.NO_CONTENT(res)
+    } catch (err) {
+        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}
+
+export async function deleteGame(req: express.Request, res: express.Response): Promise<void> {
+    const { gameId } = req.params
+    try {
+        const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
+        if (!game) {
+            respond.NOT_FOUND(res)
+        }
+        if ((game as { error }).error === 'unauthorized') {
+            respond.UNAUTHORIZED(res)
+        }
+        await GameService.deleteGame(gameId)
+        respond.NO_CONTENT(res)
+    } catch (err) {
+        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}

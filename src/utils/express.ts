@@ -27,3 +27,7 @@ export function OK(res: express.Response, payload: any, headers?: OutgoingHttpHe
 export function NOT_FOUND(res: express.Response, message?: any): void {
     writeJsonResponse(res, 404, message)
 }
+
+export function NO_CONTENT(res: express.Response): void {
+    writeJsonResponse(res, 204, {})
+}

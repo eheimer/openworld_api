@@ -243,12 +243,6 @@ paths:
       tags:
         - game
       operationId: deleteGame
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameRequest'
       responses:
         204:
           description: Success
