@@ -39,7 +39,15 @@ async function getPlayer(playerId: string): Promise<User> {
         logger.error(`getPlayer: ${err}`)
         throw err
     }
-    
+}
+
+async function getPlayerWithRelations(playerId: string): Promise<User> {
+    try {
+        return await factory.getRepository().findOne(playerId, { loadRelationIds: true })
+    } catch (err) {
+        logger.error(`getPlayerWithRelations: ${err}`)
+        throw err
+    }
 }
 
 async function getPublicPlayer(playerId: string): Promise<PublicPlayer> {
@@ -51,4 +59,4 @@ async function getPublicPlayer(playerId: string): Promise<PublicPlayer> {
     }
 }
 
-export default { createPlayer, updatePlayerLastSeen, getPlayer, getPublicPlayer }
+export default { createPlayer, updatePlayerLastSeen, getPlayer, getPlayerWithRelations, getPublicPlayer }

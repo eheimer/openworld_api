@@ -35,11 +35,50 @@ async function getGame(gameId: string): Promise<Game> {
   }
 }
 
+async function getGameWithRelations(gameId: string): Promise<Game> {
+  try {
+    return await factory.getRepository().findOne(gameId,{ loadRelationIds: true})
+  } catch (err) {
+    logger.error(`getGameWithRelations: ${err}`)
+    throw err
+  }
+}
+
 async function deleteGame(gameId: string): Promise<void> {
   try {
     await factory.getRepository().delete(gameId)
   } catch (err) {
     logger.error(`deleteGame: ${err}`)
+    throw err
+  }
+}
+
+async function addPlayer(gameId: string, playerId: string): Promise<void> {
+  try {
+    const game = await factory.getRepository().findOne(gameId, { relations: ['players'] })
+    const player = await new UserFactory().getRepository().findOne(playerId)
+    if (game && player && !game.players.includes(player)) {
+      game.players[game.players.length] = player
+      await factory.getRepository().save(game)
+    }
+  } catch (err) {
+    logger.error(`addPlayer: ${err}`)
+    throw err
+  }
+
+}
+
+async function removePlayer(gameId: string, playerId: string): Promise<void> {
+  try {
+    const game = await factory.getRepository().findOne(gameId, { relations: ['players'] })
+    if (game) {
+      let filtered = game.players.filter(item => { return item.id.toString() != playerId })
+      console.log({ players: game.players, filtered })
+      game.players = filtered;
+      await factory.getRepository().save(game)
+    }
+  } catch (err) {
+    logger.error(`addPlayer: ${err}`)
     throw err
   }
 }
@@ -50,6 +89,9 @@ async function deleteGame(gameId: string): Promise<void> {
 async function authorizeOwner(gameId: string, playerId: string): Promise<Game | {error}> {
   try {
     const game = await factory.getRepository().findOne(gameId, { loadRelationIds: true})
+    if (!game) {
+      return
+    }
     if (game.owner.toString() === playerId) {
       return game
     } else {
@@ -61,4 +103,4 @@ async function authorizeOwner(gameId: string, playerId: string): Promise<Game | 
   }
 }
 
-export default { getGame, updateGame, createGame, deleteGame, authorizeOwner }
+export default { getGame, getGameWithRelations, updateGame, createGame, deleteGame, addPlayer, removePlayer, authorizeOwner }

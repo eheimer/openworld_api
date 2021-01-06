@@ -67,3 +67,37 @@ export async function deleteGame(req: express.Request, res: express.Response): P
         respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }
+
+export async function joinGame(req: express.Request, res: express.Response): Promise<void> {
+    const { gameId, playerId } = req.params
+    try {
+        const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
+        if (!game) {
+            respond.NOT_FOUND(res)
+        }
+        if ((game as { error }).error === 'unauthorized') {
+            respond.UNAUTHORIZED(res)
+        }
+        await GameService.addPlayer(gameId, playerId)
+        respond.NO_CONTENT(res)
+    } catch (err) {
+        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}
+
+export async function leaveGame(req: express.Request, res: express.Response): Promise<void> {
+    const { gameId, playerId } = req.params
+    try {
+        const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
+        if (!game ) {
+            respond.NOT_FOUND(res)
+        }
+        if ((game as { error }).error === 'unauthorized' && playerId !== res.locals.auth.userId) {
+            respond.UNAUTHORIZED(res)
+        }
+        await GameService.removePlayer(gameId, playerId)
+        respond.NO_CONTENT(res)
+    } catch (err) {
+        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}
