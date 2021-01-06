@@ -68,6 +68,12 @@ async function deleteCharacter(characterId: string): Promise<void> {
     }
 }
 
+/**
+ * Validate that character belongs to player
+ * 
+ * @param characterId 
+ * @param playerId 
+ */
 async function authorizePlayer(characterId: string, playerId: string): Promise<Character | { error }> {
     try {
         const character = await factory.getRepository().findOne(characterId, { loadRelationIds: true })

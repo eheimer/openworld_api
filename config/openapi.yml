@@ -277,6 +277,7 @@ paths:
       description: player id must exist at /players/{playerId}
       tags:
         - game
+        - player
       operationId: joinGame
       responses:
         204:
@@ -298,6 +299,7 @@ paths:
       description: player id must exist at /players/{playerId}
       tags:
         - game
+        - player
       operationId: leaveGame
       responses:
         204:
@@ -1130,14 +1132,8 @@ paths:
       summary: create character
       tags:
         - character
+        - game
       operationId: createCharacter
-      parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the creature to delete
-        schema:
-          type: string
       requestBody:
         required: true
         content:
@@ -1158,14 +1154,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  /games/{gameId}/characters/{characterId}:
+    get:
+      summary: get all characters for game
+      tags:
+        - character
+        - game
+      operationId: getGameCharacters
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: number
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+  /characters/{characterId}:
     parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: string
       - name: characterId
         required: true
         in: path

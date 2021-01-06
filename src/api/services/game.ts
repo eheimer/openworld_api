@@ -1,5 +1,6 @@
 import { DeepPartial } from 'typeorm'
 import logger from '../../utils/logger'
+import { CharacterFactory } from '../factories/CharacterFactory'
 import { GameFactory} from '../factories/GameFactory'
 import { UserFactory} from '../factories/UserFactory'
 import Game from '../models/Game'
@@ -83,7 +84,7 @@ async function removePlayer(gameId: string, playerId: string): Promise<void> {
 }
 
 /**
- * returns game if playerid is the game owner
+ * Validates that playerId is the game owner
  */
 async function authorizeOwner(gameId: string, playerId: string): Promise<Game | {error}> {
   try {
@@ -102,4 +103,54 @@ async function authorizeOwner(gameId: string, playerId: string): Promise<Game | 
   }
 }
 
-export default { getGame, getGameWithRelations, updateGame, createGame, deleteGame, addPlayer, removePlayer, authorizeOwner }
+/**
+ * Validates that playerId is a member of the game
+ * 
+ * @param gameId 
+ * @param playerId 
+ */
+async function authorizeMember(gameId: string, playerId: string): Promise<Game | { error }>{
+  try {
+    let game = await authorizeOwner(gameId,playerId)
+    if (!game || (game as { error }).error) {
+      game = await factory.getRepository().findOne(gameId, {loadRelationIds: true})
+    }
+    if (!game) {
+      return
+    }
+    console.log({ contains: ((game as Game).players as any).includes(playerId)})
+    if (((game as Game).players as any).includes(playerId)) {
+      return game
+    } else {
+      return { error: 'unauthorized' }
+    }
+  } catch (err) {
+    logger.error(`authorizeMember: ${err}`)
+    throw err
+  }
+}
+
+/**
+ * Validates that playerId and characterId are in the same game
+ * 
+ * @param playerId 
+ * @param characterId 
+ */
+async function authorizePlayerCharacter(characterId: string, playerId: string): Promise<Game | { error }> {
+  try {
+    const character = await new CharacterFactory().getRepository().findOne(characterId, {loadRelationIds: true})
+    if (character) {
+      const player = await new UserFactory().getRepository().findOne(playerId, {loadRelationIds: true})
+      if (player && player.games.includes(character.game)) {
+        return await factory.getRepository().findOne(character.game)
+      } else {
+        return { error: 'unauthorized' }
+      }
+    }
+  } catch (err) {
+    logger.error(`authorizePlayerCharacter: ${err}`)
+    throw err
+  }
+}
+
+export default { getGame, getGameWithRelations, updateGame, createGame, deleteGame, addPlayer, removePlayer, authorizeOwner, authorizeMember, authorizePlayerCharacter }
