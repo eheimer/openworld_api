@@ -50,13 +50,4 @@ async function getPlayerWithRelations(playerId: string): Promise<User> {
     }
 }
 
-async function getPublicPlayer(playerId: string): Promise<PublicPlayer> {
-    try {
-        return new PublicPlayer(await factory.getRepository().findOne(playerId))
-    } catch (err) {
-        logger.error(`getPublicPlayer: ${err}`)
-        throw err
-    }
-}
-
-export default { createPlayer, updatePlayerLastSeen, getPlayer, getPlayerWithRelations, getPublicPlayer }
+export default { createPlayer, updatePlayerLastSeen, getPlayer, getPlayerWithRelations }

@@ -5,6 +5,7 @@ import * as respond from '../../utils/express'
 import PlayerService from '../services/player'
 import { writeJsonResponse } from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
+import { PublicPlayer } from '../factories/UserFactory'
 
 export async function register(req: express.Request, res: express.Response): Promise<void> {
     const { email, password, name } = req.body
@@ -20,10 +21,10 @@ export async function register(req: express.Request, res: express.Response): Pro
         } else {
             let playerId = (resp as any).playerId
             let path = makeRoutePath('getPlayer', { playerId })
-            respond.CREATED(res, path)
+            return respond.CREATED(res, path)
         }
     } catch(err) {
-        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }
 
@@ -32,18 +33,17 @@ export async function getPlayer(req: express.Request, res: express.Response): Pr
     let player
     if (playerId && res.locals.auth.userId) {
         try {
-            if (playerId === res.locals.auth.userId) {
-                player = await PlayerService.getPlayer(playerId)
-            } else {
-                player = await PlayerService.getPublicPlayer(playerId)
+            player = await PlayerService.getPlayer(playerId)
+            if (playerId !== res.locals.auth.userId) {
+                player = new PublicPlayer(player)
             }
         } catch (err) {
-            respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+            return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
         }
     }
     if (player) {
-        respond.OK(res,player)
+        return respond.OK(res,player)
     } else {
-        respond.NOT_FOUND(res)
+        return respond.NOT_FOUND(res)
     }
 }

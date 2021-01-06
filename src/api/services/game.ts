@@ -73,7 +73,6 @@ async function removePlayer(gameId: string, playerId: string): Promise<void> {
     const game = await factory.getRepository().findOne(gameId, { relations: ['players'] })
     if (game) {
       let filtered = game.players.filter(item => { return item.id.toString() != playerId })
-      console.log({ players: game.players, filtered })
       game.players = filtered;
       await factory.getRepository().save(game)
     }

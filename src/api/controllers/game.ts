@@ -9,15 +9,15 @@ export async function getGame(req: express.Request, res: express.Response): Prom
     let game
     if (gameId) {
         try {
-            game = await GameService.getGame(gameId)
+            game = await GameService.getGameWithRelations(gameId)
         } catch(err) {
-            respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+            return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
         }
     }
     if (game) {
-        respond.OK(res,game)
+        return respond.OK(res,game)
     } else {
-        respond.NOT_FOUND(res)
+        return respond.NOT_FOUND(res)
     }
 }
 
@@ -27,9 +27,9 @@ export async function createGame(req: express.Request, res: express.Response): P
         try {
             let resp = await GameService.createGame(name,maxPlayers,res.locals.auth.userId)
             let path = makeRoutePath('getGame', { gameId: (resp as any).gameId })
-            respond.CREATED(res,path)
+            return respond.CREATED(res,path)
         } catch (err) {
-            respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+            return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
         }
     }
 }
@@ -39,15 +39,15 @@ export async function updateGame(req: express.Request, res: express.Response): P
     try {
         const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
         if (!game) {
-            respond.NOT_FOUND(res)
+            return respond.NOT_FOUND(res)
         }
         if ((game as {error}).error === 'unauthorized') {
-            respond.UNAUTHORIZED(res)
+            return respond.UNAUTHORIZED(res)
         }
         await GameService.updateGame(gameId, req.body)
-        respond.NO_CONTENT(res)
+        return respond.NO_CONTENT(res)
     } catch (err) {
-        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }
 
@@ -56,15 +56,15 @@ export async function deleteGame(req: express.Request, res: express.Response): P
     try {
         const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
         if (!game) {
-            respond.NOT_FOUND(res)
+            return respond.NOT_FOUND(res)
         }
         if ((game as { error }).error === 'unauthorized') {
-            respond.UNAUTHORIZED(res)
+            return respond.UNAUTHORIZED(res)
         }
         await GameService.deleteGame(gameId)
-        respond.NO_CONTENT(res)
+        return respond.NO_CONTENT(res)
     } catch (err) {
-        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }
 
@@ -73,15 +73,15 @@ export async function joinGame(req: express.Request, res: express.Response): Pro
     try {
         const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
         if (!game) {
-            respond.NOT_FOUND(res)
+            return respond.NOT_FOUND(res)
         }
         if ((game as { error }).error === 'unauthorized') {
-            respond.UNAUTHORIZED(res)
+            return respond.UNAUTHORIZED(res)
         }
         await GameService.addPlayer(gameId, playerId)
-        respond.NO_CONTENT(res)
+        return respond.NO_CONTENT(res)
     } catch (err) {
-        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }
 
@@ -90,14 +90,14 @@ export async function leaveGame(req: express.Request, res: express.Response): Pr
     try {
         const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
         if (!game ) {
-            respond.NOT_FOUND(res)
+            return respond.NOT_FOUND(res)
         }
         if ((game as { error }).error === 'unauthorized' && playerId !== res.locals.auth.userId) {
-            respond.UNAUTHORIZED(res)
+            return respond.UNAUTHORIZED(res)
         }
         await GameService.removePlayer(gameId, playerId)
-        respond.NO_CONTENT(res)
+        return respond.NO_CONTENT(res)
     } catch (err) {
-        respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
 }

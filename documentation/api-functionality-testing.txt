@@ -1,0 +1,34 @@
+TEST PLAYER CREATION AND LOGIN
+- registerPlayer
+    playerId: 
+- loginPlayer
+    token: 
+- getPlayer
+
+TEST GAME CREATION, UPDATE, DELETE
+- createGame
+    gameId: 
+- getGame
+- updateGame (name, maxPlayers)
+- getGame (ensure update)
+- deleteGame
+- getGame (ensure 404)
+
+TEST PLAYER JOIN/LEAVE GAME
+- createGame
+    gameId: 
+- registerPlayer
+    playerId: 
+- joinGame
+- getGame (ensure two players, including owner)
+- leaveGame
+- getGame (ensure one player)
+
+TEST CHARACTER CREATION, UPDATE, DELETE
+- createCharacter
+    characterId: 
+- getCharacter
+- updateCharacter (name, maxHp, baseResist)
+- getCharacter (ensure update, baseResist should update all resists)
+- deleteCharacter
+- getCharacter (ensure 404)

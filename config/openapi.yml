@@ -1125,112 +1125,127 @@ paths:
   #           application/json:
   #             schema:
   #               $ref: '#/components/schemas/FailResponse'
-  # /games/{gameId}/characters:
-  #   post:
-  #     summary: create character
-  #     tags:
-  #       - character
-  #     operationId: createCharacter
-  #     parameters:
-  #     - name: gameId
-  #       required: true
-  #       in: path
-  #       description: the gameId of the creature to delete
-  #       schema:
-  #         type: number
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/CharacterRequest'
-  #     responses:
-  #       201:
-  #         description: Success
-  #         headers:
-  #           Location:
-  #             description: the uri to retrieve the character
-  #             schema:
-  #               type: string
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  # /games/{gameId}/characters/{characterId}:
-  #   parameters:
-  #     - name: gameId
-  #       required: true
-  #       in: path
-  #       description: the gameId
-  #       schema:
-  #         type: number
-  #     - name: characterId
-  #       required: true
-  #       in: path
-  #       description: the characterId
-  #       schema:
-  #         type: number
-  #   get:
-  #     summary: retrieve character
-  #     description: retrieves either the public character or detail, depending on the player making the request
-  #     tags:
-  #       - character
-  #     operationId: getCharacter
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/BasicTokenObject'
-  #     responses:
-  #       200:
-  #         description: Success
-  #         content:
-  #           application/json:
-  #             schema:
-  #               oneOf:
-  #                 - $ref: '#/components/schemas/Character'
-  #                 - $ref: '#/components/schemas/CharacterDetail'
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #   patch:
-  #     summary: update character partial
-  #     tags:
-  #       - character
-  #     operationId: updateCharacter
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/CharacterRequest'
-  #     responses:
-  #       204:
-  #         description: Success
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}/characters:
+    post:
+      summary: create character
+      tags:
+        - character
+      operationId: createCharacter
+      parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId of the creature to delete
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Character'
+      responses:
+        201:
+          description: Success
+          headers:
+            Location:
+              description: the uri to retrieve the character
+              schema:
+                type: string
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}/characters/{characterId}:
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId
+        schema:
+          type: string
+      - name: characterId
+        required: true
+        in: path
+        description: the characterId
+        schema:
+          type: string
+    get:
+      summary: retrieve character
+      description: retrieves either the public character or detail, depending on the player making the request
+      tags:
+        - character
+      operationId: getCharacter
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Character'
+                  - $ref: '#/components/schemas/CharacterDetail'
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+    patch:
+      summary: update character partial
+      tags:
+        - character
+      operationId: updateCharacter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Character'
+      responses:
+        204:
+          description: Success
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+    delete:
+      summary: remove a character
+      description: deletes the character and its inventory
+      tags:
+        - character
+      operationId: deleteCharacter
+      responses:
+        204:
+          description: Success
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   # /games/{gameId}/characters/{characterId}/resurrect:
   #   post:
   #     summary: resurrect character
@@ -1496,6 +1511,15 @@ components:
       description: Character object
       type: object
       additionalProperties: false
+      properties:
+        name:
+          type: string
+        maxHp:
+          type: number
+        baseResist:
+          type: number
+        inventorySize:
+          type: number
     CharacterDetail:
       description: Character details
       type: object

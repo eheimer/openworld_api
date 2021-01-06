@@ -15,20 +15,20 @@ export class Character extends EntityBase{
     @Column() name: string
     @Column() maxHp: number
     @Column() hp: number
-    @Column() dmgIncrease: number
-    @Column() baseDmgIncrease: number
-    @Column() spellDmgIncrease: number
-    @Column() baseResist: number
-    @Column() resistPh: number
-    @Column() resistC: number
-    @Column() resistF: number
-    @Column() resistE: number
-    @Column() resistP: number
-    @Column() dePh: number
-    @Column() deC: number
-    @Column() deF: number
-    @Column() deE: number
-    @Column() deP: number 
+    @Column({default: 0}) dmgIncrease: number
+    @Column({default: 0}) baseDmgIncrease: number
+    @Column({default: 0}) spellDmgIncrease: number
+    @Column({default: 0}) baseResist: number
+    @Column({default: 0}) resistPh: number
+    @Column({default: 0}) resistC: number
+    @Column({default: 0}) resistF: number
+    @Column({default: 0}) resistE: number
+    @Column({default: 0}) resistP: number
+    @Column({default: 0}) dePh: number
+    @Column({default: 0}) deC: number
+    @Column({default: 0}) deF: number
+    @Column({default: 0}) deE: number
+    @Column({default: 0}) deP: number 
 
     @ManyToOne(()=> Game,{nullable:false})
     game: Game
@@ -50,3 +50,5 @@ export class Character extends EntityBase{
     pets: CreatureInstance[]
 
 }
+
+export default Character

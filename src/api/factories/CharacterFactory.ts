@@ -5,6 +5,15 @@ import { UserFactory } from "./UserFactory"
 import { GameFactory } from "./GameFactory"
 import { InventoryFactory } from "./InventoryFactory"
 
+export class PublicCharacter {
+    id: number; name: string; lastSeenAt: Date; hpPercent: number
+    constructor(character: Character) {
+        this.id = character.id
+        this.name = character.name
+        this.hpPercent = Math.round(character.maxHp/character.hp)
+    }
+}
+
 export class CharacterFactory extends EntityFactory<Character>{
     constructor() { super(Character) }
     makeDummy(faker?: Faker.FakerStatic): Character {
