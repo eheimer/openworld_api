@@ -37,7 +37,6 @@
     "express": "^4.17.1",
     "express-openapi-validator": "^4.9.0",
     "jsonwebtoken": "^8.5.1",
-    "mongodb-memory-server": "^6.9.2",
     "morgan": "^1.10.0",
     "morgan-body": "^2.5.2",
     "mysql": "^2.14.1",
