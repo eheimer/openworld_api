@@ -32,3 +32,8 @@ TEST CHARACTER CREATION, UPDATE, DELETE
 - getCharacter (ensure update, baseResist should update all resists)
 - deleteCharacter
 - getCharacter (ensure 404)
+- getGameCharacters (ensure characters are listed)
+
+TEST BATTLE CREATION
+- createBattle
+- getBattles (ensure battles are listed)

@@ -12,7 +12,7 @@ async function createPlayer(email: string, password: string, name: string): Prom
 
         const user = await factory.create({ email, name, password })
         if (user) {
-            return { playerId: user.id.toString() }
+            return { playerId: user.id }
         }
     } catch (err) {
         logger.error(`createPlayer: ${err}`)
@@ -20,7 +20,7 @@ async function createPlayer(email: string, password: string, name: string): Prom
     }
 }
 
-async function updatePlayerLastSeen(playerId: string, when?: Date): Promise<void> {
+async function updatePlayerLastSeen(playerId: number | string, when?: Date): Promise<void> {
     if (!when) {
         when = new Date(Date.now())
     }
@@ -32,7 +32,7 @@ async function updatePlayerLastSeen(playerId: string, when?: Date): Promise<void
     }
 }
 
-async function getPlayer(playerId: string): Promise<User> {
+async function getPlayer(playerId: number | string): Promise<User> {
     try {
         return await factory.getRepository().findOne(playerId)
     } catch (err) {
@@ -41,7 +41,7 @@ async function getPlayer(playerId: string): Promise<User> {
     }
 }
 
-async function getPlayerWithRelations(playerId: string): Promise<User> {
+async function getPlayerWithRelations(playerId: number | string): Promise<User> {
     try {
         return await factory.getRepository().findOne(playerId, { loadRelationIds: true })
     } catch (err) {

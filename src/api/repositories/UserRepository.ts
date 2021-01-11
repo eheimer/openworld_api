@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
-    async comparePassword(userId: number, candidatePassword: string): Promise<boolean> {
+    async comparePassword(userId: number | string, candidatePassword: string): Promise<boolean> {
         let user = await this.findOne(userId)
         if (user) {
             const password = user.password
@@ -23,7 +23,7 @@ export class UserRepository extends Repository<User>{
         return bcrypt.hashSync(password,10)
     }
 
-    async updatePassword(userId: number, password: string) {
+    async updatePassword(userId: number | string, password: string) {
         let user = await this.findOne(userId)
         if (user) {
             user.password = this.generatePasswordHash(password);

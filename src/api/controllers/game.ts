@@ -4,6 +4,8 @@ import * as respond from '../../utils/express'
 import GameService from '../services/game'
 import { makeRoutePath } from '../../utils/server'
 import Game from '../models/Game'
+import Character from '../models/Character'
+import { CharacterFactory } from '../factories/CharacterFactory'
 
 export async function getGame(req: express.Request, res: express.Response): Promise<void> {
     const { gameId } = req.params
@@ -112,7 +114,23 @@ export async function getGameCharacters(req: express.Request, res: express.Respo
         if ((game as { error }).error === 'unauthorized') {
             return respond.UNAUTHORIZED(res)
         }
-        return respond.OK(res,(game as Game).characters)
+        return respond.OK(res,await GameService.getCharacters(gameId))
+    } catch (err) {
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}
+
+export async function getGameBattles(req: express.Request, res: express.Response): Promise<void> {
+    const { gameId } = req.params
+    try {
+        const game = await GameService.authorizeMember(gameId, res.locals.auth.userId)
+        if (!game) {
+            return respond.NOT_FOUND(res)
+        }
+        if ((game as { error }).error === 'unauthorized') {
+            return respond.UNAUTHORIZED(res)
+        }
+        return respond.OK(res, await GameService.getBattles(gameId))
     } catch (err) {
         return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }

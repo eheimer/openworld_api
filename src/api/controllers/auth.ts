@@ -17,7 +17,7 @@ export async function auth(req: express.Request, res: express.Response, next: ex
         let authResponse = await AuthService.auth(token)
         if (!(authResponse as any).error) {
             res.locals.auth = {
-                userId: (authResponse as { playerId: string }).playerId
+                userId: (authResponse as { playerId: number | string }).playerId
             }
             next()
         } else {

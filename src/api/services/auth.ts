@@ -44,7 +44,7 @@ function auth(bearerToken: string): Promise<AuthResponse> {
   })
 }
 
-function createAuthToken(userId: number): Promise<{ token: string, expireAt: Date }> {
+function createAuthToken(userId: number | string): Promise<{ token: string, expireAt: Date }> {
     return new Promise(function (resolve, reject) {
         jwt.sign({ userId: userId }, privateSecret, signOptions, (err: Error | null, encoded: string | undefined) => {
             if (err === null && encoded !== undefined) {
@@ -73,7 +73,7 @@ async function login(login: string, password: string): Promise<LoginResponse> {
         }
 
         const authToken = await createAuthToken(user.id)
-        return { player: user.id.toString(), token: authToken.token }
+        return { player: user.id, token: authToken.token }
     } catch (err) {
         logger.error(`login: ${err}`)
         return Promise.reject({ error: { type: 'internal_server_error', message: 'Internal Server Error' } })

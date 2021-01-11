@@ -30,3 +30,5 @@ export class Battle extends EntityBase{
     initiator: Character
 
 }
+
+export default Battle

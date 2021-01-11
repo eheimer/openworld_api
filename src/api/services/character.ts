@@ -8,7 +8,7 @@ import Character from '../models/Character'
 
 const factory: CharacterFactory = new CharacterFactory()
 
-async function createCharacter(name: string, maxHp: number, baseResist: number, inventorySize: number, playerId: string, gameId: string): Promise<{characterId: number}> {
+async function createCharacter(name: string, maxHp: number, baseResist: number, inventorySize: number, playerId: number | string, gameId: number | string): Promise<{characterId: number | string}> {
     try {
         let player = await new UserFactory().getRepository().findOne(playerId)
         let game = await new GameFactory().getRepository().findOne(gameId)
@@ -29,7 +29,7 @@ async function createCharacter(name: string, maxHp: number, baseResist: number, 
     }
 }
 
-async function updateCharacter(characterId: string, part: DeepPartial<Character>): Promise<void> {
+async function updateCharacter(characterId: number | string, part: DeepPartial<Character>): Promise<void> {
     try {
         if (part.baseResist) {
             part.resistC = part.baseResist
@@ -45,7 +45,7 @@ async function updateCharacter(characterId: string, part: DeepPartial<Character>
     }
 }
 
-async function getCharacter(characterId: string): Promise<Character> {
+async function getCharacter(characterId: number | string): Promise<Character> {
     try {
         return await factory.getRepository().findOne(characterId, { relations: ['inventory'], loadRelationIds: { relations: ['player'] } })
     } catch (err) {
@@ -54,7 +54,7 @@ async function getCharacter(characterId: string): Promise<Character> {
     }
 }
 
-async function deleteCharacter(characterId: string): Promise<void> {
+async function deleteCharacter(characterId: number | string): Promise<void> {
     try {
         const character = await factory.getRepository().findOne(characterId, { loadRelationIds: {relations: ['inventory']}})
         if (character) {
@@ -74,13 +74,13 @@ async function deleteCharacter(characterId: string): Promise<void> {
  * @param characterId 
  * @param playerId 
  */
-async function authorizePlayer(characterId: string, playerId: string): Promise<Character | { error }> {
+async function authorizePlayer(characterId: number | string, playerId: number | string): Promise<Character | { error }> {
     try {
         const character = await factory.getRepository().findOne(characterId, { loadRelationIds: true })
         if (!character) {
             return
         }
-        if (character.player.toString() === playerId) {
+        if (character.player.toString() === playerId.toString()) {
             return character
         } else {
             return { error: 'unauthorized'}

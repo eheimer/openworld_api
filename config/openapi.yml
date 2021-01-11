@@ -316,72 +316,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  # /games/{gameId}/battles:
-  #   parameters:
-  #   - name: gameId
-  #     required: true
-  #     in: path
-  #     description: the gameId to add the battle to
-  #     schema:
-  #       type: number
-  #   post:
-  #     summary: create a new battle
-  #     description: creates a new battle, adding the player's character associated with /games/{gameId} to the battle
-  #     tags:
-  #       - battle
-  #     operationId: createBattle
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/BasicTokenObject'
-  #     responses:
-  #       201:
-  #         description: Success
-  #         headers:
-  #           Location:
-  #             description: the uri to retrieve the game
-  #             schema:
-  #               type: string
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #   get:
-  #     summary: get battles
-  #     tags: 
-  #       - battle
-  #     operationId: getBattles
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/BasicTokenObject'
-  #     responses:
-  #       200:
-  #         description: Success
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: array
-  #               items:
-  #                 type: number
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}/battles:
+    parameters:
+    - name: gameId
+      required: true
+      in: path
+      description: the gameId to add the battle to
+      schema:
+        type: string
+    post:
+      summary: create a new battle
+      description: creates a new battle, adding the player's character associated with /games/{gameId} to the battle
+      tags:
+        - battle
+      operationId: createBattle
+      responses:
+        201:
+          description: Success
+          headers:
+            Location:
+              description: the uri to retrieve the game
+              schema:
+                type: string
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+    get:
+      summary: get battles
+      tags: 
+        - battle
+      operationId: getGameBattles
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: number
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   # /games/{gameId}/battles/{battleId}:
   #   parameters:
   #   - name: gameId

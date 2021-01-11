@@ -4,7 +4,7 @@ import logger from "../logger"
 
 export abstract class EntityBase {
     @PrimaryGeneratedColumn("uuid")
-    id: number;
+    id: number | string;
 
     @CreateDateColumn()
     createdAt: Date;
