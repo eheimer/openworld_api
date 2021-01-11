@@ -5,7 +5,7 @@ import { DeepPartial } from 'typeorm'
 import UserRepository from '../repositories/UserRepository'
 
 export class PublicPlayer {
-    id: number; name: string; lastSeenAt: Date
+    id: number | string; name: string; lastSeenAt: Date
     constructor(player: User) {
         this.id = player.id
         this.name = player.name

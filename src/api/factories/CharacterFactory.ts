@@ -6,7 +6,7 @@ import { GameFactory } from "./GameFactory"
 import { InventoryFactory } from "./InventoryFactory"
 
 export class PublicCharacter {
-    id: number; name: string; lastSeenAt: Date; hpPercent: number
+    id: number | string; name: string; lastSeenAt: Date; hpPercent: number
     constructor(character: Character) {
         this.id = character.id
         this.name = character.name
