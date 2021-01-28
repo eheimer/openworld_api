@@ -32,8 +32,35 @@ tags:
     description: Item APIs
   - name: deprecated
     description: Only use for testing
+  - name: testing
+    description: Urls for testing api and sockets
 
 paths:
+  /:
+    get:
+      summary: Socket testing
+      description: Socket entrypoint for testing sockets in a browser
+      servers:
+        - url: /
+      security: []
+      tags:
+        - testing
+      operationId: socketTest
+      responses:
+        200:
+          description: Success
+          content:
+            text/html:
+              schema:
+                type: string
+        404:
+          description: Not found
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   /players:
     post:
       security: []

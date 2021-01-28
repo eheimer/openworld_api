@@ -1,0 +1,15 @@
+- player logs in (HTTP)
+    if successful, they get their playerId and a token
+    - token: must be stored by the client and sent in the auth header of each subsequent HTTP request and as a "token" property in each socket message
+- player joins (or creates) a game (HTTP)
+    namespace is created (if it didn't already exist) with the id of the game
+    message is sent to the namespace of player joining (SOCKET)
+- player enters (or creates) a battle (HTTP)
+    room is created (if it didn't already exist) with the id of the battle
+    message is sent to the room of player joining (SOCKET)
+
+Client generally will not send socket messages to the server, unless we determine at some point that that would be useful/advantagious
+All actions initiated by the client are sent via AJAX request to an HTTP API endpoint.
+Responses to the requestor are sent in the response to the HTTP request
+Game updates to the entire namespace/room are sent via socket messages
+

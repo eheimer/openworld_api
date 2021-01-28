@@ -24,6 +24,11 @@ export function OK(res: express.Response, payload: any, headers?: OutgoingHttpHe
     writeJsonResponse(res,200,payload,headers)
 }
 
+export function HTML_OK(res: express.Response, body: any, headers?: OutgoingHttpHeaders | undefined): void {
+    res.writeHead(200, { ...headers, 'Content-Type': 'text/html' })
+    res.end(body)
+}
+
 export function NOT_FOUND(res: express.Response, message?: any): void {
     writeJsonResponse(res, 404, message)
 }

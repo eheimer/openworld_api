@@ -10,9 +10,9 @@ DB.init()
         return server.createServer()
     })
     .then(server => {
-        server.api.listen(api_port, () => {
-            logger.info(`API listening on http://localhost:${api_port}`)
-        })
+        // server.api.listen(api_port, () => {
+        //     logger.info(`API listening on http://localhost:${api_port}`)
+        // })
         server.socket.listen(socket_port, () => {
             logger.info(`Socket listening on http://localhost:${socket_port}`)
         })
