@@ -41,6 +41,15 @@ async function getPlayer(playerId: number | string): Promise<User> {
     }
 }
 
+async function getPlayerWithGames(playerId: number | string): Promise<User>{
+    try {
+        return await factory.getRepository().findOne(playerId, { relations: ['games']})
+    } catch (err) {
+        logger.error(`getPlayerWithGames: ${err}`)
+        throw err
+    }
+}
+
 async function getPlayerWithRelations(playerId: number | string): Promise<User> {
     try {
         return await factory.getRepository().findOne(playerId, { loadRelationIds: true })
@@ -50,4 +59,4 @@ async function getPlayerWithRelations(playerId: number | string): Promise<User> 
     }
 }
 
-export default { createPlayer, updatePlayerLastSeen, getPlayer, getPlayerWithRelations }
+export default { createPlayer, updatePlayerLastSeen, getPlayer, getPlayerWithGames, getPlayerWithRelations }

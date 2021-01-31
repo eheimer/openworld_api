@@ -2,6 +2,7 @@ import * as express from 'express'
 import * as respond from '../../utils/express'
 
 import GameService from '../services/game'
+import PlayerService from '../services/player'
 import { makeRoutePath } from '../../utils/server'
 import Game from '../models/Game'
 import Character from '../models/Character'
@@ -18,6 +19,20 @@ export async function getGame(req: express.Request, res: express.Response): Prom
             return respond.UNAUTHORIZED(res)
         }
         return respond.OK(res,game)
+    } catch (err) {
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}
+
+export async function getGames(req: express.Request, res: express.Response): Promise<void> {
+    const { playerId } = req.params
+    try {
+        
+        const player = await PlayerService.getPlayerWithGames(playerId)
+        if (!player) {
+            return respond.NOT_FOUND(res)
+        }
+        return respond.OK(res, player.games)
     } catch (err) {
         return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }

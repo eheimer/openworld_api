@@ -136,6 +136,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
+  /players/{playerId}/games:
+    get:
+      summary: get player's /games
+      description: returns the games a player has access to
+      operationId: getGames
+      parameters:
+      - name: playerId
+        required: true
+        in: path
+        description: The player id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: number
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'        
   /games:
     post:
       summary: create a new game
