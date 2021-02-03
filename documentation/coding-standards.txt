@@ -7,6 +7,7 @@
 /src> typescript code
     /api> all api code
         /controllers> route controllers
+        /dto> json-serializable objects that exist on both client/server
         /factories> entity factories
         /models> typeorm entities
         /repositories> custom typeorm repositories

@@ -140,6 +140,9 @@ paths:
     get:
       summary: get player's /games
       description: returns the games a player has access to
+      tags:
+        - player
+        - game
       operationId: getGames
       parameters:
       - name: playerId
@@ -156,7 +159,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: number
+                  $ref: '#/components/schemas/GameCharacter'
         404:
           description: resource not found
           content:
@@ -1607,6 +1610,19 @@ components:
           type: string
         maxPlayers:
           type: number
+    GameCharacter:
+      description: Game and Character
+      type: object
+      additionalProperties: false
+      properties:
+        game:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Game'
+        character:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Character'
     GameRequest:
       description: Game requests
       type: object

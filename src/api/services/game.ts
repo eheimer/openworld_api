@@ -1,5 +1,6 @@
 import { DeepPartial } from 'typeorm'
 import logger from '../../utils/logger'
+import { GameCharacter } from '../dto/GameCharacter'
 import { BattleFactory } from '../factories/BattleFactory'
 import { CharacterFactory, PublicCharacter } from '../factories/CharacterFactory'
 import { GameFactory} from '../factories/GameFactory'

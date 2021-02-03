@@ -7,6 +7,7 @@ import { makeRoutePath } from '../../utils/server'
 import Game from '../models/Game'
 import Character from '../models/Character'
 import { CharacterFactory } from '../factories/CharacterFactory'
+import { GameCharacter } from '../dto/GameCharacter'
 
 export async function getGame(req: express.Request, res: express.Response): Promise<void> {
     const { gameId } = req.params
@@ -27,12 +28,12 @@ export async function getGame(req: express.Request, res: express.Response): Prom
 export async function getGames(req: express.Request, res: express.Response): Promise<void> {
     const { playerId } = req.params
     try {
-        
-        const player = await PlayerService.getPlayerWithGames(playerId)
+        const player = await PlayerService.getPlayer(playerId)
         if (!player) {
             return respond.NOT_FOUND(res)
         }
-        return respond.OK(res, player.games)
+        const gameChars: GameCharacter[] = await PlayerService.getGameCharacters(playerId)
+        return respond.OK(res, gameChars)
     } catch (err) {
         return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
