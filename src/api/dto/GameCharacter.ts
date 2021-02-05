@@ -8,12 +8,15 @@ import Character from "../models/Character"
  */
 @Entity()
 export class GameCharacter {
-    constructor(game: Game, char: Character) {
+    constructor(game: Game, char: Character, owner? : boolean) {
         this.game = game
         this.character = char
+        this.owner = owner || false
     }
         
     game: Game
 
     character: Character
+
+    owner: boolean
 }

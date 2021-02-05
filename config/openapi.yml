@@ -379,6 +379,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}/players:
+    parameters:
+    - name: gameId
+      required: true
+      in: path
+      description: the gameId to invite a player to
+      schema:
+        type: string
+    post:
+      summary: invite a player to a game
+      tags:
+        - game
+      operationId: invitePlayer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        201:
+          description: Success
+          headers:
+            Location:
+              description: the uri to retrieve the game
+              schema:
+                type: string
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   /games/{gameId}/battles:
     parameters:
     - name: gameId

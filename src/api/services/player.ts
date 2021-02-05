@@ -45,9 +45,18 @@ async function getPlayer(playerId: number | string): Promise<User> {
     }
 }
 
+async function findPlayerWithEmail(email: string): Promise<User> {
+    try {
+        return await factory.getRepository().findOne({email: email})
+    } catch (err) {
+        logger.error(`findPlayerWithEmail: ${err}`)
+        throw err
+    }
+}
+
 async function getPlayerWithGames(playerId: number | string): Promise<User>{
     try {
-        return await factory.getRepository().findOne(playerId, { relations: ['games']})
+        return await factory.getRepository().findOne(playerId, { relations: ['games', 'games.owner']})
     } catch (err) {
         logger.error(`getPlayerWithGames: ${err}`)
         throw err
@@ -60,7 +69,7 @@ async function getGameCharacters(playerId: number | string): Promise<GameCharact
     const gameChars: GameCharacter[] = []
     for (let game of games) {
         const char = await charFactory.getRepository().findOne({ player: { id: playerId }, game: game })
-        gameChars.push(new GameCharacter(game, char))
+        gameChars.push(new GameCharacter(game, char, game.owner.id === playerId))
     }
       return gameChars
   } catch (err) {
@@ -78,4 +87,4 @@ async function getPlayerWithRelations(playerId: number | string): Promise<User> 
     }
 }
 
-export default { createPlayer, updatePlayerLastSeen, getPlayer, getPlayerWithGames, getPlayerWithRelations, getGameCharacters }
+export default { createPlayer, updatePlayerLastSeen, getPlayer, findPlayerWithEmail, getPlayerWithGames, getPlayerWithRelations, getGameCharacters }

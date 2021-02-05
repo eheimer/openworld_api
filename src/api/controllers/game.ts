@@ -5,8 +5,7 @@ import GameService from '../services/game'
 import PlayerService from '../services/player'
 import { makeRoutePath } from '../../utils/server'
 import Game from '../models/Game'
-import Character from '../models/Character'
-import { CharacterFactory } from '../factories/CharacterFactory'
+import User from '../models/User'
 import { GameCharacter } from '../dto/GameCharacter'
 
 export async function getGame(req: express.Request, res: express.Response): Promise<void> {
@@ -80,6 +79,25 @@ export async function deleteGame(req: express.Request, res: express.Response): P
             return respond.UNAUTHORIZED(res)
         }
         await GameService.deleteGame(gameId)
+        return respond.NO_CONTENT(res)
+    } catch (err) {
+        return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+}
+
+export async function invitePlayer(req: express.Request, res: express.Response): Promise<void> {
+    const { gameId } = req.params
+    const { email } = req.body
+    try {
+        const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
+        const player = await PlayerService.findPlayerWithEmail(email)
+        if (!game || !player) {
+            return respond.NOT_FOUND(res)
+        }
+        if ((game as { error }).error === 'unauthorized') {
+            return respond.UNAUTHORIZED(res)
+        }
+        await GameService.addPlayer((game as Game).id, (player as User).id)
         return respond.NO_CONTENT(res)
     } catch (err) {
         return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
