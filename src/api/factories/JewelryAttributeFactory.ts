@@ -8,7 +8,7 @@ export class JewelryAttributeFactory extends EntityFactory<JewelryAttribute>{
         if (!faker) faker = defaultFaker;
         const j = new JewelryAttribute()
         j.name = faker.fake("{{hacker.adjective}} {{hacker.noun}}")
-        j.value = `${faker.random.number({min:1,max:3})}-${faker.random.number({min:4,max:10})}`
+        j.value = `${faker.datatype.number({min:1,max:3})}-${faker.datatype.number({min:4,max:10})}`
         return j
     }
 

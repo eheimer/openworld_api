@@ -9,8 +9,8 @@ export class DamageTypeFactory extends EntityFactory<DamageType>{
         const d = new DamageType()
         d.name= faker.hacker.noun()
         d.description = faker.hacker.phrase()
-        d.chaos = faker.random.boolean()
-        d.display = faker.random.boolean()
+        d.chaos = faker.datatype.boolean()
+        d.display = faker.datatype.boolean()
         d.soundurl = faker.system.filePath()
         d.imgurl = faker.system.filePath()
         return d

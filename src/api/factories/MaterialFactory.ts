@@ -8,8 +8,8 @@ export class MaterialFactory extends EntityFactory<Material>{
         if (!faker) faker = defaultFaker;
         const m = new Material()
         m.name = faker.hacker.noun()
-        m.weaponDurability = faker.random.number()
-        m.canSpawn = faker.random.boolean()
+        m.weaponDurability = faker.datatype.number()
+        m.canSpawn = faker.datatype.boolean()
         m.base = faker.hacker.noun()
         return m
     }

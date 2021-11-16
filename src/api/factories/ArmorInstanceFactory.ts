@@ -12,8 +12,8 @@ export class ArmorInstanceFactory extends EntityFactory<ArmorInstance>{
     makeDummy(faker?: Faker.FakerStatic): ArmorInstance {
         if (!faker) faker = defaultFaker;
         const a = new ArmorInstance()
-        a.equipped = faker.random.boolean()
-        a.damaged = faker.random.boolean()
+        a.equipped = faker.datatype.boolean()
+        a.damaged = faker.datatype.boolean()
         return a
     }
     async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<ArmorInstance> {

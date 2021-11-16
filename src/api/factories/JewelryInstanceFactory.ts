@@ -10,8 +10,8 @@ export class JewelryInstanceFactory extends EntityFactory<JewelryInstance>{
     makeDummy(faker?: Faker.FakerStatic): JewelryInstance {
         if (!faker) faker = defaultFaker;
         const a = new JewelryInstance()
-        a.equipped = faker.random.boolean()
-        a.damaged = faker.random.boolean()
+        a.equipped = faker.datatype.boolean()
+        a.damaged = faker.datatype.boolean()
         a.attributes = []
         return a
     }

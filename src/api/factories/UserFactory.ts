@@ -27,7 +27,7 @@ export class UserFactory extends EntityFactory<User>{
         u.name = faker.name.firstName()
         u.email = faker.internet.email()
         u.password = faker.internet.password()
-        u.isAdmin = faker.random.boolean()
+        u.isAdmin = faker.datatype.boolean()
         u.lastSeenAt = faker.date.recent(7)
         return u
     }

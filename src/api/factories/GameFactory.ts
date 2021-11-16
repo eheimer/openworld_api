@@ -11,7 +11,7 @@ export class GameFactory extends EntityFactory<Game>{
         if (!faker) faker = defaultFaker;
         const g = new Game()
         g.name = faker.fake('{{hacker.adjective}} {{hacker.noun}}')
-        g.maxPlayers = faker.random.number(5)
+        g.maxPlayers = faker.datatype.number(5)
         g.players = []
         return g 
     }

@@ -22,7 +22,7 @@ export class MonsterFactory extends EntityFactory<Monster>{
         m.resistPh = this.rangeString()
         m.magery = this.rangeString()
         m.evalInt = this.rangeString()
-        m.aggroPriority = faker.random.number(5)
+        m.aggroPriority = faker.datatype.number(5)
         m.tactics = this.rangeString()
         m.resistSpell = this.rangeString()
         m.anatomy = this.rangeString()
@@ -31,15 +31,15 @@ export class MonsterFactory extends EntityFactory<Monster>{
         m.intelligence = this.rangeString()
         m.baseDmg = this.rangeString()
         m.preferredFood = faker.hacker.noun()
-        m.controlSlots = faker.random.number(5)
+        m.controlSlots = faker.datatype.number(5)
         m.specials = faker.lorem.paragraph()
-        m.animate = faker.random.boolean()
+        m.animate = faker.datatype.boolean()
         m.packInstinct = faker.hacker.noun()
         m.tracking = this.rangeString()
         return m
     }
 
     rangeString():string {
-        return `${defaultFaker.random.number({min:1,max:3})}-${defaultFaker.random.number({min:4,max:10})}`
+        return `${defaultFaker.datatype.number({min:1,max:3})}-${defaultFaker.datatype.number({min:4,max:10})}`
     }
 }

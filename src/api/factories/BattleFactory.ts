@@ -10,7 +10,7 @@ export class BattleFactory extends EntityFactory<Battle>{
     makeDummy(faker?: Faker.FakerStatic): Battle {
         if (!faker) faker = defaultFaker;
         const b = new Battle()
-        b.round = faker.random.number(7)
+        b.round = faker.datatype.number(7)
         b.participants = []
         b.enemies = []
         b.friendlies = []

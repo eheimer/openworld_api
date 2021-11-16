@@ -10,8 +10,8 @@ export class ActiveConditionFactory extends EntityFactory<ActiveCondition>{
     makeDummy(faker?: Faker.FakerStatic): ActiveCondition {
         if (!faker) faker = defaultFaker;
         const a = new ActiveCondition()
-        a.roundsRemaining = faker.random.number(5)
-        a.cooldownRemaining = faker.random.number(5)
+        a.roundsRemaining = faker.datatype.number(5)
+        a.cooldownRemaining = faker.datatype.number(5)
         return a
     }
     async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<ActiveCondition> {

@@ -9,13 +9,13 @@ export class ConditionFactory extends EntityFactory<Condition>{
         const c = new Condition()
         c.name = faker.fake('{{hacker.adjective}} {{hacker.noun}}')
         c.actionReplace = faker.hacker.adjective()
-        c.duration = faker.random.number(10)
-        c.damage = `${faker.random.number({ min: 1, max: 3 })}-${faker.random.number({ min: 4, max: 10 })}`
-        c.delay = faker.random.number(3)
-        c.cooldown = faker.random.number(3)
-        c.removeOnHit = faker.random.boolean()
-        c.removeOnHit = faker.random.boolean()
-        c.allowMultiple = faker.random.boolean()
+        c.duration = faker.datatype.number(10)
+        c.damage = `${faker.datatype.number({ min: 1, max: 3 })}-${faker.datatype.number({ min: 4, max: 10 })}`
+        c.delay = faker.datatype.number(3)
+        c.cooldown = faker.datatype.number(3)
+        c.removeOnHit = faker.datatype.boolean()
+        c.removeOnHit = faker.datatype.boolean()
+        c.allowMultiple = faker.datatype.boolean()
         return c
     }
 
