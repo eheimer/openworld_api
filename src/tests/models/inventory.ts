@@ -32,7 +32,7 @@ describe('save', () => {
         const c = await factory.makeDummyWithAll()
         let cdb = await factory.create(c)
         
-        cdb.gold = faker.random.number(500)
+        cdb.gold = faker.datatype.number(500)
         await repo.save(cdb);
 
         const bdb2 = await repo.findOne(cdb.id);

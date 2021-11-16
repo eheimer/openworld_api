@@ -8,7 +8,7 @@ export class SpecialMoveFactory extends EntityFactory<SpecialMove>{
         if (!faker) faker = defaultFaker;
         const s = new SpecialMove()
         s.name = faker.fake('{{hacker.verb}} {{hacker.noun}}')
-        s.stamina = faker.random.number(10)
+        s.stamina = faker.datatype.number(10)
         return s
     }
 }

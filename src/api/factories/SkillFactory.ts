@@ -8,7 +8,7 @@ export class SkillFactory extends EntityFactory<Skill>{
         if (!faker) faker = defaultFaker;
         const s = new Skill()
         s.name = faker.hacker.ingverb()
-        s.spellbook = faker.random.boolean()
+        s.spellbook = faker.datatype.boolean()
         return s
     }
 }

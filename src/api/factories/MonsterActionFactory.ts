@@ -7,9 +7,9 @@ export class MonsterActionFactory extends EntityFactory<MonsterAction>{
     makeDummy(faker?: Faker.FakerStatic): MonsterAction {
         if (!faker) faker = defaultFaker;
         const m = new MonsterAction()
-        m.value = faker.random.number(10)
+        m.value = faker.datatype.number(10)
         m.description = faker.hacker.verb()
-        m.weight = faker.random.number(5)
+        m.weight = faker.datatype.number(5)
         return m
     }
 }

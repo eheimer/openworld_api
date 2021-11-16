@@ -8,7 +8,7 @@ export class JewelryInstanceAttributeFactory extends EntityFactory<JewelryInstan
     makeDummy(faker?: Faker.FakerStatic): JewelryInstanceAttribute {
         if (!faker) faker = defaultFaker;
         const a = new JewelryInstanceAttribute()
-        a.value = faker.random.number(20)
+        a.value = faker.datatype.number(20)
         return a
     }
     async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<JewelryInstanceAttribute> {

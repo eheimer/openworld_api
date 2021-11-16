@@ -32,7 +32,7 @@ describe('save', () => {
         let aidb = await factory.create(ai)
         let value = aidb.value
         
-        aidb.value = faker.random.number(20)
+        aidb.value = faker.datatype.number(20)
         await repo.save(aidb);
 
         const acdb2 = await repo.findOne(aidb.id);

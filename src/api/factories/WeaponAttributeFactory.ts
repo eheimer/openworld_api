@@ -8,8 +8,8 @@ export class WeaponAttributeFactory extends EntityFactory<WeaponAttribute>{
         if (!faker) faker = defaultFaker;
         const w = new WeaponAttribute()
         w.name = faker.fake("{{hacker.adjective}} {{hacker.noun}}")
-        w.value = `${faker.random.number({min:1,max:3})}-${faker.random.number({min:4,max:10})}`
-        w.hand = faker.random.number(2)
+        w.value = `${faker.datatype.number({min:1,max:3})}-${faker.datatype.number({min:4,max:10})}`
+        w.hand = faker.datatype.number(2)
         return w
     }
 

@@ -32,7 +32,7 @@ describe('save', () => {
         const b = await factory.makeDummyWithAll()
         let bdb = await factory.create(b)
         
-        bdb.round = faker.random.number(8)
+        bdb.round = faker.datatype.number(8)
         await repo.save(bdb);
 
         const bdb2 = await repo.findOne(bdb.id);

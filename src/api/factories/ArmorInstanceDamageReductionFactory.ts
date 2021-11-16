@@ -9,7 +9,7 @@ export class ArmorInstanceDamageReductionFactory extends EntityFactory<ArmorInst
         if (!faker) faker = defaultFaker;
         const a = new ArmorInstanceDamageReduction()
         a.name = faker.hacker.noun()
-        a.value = faker.random.number(20)
+        a.value = faker.datatype.number(20)
         return a
     }
     async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<ArmorInstanceDamageReduction> {

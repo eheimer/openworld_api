@@ -8,9 +8,9 @@ export class GemFactory extends EntityFactory<Gem>{
         if (!faker) faker = defaultFaker;
         const g = new Gem()
         g.name = faker.hacker.noun()
-        g.weight = faker.random.number()
+        g.weight = faker.datatype.number()
         g.image = faker.system.filePath()
-        g.level = faker.random.number()
+        g.level = faker.datatype.number()
         return g
     }
 

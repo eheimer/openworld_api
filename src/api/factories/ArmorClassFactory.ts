@@ -8,7 +8,7 @@ export class ArmorClassFactory extends EntityFactory<ArmorClass>{
         if (!faker) faker = defaultFaker;
         const a = new ArmorClass()
         a.name = faker.fake("{{hacker.adjective}} {{hacker.noun}}")
-        a.durability = faker.random.number(10)
+        a.durability = faker.datatype.number(10)
         return a
     }
 }

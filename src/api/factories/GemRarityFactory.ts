@@ -8,7 +8,7 @@ export class GemRarityFactory extends EntityFactory<GemRarity>{
         if (!faker) faker = defaultFaker;
         const g = new GemRarity()
         g.name = faker.hacker.adjective()
-        g.durability = faker.random.number()
+        g.durability = faker.datatype.number()
         return g
     }
 

@@ -8,7 +8,7 @@ export class WeaponInstanceAttributeFactory extends EntityFactory<WeaponInstance
     makeDummy(faker?: Faker.FakerStatic): WeaponInstanceAttribute {
         if (!faker) faker = defaultFaker;
         const a = new WeaponInstanceAttribute()
-        a.value = faker.random.number(20)
+        a.value = faker.datatype.number(20)
         return a
     }
     async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<WeaponInstanceAttribute> {

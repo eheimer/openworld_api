@@ -8,7 +8,7 @@ export class SpellbookAttributeFactory extends EntityFactory<SpellbookAttribute>
         if (!faker) faker = defaultFaker;
         const s = new SpellbookAttribute()
         s.name = faker.fake("{{hacker.adjective}} {{hacker.noun}}")
-        s.value = `${faker.random.number({min:1,max:3})}-${faker.random.number({min:4,max:10})}`
+        s.value = `${faker.datatype.number({min:1,max:3})}-${faker.datatype.number({min:4,max:10})}`
         return s
     }
 

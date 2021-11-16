@@ -7,7 +7,7 @@ export class ClassDamageReductionFactory extends EntityFactory<ClassDamageReduct
     makeDummy(faker?: Faker.FakerStatic): ClassDamageReduction {
         if (!faker) faker = defaultFaker;
         const r = new ClassDamageReduction()
-        r.level = faker.random.number(5)
+        r.level = faker.datatype.number(5)
         r.reduction = faker.hacker.noun()
         return r
     }
