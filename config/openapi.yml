@@ -479,70 +479,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  # /games/{gameId}/battles/{battleId}:
-  #   parameters:
-  #   - name: gameId
-  #     required: true
-  #     in: path
-  #     description: the gameId of the battle to retrieve
-  #     schema:
-  #       type: number
-  #   - name: battleId
-  #     required: true
-  #     in: path
-  #     description: the battle to retrieve
-  #     schema:
-  #       type: number
-  #   get:
-  #     summary: retrieve a battle
-  #     tags:
-  #       - battle
-  #     operationId: getBattle
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/BasicTokenObject'
-  #     responses:
-  #       200:
-  #         description: Success
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/Battle'
-  #       404:
-  #         description: resource not found
-  #         content:
-  #             application/json:
-  #               schema:
-  #                 $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #   delete:
-  #     summary: delete a battle
-  #     tags:
-  #       - battle
-  #     operationId: deleteBattle
-  #     responses:
-  #       204:
-  #         description: Success
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}/battles/{battleId}:
+    parameters:
+    - name: gameId
+      required: true
+      in: path
+      description: the gameId of the battle to retrieve
+      schema:
+        type: number
+    - name: battleId
+      required: true
+      in: path
+      description: the battle to retrieve
+      schema:
+        type: number
+    get:
+      summary: retrieve a battle
+      tags:
+        - battle
+      operationId: getBattle
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasicTokenObject'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Battle'
+        404:
+          description: resource not found
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+    delete:
+      summary: delete a battle
+      tags:
+        - battle
+      operationId: deleteBattle
+      responses:
+        204:
+          description: Success
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   # /games/{gameId}/battles/{battleId}/enemies:
   #   post:
   #     summary: add enemy to battle
