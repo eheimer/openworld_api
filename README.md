@@ -87,3 +87,7 @@ Error flow:
 - Controllers should package the error into a 500 response to the client.
 
 Service methods are generally the only ones that should be logging to the console.  Others will just bubble up the errors to the service.  Services will rethrow the errors back to the controller so that the controller can handle what details to present to the client in a 500 response.
+
+## API Testing
+
+API test procedure has been implemented in Postman
