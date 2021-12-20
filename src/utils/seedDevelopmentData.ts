@@ -3,12 +3,11 @@
  */
 import logger from './logger'
 import DB from './db'
-import { TestSeeder } from '../seed/TestSeeder'
+import { getConnection } from 'typeorm';
 
 DB.init()
-    .then(() => {
-        //change this to DevelopmentSeeder once we have it
-        return TestSeeder.seed()
+    .then(async () => {
+        await getConnection(DB.getInstance().conn).runMigrations()
     })
     .then(() => {
         return

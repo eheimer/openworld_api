@@ -1,4 +1,4 @@
-import { Connection, createConnection, EntityTarget, getRepository, Repository } from 'typeorm'
+import { createConnection, EntityTarget, getRepository, Repository } from 'typeorm'
 import conf from '../config'
 
 import RepoContainer from '../api/repositories'

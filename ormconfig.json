@@ -16,7 +16,7 @@
 }, {
   "name": "dev",
   "type": "sqlite",
-  "database": "development.db",
+  "database": "development.sqlite",
   "synchronize": true,
   "logging": "all",
   "entities": [
