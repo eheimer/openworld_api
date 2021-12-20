@@ -1,7 +1,7 @@
 [{
   "name": "test",
   "type": "sqlite",
-  "database": "test.db",
+  "database": ":memory:",
   "synchronize": true,
   "logging": "warn",
   "entities": [
