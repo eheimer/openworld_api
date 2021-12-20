@@ -11,7 +11,7 @@ beforeAll(async () => {
     await DB.init();
     repo = factory.getRepository()
 })
-describe('save', () => {
+describe('activeCondition', () => {
     it('should create activeCondition', async () => {
         const before = Date.now()
         const ac = await factory.makeDummyWithAll()
@@ -24,13 +24,13 @@ describe('save', () => {
         expect(fetched.roundsRemaining).toBe(ac.roundsRemaining)
         expect(fetched.cooldownRemaining).toBe(ac.cooldownRemaining)
 
-        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before - 1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
     it('should update activeCondition', async () => {
         const ac = await factory.makeDummyWithAll()
         let acdb = await factory.create(ac)
-        
+
         acdb.roundsRemaining = 21
         await repo.save(acdb);
 

@@ -11,30 +11,30 @@ beforeAll(async () => {
     await DB.init();
     repo = factory.getRepository()
 })
-describe('save', () => {
+describe('spellbookInstance', () => {
     it('should create spellbookInstance', async () => {
         const before = Date.now()
         const ai = await factory.makeDummyWithAll()
         let aidb = await factory.create(ai)
         const after = Date.now()
-        const fetched = await repo.findOne(aidb.id,{loadRelationIds:true})
+        const fetched = await repo.findOne(aidb.id, { loadRelationIds: true })
 
         expect(fetched).not.toBeNull()
 
         expect(fetched.inventory).toBe(ai.inventory.id)
 
-        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before - 1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
     it('should update spellbookInstance', async () => {
         const ai = await factory.makeDummyWithAll()
         let aidb = await factory.create(ai)
         let i = await new InventoryFactory().createDummy()
-        
+
         aidb.inventory = i
         await repo.save(aidb);
 
-        const acdb2 = await repo.findOne(aidb.id,{loadRelationIds:true});
+        const acdb2 = await repo.findOne(aidb.id, { loadRelationIds: true });
 
         expect(acdb2.inventory).toEqual(i.id);
     })

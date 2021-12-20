@@ -11,13 +11,13 @@ beforeAll(async () => {
     await DB.init();
     repo = factory.getRepository()
 })
-describe('save', () => {
+describe('inventory', () => {
     it('should create inventory', async () => {
         const before = Date.now()
         const c = await factory.makeDummyWithAll()
         let cdb = await factory.create(c)
         const after = Date.now()
-        const fetched = await repo.findOne(cdb.id,{loadRelationIds:true})
+        const fetched = await repo.findOne(cdb.id, { loadRelationIds: true })
 
         expect(fetched).not.toBeNull()
 
@@ -25,13 +25,13 @@ describe('save', () => {
         expect(fetched.limit).toBe(c.limit)
         expect(fetched.gold).toBe(c.gold)
 
-        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before - 1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
     it('should update inventory', async () => {
         const c = await factory.makeDummyWithAll()
         let cdb = await factory.create(c)
-        
+
         cdb.gold = faker.datatype.number(500)
         await repo.save(cdb);
 
@@ -42,7 +42,7 @@ describe('save', () => {
     it('should save inventory without weapons', async () => {
         const b = await factory.makeDummyWithAll()
         delete b.weapons
-        await expect(factory.create(b)).resolves.toMatchObject({gold: b.gold})
+        await expect(factory.create(b)).resolves.toMatchObject({ gold: b.gold })
     })
 })
 

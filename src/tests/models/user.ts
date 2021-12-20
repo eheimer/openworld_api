@@ -14,13 +14,13 @@ beforeAll(async () => {
     userRepo = factory.getRepository() as UserRepository
 })
 
-describe('save', () => {
+describe('user', () => {
     it('should create user', async () => {
         const email = faker.internet.email()
         const password = faker.internet.password()
         const name = faker.name.firstName()
         const before = Date.now()
-        const dbuser = await factory.create({email,password,name})
+        const dbuser = await factory.create({ email, password, name })
 
         const after = Date.now()
 
@@ -33,7 +33,7 @@ describe('save', () => {
         expect(fetched!.password).not.toBe(password)
         expect(fetched!.isAdmin).toBe(false)
 
-        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before - 1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
 
@@ -41,7 +41,7 @@ describe('save', () => {
         const user = await factory.createDummy();
         const newname = faker.name.firstName()
         user.name = newname
-        await userRepo.update(user.id,user)
+        await userRepo.update(user.id, user)
         const user2 = await userRepo.findOne(user.id);
 
         expect(user2!.name).toEqual(newname)
@@ -106,10 +106,10 @@ describe('comparePassword', () => {
     it('should update password hash if password is updated', async () => {
         const user1 = factory.makeDummy()
         let dbuser1 = await factory.create(user1)
-        expect(await userRepo.comparePassword(dbuser1.id,user1.password)).toBe(true)
+        expect(await userRepo.comparePassword(dbuser1.id, user1.password)).toBe(true)
 
         const password2 = faker.internet.password()
-        const dbUser2 = await userRepo.updatePassword(dbuser1.id,password2)
+        const dbUser2 = await userRepo.updatePassword(dbuser1.id, password2)
         expect(await userRepo.comparePassword(dbUser2.id, password2)).toBe(true)
         expect(await userRepo.comparePassword(dbUser2.id, user1.password)).toBe(false)
     })
@@ -123,6 +123,6 @@ describe('toJSON', () => {
         let obj = JSON.parse(json);
         expect(Date.parse(obj.createdAt)).toBe<Number>(user.createdAt.getTime())
         expect(Date.parse(obj.updatedAt)).toBe<Number>(user.updatedAt.getTime())
-        expect(obj).toMatchObject({email:user.email, name:user.name})
+        expect(obj).toMatchObject({ email: user.email, name: user.name })
     })
 })

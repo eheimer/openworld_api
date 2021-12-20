@@ -10,13 +10,13 @@ beforeAll(async () => {
     await DB.init();
     repo = factory.getRepository()
 })
-describe('save', () => {
+describe('jewelryInstance', () => {
     it('should create jewelryInstance', async () => {
         const before = Date.now()
         const ai = await factory.makeDummyWithAll()
         let aidb = await factory.create(ai)
         const after = Date.now()
-        const fetched = await repo.findOne(aidb.id,{loadRelationIds:true})
+        const fetched = await repo.findOne(aidb.id, { loadRelationIds: true })
 
         expect(fetched).not.toBeNull()
 
@@ -26,14 +26,14 @@ describe('save', () => {
         expect(fetched.inventory).toBe(ai.inventory.id)
         expect(fetched.gem).toBe(ai.gem.id)
 
-        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before - 1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
     it('should update jewelryInstance', async () => {
         const ai = await factory.makeDummyWithAll()
         let aidb = await factory.create(ai)
         let equipped = aidb.equipped
-        
+
         aidb.equipped = !equipped
         await repo.save(aidb);
 

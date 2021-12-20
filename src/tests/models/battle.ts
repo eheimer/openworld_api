@@ -12,26 +12,26 @@ beforeAll(async () => {
     await DB.init();
     repo = factory.getRepository()
 })
-describe('save', () => {
+describe('battle', () => {
     it('should create battle', async () => {
         const before = Date.now()
         const b = await factory.makeDummyWithAll()
         let bdb = await factory.create(b)
         const after = Date.now()
-        const fetched = await repo.findOne(bdb.id,{loadRelationIds:true})
+        const fetched = await repo.findOne(bdb.id, { loadRelationIds: true })
 
         expect(fetched).not.toBeNull()
 
         expect(fetched.round).toBe(b.round)
         expect(fetched.initiator).toBe(b.initiator.id)
 
-        expect(before-1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
+        expect(before - 1000).toBeLessThanOrEqual(fetched!.createdAt.getTime())
         expect(fetched!.createdAt.getTime()).toBeLessThanOrEqual(after)
     })
     it('should update battle', async () => {
         const b = await factory.makeDummyWithAll()
         let bdb = await factory.create(b)
-        
+
         bdb.round = faker.datatype.number(8)
         await repo.save(bdb);
 
