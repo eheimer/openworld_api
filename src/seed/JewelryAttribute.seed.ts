@@ -16,4 +16,4 @@ export const JewelryAttributeSeed = [
   { id: 15, name: `Dexterity`, value: `1` },
   { id: 16, name: `Strength`, value: `1` },
   { id: 17, name: `Enhance Potion`, value: `1-20` }
-];
+]

@@ -1,5 +1,5 @@
-import dotenvExtended from 'dotenv-extended';
-import dotenvParseVariables from 'dotenv-parse-variables';
+import dotenvExtended from 'dotenv-extended'
+import dotenvParseVariables from 'dotenv-parse-variables'
 
 const env = dotenvExtended.load({
   path: process.env.ENV_FILE,
@@ -9,28 +9,20 @@ const env = dotenvExtended.load({
   silent: false,
   errorOnMissing: true,
   errorOnExtra: true
-});
+})
 
-const parsedEnv = dotenvParseVariables(env);
-type LogLevel =
-  | 'silent'
-  | 'error'
-  | 'warn'
-  | 'info'
-  | 'http'
-  | 'verbose'
-  | 'debug'
-  | 'silly';
+const parsedEnv = dotenvParseVariables(env)
+type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'debug' | 'silly'
 
 interface Config {
-  env: string;
-  morganLogger: boolean;
-  morganBodyLogger: boolean;
-  openworldDevLogger: boolean;
-  loggerLevel: LogLevel;
-  privateKeyFile: string;
-  privateKeyPassphrase: string;
-  publicKeyFile: string;
+  env: string
+  morganLogger: boolean
+  morganBodyLogger: boolean
+  openworldDevLogger: boolean
+  loggerLevel: LogLevel
+  privateKeyFile: string
+  privateKeyPassphrase: string
+  publicKeyFile: string
 }
 
 const config: Config = {
@@ -42,6 +34,6 @@ const config: Config = {
   privateKeyFile: parsedEnv.PRIVATE_KEY_FILE as string,
   privateKeyPassphrase: parsedEnv.PRIVATE_KEY_PASSPHRASE as string,
   publicKeyFile: parsedEnv.PUBLIC_KEY_FILE as string
-};
+}
 
-export default config;
+export default config

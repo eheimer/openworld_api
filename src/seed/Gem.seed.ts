@@ -143,4 +143,4 @@ export const GemSeed = [
     rarity: 2,
     category: null
   }
-];
+]

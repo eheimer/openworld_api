@@ -9,4 +9,4 @@ export const ArmorClassSeed = [
   { id: 8, name: `Platemail`, durability: 0 },
   { id: 9, name: `Dragonmail`, durability: 0 },
   { id: 10, name: `Woodland`, durability: 0 }
-];
+]

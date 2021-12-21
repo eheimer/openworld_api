@@ -14,4 +14,4 @@ export const MaterialSeed = [
   { id: 13, name: `Heartwood`, weaponDurability: 75, canSpawn: false, base: 2 },
   { id: 14, name: `Bloodwood`, weaponDurability: 75, canSpawn: false, base: 2 },
   { id: 15, name: `Frostwood`, weaponDurability: 85, canSpawn: false, base: 2 }
-];
+]

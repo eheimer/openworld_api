@@ -10,4 +10,4 @@ export const ItemCategorySeed = [
   { id: 9, name: `Foods` },
   { id: 10, name: `Tools` },
   { id: 11, name: `Miscellaneous` }
-];
+]

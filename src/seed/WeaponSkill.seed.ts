@@ -4,4 +4,4 @@ export const WeaponSkillSeed = [
   { id: 3, name: `Swords` },
   { id: 4, name: `Archery` },
   { id: 5, name: `Throwing` }
-];
+]

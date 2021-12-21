@@ -1,8 +1,8 @@
-import { Socket } from 'socket.io';
+import { Socket } from 'socket.io'
 
 export abstract class SocketHandler {
-  event: string;
+  event: string
   async on(socket: Socket, msg: string) {
-    return;
+    return
   }
 }

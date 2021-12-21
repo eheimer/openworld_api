@@ -46,4 +46,4 @@ export const SkillSeed = [
   { id: 45, name: `Wrestling`, spellbook: false },
   { id: 46, name: `Spellweaving`, spellbook: true },
   { id: 47, name: `Mysticism`, spellbook: true }
-];
+]

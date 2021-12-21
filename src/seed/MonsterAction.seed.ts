@@ -800,4 +800,4 @@ export const MonsterActionSeed = [
   { id: 560, value: 0, description: ``, weight: 2, monster: 58, action: 4 },
   { id: 561, value: 0, description: ``, weight: 2, monster: 58, action: 19 },
   { id: 562, value: 0, description: ``, weight: 1, monster: 58, action: 36 }
-];
+]

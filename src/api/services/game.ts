@@ -1,17 +1,14 @@
-import { DeepPartial } from 'typeorm';
+import { DeepPartial } from 'typeorm'
 
-import logger from '../../utils/logger';
-import { BattleFactory } from '../factories/BattleFactory';
-import {
-  CharacterFactory,
-  PublicCharacter
-} from '../factories/CharacterFactory';
-import { GameFactory } from '../factories/GameFactory';
-import { UserFactory } from '../factories/UserFactory';
-import { Battle } from '../models/Battle';
-import Game from '../models/Game';
+import logger from '../../utils/logger'
+import { BattleFactory } from '../factories/BattleFactory'
+import { CharacterFactory, PublicCharacter } from '../factories/CharacterFactory'
+import { GameFactory } from '../factories/GameFactory'
+import { UserFactory } from '../factories/UserFactory'
+import { Battle } from '../models/Battle'
+import Game from '../models/Game'
 
-const factory: GameFactory = new GameFactory();
+const factory: GameFactory = new GameFactory()
 
 async function createGame(
   name: string,
@@ -19,145 +16,119 @@ async function createGame(
   owner: number | string
 ): Promise<{ gameId: number | string }> {
   try {
-    const player = await new UserFactory().getRepository().findOne(owner);
+    const player = await new UserFactory().getRepository().findOne(owner)
     const game = await factory.create({
       name,
       maxPlayers,
       owner: player,
       players: [player]
-    });
-    return { gameId: game.id };
+    })
+    return { gameId: game.id }
   } catch (err) {
-    logger.error(`createGame: ${err}`);
-    throw err;
+    logger.error(`createGame: ${err}`)
+    throw err
   }
 }
 
-async function updateGame(
-  gameId: number | string,
-  part: DeepPartial<Game>
-): Promise<void> {
+async function updateGame(gameId: number | string, part: DeepPartial<Game>): Promise<void> {
   try {
-    await factory.getRepository().update(gameId, part);
+    await factory.getRepository().update(gameId, part)
   } catch (err) {
-    logger.error(`updateGame: ${err}`);
-    throw err;
+    logger.error(`updateGame: ${err}`)
+    throw err
   }
 }
 
 async function getGame(gameId: number | string): Promise<Game> {
   try {
-    return await factory.getRepository().findOne(gameId);
+    return await factory.getRepository().findOne(gameId)
   } catch (err) {
-    logger.error(`getGame: ${err}`);
-    throw err;
+    logger.error(`getGame: ${err}`)
+    throw err
   }
 }
 
 async function getGameWithRelations(gameId: number | string): Promise<Game> {
   try {
-    return await factory
-      .getRepository()
-      .findOne(gameId, { loadRelationIds: true });
+    return await factory.getRepository().findOne(gameId, { loadRelationIds: true })
   } catch (err) {
-    logger.error(`getGameWithRelations: ${err}`);
-    throw err;
+    logger.error(`getGameWithRelations: ${err}`)
+    throw err
   }
 }
 
 async function deleteGame(gameId: string): Promise<void> {
   try {
-    await factory.getRepository().delete(gameId);
+    await factory.getRepository().delete(gameId)
   } catch (err) {
-    logger.error(`deleteGame: ${err}`);
-    throw err;
+    logger.error(`deleteGame: ${err}`)
+    throw err
   }
 }
 
-async function addPlayer(
-  gameId: number | string,
-  playerId: number | string
-): Promise<void> {
+async function addPlayer(gameId: number | string, playerId: number | string): Promise<void> {
   try {
-    const game = await factory
-      .getRepository()
-      .findOne(gameId, { relations: ['players'] });
-    const player = await new UserFactory().getRepository().findOne(playerId);
+    const game = await factory.getRepository().findOne(gameId, { relations: ['players'] })
+    const player = await new UserFactory().getRepository().findOne(playerId)
     if (game && player && !game.players.includes(player)) {
-      game.players[game.players.length] = player;
-      await factory.getRepository().save(game);
+      game.players[game.players.length] = player
+      await factory.getRepository().save(game)
     }
   } catch (err) {
-    logger.error(`addPlayer: ${err}`);
-    throw err;
+    logger.error(`addPlayer: ${err}`)
+    throw err
   }
 }
 
-async function removePlayer(
-  gameId: number | string,
-  playerId: number | string
-): Promise<void> {
+async function removePlayer(gameId: number | string, playerId: number | string): Promise<void> {
   try {
-    const game = await factory
-      .getRepository()
-      .findOne(gameId, { relations: ['players'] });
+    const game = await factory.getRepository().findOne(gameId, { relations: ['players'] })
     if (game) {
       const filtered = game.players.filter((item) => {
-        return item.id.toString() != playerId.toString();
-      });
-      game.players = filtered;
-      await factory.getRepository().save(game);
+        return item.id.toString() != playerId.toString()
+      })
+      game.players = filtered
+      await factory.getRepository().save(game)
     }
   } catch (err) {
-    logger.error(`addPlayer: ${err}`);
-    throw err;
+    logger.error(`addPlayer: ${err}`)
+    throw err
   }
 }
 
-async function getCharacters(
-  gameId: number | string
-): Promise<PublicCharacter[]> {
-  const characters = await new CharacterFactory()
-    .getRepository()
-    .find({ game: { id: gameId } });
-  const pub: PublicCharacter[] = [];
+async function getCharacters(gameId: number | string): Promise<PublicCharacter[]> {
+  const characters = await new CharacterFactory().getRepository().find({ game: { id: gameId } })
+  const pub: PublicCharacter[] = []
   for (const character of characters) {
-    pub[pub.length] = new PublicCharacter(character);
+    pub[pub.length] = new PublicCharacter(character)
   }
-  return pub;
+  return pub
 }
 
 async function getBattles(gameId: number | string): Promise<Battle[]> {
-  console.log({ gameId, num: gameId });
-  const battles = await new BattleFactory()
-    .getRepository()
-    .find({ game: { id: gameId } });
-  console.log({ battles });
-  return battles;
+  console.log({ gameId, num: gameId })
+  const battles = await new BattleFactory().getRepository().find({ game: { id: gameId } })
+  console.log({ battles })
+  return battles
 }
 
 /**
  * Validates that playerId is the game owner
  */
-async function authorizeOwner(
-  gameId: number | string,
-  playerId: number | string
-): Promise<Game | { error }> {
+async function authorizeOwner(gameId: number | string, playerId: number | string): Promise<Game | { error }> {
   try {
-    const game = await factory
-      .getRepository()
-      .findOne(gameId, { loadRelationIds: true });
+    const game = await factory.getRepository().findOne(gameId, { loadRelationIds: true })
     if (!game) {
-      return;
+      return
     }
     if (game.owner.toString() === playerId.toString()) {
-      return game;
+      return game
     } else {
-      return { error: 'unauthorized' };
+      return { error: 'unauthorized' }
     }
   } catch (err) {
-    logger.error(`authorizeOwner: ${err}`);
-    throw err;
+    logger.error(`authorizeOwner: ${err}`)
+    throw err
   }
 }
 
@@ -167,31 +138,26 @@ async function authorizeOwner(
  * @param gameId
  * @param playerId
  */
-async function authorizeMember(
-  gameId: number | string,
-  playerId: number | string
-): Promise<Game | { error }> {
+async function authorizeMember(gameId: number | string, playerId: number | string): Promise<Game | { error }> {
   try {
-    let game = await authorizeOwner(gameId, playerId);
+    let game = await authorizeOwner(gameId, playerId)
     if (!game || (game as { error }).error) {
-      game = await factory
-        .getRepository()
-        .findOne(gameId, { loadRelationIds: true });
+      game = await factory.getRepository().findOne(gameId, { loadRelationIds: true })
     }
     if (!game) {
-      return;
+      return
     }
     console.log({
       contains: ((game as Game).players as any).includes(playerId)
-    });
+    })
     if (((game as Game).players as any).includes(playerId)) {
-      return game;
+      return game
     } else {
-      return { error: 'unauthorized' };
+      return { error: 'unauthorized' }
     }
   } catch (err) {
-    logger.error(`authorizeMember: ${err}`);
-    throw err;
+    logger.error(`authorizeMember: ${err}`)
+    throw err
   }
 }
 
@@ -206,22 +172,18 @@ async function authorizePlayerCharacter(
   playerId: number | string
 ): Promise<Game | { error }> {
   try {
-    const character = await new CharacterFactory()
-      .getRepository()
-      .findOne(characterId, { loadRelationIds: true });
+    const character = await new CharacterFactory().getRepository().findOne(characterId, { loadRelationIds: true })
     if (character) {
-      const player = await new UserFactory()
-        .getRepository()
-        .findOne(playerId, { loadRelationIds: true });
+      const player = await new UserFactory().getRepository().findOne(playerId, { loadRelationIds: true })
       if (player && player.games.includes(character.game)) {
-        return await factory.getRepository().findOne(character.game);
+        return await factory.getRepository().findOne(character.game)
       } else {
-        return { error: 'unauthorized' };
+        return { error: 'unauthorized' }
       }
     }
   } catch (err) {
-    logger.error(`authorizePlayerCharacter: ${err}`);
-    throw err;
+    logger.error(`authorizePlayerCharacter: ${err}`)
+    throw err
   }
 }
 
@@ -238,4 +200,4 @@ export default {
   authorizePlayerCharacter,
   getCharacters,
   getBattles
-};
+}

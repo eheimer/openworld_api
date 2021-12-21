@@ -1,7 +1,7 @@
-import { Entity } from 'typeorm';
+import { Entity } from 'typeorm'
 
-import Character from '../models/Character';
-import Game from '../models/Game';
+import Character from '../models/Character'
+import Game from '../models/Game'
 
 /**
  * @description dto object that contains a game, and optionally a character
@@ -9,14 +9,14 @@ import Game from '../models/Game';
 @Entity()
 export class GameCharacter {
   constructor(game: Game, char: Character, owner?: boolean) {
-    this.game = game;
-    this.character = char;
-    this.owner = owner || false;
+    this.game = game
+    this.character = char
+    this.owner = owner || false
   }
 
-  game: Game;
+  game: Game
 
-  character: Character;
+  character: Character
 
-  owner: boolean;
+  owner: boolean
 }

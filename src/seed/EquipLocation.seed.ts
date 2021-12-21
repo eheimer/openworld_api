@@ -5,4 +5,4 @@ export const EquipLocationSeed = [
   { id: 4, name: `hands` },
   { id: 5, name: `legs` },
   { id: 6, name: `body` }
-];
+]

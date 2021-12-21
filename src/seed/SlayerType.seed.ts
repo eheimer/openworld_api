@@ -21,4 +21,4 @@ export const SlayerTypeSeed = [
   { id: 20, name: `Scorpion Slayer` },
   { id: 21, name: `Spider Slayer` },
   { id: 22, name: `Reptile (Super Slayer)` }
-];
+]

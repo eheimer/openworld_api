@@ -870,4 +870,4 @@ export const WeaponSeed = [
     secondaryMove: 6,
     material: 1
   }
-];
+]

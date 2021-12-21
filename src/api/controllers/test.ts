@@ -1,6 +1,6 @@
-import * as express from 'express';
+import * as express from 'express'
 
-import * as respond from '../../utils/express';
+import * as respond from '../../utils/express'
 
 /**
  * The purpose of this route is to serve up the socket.io client for browsers to be able to test the socket.io functionality
@@ -8,12 +8,9 @@ import * as respond from '../../utils/express';
  * @param req
  * @param res
  */
-export async function socketTest(
-  req: express.Request,
-  res: express.Response
-): Promise<void> {
+export async function socketTest(req: express.Request, res: express.Response): Promise<void> {
   try {
-    console.log('Socket test');
+    console.log('Socket test')
     respond.HTML_OK(
       res,
       `
@@ -32,8 +29,8 @@ export async function socketTest(
    </script>
    <body>Hello world</body>
 </html>`
-    );
+    )
   } catch (err) {
-    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error');
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
 }

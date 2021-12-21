@@ -15,4 +15,4 @@ export const ArmorAttributeSeed = [
   { id: 14, name: `Mage Armor`, value: `` },
   { id: 15, name: `Stamina Increase`, value: `1-10` },
   { id: 16, name: `Lower Mana Cost`, value: `1-8` }
-];
+]

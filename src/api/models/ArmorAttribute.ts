@@ -1,6 +1,6 @@
-import { Entity } from 'typeorm';
+import { Entity } from 'typeorm'
 
-import { MagicalItemAttribute } from '../../utils/entities/MagicalItemAttribute';
+import { MagicalItemAttribute } from '../../utils/entities/MagicalItemAttribute'
 
 /**
  * @description a MagicalItemAttribute that can be applied to an ArmorInstance

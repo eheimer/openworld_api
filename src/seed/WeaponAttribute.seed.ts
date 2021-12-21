@@ -47,4 +47,4 @@ export const WeaponAttributeSeed = [
   { id: 40, name: `Brittle`, value: ``, hand: 0, skill: null },
   { id: 41, name: `Balanced`, value: ``, hand: 2, skill: null },
   { id: 42, name: `Velocity`, value: ``, hand: 0, skill: 4 }
-];
+]

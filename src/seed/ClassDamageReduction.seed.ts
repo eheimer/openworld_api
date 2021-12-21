@@ -249,4 +249,4 @@ export const ClassDamageReductionSeed = [
   { id: 248, level: 4, reduction: `2-6`, armorClass: 10, damageType: 3 },
   { id: 249, level: 4, reduction: `3-7`, armorClass: 10, damageType: 4 },
   { id: 250, level: 4, reduction: `2-6`, armorClass: 10, damageType: 5 }
-];
+]

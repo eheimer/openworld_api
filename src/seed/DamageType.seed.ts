@@ -71,4 +71,4 @@ export const DamageTypeSeed = [
     soundurl: `/sound/clip_direct.mp3`,
     imgurl: `/images/damage/lowest_icon.png`
   }
-];
+]

@@ -21,4 +21,4 @@ export const SpecialMoveSeed = [
   { id: 20, name: `Serpent Arrow`, stamina: 25 },
   { id: 21, name: `Shadow Strike`, stamina: 20 },
   { id: 22, name: `Whirlwind Attack`, stamina: 40 }
-];
+]

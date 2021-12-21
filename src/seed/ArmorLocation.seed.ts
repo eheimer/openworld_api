@@ -5,4 +5,4 @@ export const ArmorLocationSeed = [
   { id: 4, name: `Gloves`, location: 4 },
   { id: 5, name: `Leggings`, location: 5 },
   { id: 6, name: `Tunic`, location: 6 }
-];
+]

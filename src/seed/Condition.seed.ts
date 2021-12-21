@@ -271,4 +271,4 @@ export const ConditionSeed = [
     allowMultiple: false,
     damageType: null
   }
-];
+]

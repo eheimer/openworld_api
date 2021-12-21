@@ -631,4 +631,4 @@ export const ActionSeed = [
     initiative: 0,
     spellDmgRange: ``
   }
-];
+]

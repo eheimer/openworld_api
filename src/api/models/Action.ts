@@ -1,5 +1,5 @@
-import { EntityBase } from '../../utils/entities/EntityBase';
-import { Column, Entity } from 'typeorm';
+import { EntityBase } from '../../utils/entities/EntityBase'
+import { Column, Entity } from 'typeorm'
 
 /**
  * @description a unique action available to a monster on its turn
@@ -9,19 +9,19 @@ export class Action extends EntityBase {
   /**
    *  example: 'Paralyze Spell'
    */
-  @Column() name: string;
+  @Column() name: string
   /**
    *  default value for the action
    */
-  @Column() value: number;
+  @Column() value: number
 
-  @Column() description: string;
+  @Column() description: string
   /**
    * determines order of actions
    */
-  @Column() initiative: number;
+  @Column() initiative: number
   /**
    * base damage min/max for spells
    */
-  @Column() spellDmgRange: string; //base damage min/max for spells
+  @Column() spellDmgRange: string //base damage min/max for spells
 }

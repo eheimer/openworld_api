@@ -8,4 +8,4 @@ export const SpellbookAttributeSeed = [
   { id: 7, name: `Lower Reagent Cost`, value: `1` },
   { id: 8, name: `Mana Increase`, value: `1-8` },
   { id: 9, name: `Slayer`, value: `1-20` }
-];
+]

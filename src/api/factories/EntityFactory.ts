@@ -1,18 +1,18 @@
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm'
 
-import { getRepo } from '../../utils/db';
+import { getRepo } from '../../utils/db'
 
 export abstract class EntityFactory<T> {
-  private _repo: Repository<T>;
-  protected faker: Faker.FakerStatic;
+  private _repo: Repository<T>
+  protected faker: Faker.FakerStatic
 
   constructor(private entityClass: new () => T) {}
 
   getRepository(): Repository<T> {
     if (!this._repo) {
-      this._repo = getRepo(this.entityClass.name, this.entityClass);
+      this._repo = getRepo(this.entityClass.name, this.entityClass)
     }
-    return this._repo;
+    return this._repo
   }
 
   /**
@@ -24,19 +24,19 @@ export abstract class EntityFactory<T> {
    * @returns the persisted entity
    */
   async create(t: DeepPartial<T>): Promise<T> {
-    const a = await this.getRepository().create(t);
-    this.postCreate(a, t);
-    await this.getRepository().save(a);
-    return a;
+    const a = await this.getRepository().create(t)
+    this.postCreate(a, t)
+    await this.getRepository().save(a)
+    return a
   }
 
   async createAll(t: DeepPartial<T>[]): Promise<T[]> {
-    const created = [];
+    const created = []
     for (const item of t) {
-      const a: T = await this.create(item);
-      created.push(a);
+      const a: T = await this.create(item)
+      created.push(a)
     }
-    return created;
+    return created
   }
 
   /**
@@ -46,7 +46,7 @@ export abstract class EntityFactory<T> {
    * @param orig the original object from which the item was created
    */
   protected async postCreate(created: T, orig: DeepPartial<T>) {
-    return;
+    return
   }
 
   /**
@@ -56,10 +56,10 @@ export abstract class EntityFactory<T> {
    *
    * @returns the unpersisted entity
    */
-  abstract makeDummy(faker?: Faker.FakerStatic): T;
+  abstract makeDummy(faker?: Faker.FakerStatic): T
 
   async makeDummyWithAll(faker?: Faker.FakerStatic): Promise<T> {
-    return this.makeDummy(faker);
+    return this.makeDummy(faker)
   }
 
   /**
@@ -70,19 +70,19 @@ export abstract class EntityFactory<T> {
    * @returns the persisted entity
    */
   async createDummy(faker?: Faker.FakerStatic): Promise<T> {
-    const t = await this.makeDummyWithAll(faker);
-    await this.getRepository().save(t);
-    return t;
+    const t = await this.makeDummyWithAll(faker)
+    await this.getRepository().save(t)
+    return t
   }
 
   /**
    *
    */
   async findOrCreateDummy(faker?: Faker.FakerStatic): Promise<T> {
-    let t = await this.getRepository().findOne();
+    let t = await this.getRepository().findOne()
     if (!t) {
-      t = await this.createDummy(faker);
+      t = await this.createDummy(faker)
     }
-    return t;
+    return t
   }
 }

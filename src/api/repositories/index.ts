@@ -1,13 +1,13 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm'
 
-import UserRepository from './UserRepository';
+import UserRepository from './UserRepository'
 
 export class RepoContainer {
-  User: UserRepository;
+  User: UserRepository
 
   constructor(connection: string) {
-    this.User = getCustomRepository(UserRepository, connection);
+    this.User = getCustomRepository(UserRepository, connection)
   }
 }
 
-export default RepoContainer;
+export default RepoContainer
