@@ -26,6 +26,9 @@ export async function socketTest(
    
    <script>
       var socket = io();
+      socket.on('test', (arg)=>{
+        console.log('Test message received: ', arg);
+      })
    </script>
    <body>Hello world</body>
 </html>`

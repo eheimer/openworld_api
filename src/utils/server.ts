@@ -14,6 +14,7 @@ import config from '../config';
 import { expressDevLogger } from '../utils/express_dev_logger';
 import logger from '../utils/logger';
 import socket from '../utils/socket';
+import { handlers } from '../api/sockethandlers';
 
 export const routes = {};
 
@@ -41,7 +42,7 @@ export async function createServer(): Promise<{
 
   //will need this later for the socket.io stuff
   const httpServer: Http2Server = http.createServer(apiServer);
-  socket(httpServer);
+  socket(httpServer, handlers);
 
   // middleware
   apiServer.use(bodyParser.json());

@@ -51,14 +51,13 @@ Method call flow:
 - are strictly responsible for receiving and parsing requests, passing
   the data off to appropriate services, and parsing and returning data
   back in the response.
+- req/res should be processed here, and not passed directly to services
 - should not deal directly with factories and repositories
 
 #### Services
 - encapsulate the vast bulk of the game logic
 - responsible for all error logging
-- need to know nothing about the request
-- if a decision is to be made about what data to collect based on the
-  request, that logic should reside in the controller, not the service.
+- need to know nothing about the request or response
 
 #### Factories
 - should be used for creating/building entities, as well as mock

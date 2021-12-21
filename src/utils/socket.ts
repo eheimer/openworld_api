@@ -1,8 +1,9 @@
-import logger from './logger';
 import { Server } from 'socket.io';
-// import { fixedOrigin } from './corsFixer'
 
-export default (app) => {
+import logger from './logger';
+import { SocketHandler } from './SocketHandler';
+
+export default (app, handlers: SocketHandler[]) => {
   const io = new Server(app, {
     // path: '/classic-mode'
     // origins: fixedOrigin(hosts)
@@ -10,6 +11,12 @@ export default (app) => {
 
   io.on('connection', (socket) => {
     logger.info('Client connected');
+    //console.log({ handlers })
+    //register socket handlers
+    for (const handler of handlers) {
+      console.log('registering handler: ', handler.event);
+      socket.on(handler.event, handler.on);
+    }
   });
 
   return io;
