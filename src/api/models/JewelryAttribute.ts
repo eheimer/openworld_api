@@ -1,7 +1,5 @@
-import { MagicalItemAttribute } from "../../utils/entities/MagicalItemAttribute"
-import { Entity } from "typeorm"
+import { MagicalItemAttribute } from '../../utils/entities/MagicalItemAttribute';
+import { Entity } from 'typeorm';
 
 @Entity()
-export class JewelryAttribute extends MagicalItemAttribute{
-    
-}
+export class JewelryAttribute extends MagicalItemAttribute {}

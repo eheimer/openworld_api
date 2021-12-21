@@ -1,14 +1,16 @@
-import { EntityBase } from "../../utils/entities/EntityBase"
-import { Column, Entity, OneToOne } from "typeorm"
-import { EquipLocation } from "./EquipLocation"
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+
+import { EntityBase } from '../../utils/entities/EntityBase';
+import { EquipLocation } from './EquipLocation';
 
 /**
  * @description location that Armor can be equipped
  */
 @Entity()
-export class ArmorLocation extends EntityBase{
-    @Column() name: string
+export class ArmorLocation extends EntityBase {
+  @Column() name: string;
 
-    @OneToOne(()=>EquipLocation)
-    location: EquipLocation
+  @OneToOne(() => EquipLocation)
+  @JoinColumn()
+  location: EquipLocation;
 }

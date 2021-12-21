@@ -1,24 +1,30 @@
-import {BeforeInsert, BeforeUpdate, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
-import { validate } from 'class-validator'
-import logger from "../logger"
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  CreateDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm';
+import { validate } from 'class-validator';
+import logger from '../logger';
 
 export abstract class EntityBase {
-    @PrimaryGeneratedColumn("uuid")
-    id: number | string;
+  @PrimaryGeneratedColumn('uuid')
+  id: number | string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn({})
-    updatedAt: Date;
+  @UpdateDateColumn({})
+  updatedAt: Date;
 
-    @BeforeInsert()
-    @BeforeUpdate()
-    async validate() {
-        const errors = await validate(this)
-        if (errors.length > 0) {
-            logger.error({errors})
-            throw new Error('Validation failed!')
-        }
+  @BeforeInsert()
+  @BeforeUpdate()
+  async validate() {
+    const errors = await validate(this);
+    if (errors.length > 0) {
+      logger.error({ errors });
+      throw new Error('Validation failed!');
     }
+  }
 }

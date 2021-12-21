@@ -1,24 +1,24 @@
-import { EntityBase } from "../../utils/entities/EntityBase"
-import { Column, Entity, ManyToMany, ManyToOne } from "typeorm"
-import { Skill } from "./Skill"
-import { SlayerType } from "./SlayerType"
-import { SpellbookAttribute } from "./SpellbookAttribute"
-import { SpellbookInstance } from "./SpellbookInstance"
+import { Column, Entity, ManyToOne } from 'typeorm';
+
+import { EntityBase } from '../../utils/entities/EntityBase';
+import { Skill } from './Skill';
+import { SlayerType } from './SlayerType';
+import { SpellbookAttribute } from './SpellbookAttribute';
+import { SpellbookInstance } from './SpellbookInstance';
 
 @Entity()
-export class SpellbookInstanceAttribute extends EntityBase{
-    @Column() value: number
-    
-    @ManyToOne(() => SpellbookAttribute,{nullable: false})
-    attribute: SpellbookAttribute
+export class SpellbookInstanceAttribute extends EntityBase {
+  @Column() value: number;
 
-    @ManyToOne(() => Skill,{nullable: true})
-    skill: Skill
+  @ManyToOne(() => SpellbookAttribute, { nullable: false })
+  attribute: SpellbookAttribute;
 
-    @ManyToOne(() => SlayerType,{nullable: true})
-    slayer: SlayerType
+  @ManyToOne(() => Skill, { nullable: true })
+  skill: Skill;
 
-    @ManyToOne(()=>SpellbookInstance,{nullable: true})
-    spellbook: SpellbookInstance
+  @ManyToOne(() => SlayerType, { nullable: true })
+  slayer: SlayerType;
 
+  @ManyToOne(() => SpellbookInstance, { nullable: true })
+  spellbook: SpellbookInstance;
 }

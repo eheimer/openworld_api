@@ -1,18 +1,22 @@
-import * as express from 'express'
-import * as respond from '../../utils/express'
+import * as express from 'express';
 
-import { makeRoutePath } from '../../utils/server'
+import * as respond from '../../utils/express';
 
 /**
  * The purpose of this route is to serve up the socket.io client for browsers to be able to test the socket.io functionality
- * 
- * @param req 
- * @param res 
+ *
+ * @param req
+ * @param res
  */
-export async function socketTest(req: express.Request, res: express.Response): Promise<void> {
+export async function socketTest(
+  req: express.Request,
+  res: express.Response
+): Promise<void> {
   try {
-      console.log('Socket test')
-    respond.HTML_OK(res,`
+    console.log('Socket test');
+    respond.HTML_OK(
+      res,
+      `
 <!DOCTYPE html>
 <html>
    <head>
@@ -24,8 +28,9 @@ export async function socketTest(req: express.Request, res: express.Response): P
       var socket = io();
    </script>
    <body>Hello world</body>
-</html>`)
-  } catch(err) {
-    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+</html>`
+    );
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error');
   }
 }

@@ -1,18 +1,18 @@
-import { EntityBase } from "../../utils/entities/EntityBase"
-import { Column, Entity, ManyToOne } from "typeorm"
-import { GemRarity } from "./GemRarity"
-import { ItemCategory } from "./ItemCategory"
+import { EntityBase } from '../../utils/entities/EntityBase';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { GemRarity } from './GemRarity';
+import { ItemCategory } from './ItemCategory';
 
 @Entity()
-export class Gem extends EntityBase{
-    @Column() name: string
-    @Column() weight: number
-    @Column() image: string
-    @Column() level: number
+export class Gem extends EntityBase {
+  @Column() name: string;
+  @Column() weight: number;
+  @Column() image: string;
+  @Column() level: number;
 
-    @ManyToOne(() => GemRarity)
-    rarity: GemRarity
+  @ManyToOne(() => GemRarity)
+  rarity: GemRarity;
 
-    @ManyToOne(() => ItemCategory)
-    category: ItemCategory
+  @ManyToOne(() => ItemCategory)
+  category: ItemCategory;
 }

@@ -1,22 +1,22 @@
-import { EntityBase } from "../../utils/entities/EntityBase"
-import { Column, Entity } from "typeorm"
-import Game from "../models/Game"
-import Character from "../models/Character"
+import { Entity } from 'typeorm';
+
+import Character from '../models/Character';
+import Game from '../models/Game';
 
 /**
  * @description dto object that contains a game, and optionally a character
  */
 @Entity()
 export class GameCharacter {
-    constructor(game: Game, char: Character, owner? : boolean) {
-        this.game = game
-        this.character = char
-        this.owner = owner || false
-    }
-        
-    game: Game
+  constructor(game: Game, char: Character, owner?: boolean) {
+    this.game = game;
+    this.character = char;
+    this.owner = owner || false;
+  }
 
-    character: Character
+  game: Game;
 
-    owner: boolean
+  character: Character;
+
+  owner: boolean;
 }
