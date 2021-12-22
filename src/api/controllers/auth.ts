@@ -3,6 +3,7 @@ import AuthService from '../services/auth'
 import PlayerService from '../services/player'
 import * as respond from '../../utils/express'
 import { ErrorResponse } from '../../../types'
+import { LoginResponse } from '../dto/LoginResponse'
 
 /**
  * Security controller - attach playerId to the response to make further authorization tests possible
@@ -40,9 +41,9 @@ export async function login(req: express.Request, res: express.Response): Promis
         throw new Error(`unsupported ${resp}`)
       }
     } else {
-      const { player, token } = resp as { token: string; player: string }
-      await PlayerService.updatePlayerLastSeen(player)
-      respond.OK(res, { player, token })
+      const response = new LoginResponse(resp)
+      await PlayerService.updatePlayerLastSeen(response.player)
+      respond.OK(res, response)
     }
   } catch (err) {
     respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')

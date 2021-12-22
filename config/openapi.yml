@@ -2,7 +2,7 @@ openapi: 3.0.2
 info:
   title: Openworld API
   description: Openworld API
-  termsOfService: http://swagger.io.terms 
+  termsOfService: http://swagger.io.terms
   contact:
     email: eric@heimerman.org
   license:
@@ -13,7 +13,7 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-- url: /api/v1
+  - url: /api/v1
 
 tags:
   - name: game
@@ -73,20 +73,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              additionalProperties: false
-              required:
-                - email
-                - password
-                - name
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                name:
-                  type: string
+              $ref: '#/components/schemas/PlayerRequest'
       responses:
         201:
           description: Success
@@ -109,12 +96,12 @@ paths:
         - player
       operationId: getPlayer
       parameters:
-      - name: playerId
-        required: true
-        in: path
-        description: The player id to retrieve
-        schema:
-          type: string
+        - name: playerId
+          required: true
+          in: path
+          description: The player id to retrieve
+          schema:
+            type: string
       responses:
         200:
           description: Success
@@ -127,9 +114,9 @@ paths:
         404:
           description: Player not found
           content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/FailResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
         500:
           description: Internal Server Error
           content:
@@ -145,12 +132,12 @@ paths:
         - game
       operationId: getGames
       parameters:
-      - name: playerId
-        required: true
-        in: path
-        description: The player id
-        schema:
-          type: string
+        - name: playerId
+          required: true
+          in: path
+          description: The player id
+          schema:
+            type: string
       responses:
         200:
           description: Success
@@ -171,7 +158,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FailResponse'        
+                $ref: '#/components/schemas/FailResponse'
   /games:
     post:
       summary: create a new game
@@ -228,7 +215,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BasicTokenObject'
+                $ref: '#/components/schemas/LoginResponse'
         404:
           description: Invalid Login/Password
           content:
@@ -243,12 +230,12 @@ paths:
                 $ref: '#/components/schemas/FailResponse'
   /games/{gameId}:
     parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: The gameId to delete
-      schema:
-        type: string
+      - name: gameId
+        required: true
+        in: path
+        description: The gameId to delete
+        schema:
+          type: string
     get:
       summary: retrieve game
       operationId: getGame
@@ -265,9 +252,9 @@ paths:
         404:
           description: Player not found
           content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/FailResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
         500:
           description: Internal Server Error
           content:
@@ -323,18 +310,18 @@ paths:
                 $ref: '#/components/schemas/FailResponse'
   /games/{gameId}/players/{playerId}:
     parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId
-      schema:
-        type: string
-    - name: playerId
-      required: true
-      in: path
-      description: the playerId
-      schema:
-        type: string
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId
+        schema:
+          type: string
+      - name: playerId
+        required: true
+        in: path
+        description: the playerId
+        schema:
+          type: string
     post:
       summary: add a player to a game
       description: player id must exist at /players/{playerId}
@@ -381,12 +368,12 @@ paths:
                 $ref: '#/components/schemas/FailResponse'
   /games/{gameId}/players:
     parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId to invite a player to
-      schema:
-        type: string
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId to invite a player to
+        schema:
+          type: string
     post:
       summary: invite a player to a game
       tags:
@@ -427,12 +414,12 @@ paths:
                 $ref: '#/components/schemas/FailResponse'
   /games/{gameId}/battles:
     parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId to add the battle to
-      schema:
-        type: string
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId to add the battle to
+        schema:
+          type: string
     post:
       summary: create a new battle
       description: creates a new battle, adding the player's character associated with /games/{gameId} to the battle
@@ -455,7 +442,7 @@ paths:
                 $ref: '#/components/schemas/FailResponse'
     get:
       summary: get battles
-      tags: 
+      tags:
         - battle
       operationId: getGameBattles
       responses:
@@ -481,42 +468,36 @@ paths:
                 $ref: '#/components/schemas/FailResponse'
   /games/{gameId}/battles/{battleId}:
     parameters:
-    - name: gameId
-      required: true
-      in: path
-      description: the gameId of the battle to retrieve
-      schema:
-        type: number
-    - name: battleId
-      required: true
-      in: path
-      description: the battle to retrieve
-      schema:
-        type: number
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId of the battle to retrieve
+        schema:
+          type: number
+      - name: battleId
+        required: true
+        in: path
+        description: the battle to retrieve
+        schema:
+          type: number
     get:
       summary: retrieve a battle
       tags:
         - battle
       operationId: getBattle
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BasicTokenObject'
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Battle'
+                $ref: '#/components/schemas/BattleResponse'
         404:
           description: resource not found
           content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/FailResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
         500:
           description: Internal Server Error
           content:
@@ -543,47 +524,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FailResponse'
-  # /games/{gameId}/battles/{battleId}/enemies:
-  #   post:
-  #     summary: add enemy to battle
-  #     description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
-  #     tags:
-  #       - battle
-  #     operationId: createEnemy
-  #     parameters:
-  #     - name: gameId
-  #       required: true
-  #       in: path
-  #       description: the gameId of the battle to modify
-  #       schema:
-  #         type: number
-  #     - name: battleId
-  #       required: true
-  #       in: path
-  #       description: the battle to modify
-  #       schema:
-  #         type: number
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/MonsterRequest'
-  #     responses:
-  #       204:
-  #         description: Success
-  #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
-  #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  /games/{gameId}/battles/{battleId}/enemies:
+    post:
+      summary: add enemy to battle
+      description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
+      tags:
+        - battle
+      operationId: createEnemy
+      parameters:
+        - name: gameId
+          required: true
+          in: path
+          description: the gameId of the battle to modify
+          schema:
+            type: number
+        - name: battleId
+          required: true
+          in: path
+          description: the battle to modify
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonsterRequest'
+      responses:
+        204:
+          description: Success
+        404:
+          description: resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
   # /games/{gameId}/battles/{battleId}/friendlies:
   #   post:
   #     summary: add friendly to battle
@@ -1061,7 +1042,7 @@ paths:
   #       content:
   #         application/json:
   #           schema:
-  #             $ref: '#/components/schemas/CreatureRequest'
+  #             $ref: '#/components/schemas/PetRequest'
   #     responses:
   #       204:
   #         description: Success
@@ -1107,7 +1088,7 @@ paths:
   # /games/{gameId}/monsters:
   #   get:
   #     summary: get monsters
-  #     tags: 
+  #     tags:
   #       - lists
   #     operationId: getMonsters
   #     parameters:
@@ -1147,7 +1128,7 @@ paths:
   # /games/{gameId}/damageTypes:
   #   get:
   #     summary: get damage types
-  #     tags: 
+  #     tags:
   #       - lists
   #     operationId: getDamageTypes
   #     parameters:
@@ -1187,7 +1168,7 @@ paths:
   # /games/{gameId}/conditions:
   #   get:
   #     summary: get conditions
-  #     tags: 
+  #     tags:
   #       - lists
   #     operationId: getConditions
   #     parameters:
@@ -1236,7 +1217,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Character'
+              $ref: '#/components/schemas/CharacterRequest'
       responses:
         201:
           description: Success
@@ -1599,22 +1580,11 @@ components:
       scheme: bearer
       bearerFormat: JWT
   schemas:
-    BasicTokenObject:
-      description: Basic token object passed along with most requests
-      type: object
-      additionalProperties: false
-      required:
-        - token
-        - player
-      properties:
-        token:
-          type: string
-        player:
-          type: number
     Player:
       description: Player object
       type: object
       additionalProperties: false
+
     PlayerDetail:
       description: Player details
       type: object
@@ -1644,11 +1614,20 @@ components:
       description: Player request
       type: object
       additionalProperties: false
-      allOf:
-        - $ref: '#/components/schemas/BasicTokenObject'
-        - $ref: '#/components/schemas/Player'
+      required:
+        - email
+        - password
+        - name
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        name:
+          type: string
     Game:
-      description: Game object
+      description: Create game object
       type: object
       additionalProperties: false
       properties:
@@ -1670,11 +1649,11 @@ components:
           allOf:
             - $ref: '#/components/schemas/Character'
     GameRequest:
-      description: Game requests
+      description: Create game requests
       type: object
       allOf:
         - $ref: '#/components/schemas/Game'
-    Battle:
+    BattleResponse:
       description: Battle object
       type: object
       additionalProperties: false
@@ -1682,37 +1661,25 @@ components:
       description: Monster requests
       type: object
       additionalProperties: false
-      allOf:
-        - $ref: '#/components/schemas/BasicTokenObject'
       properties:
         monsterId:
           type: number
-    CreatureRequest:
-      description: Creature requests
+    PetRequest:
+      description: rename pet
       type: object
       additionalProperties: false
-      allOf:
-        - $ref: '#/components/schemas/BasicTokenObject'
       properties:
         name:
           type: string
     CharacterRequest:
       description: Character requests
       type: object
-      additionalProperties: false
       allOf:
-        - $ref: '#/components/schemas/BasicTokenObject'
-      properties:
-        name:
-          type: string
-        maxHp:
-          type: number
+        - $ref: '#/components/schemas/Character'
     BattleDamageRequest:
       description: Deal damage request
       type: object
       additionalProperties: false
-      allOf:
-        - $ref: '#/components/schemas/BasicTokenObject'
       properties:
         creatures:
           type: array
@@ -1748,15 +1715,8 @@ components:
         result:
           type: string
           enum: [damaged, destroyed]
-    HelloResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - message
-      properties:
-        message:
-          type: string
     FailResponse:
+      description: request failed
       type: object
       additionalProperties: false
       required:
@@ -1766,4 +1726,16 @@ components:
         success:
           type: boolean
         error:
+          type: string
+    LoginResponse:
+      description: login
+      type: object
+      additionalProperties: false
+      required:
+        - token
+        - player
+      properties:
+        token:
+          type: string
+        player:
           type: string

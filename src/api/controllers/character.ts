@@ -5,13 +5,13 @@ import CharacterService from '../services/character'
 import GameService from '../services/game'
 import { makeRoutePath } from '../../utils/server'
 import { PublicCharacter } from '../factories/CharacterFactory'
+import { CharacterRequest } from '../dto/CharacterRequest'
 
 /**
  * Creates a new character for the requesting player in a game
  */
 export async function createCharacter(req: express.Request, res: express.Response): Promise<void> {
   const { gameId } = req.params
-  const { name, maxHp, baseResist, inventorySize } = req.body
   // verify that the requesting player is a member of the game
   const game = await GameService.authorizeMember(gameId, res.locals.auth.userId)
   if (!game) {
@@ -21,11 +21,12 @@ export async function createCharacter(req: express.Request, res: express.Respons
     return respond.UNAUTHORIZED(res)
   }
   try {
+    const request = new CharacterRequest(req.body)
     const resp = await CharacterService.createCharacter(
-      name,
-      maxHp,
-      baseResist,
-      inventorySize,
+      request.name,
+      request.maxHp,
+      request.baseResist,
+      request.inventorySize,
       res.locals.auth.userId,
       gameId
     )
