@@ -50,6 +50,8 @@ export async function createServer(): Promise<{
   const staticPath = path.join(__dirname, '..', '..', 'static')
   logger.info(`Serving static files as /files/ from: ${staticPath}`)
   apiServer.use('/files', express.static(staticPath))
+  logger.info(`WebGL client available at /run`)
+  apiServer.use('/run', express.static(path.join(__dirname, '..', '..', 'openworld_webgl')))
   /* istanbul ignore next */
   if (config.morganLogger) {
     apiServer.use(morgan(':method :url :status :response-time ms - :res[content-length]') as Handler)

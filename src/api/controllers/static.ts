@@ -16,13 +16,14 @@ export async function clientFiles(req: express.Request, res: express.Response): 
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Hello world</title>
+      <title>Openworld client</title>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
    </head>
    
    <body>
     <p>Click link below to download:</p>
     <a href='/files/openworld_android.apk'>Android</a><br />
+    <p>Or run the <a href='/run'>web client</a> in your browser.
    </body>
 </html>`
     )
