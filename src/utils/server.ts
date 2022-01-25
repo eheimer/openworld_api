@@ -15,6 +15,7 @@ import { expressDevLogger } from '../utils/express_dev_logger'
 import logger from '../utils/logger'
 import socket from '../utils/socket'
 import { handlers } from '../api/sockethandlers'
+import path from 'path'
 
 export const routes = {}
 
@@ -46,6 +47,9 @@ export async function createServer(): Promise<{
 
   // middleware
   apiServer.use(bodyParser.json())
+  const staticPath = path.join(__dirname, '..', '..', 'static')
+  logger.info(`Serving static files as /files/ from: ${staticPath}`)
+  apiServer.use('/files', express.static(staticPath))
   /* istanbul ignore next */
   if (config.morganLogger) {
     apiServer.use(morgan(':method :url :status :response-time ms - :res[content-length]') as Handler)
