@@ -4,10 +4,13 @@
       "path": "."
     },
     {
-      "path": "../openworld/backup/db_2020-11-5_19-51-46"
+      "path": "../../archive/openworld/backup/db_2020-11-5_19-51-46"
     },
     {
-      "path": "../openworld/api/controllers"
+      "path": "../../archive/openworld/api/controllers"
+    },
+    {
+      "path": "../../archive/openworld/api/services"
     }
   ],
   "settings": {}
