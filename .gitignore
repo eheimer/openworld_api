@@ -7,3 +7,4 @@ tmp/
 temp/
 coverage/
 development.sqlite
+openworld-api.code-workspace
