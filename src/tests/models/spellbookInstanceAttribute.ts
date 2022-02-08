@@ -1,8 +1,8 @@
 import DB from '../../utils/db'
 import faker from 'faker'
 import { Repository } from 'typeorm'
-import { SpellbookInstanceAttributeFactory } from '../../api/factories/SpellbookInstanceAttributeFactory'
-import { SpellbookInstanceAttribute } from '../../api/models/SpellbookInstanceAttribute'
+import SpellbookInstanceAttributeFactory from '../../api/factories/SpellbookInstanceAttributeFactory'
+import SpellbookInstanceAttribute from '../../api/models/SpellbookInstanceAttribute'
 
 let repo: Repository<SpellbookInstanceAttribute>
 const factory = new SpellbookInstanceAttributeFactory()

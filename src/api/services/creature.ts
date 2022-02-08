@@ -1,7 +1,6 @@
-import { CreatureInstanceFactory } from '../factories/CreatureInstanceFactory'
-import { Monster } from '../models/Monster'
-import { CreatureInstance } from '../models/CreatureInstance'
-import { MonsterFactory } from '../factories/MonsterFactory'
+import CreatureInstanceFactory from '../factories/CreatureInstanceFactory'
+import CreatureInstance from '../models/CreatureInstance'
+import MonsterFactory from '../factories/MonsterFactory'
 import RandomService from '../services/random'
 
 const factory: CreatureInstanceFactory = new CreatureInstanceFactory()

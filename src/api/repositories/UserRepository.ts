@@ -1,9 +1,9 @@
 import { EntityRepository, Repository } from 'typeorm'
-import { User } from '../models/User'
+import User from '../models/User'
 import bcrypt from 'bcrypt'
 
 @EntityRepository(User)
-export class UserRepository extends Repository<User> {
+export default class UserRepository extends Repository<User> {
   async comparePassword(userId: number | string, candidatePassword: string): Promise<boolean> {
     const user = await this.findOne(userId)
     if (user) {
@@ -31,5 +31,3 @@ export class UserRepository extends Repository<User> {
     }
   }
 }
-
-export default UserRepository

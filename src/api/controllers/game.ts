@@ -6,7 +6,7 @@ import PlayerService from '../services/player'
 import { makeRoutePath } from '../../utils/server'
 import Game from '../models/Game'
 import User from '../models/User'
-import { GameCharacter } from '../dto/GameCharacter'
+import GameCharacter from '../dto/GameCharacter'
 
 export async function getGame(req: express.Request, res: express.Response): Promise<void> {
   const { gameId } = req.params

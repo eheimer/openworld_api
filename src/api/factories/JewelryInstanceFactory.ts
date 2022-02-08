@@ -1,11 +1,11 @@
-import { JewelryInstance } from '../models/JewelryInstance'
-import { EntityFactory } from './EntityFactory'
+import JewelryInstance from '../models/JewelryInstance'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { JewelryLocationFactory } from './JewelryLocationFactory'
-import { InventoryFactory } from './InventoryFactory'
-import { GemFactory } from './GemFactory'
+import JewelryLocationFactory from './JewelryLocationFactory'
+import InventoryFactory from './InventoryFactory'
+import GemFactory from './GemFactory'
 
-export class JewelryInstanceFactory extends EntityFactory<JewelryInstance> {
+export default class JewelryInstanceFactory extends EntityFactory<JewelryInstance> {
   constructor() {
     super(JewelryInstance)
   }

@@ -1,16 +1,16 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
-import { iResistHaver } from '../../utils/entities/iResistHaver'
+import EntityBase from '../../utils/entities/EntityBase'
+import iResistHaver from '../../utils/entities/iResistHaver'
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { ActiveCondition } from './ActiveCondition'
-import { Battle } from './Battle'
-import { Character } from './Character'
-import { DamageType } from './DamageType'
-import { Inventory } from './Inventory'
-import { Monster } from './Monster'
-import { MonsterAction } from './MonsterAction'
+import ActiveCondition from './ActiveCondition'
+import Battle from './Battle'
+import Character from './Character'
+import DamageType from './DamageType'
+import Inventory from './Inventory'
+import Monster from './Monster'
+import MonsterAction from './MonsterAction'
 
 @Entity()
-export class CreatureInstance extends EntityBase implements iResistHaver {
+export default class CreatureInstance extends EntityBase implements iResistHaver {
   @Column() name: string
   @Column() orighp: number
   @Column() hp: number

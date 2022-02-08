@@ -1,9 +1,9 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { Monster } from './Monster'
+import Monster from './Monster'
 
 @Entity()
-export class MonsterClue extends EntityBase {
+export default class MonsterClue extends EntityBase {
   @Column() trackingLevel: number
   @Column() clue: string
 

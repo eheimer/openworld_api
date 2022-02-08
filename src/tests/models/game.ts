@@ -1,8 +1,8 @@
 import DB from '../../utils/db'
 import faker from 'faker'
 import { Repository } from 'typeorm'
-import { Game } from '../../api/models/Game'
-import { GameFactory } from '../../api/factories/GameFactory'
+import Game from '../../api/models/Game'
+import GameFactory from '../../api/factories/GameFactory'
 
 let repo: Repository<Game>
 const factory = new GameFactory()

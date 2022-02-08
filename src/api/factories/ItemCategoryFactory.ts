@@ -1,8 +1,8 @@
-import { ItemCategory } from '../models/ItemCategory'
-import { EntityFactory } from './EntityFactory'
+import ItemCategory from '../models/ItemCategory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
 
-export class ItemCategoryFactory extends EntityFactory<ItemCategory> {
+export default class ItemCategoryFactory extends EntityFactory<ItemCategory> {
   constructor() {
     super(ItemCategory)
   }

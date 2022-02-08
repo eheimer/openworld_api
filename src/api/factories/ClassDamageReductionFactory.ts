@@ -1,8 +1,8 @@
-import { ClassDamageReduction } from '../models/ClassDamageReduction'
-import { EntityFactory } from './EntityFactory'
+import ClassDamageReduction from '../models/ClassDamageReduction'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
 
-export class ClassDamageReductionFactory extends EntityFactory<ClassDamageReduction> {
+export default class ClassDamageReductionFactory extends EntityFactory<ClassDamageReduction> {
   constructor() {
     super(ClassDamageReduction)
   }

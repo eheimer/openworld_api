@@ -1,8 +1,8 @@
-import { ActiveCondition } from '../../api/models/ActiveCondition'
+import ActiveCondition from '../../api/models/ActiveCondition'
 import DB from '../../utils/db'
 import { Repository } from 'typeorm'
-import { ActiveConditionFactory } from '../../api/factories/ActiveConditionFactory'
-import { CharacterFactory } from '../../api/factories/CharacterFactory'
+import ActiveConditionFactory from '../../api/factories/ActiveConditionFactory'
+import CharacterFactory from '../../api/factories/CharacterFactory'
 
 let repo: Repository<ActiveCondition>
 const factory = new ActiveConditionFactory()

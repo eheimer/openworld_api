@@ -1,10 +1,10 @@
 import defaultFaker from 'faker'
 
-import { Game } from '../models/Game'
-import { EntityFactory } from './EntityFactory'
-import { UserFactory } from './UserFactory'
+import Game from '../models/Game'
+import EntityFactory from './EntityFactory'
+import UserFactory from './UserFactory'
 
-export class GameFactory extends EntityFactory<Game> {
+export default class GameFactory extends EntityFactory<Game> {
   constructor() {
     super(Game)
   }

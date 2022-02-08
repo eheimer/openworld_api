@@ -1,8 +1,8 @@
-import { GemRarity } from '../models/GemRarity'
-import { EntityFactory } from './EntityFactory'
+import GemRarity from '../models/GemRarity'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
 
-export class GemRarityFactory extends EntityFactory<GemRarity> {
+export default class GemRarityFactory extends EntityFactory<GemRarity> {
   constructor() {
     super(GemRarity)
   }

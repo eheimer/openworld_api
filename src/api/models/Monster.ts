@@ -1,12 +1,12 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { DamageType } from './DamageType'
-import { MonsterAction } from './MonsterAction'
-import { MonsterClue } from './MonsterClue'
-import { SlayerType } from './SlayerType'
+import DamageType from './DamageType'
+import MonsterAction from './MonsterAction'
+import MonsterClue from './MonsterClue'
+import SlayerType from './SlayerType'
 
 @Entity()
-export class Monster extends EntityBase {
+export default class Monster extends EntityBase {
   @Column() name: string
   @Column() hoverStats: string
   @Column() karma: string

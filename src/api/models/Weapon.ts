@@ -1,11 +1,11 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { MaterialType } from './MaterialType'
-import { SpecialMove } from './SpecialMove'
-import { WeaponSkill } from './WeaponSkill'
+import MaterialType from './MaterialType'
+import SpecialMove from './SpecialMove'
+import WeaponSkill from './WeaponSkill'
 
 @Entity()
-export class Weapon extends EntityBase {
+export default class Weapon extends EntityBase {
   @Column() name: string
   @Column() damage: string
   @Column() range: number

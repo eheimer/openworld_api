@@ -1,4 +1,4 @@
-export interface iDamageEaterHaver {
+export default interface iDamageEaterHaver {
   dePh: number
   deC: number
   deF: number

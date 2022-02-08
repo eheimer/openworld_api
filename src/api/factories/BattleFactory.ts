@@ -1,11 +1,11 @@
-import { Battle } from '../models/Battle'
-import { EntityFactory } from './EntityFactory'
+import Battle from '../models/Battle'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { CharacterFactory } from './CharacterFactory'
-import { CreatureInstanceFactory } from './CreatureInstanceFactory'
-import { GameFactory } from './GameFactory'
+import CharacterFactory from './CharacterFactory'
+import CreatureInstanceFactory from './CreatureInstanceFactory'
+import GameFactory from './GameFactory'
 
-export class BattleFactory extends EntityFactory<Battle> {
+export default class BattleFactory extends EntityFactory<Battle> {
   constructor() {
     super(Battle)
   }

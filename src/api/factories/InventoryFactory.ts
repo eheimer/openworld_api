@@ -1,9 +1,9 @@
 import defaultFaker from 'faker'
 
-import { Inventory } from '../models/Inventory'
-import { EntityFactory } from './EntityFactory'
+import Inventory from '../models/Inventory'
+import EntityFactory from './EntityFactory'
 
-export class InventoryFactory extends EntityFactory<Inventory> {
+export default class InventoryFactory extends EntityFactory<Inventory> {
   constructor() {
     super(Inventory)
   }

@@ -1,11 +1,11 @@
-import { ActiveCondition } from '../models/ActiveCondition'
-import { EntityFactory } from './EntityFactory'
+import ActiveCondition from '../models/ActiveCondition'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { ConditionFactory } from './ConditionFactory'
-import { CharacterFactory } from './CharacterFactory'
-import { CreatureInstanceFactory } from './CreatureInstanceFactory'
+import ConditionFactory from './ConditionFactory'
+import CharacterFactory from './CharacterFactory'
+import CreatureInstanceFactory from './CreatureInstanceFactory'
 
-export class ActiveConditionFactory extends EntityFactory<ActiveCondition> {
+export default class ActiveConditionFactory extends EntityFactory<ActiveCondition> {
   constructor() {
     super(ActiveCondition)
   }

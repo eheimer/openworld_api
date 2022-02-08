@@ -1,7 +1,7 @@
 import DB from '../../utils/db'
 import { Repository } from 'typeorm'
-import { ArmorInstanceFactory } from '../../api/factories/ArmorInstanceFactory'
-import { ArmorInstance } from '../../api/models/ArmorInstance'
+import ArmorInstanceFactory from '../../api/factories/ArmorInstanceFactory'
+import ArmorInstance from '../../api/models/ArmorInstance'
 
 let repo: Repository<ArmorInstance>
 const factory = new ArmorInstanceFactory()

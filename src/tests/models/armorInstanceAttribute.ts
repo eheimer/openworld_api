@@ -1,8 +1,8 @@
 import DB from '../../utils/db'
 import faker from 'faker'
 import { Repository } from 'typeorm'
-import { ArmorInstanceAttributeFactory } from '../../api/factories/ArmorInstanceAttributeFactory'
-import { ArmorInstanceAttribute } from '../../api/models/ArmorInstanceAttribute'
+import ArmorInstanceAttributeFactory from '../../api/factories/ArmorInstanceAttributeFactory'
+import ArmorInstanceAttribute from '../../api/models/ArmorInstanceAttribute'
 
 let repo: Repository<ArmorInstanceAttribute>
 const factory = new ArmorInstanceAttributeFactory()

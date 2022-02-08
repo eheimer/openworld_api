@@ -2,7 +2,7 @@ import { DeepPartial, Repository } from 'typeorm'
 
 import { getRepo } from '../../utils/db'
 
-export abstract class EntityFactory<T> {
+export default abstract class EntityFactory<T> {
   private _repo: Repository<T>
   protected faker: Faker.FakerStatic
 

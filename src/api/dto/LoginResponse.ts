@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class LoginResponse {
+export default class LoginResponse {
   constructor(args: any) {
     const { token, player } = args
     this.token = token

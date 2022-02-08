@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 
 import logger from './logger'
-import { SocketHandler } from './SocketHandler'
+import SocketHandler from './SocketHandler'
 
 export default (app, handlers: SocketHandler[]) => {
   const io = new Server(app, {

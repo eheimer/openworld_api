@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class GameRequest {
+export default class GameRequest {
   constructor(args: any) {
     const { name, maxPlayers } = args
     this.name = name

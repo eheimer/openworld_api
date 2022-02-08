@@ -1,12 +1,12 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, OneToMany } from 'typeorm'
-import { ArmorInstance } from './ArmorInstance'
-import { JewelryInstance } from './JewelryInstance'
-import { SpellbookInstance } from './SpellbookInstance'
-import { WeaponInstance } from './WeaponInstance'
+import ArmorInstance from './ArmorInstance'
+import JewelryInstance from './JewelryInstance'
+import SpellbookInstance from './SpellbookInstance'
+import WeaponInstance from './WeaponInstance'
 
 @Entity()
-export class Inventory extends EntityBase {
+export default class Inventory extends EntityBase {
   @Column() capacity: number
   @Column() limit: boolean
   @Column() gold: number

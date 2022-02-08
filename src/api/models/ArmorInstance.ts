@@ -1,17 +1,17 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 
-import { EntityBase } from '../../utils/entities/EntityBase'
-import { ArmorClass } from './ArmorClass'
-import { ArmorInstanceAttribute } from './ArmorInstanceAttribute'
-import { ArmorInstanceDamageReduction } from './ArmorInstanceDamageReduction'
-import { ArmorLocation } from './ArmorLocation'
-import { Inventory } from './Inventory'
+import EntityBase from '../../utils/entities/EntityBase'
+import ArmorClass from './ArmorClass'
+import ArmorInstanceAttribute from './ArmorInstanceAttribute'
+import ArmorInstanceDamageReduction from './ArmorInstanceDamageReduction'
+import ArmorLocation from './ArmorLocation'
+import Inventory from './Inventory'
 
 /**
  * @description an instance of Armor that exists somewhere
  */
 @Entity()
-export class ArmorInstance extends EntityBase {
+export default class ArmorInstance extends EntityBase {
   /**
    * whether or not this item is equipped
    * @TODO I don't think this belongs on the item.  It should be

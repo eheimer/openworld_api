@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class MonsterRequest {
+export default class MonsterRequest {
   constructor(args: any) {
     const { monsterId } = args
     this.monsterId = monsterId

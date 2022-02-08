@@ -1,11 +1,11 @@
 import defaultFaker from 'faker'
 
-import { CreatureInstance } from '../models/CreatureInstance'
-import { ActionFactory } from './ActionFactory'
-import { EntityFactory } from './EntityFactory'
-import { MonsterFactory } from './MonsterFactory'
+import CreatureInstance from '../models/CreatureInstance'
+import ActionFactory from './ActionFactory'
+import EntityFactory from './EntityFactory'
+import MonsterFactory from './MonsterFactory'
 
-export class CreatureInstanceFactory extends EntityFactory<CreatureInstance> {
+export default class CreatureInstanceFactory extends EntityFactory<CreatureInstance> {
   constructor() {
     super(CreatureInstance)
   }

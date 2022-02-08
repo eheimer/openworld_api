@@ -1,12 +1,12 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { Inventory } from './Inventory'
-import { Material } from './Material'
-import { Weapon } from './Weapon'
-import { WeaponInstanceAttribute } from './WeaponInstanceAttribute'
+import Inventory from './Inventory'
+import Material from './Material'
+import Weapon from './Weapon'
+import WeaponInstanceAttribute from './WeaponInstanceAttribute'
 
 @Entity()
-export class WeaponInstance extends EntityBase {
+export default class WeaponInstance extends EntityBase {
   @Column() equipped: boolean
   @Column() damaged: boolean
 

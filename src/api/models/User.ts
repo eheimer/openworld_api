@@ -1,15 +1,15 @@
 import { IsEmail } from 'class-validator'
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 
-import { EntityBase } from '../../utils/entities/EntityBase'
-import { Character } from './Character'
-import { Game } from './Game'
+import EntityBase from '../../utils/entities/EntityBase'
+import Character from './Character'
+import Game from './Game'
 
 /**
  * @description represents a real person with login credentials for the game
  */
 @Entity()
-export class User extends EntityBase {
+export default class User extends EntityBase {
   @Column({ nullable: false })
   password: string
 
@@ -41,5 +41,3 @@ export class User extends EntityBase {
   })
   characters: Character[]
 }
-
-export default User

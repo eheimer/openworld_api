@@ -1,9 +1,9 @@
-import { Character } from '../models/Character'
-import { EntityFactory } from './EntityFactory'
+import Character from '../models/Character'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { UserFactory } from './UserFactory'
-import { GameFactory } from './GameFactory'
-import { InventoryFactory } from './InventoryFactory'
+import UserFactory from './UserFactory'
+import GameFactory from './GameFactory'
+import InventoryFactory from './InventoryFactory'
 
 export class PublicCharacter {
   id: number | string
@@ -17,7 +17,7 @@ export class PublicCharacter {
   }
 }
 
-export class CharacterFactory extends EntityFactory<Character> {
+export default class CharacterFactory extends EntityFactory<Character> {
   constructor() {
     super(Character)
   }

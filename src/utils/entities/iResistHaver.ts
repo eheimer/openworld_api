@@ -1,4 +1,4 @@
-export interface iResistHaver {
+export default interface iResistHaver {
   resistPh: number
   resistC: number
   resistF: number

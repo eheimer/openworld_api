@@ -1,11 +1,11 @@
 import { DeepPartial } from 'typeorm'
 
 import logger from '../../utils/logger'
-import { BattleFactory } from '../factories/BattleFactory'
-import { CharacterFactory, PublicCharacter } from '../factories/CharacterFactory'
-import { GameFactory } from '../factories/GameFactory'
-import { UserFactory } from '../factories/UserFactory'
-import { Battle } from '../models/Battle'
+import BattleFactory from '../factories/BattleFactory'
+import CharacterFactory, { PublicCharacter } from '../factories/CharacterFactory'
+import GameFactory from '../factories/GameFactory'
+import UserFactory from '../factories/UserFactory'
+import Battle from '../models/Battle'
 import Game from '../models/Game'
 
 const factory: GameFactory = new GameFactory()

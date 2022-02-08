@@ -1,8 +1,8 @@
-import { Condition } from '../models/Condition'
-import { EntityFactory } from './EntityFactory'
+import Condition from '../models/Condition'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
 
-export class ConditionFactory extends EntityFactory<Condition> {
+export default class ConditionFactory extends EntityFactory<Condition> {
   constructor() {
     super(Condition)
   }

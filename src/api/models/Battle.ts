@@ -1,15 +1,15 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { Character } from './Character'
-import { Game } from './Game'
-import { CreatureInstance } from './CreatureInstance'
+import Character from './Character'
+import Game from './Game'
+import CreatureInstance from './CreatureInstance'
 import { IsNotEmpty } from 'class-validator'
 
 /**
  * @description container for battle participants
  */
 @Entity()
-export class Battle extends EntityBase {
+export default class Battle extends EntityBase {
   @Column({ default: 1, nullable: false }) round: number
 
   @IsNotEmpty()
@@ -35,5 +35,3 @@ export class Battle extends EntityBase {
   @ManyToOne(() => Character, { nullable: false })
   initiator: Character
 }
-
-export default Battle

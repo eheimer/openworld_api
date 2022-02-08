@@ -1,8 +1,8 @@
 import { CreatePlayerResponse } from '../../../types'
 import logger from '../../utils/logger'
-import { GameCharacter } from '../dto/GameCharacter'
-import { CharacterFactory } from '../factories/CharacterFactory'
-import { UserFactory } from '../factories/UserFactory'
+import GameCharacter from '../dto/GameCharacter'
+import CharacterFactory from '../factories/CharacterFactory'
+import UserFactory from '../factories/UserFactory'
 import Game from '../models/Game'
 import User from '../models/User'
 

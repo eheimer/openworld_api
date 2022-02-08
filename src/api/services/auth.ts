@@ -9,7 +9,7 @@ import { AuthResponse, LoginResponse } from 'types'
 
 import config from '../../config'
 import logger from '../../utils/logger'
-import { UserFactory } from '../factories/UserFactory'
+import UserFactory from '../factories/UserFactory'
 import UserRepository from '../repositories/UserRepository'
 
 const privateKey = fs.readFileSync(config.privateKeyFile)

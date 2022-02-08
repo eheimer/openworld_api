@@ -1,8 +1,8 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { JewelryLocation } from '../models/JewelryLocation'
+import JewelryLocation from '../models/JewelryLocation'
 
-export class JewelryLocationFactory extends EntityFactory<JewelryLocation> {
+export default class JewelryLocationFactory extends EntityFactory<JewelryLocation> {
   constructor() {
     super(JewelryLocation)
   }

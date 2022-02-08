@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class CharacterRequest {
+export default class CharacterRequest {
   constructor(args: any) {
     const { name, maxHp, baseResist, inventorySize } = args
     this.name = name

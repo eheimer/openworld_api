@@ -1,16 +1,16 @@
 import { IsNotEmpty, ValidateIf } from 'class-validator'
 import { Column, Entity, ManyToOne } from 'typeorm'
 
-import { EntityBase } from '../../utils/entities/EntityBase'
-import { Character } from './Character'
-import { Condition } from './Condition'
-import { CreatureInstance } from './CreatureInstance'
+import EntityBase from '../../utils/entities/EntityBase'
+import Character from './Character'
+import Condition from './Condition'
+import CreatureInstance from './CreatureInstance'
 
 /**
  * @description a Condition that is currently active on a CreatureInstance or Character
  */
 @Entity()
-export class ActiveCondition extends EntityBase {
+export default class ActiveCondition extends EntityBase {
   /**
    * number of rounds before this condition expires
    */

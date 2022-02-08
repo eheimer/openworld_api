@@ -1,8 +1,8 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { SlayerType } from '../models/SlayerType'
+import SlayerType from '../models/SlayerType'
 
-export class SlayerTypeFactory extends EntityFactory<SlayerType> {
+export default class SlayerTypeFactory extends EntityFactory<SlayerType> {
   constructor() {
     super(SlayerType)
   }

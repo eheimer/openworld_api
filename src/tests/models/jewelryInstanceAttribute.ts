@@ -1,8 +1,8 @@
 import DB from '../../utils/db'
 import faker from 'faker'
 import { Repository } from 'typeorm'
-import { JewelryInstanceAttributeFactory } from '../../api/factories/JewelryInstanceAttributeFactory'
-import { JewelryInstanceAttribute } from '../../api/models/JewelryInstanceAttribute'
+import JewelryInstanceAttributeFactory from '../../api/factories/JewelryInstanceAttributeFactory'
+import JewelryInstanceAttribute from '../../api/models/JewelryInstanceAttribute'
 
 let repo: Repository<JewelryInstanceAttribute>
 const factory = new JewelryInstanceAttributeFactory()

@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io'
 
-export abstract class SocketHandler {
+export default abstract class SocketHandler {
   event: string
   async on(socket: Socket, msg: string) {
     return

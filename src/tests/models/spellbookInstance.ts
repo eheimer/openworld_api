@@ -1,8 +1,8 @@
 import DB from '../../utils/db'
 import { Repository } from 'typeorm'
-import { SpellbookInstanceFactory } from '../../api/factories/SpellbookInstanceFactory'
-import { SpellbookInstance } from '../../api/models/SpellbookInstance'
-import { InventoryFactory } from '../../api/factories/InventoryFactory'
+import SpellbookInstanceFactory from '../../api/factories/SpellbookInstanceFactory'
+import SpellbookInstance from '../../api/models/SpellbookInstance'
+import InventoryFactory from '../../api/factories/InventoryFactory'
 
 let repo: Repository<SpellbookInstance>
 const factory = new SpellbookInstanceFactory()

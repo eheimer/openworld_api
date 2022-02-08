@@ -1,8 +1,8 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { Skill } from '../models/Skill'
+import Skill from '../models/Skill'
 
-export class SkillFactory extends EntityFactory<Skill> {
+export default class SkillFactory extends EntityFactory<Skill> {
   constructor() {
     super(Skill)
   }

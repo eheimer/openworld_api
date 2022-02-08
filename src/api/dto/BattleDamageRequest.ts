@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class BattleDamageRequest {
+export default class BattleDamageRequest {
   constructor(args: any) {
     const { creatures, characters, damageType, damageAmt } = args
     this.creatures = creatures

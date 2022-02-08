@@ -1,8 +1,8 @@
 import faker from 'faker'
 import { Repository } from 'typeorm'
 
-import { BattleFactory } from '../../api/factories/BattleFactory'
-import { Battle } from '../../api/models/Battle'
+import BattleFactory from '../../api/factories/BattleFactory'
+import Battle from '../../api/models/Battle'
 import DB from '../../utils/db'
 
 let repo: Repository<Battle>

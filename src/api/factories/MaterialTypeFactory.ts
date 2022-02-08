@@ -1,8 +1,8 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { MaterialType } from '../models/MaterialType'
+import MaterialType from '../models/MaterialType'
 
-export class MaterialTypeFactory extends EntityFactory<MaterialType> {
+export default class MaterialTypeFactory extends EntityFactory<MaterialType> {
   constructor() {
     super(MaterialType)
   }

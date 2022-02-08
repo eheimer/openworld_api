@@ -1,9 +1,9 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { SpellbookInstanceAttribute } from '../models/SpellbookInstanceAttribute'
-import { SpellbookAttributeFactory } from './SpellbookAttributeFactory'
+import SpellbookInstanceAttribute from '../models/SpellbookInstanceAttribute'
+import SpellbookAttributeFactory from './SpellbookAttributeFactory'
 
-export class SpellbookInstanceAttributeFactory extends EntityFactory<SpellbookInstanceAttribute> {
+export default class SpellbookInstanceAttributeFactory extends EntityFactory<SpellbookInstanceAttribute> {
   constructor() {
     super(SpellbookInstanceAttribute)
   }

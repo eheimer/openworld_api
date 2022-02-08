@@ -1,8 +1,8 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { SpecialMove } from '../models/SpecialMove'
+import SpecialMove from '../models/SpecialMove'
 
-export class SpecialMoveFactory extends EntityFactory<SpecialMove> {
+export default class SpecialMoveFactory extends EntityFactory<SpecialMove> {
   constructor() {
     super(SpecialMove)
   }

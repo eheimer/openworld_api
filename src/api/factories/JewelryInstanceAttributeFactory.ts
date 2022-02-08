@@ -1,9 +1,9 @@
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
-import { JewelryInstanceAttribute } from '../models/JewelryInstanceAttribute'
-import { JewelryAttributeFactory } from './JewelryAttributeFactory'
+import JewelryInstanceAttribute from '../models/JewelryInstanceAttribute'
+import JewelryAttributeFactory from './JewelryAttributeFactory'
 
-export class JewelryInstanceAttributeFactory extends EntityFactory<JewelryInstanceAttribute> {
+export default class JewelryInstanceAttributeFactory extends EntityFactory<JewelryInstanceAttribute> {
   constructor() {
     super(JewelryInstanceAttribute)
   }

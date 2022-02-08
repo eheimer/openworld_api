@@ -1,12 +1,12 @@
 import defaultFaker from 'faker'
 
-import { ArmorInstance } from '../models/ArmorInstance'
-import { ArmorClassFactory } from './ArmorClassFactory'
-import { ArmorLocationFactory } from './ArmorLocationFactory'
-import { EntityFactory } from './EntityFactory'
-import { InventoryFactory } from './InventoryFactory'
+import ArmorInstance from '../models/ArmorInstance'
+import ArmorClassFactory from './ArmorClassFactory'
+import ArmorLocationFactory from './ArmorLocationFactory'
+import EntityFactory from './EntityFactory'
+import InventoryFactory from './InventoryFactory'
 
-export class ArmorInstanceFactory extends EntityFactory<ArmorInstance> {
+export default class ArmorInstanceFactory extends EntityFactory<ArmorInstance> {
   constructor() {
     super(ArmorInstance)
   }

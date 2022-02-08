@@ -1,8 +1,8 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity } from 'typeorm'
 
 @Entity()
-export class DamageType extends EntityBase {
+export default class DamageType extends EntityBase {
   @Column() name: string
   @Column() description: string
   @Column() chaos: boolean

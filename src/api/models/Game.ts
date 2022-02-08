@@ -1,13 +1,13 @@
 import { ArrayNotEmpty } from 'class-validator'
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 
-import { EntityBase } from '../../utils/entities/EntityBase'
-import { Battle } from './Battle'
-import { Character } from './Character'
+import EntityBase from '../../utils/entities/EntityBase'
+import Battle from './Battle'
+import Character from './Character'
 import User from './User'
 
 @Entity()
-export class Game extends EntityBase {
+export default class Game extends EntityBase {
   @Column({ nullable: false })
   name: string
 
@@ -27,5 +27,3 @@ export class Game extends EntityBase {
   @OneToMany(() => Battle, (battle) => battle.game, { nullable: true })
   battles: Battle[]
 }
-
-export default Game

@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class FailResponse {
+export default class FailResponse {
   constructor(error: string, success = false) {
     this.success = success
     this.error = error

@@ -1,11 +1,11 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity } from 'typeorm'
 
 /**
  * @description a unique action available to a monster on its turn
  */
 @Entity()
-export class Action extends EntityBase {
+export default class Action extends EntityBase {
   /**
    *  example: 'Paralyze Spell'
    */

@@ -1,6 +1,6 @@
 import User from '../models/User'
 import defaultFaker from 'faker'
-import { EntityFactory } from './EntityFactory'
+import EntityFactory from './EntityFactory'
 import { DeepPartial } from 'typeorm'
 import UserRepository from '../repositories/UserRepository'
 
@@ -15,7 +15,7 @@ export class PublicPlayer {
   }
 }
 
-export class UserFactory extends EntityFactory<User> {
+export default class UserFactory extends EntityFactory<User> {
   constructor() {
     super(User)
   }

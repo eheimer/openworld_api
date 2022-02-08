@@ -1,6 +1,6 @@
 import faker from 'faker'
 
-import { UserFactory } from '../../api/factories/UserFactory'
+import UserFactory from '../../api/factories/UserFactory'
 import User from '../../api/models/User'
 import UserRepository from '../../api/repositories/UserRepository'
 import DB from '../../utils/db'

@@ -1,7 +1,7 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity } from 'typeorm'
 
 @Entity()
-export class WeaponSkill extends EntityBase {
+export default class WeaponSkill extends EntityBase {
   @Column() name: string
 }

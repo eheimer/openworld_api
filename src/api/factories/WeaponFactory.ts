@@ -1,8 +1,8 @@
-import { Weapon } from '../models/Weapon'
-import { EntityFactory } from './EntityFactory'
+import Weapon from '../models/Weapon'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
 
-export class WeaponFactory extends EntityFactory<Weapon> {
+export default class WeaponFactory extends EntityFactory<Weapon> {
   constructor() {
     super(Weapon)
   }

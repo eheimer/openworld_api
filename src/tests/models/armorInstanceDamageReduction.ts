@@ -1,8 +1,8 @@
 import DB from '../../utils/db'
 import faker from 'faker'
 import { Repository } from 'typeorm'
-import { ArmorInstanceDamageReductionFactory } from '../../api/factories/ArmorInstanceDamageReductionFactory'
-import { ArmorInstanceDamageReduction } from '../../api/models/ArmorInstanceDamageReduction'
+import ArmorInstanceDamageReductionFactory from '../../api/factories/ArmorInstanceDamageReductionFactory'
+import ArmorInstanceDamageReduction from '../../api/models/ArmorInstanceDamageReduction'
 
 let repo: Repository<ArmorInstanceDamageReduction>
 const factory = new ArmorInstanceDamageReductionFactory()

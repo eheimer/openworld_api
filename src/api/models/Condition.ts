@@ -1,9 +1,9 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
-import { DamageType } from './DamageType'
+import DamageType from './DamageType'
 
 @Entity()
-export class Condition extends EntityBase {
+export default class Condition extends EntityBase {
   @Column() name: string
   @Column() actionReplace: string
   @Column() duration: number

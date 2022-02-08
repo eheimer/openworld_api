@@ -1,8 +1,8 @@
-import { DamageType } from '../models/DamageType'
-import { EntityFactory } from './EntityFactory'
+import DamageType from '../models/DamageType'
+import EntityFactory from './EntityFactory'
 import defaultFaker from 'faker'
 
-export class DamageTypeFactory extends EntityFactory<DamageType> {
+export default class DamageTypeFactory extends EntityFactory<DamageType> {
   constructor() {
     super(DamageType)
   }

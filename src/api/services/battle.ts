@@ -1,7 +1,7 @@
 import { DeepPartial } from 'typeorm'
 import logger from '../../utils/logger'
-import { BattleFactory } from '../factories/BattleFactory'
-import { CharacterFactory } from '../factories/CharacterFactory'
+import BattleFactory from '../factories/BattleFactory'
+import CharacterFactory from '../factories/CharacterFactory'
 import Battle from '../models/Battle'
 
 const factory: BattleFactory = new BattleFactory()

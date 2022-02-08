@@ -1,17 +1,17 @@
-import { EntityBase } from '../../utils/entities/EntityBase'
+import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { Game } from './Game'
+import Game from './Game'
 import User from './User'
-import { Battle } from './Battle'
-import { CreatureInstance } from './CreatureInstance'
-import { ActiveCondition } from './ActiveCondition'
-import { Inventory } from './Inventory'
+import Battle from './Battle'
+import CreatureInstance from './CreatureInstance'
+import ActiveCondition from './ActiveCondition'
+import Inventory from './Inventory'
 
 /**
  * @description the Character created by a User for a particular Game.  Each user can have only one per game.
  */
 @Entity()
-export class Character extends EntityBase {
+export default class Character extends EntityBase {
   @Column() name: string
   @Column() maxHp: number
   @Column() hp: number
@@ -49,5 +49,3 @@ export class Character extends EntityBase {
   @OneToMany(() => CreatureInstance, (ci) => ci.owner, { nullable: true })
   pets: CreatureInstance[]
 }
-
-export default Character
