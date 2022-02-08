@@ -6,10 +6,12 @@ import ClassDamageReduction from './ClassDamageReduction'
  * @description a property of Armor that affects durability and damage reduction
  */
 @Entity()
-export default class ArmorClass extends EntityBase {
+export class ArmorClass extends EntityBase {
   @Column() name: string
   @Column() durability: number
 
   @ManyToOne(() => ClassDamageReduction, (cdr) => cdr.armorClass)
   reductions: ClassDamageReduction[]
 }
+
+export default ArmorClass

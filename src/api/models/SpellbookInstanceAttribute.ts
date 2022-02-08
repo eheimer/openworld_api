@@ -7,7 +7,7 @@ import SpellbookAttribute from './SpellbookAttribute'
 import SpellbookInstance from './SpellbookInstance'
 
 @Entity()
-export default class SpellbookInstanceAttribute extends EntityBase {
+export class SpellbookInstanceAttribute extends EntityBase {
   @Column() value: number
 
   @ManyToOne(() => SpellbookAttribute, { nullable: false })
@@ -22,3 +22,5 @@ export default class SpellbookInstanceAttribute extends EntityBase {
   @ManyToOne(() => SpellbookInstance, { nullable: true })
   spellbook: SpellbookInstance
 }
+
+export default SpellbookInstanceAttribute

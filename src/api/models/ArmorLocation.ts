@@ -7,10 +7,12 @@ import EquipLocation from './EquipLocation'
  * @description location that Armor can be equipped
  */
 @Entity()
-export default class ArmorLocation extends EntityBase {
+export class ArmorLocation extends EntityBase {
   @Column() name: string
 
   @OneToOne(() => EquipLocation)
   @JoinColumn()
   location: EquipLocation
 }
+
+export default ArmorLocation

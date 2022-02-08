@@ -2,7 +2,7 @@ import { BeforeInsert, BeforeUpdate, CreateDateColumn, PrimaryGeneratedColumn, U
 import { validate } from 'class-validator'
 import logger from '../logger'
 
-export default abstract class EntityBase {
+export abstract class EntityBase {
   @PrimaryGeneratedColumn('uuid')
   id: number | string
 
@@ -22,3 +22,5 @@ export default abstract class EntityBase {
     }
   }
 }
+
+export default EntityBase

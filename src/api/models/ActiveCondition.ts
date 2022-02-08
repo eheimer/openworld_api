@@ -10,7 +10,7 @@ import CreatureInstance from './CreatureInstance'
  * @description a Condition that is currently active on a CreatureInstance or Character
  */
 @Entity()
-export default class ActiveCondition extends EntityBase {
+export class ActiveCondition extends EntityBase {
   /**
    * number of rounds before this condition expires
    */
@@ -40,3 +40,5 @@ export default class ActiveCondition extends EntityBase {
   @ManyToOne(() => CreatureInstance)
   target: CreatureInstance
 }
+
+export default ActiveCondition

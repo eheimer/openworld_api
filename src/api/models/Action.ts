@@ -5,7 +5,7 @@ import { Column, Entity } from 'typeorm'
  * @description a unique action available to a monster on its turn
  */
 @Entity()
-export default class Action extends EntityBase {
+export class Action extends EntityBase {
   /**
    *  example: 'Paralyze Spell'
    */
@@ -25,3 +25,5 @@ export default class Action extends EntityBase {
    */
   @Column() spellDmgRange: string //base damage min/max for spells
 }
+
+export default Action

@@ -8,7 +8,7 @@ import DamageType from './DamageType'
  * @description an ArmorAttribute that is applied to an ArmorInstance
  */
 @Entity()
-export default class ArmorInstanceAttribute extends EntityBase {
+export class ArmorInstanceAttribute extends EntityBase {
   /**
    * the calculated value of the attribute
    */
@@ -23,3 +23,5 @@ export default class ArmorInstanceAttribute extends EntityBase {
   @ManyToOne(() => DamageType, { nullable: true })
   damageType: DamageType
 }
+
+export default ArmorInstanceAttribute

@@ -4,7 +4,7 @@ import ArmorClass from './ArmorClass'
 import DamageType from './DamageType'
 
 @Entity()
-export default class ClassDamageReduction extends EntityBase {
+export class ClassDamageReduction extends EntityBase {
   @Column() level: number
   @Column() reduction: string
 
@@ -14,3 +14,5 @@ export default class ClassDamageReduction extends EntityBase {
   @ManyToOne(() => DamageType)
   damageType: DamageType
 }
+
+export default ClassDamageReduction

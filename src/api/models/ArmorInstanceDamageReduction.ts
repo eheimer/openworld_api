@@ -7,7 +7,7 @@ import DamageType from './DamageType'
  * @description a damage reduction that is applied to an ArmorInstance
  */
 @Entity()
-export default class ArmorInstanceDamageReduction extends EntityBase {
+export class ArmorInstanceDamageReduction extends EntityBase {
   @Column() name: string
   @Column() value: number
 
@@ -17,3 +17,5 @@ export default class ArmorInstanceDamageReduction extends EntityBase {
   @ManyToOne(() => DamageType, { nullable: false })
   damageType: DamageType
 }
+
+export default ArmorInstanceDamageReduction

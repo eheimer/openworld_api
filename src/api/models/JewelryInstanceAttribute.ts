@@ -6,7 +6,7 @@ import JewelryInstance from './JewelryInstance'
 import Skill from './Skill'
 
 @Entity()
-export default class JewelryInstanceAttribute extends EntityBase {
+export class JewelryInstanceAttribute extends EntityBase {
   @Column() value: number
 
   @ManyToOne(() => JewelryInstance, (ji) => ji.attributes, { nullable: true })
@@ -18,3 +18,5 @@ export default class JewelryInstanceAttribute extends EntityBase {
   @ManyToOne(() => Skill, { nullable: true })
   skill: Skill
 }
+
+export default JewelryInstanceAttribute

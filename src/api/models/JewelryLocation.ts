@@ -3,9 +3,11 @@ import { Column, Entity, ManyToOne } from 'typeorm'
 import EquipLocation from './EquipLocation'
 
 @Entity()
-export default class JewelryLocation extends EntityBase {
+export class JewelryLocation extends EntityBase {
   @Column() name: string
 
   @ManyToOne(() => EquipLocation)
   location: EquipLocation
 }
+
+export default JewelryLocation

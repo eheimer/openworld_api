@@ -7,7 +7,7 @@ import Game from '../models/Game'
  * @description dto object that contains a game, and optionally a character
  */
 @Entity()
-export default class GameCharacter {
+export class GameCharacter {
   constructor(game: Game, char: Character, owner?: boolean) {
     this.game = game
     this.character = char
@@ -20,3 +20,5 @@ export default class GameCharacter {
 
   owner: boolean
 }
+
+export default GameCharacter

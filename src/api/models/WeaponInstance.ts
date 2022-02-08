@@ -6,7 +6,7 @@ import Weapon from './Weapon'
 import WeaponInstanceAttribute from './WeaponInstanceAttribute'
 
 @Entity()
-export default class WeaponInstance extends EntityBase {
+export class WeaponInstance extends EntityBase {
   @Column() equipped: boolean
   @Column() damaged: boolean
 
@@ -24,3 +24,5 @@ export default class WeaponInstance extends EntityBase {
   @ManyToOne(() => Inventory, (i) => i.weapons, { nullable: false })
   inventory: Inventory
 }
+
+export default WeaponInstance

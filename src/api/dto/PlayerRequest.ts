@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export default class PlayerRequest {
+export class PlayerRequest {
   constructor(args: any) {
     const { email, password, name } = args
     this.email = email
@@ -12,3 +12,5 @@ export default class PlayerRequest {
   password: string
   name: string
 }
+
+export default PlayerRequest

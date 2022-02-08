@@ -3,7 +3,7 @@ import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
 import DamageType from './DamageType'
 
 @Entity()
-export default class Condition extends EntityBase {
+export class Condition extends EntityBase {
   @Column() name: string
   @Column() actionReplace: string
   @Column() duration: number
@@ -19,3 +19,5 @@ export default class Condition extends EntityBase {
   @ManyToOne(() => DamageType)
   damageType: DamageType
 }
+
+export default Condition

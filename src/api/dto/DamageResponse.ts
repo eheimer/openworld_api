@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export default class DamageResponse {
+export class DamageResponse {
   /**
    * @description returned in response to equipment taking damage
    *
@@ -13,3 +13,5 @@ export default class DamageResponse {
 
   result: string
 }
+
+export default DamageResponse

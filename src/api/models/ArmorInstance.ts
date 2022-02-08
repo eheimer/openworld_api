@@ -11,7 +11,7 @@ import Inventory from './Inventory'
  * @description an instance of Armor that exists somewhere
  */
 @Entity()
-export default class ArmorInstance extends EntityBase {
+export class ArmorInstance extends EntityBase {
   /**
    * whether or not this item is equipped
    * @TODO I don't think this belongs on the item.  It should be
@@ -42,3 +42,5 @@ export default class ArmorInstance extends EntityBase {
   })
   reductions: ArmorInstanceDamageReduction[]
 }
+
+export default ArmorInstance

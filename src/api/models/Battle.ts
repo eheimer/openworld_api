@@ -9,7 +9,7 @@ import { IsNotEmpty } from 'class-validator'
  * @description container for battle participants
  */
 @Entity()
-export default class Battle extends EntityBase {
+export class Battle extends EntityBase {
   @Column({ default: 1, nullable: false }) round: number
 
   @IsNotEmpty()
@@ -35,3 +35,5 @@ export default class Battle extends EntityBase {
   @ManyToOne(() => Character, { nullable: false })
   initiator: Character
 }
+
+export default Battle

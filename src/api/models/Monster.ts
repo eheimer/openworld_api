@@ -6,7 +6,7 @@ import MonsterClue from './MonsterClue'
 import SlayerType from './SlayerType'
 
 @Entity()
-export default class Monster extends EntityBase {
+export class Monster extends EntityBase {
   @Column() name: string
   @Column() hoverStats: string
   @Column() karma: string
@@ -52,3 +52,5 @@ export default class Monster extends EntityBase {
   @OneToMany(() => MonsterClue, (mc) => mc.monster)
   clues: MonsterClue[]
 }
+
+export default Monster

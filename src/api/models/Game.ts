@@ -7,7 +7,7 @@ import Character from './Character'
 import User from './User'
 
 @Entity()
-export default class Game extends EntityBase {
+export class Game extends EntityBase {
   @Column({ nullable: false })
   name: string
 
@@ -27,3 +27,5 @@ export default class Game extends EntityBase {
   @OneToMany(() => Battle, (battle) => battle.game, { nullable: true })
   battles: Battle[]
 }
+
+export default Game

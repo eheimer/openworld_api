@@ -5,7 +5,7 @@ import WeaponAttribute from './WeaponAttribute'
 import WeaponInstance from './WeaponInstance'
 
 @Entity()
-export default class WeaponInstanceAttribute extends EntityBase {
+export class WeaponInstanceAttribute extends EntityBase {
   @Column() value: number
 
   @ManyToOne(() => WeaponInstance, { nullable: true })
@@ -17,3 +17,5 @@ export default class WeaponInstanceAttribute extends EntityBase {
   @ManyToOne(() => SlayerType, { nullable: true })
   slayer: SlayerType
 }
+
+export default WeaponInstanceAttribute

@@ -4,7 +4,7 @@ import ItemCategory from './ItemCategory'
 import Monster from './Monster'
 
 @Entity()
-export default class MonsterLoot extends EntityBase {
+export class MonsterLoot extends EntityBase {
   @Column() qty: number
   @Column() level: number
   @Column() chance: number
@@ -15,3 +15,5 @@ export default class MonsterLoot extends EntityBase {
   @ManyToOne(() => ItemCategory)
   category: ItemCategory
 }
+
+export default MonsterLoot

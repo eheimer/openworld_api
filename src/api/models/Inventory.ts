@@ -6,7 +6,7 @@ import SpellbookInstance from './SpellbookInstance'
 import WeaponInstance from './WeaponInstance'
 
 @Entity()
-export default class Inventory extends EntityBase {
+export class Inventory extends EntityBase {
   @Column() capacity: number
   @Column() limit: boolean
   @Column() gold: number
@@ -23,3 +23,5 @@ export default class Inventory extends EntityBase {
   @OneToMany(() => SpellbookInstance, (si) => si.inventory, { nullable: true })
   spellbooks: SpellbookInstance[]
 }
+
+export default Inventory

@@ -4,7 +4,7 @@ import GemRarity from './GemRarity'
 import ItemCategory from './ItemCategory'
 
 @Entity()
-export default class Gem extends EntityBase {
+export class Gem extends EntityBase {
   @Column() name: string
   @Column() weight: number
   @Column() image: string
@@ -16,3 +16,5 @@ export default class Gem extends EntityBase {
   @ManyToOne(() => ItemCategory)
   category: ItemCategory
 }
+
+export default Gem

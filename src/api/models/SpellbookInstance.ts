@@ -5,7 +5,7 @@ import Inventory from './Inventory'
 import SpellbookInstanceAttribute from './SpellbookInstanceAttribute'
 
 @Entity()
-export default class SpellbookInstance extends EntityBase {
+export class SpellbookInstance extends EntityBase {
   @OneToMany(() => SpellbookInstanceAttribute, (sia) => sia.spellbook, {
     nullable: true
   })
@@ -14,3 +14,5 @@ export default class SpellbookInstance extends EntityBase {
   @ManyToOne(() => Inventory, (i) => i.spellbooks, { nullable: false })
   inventory: Inventory
 }
+
+export default SpellbookInstance

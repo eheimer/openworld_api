@@ -6,7 +6,7 @@ import JewelryInstanceAttribute from './JewelryInstanceAttribute'
 import JewelryLocation from './JewelryLocation'
 
 @Entity()
-export default class JewelryInstance extends EntityBase {
+export class JewelryInstance extends EntityBase {
   @Column() equipped: boolean
   @Column() damaged: boolean
 
@@ -24,3 +24,5 @@ export default class JewelryInstance extends EntityBase {
   @ManyToOne(() => Inventory, (i) => i.jewelry, { nullable: false })
   inventory: Inventory
 }
+
+export default JewelryInstance

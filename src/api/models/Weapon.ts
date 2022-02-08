@@ -5,7 +5,7 @@ import SpecialMove from './SpecialMove'
 import WeaponSkill from './WeaponSkill'
 
 @Entity()
-export default class Weapon extends EntityBase {
+export class Weapon extends EntityBase {
   @Column() name: string
   @Column() damage: string
   @Column() range: number
@@ -25,3 +25,5 @@ export default class Weapon extends EntityBase {
   @ManyToOne(() => MaterialType)
   material: MaterialType
 }
+
+export default Weapon

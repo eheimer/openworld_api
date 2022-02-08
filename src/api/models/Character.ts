@@ -11,7 +11,7 @@ import Inventory from './Inventory'
  * @description the Character created by a User for a particular Game.  Each user can have only one per game.
  */
 @Entity()
-export default class Character extends EntityBase {
+export class Character extends EntityBase {
   @Column() name: string
   @Column() maxHp: number
   @Column() hp: number
@@ -49,3 +49,5 @@ export default class Character extends EntityBase {
   @OneToMany(() => CreatureInstance, (ci) => ci.owner, { nullable: true })
   pets: CreatureInstance[]
 }
+
+export default Character

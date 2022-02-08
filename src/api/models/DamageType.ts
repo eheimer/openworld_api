@@ -2,7 +2,7 @@ import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity } from 'typeorm'
 
 @Entity()
-export default class DamageType extends EntityBase {
+export class DamageType extends EntityBase {
   @Column() name: string
   @Column() description: string
   @Column() chaos: boolean
@@ -10,3 +10,5 @@ export default class DamageType extends EntityBase {
   @Column() soundurl: string
   @Column() imgurl: string
 }
+
+export default DamageType

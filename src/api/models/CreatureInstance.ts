@@ -10,7 +10,7 @@ import Monster from './Monster'
 import MonsterAction from './MonsterAction'
 
 @Entity()
-export default class CreatureInstance extends EntityBase implements iResistHaver {
+export class CreatureInstance extends EntityBase implements iResistHaver {
   @Column() name: string
   @Column() orighp: number
   @Column() hp: number
@@ -70,3 +70,5 @@ export default class CreatureInstance extends EntityBase implements iResistHaver
   @JoinColumn()
   loot: Inventory
 }
+
+export default CreatureInstance

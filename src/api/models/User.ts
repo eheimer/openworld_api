@@ -9,7 +9,7 @@ import Game from './Game'
  * @description represents a real person with login credentials for the game
  */
 @Entity()
-export default class User extends EntityBase {
+export class User extends EntityBase {
   @Column({ nullable: false })
   password: string
 
@@ -41,3 +41,5 @@ export default class User extends EntityBase {
   })
   characters: Character[]
 }
+
+export default User

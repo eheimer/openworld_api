@@ -1,10 +1,12 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export default class MonsterRequest {
+export class MonsterRequest {
   constructor(args: any) {
     const { monsterId } = args
     this.monsterId = monsterId
   }
   monsterId: number
 }
+
+export default MonsterRequest

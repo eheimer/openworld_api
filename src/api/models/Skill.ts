@@ -2,7 +2,9 @@ import EntityBase from '../../utils/entities/EntityBase'
 import { Column, Entity } from 'typeorm'
 
 @Entity()
-export default class Skill extends EntityBase {
+export class Skill extends EntityBase {
   @Column() name: string
   @Column() spellbook: boolean
 }
+
+export default Skill

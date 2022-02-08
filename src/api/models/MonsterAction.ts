@@ -5,7 +5,7 @@ import Action from './Action'
 import Monster from './Monster'
 
 @Entity()
-export default class MonsterAction extends EntityBase {
+export class MonsterAction extends EntityBase {
   @Column() value: number
   @Column() description: string
   @Column() weight: number
@@ -16,3 +16,5 @@ export default class MonsterAction extends EntityBase {
   @ManyToOne(() => Action)
   action: Action
 }
+
+export default MonsterAction

@@ -4,10 +4,12 @@ import EntityBase from '../../utils/entities/EntityBase'
 import MaterialType from './MaterialType'
 
 @Entity()
-export default class Material extends EntityBase {
+export class Material extends EntityBase {
   @Column() name: string
   @Column() weaponDurability: number
   @Column() canSpawn: boolean
   @ManyToOne(() => MaterialType)
   baseMaterial: MaterialType
 }
+
+export default Material
