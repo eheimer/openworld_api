@@ -9,5 +9,5 @@ export default class Material extends EntityBase {
   @Column() weaponDurability: number
   @Column() canSpawn: boolean
   @ManyToOne(() => MaterialType)
-  base: MaterialType
+  baseMaterial: MaterialType
 }
