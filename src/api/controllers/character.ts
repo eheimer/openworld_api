@@ -5,7 +5,7 @@ import CharacterService from '../services/character'
 import GameService from '../services/game'
 import { makeRoutePath } from '../../utils/server'
 import { PublicCharacter } from '../factories/CharacterFactory'
-import CharacterRequest from '../dto/CharacterRequest'
+import CreateCharacterRequest from '../dto/CreateCharacterRequest'
 
 /**
  * Creates a new character for the requesting player in a game
@@ -21,7 +21,7 @@ export async function createCharacter(req: express.Request, res: express.Respons
     return respond.UNAUTHORIZED(res)
   }
   try {
-    const request = new CharacterRequest(req.body)
+    const request = new CreateCharacterRequest(req.body)
     const resp = await CharacterService.createCharacter(
       request.name,
       request.maxHp,

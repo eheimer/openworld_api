@@ -7,6 +7,7 @@ import { makeRoutePath } from '../../utils/server'
 import Game from '../models/Game'
 import User from '../models/User'
 import GameCharacter from '../dto/GameCharacter'
+import CreateGameRequest from '../dto/CreateGameRequest'
 
 export async function getGame(req: express.Request, res: express.Response): Promise<void> {
   const { gameId } = req.params
@@ -39,10 +40,10 @@ export async function getGames(req: express.Request, res: express.Response): Pro
 }
 
 export async function createGame(req: express.Request, res: express.Response): Promise<void> {
-  const { name, maxPlayers } = req.body
   if (res.locals.auth.userId) {
     try {
-      const resp = await GameService.createGame(name, maxPlayers, res.locals.auth.userId)
+      const request = new CreateGameRequest(req.body)
+      const resp = await GameService.createGame(request.name, request.maxPlayers, res.locals.auth.userId)
       const path = makeRoutePath('getGame', { gameId: (resp as any).gameId })
       return respond.CREATED(res, path)
     } catch (err) {
