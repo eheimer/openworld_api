@@ -48,19 +48,11 @@ paths:
       operationId: clientFiles
       responses:
         200:
-          description: Success
-          content:
-            text/html:
-              schema:
-                type: string
+          $ref: '#/components/responses/PlainTextResponse'
         404:
-          description: Not found
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /:
     get:
       summary: Socket testing
@@ -73,19 +65,11 @@ paths:
       operationId: socketTest
       responses:
         200:
-          description: Success
-          content:
-            text/html:
-              schema:
-                type: string
+          $ref: '#/components/responses/PlainTextResponse'
         404:
-          description: Not found
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /players:
     post:
       security: []
@@ -94,25 +78,14 @@ paths:
       tags:
         - player
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterRequest'
+        $ref: '#/components/requestBodies/RegisterRequest'
       responses:
         201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the player
-              schema:
-                type: string
+          $ref: '#/components/responses/LocationResponse'
+        404:
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /players/{playerId}:
     get:
       summary: retrieve a player
@@ -129,25 +102,11 @@ paths:
             type: string
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Player'
-                  - $ref: '#/components/schemas/PlayerDetail'
+          $ref: '#/components/responses/PlayerResponse'
         404:
-          description: Player not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /players/{playerId}/games:
     get:
       summary: get player's /games
@@ -165,25 +124,11 @@ paths:
             type: string
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/GameCharacter'
+          $ref: '#/components/responses/GamesResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games:
     post:
       summary: create a new game
@@ -191,25 +136,12 @@ paths:
         - game
       operationId: createGame
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateGameRequest'
       responses:
         201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the game
-              schema:
-                type: string
+          $ref: '#/components/responses/LocationResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /login:
     post:
       security: []
@@ -219,40 +151,15 @@ paths:
         - player
       operationId: login
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties: false
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
+        $ref: '#/components/requestBodies/LoginRequest'
+
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
+          $ref: '#/components/responses/LoginResponse'
         404:
-          description: Invalid Login/Password
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games/{gameId}:
     parameters:
       - name: gameId
@@ -268,50 +175,25 @@ paths:
         - game
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Game'
+          $ref: '#/components/responses/GameResponse'
         404:
-          description: Player not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     patch:
       summary: update game partial
       operationId: updateGame
       tags:
         - game
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateGameRequest'
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     delete:
       summary: remove a game
       description: deletes the game, all battles, characters, creatureInstances, inventories, etc
@@ -320,19 +202,11 @@ paths:
       operationId: deleteGame
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games/{gameId}/players/{playerId}:
     parameters:
       - name: gameId
@@ -356,19 +230,11 @@ paths:
       operationId: joinGame
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     delete:
       summary: remove a player from a game
       description: player id must exist at /players/{playerId}
@@ -378,19 +244,11 @@ paths:
       operationId: leaveGame
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games/{gameId}/players:
     parameters:
       - name: gameId
@@ -405,38 +263,14 @@ paths:
         - game
       operationId: invitePlayer
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties: false
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  format: email
+        $ref: '#/components/requestBodies/InvitePlayerRequest'
       responses:
         201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the game
-              schema:
-                type: string
+          $ref: '#/components/responses/LocationResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games/{gameId}/battles:
     parameters:
       - name: gameId
@@ -453,18 +287,9 @@ paths:
       operationId: createBattle
       responses:
         201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the game
-              schema:
-                type: string
+          $ref: '#/components/responses/LocationResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     get:
       summary: get battles
       tags:
@@ -472,25 +297,11 @@ paths:
       operationId: getGameBattles
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: number
+          $ref: '#/components/responses/IdCollectionResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games/{gameId}/battles/{battleId}:
     parameters:
       - name: gameId
@@ -512,23 +323,11 @@ paths:
       operationId: getBattle
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BattleResponse'
+          $ref: '#/components/responses/BattleResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     delete:
       summary: delete a battle
       tags:
@@ -536,19 +335,11 @@ paths:
       operationId: deleteBattle
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /games/{gameId}/battles/{battleId}/enemies:
     post:
       summary: add enemy to battle
@@ -570,26 +361,14 @@ paths:
           schema:
             type: number
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MonsterRequest'
+        $ref: '#/components/requestBodies/MonsterRequest'
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/battles/{battleId}/friendlies:
   #   post:
   #     summary: add friendly to battle
@@ -620,17 +399,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/battles/{battleId}/pets/{creatureId}:
   #   parameters:
   #   - name: gameId
@@ -667,17 +438,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #   delete:
   #     summary: remove pet from battle
   #     description: removes the player's pet from the battle
@@ -694,17 +457,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/battles/{battleId}/nextRound:
   #   post:
   #     summary: advance battle to next round
@@ -735,17 +490,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/battles/{battleId}/dealDamage:
   #   post:
   #     summary: deal damage
@@ -776,17 +523,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/battles/{battleId}/join:
   #   post:
   #     summary: join a battle
@@ -817,17 +556,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/creatures/{creatureId}/conditions:
   #   post:
   #     summary: add condition to creature
@@ -856,18 +587,11 @@ paths:
   #             $ref: '#/components/schemas/BasicTokenObject'
   #     responses:
   #       201:
-  #         description: Success
-  #         headers:
-  #           Location:
-  #             description: the uri to retrieve the activeCondition
-  #             schema:
-  #               type: string
+  #         $ref: '#/components/responses/LocationResponse'
+  #       404:
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/creatures/{creatureId}/conditions/{conditionId}:
   #   delete:
   #     summary: remove activeCondition from creature
@@ -903,17 +627,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/creatures/{creatureId}/tame:
   #   post:
   #     summary: tame creature
@@ -944,17 +660,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/creatures/{creatureId}/release:
   #   post:
   #     summary: release tamed creature
@@ -991,17 +699,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/creatures/{creatureId}/resurrect:
   #   post:
   #     summary: resurrect player's pet
@@ -1031,17 +731,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/creatures/{creatureId}:
   #   parameters:
   #     - name: gameId
@@ -1072,17 +764,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #   delete:
   #     summary: delete creature
   #     description: deletes creature, its inventory and conditions
@@ -1099,17 +783,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/monsters:
   #   get:
   #     summary: get monsters
@@ -1139,17 +815,9 @@ paths:
   #               items:
   #                 type: number
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/damageTypes:
   #   get:
   #     summary: get damage types
@@ -1179,17 +847,9 @@ paths:
   #               items:
   #                 type: number
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/conditions:
   #   get:
   #     summary: get conditions
@@ -1219,17 +879,9 @@ paths:
   #               items:
   #                 type: number
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   /games/{gameId}/characters:
     post:
       summary: create character
@@ -1238,25 +890,12 @@ paths:
         - game
       operationId: createCharacter
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CharacterRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateCharacterRequest'
       responses:
         201:
-          description: Success
-          headers:
-            Location:
-              description: the uri to retrieve the character
-              schema:
-                type: string
+          $ref: '#/components/responses/LocationResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     get:
       summary: get all characters for game
       tags:
@@ -1265,25 +904,11 @@ paths:
       operationId: getGameCharacters
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: number
+          $ref: '#/components/responses/IdCollectionResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
   /characters/{characterId}:
     parameters:
       - name: characterId
@@ -1300,51 +925,25 @@ paths:
       operationId: getCharacter
       responses:
         200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/Character'
-                  - $ref: '#/components/schemas/CharacterDetail'
+          $ref: '#/components/responses/CharacterResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     patch:
       summary: update character partial
       tags:
         - character
       operationId: updateCharacter
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Character'
+        $ref: '#/components/requestBodies/CreateOrUpdateCharacterRequest'
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
     delete:
       summary: remove a character
       description: deletes the character and its inventory
@@ -1353,19 +952,12 @@ paths:
       operationId: deleteCharacter
       responses:
         204:
-          description: Success
+          $ref: '#/components/responses/DeleteOrUpateResponse'
         404:
-          description: resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
         500:
-          description: Internal Server Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FailResponse'
+          $ref: '#/components/responses/FailResponse'
+
   # /games/{gameId}/characters/{characterId}/resurrect:
   #   post:
   #     summary: resurrect character
@@ -1395,17 +987,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/items/{itemType}/{itemId}/take:
   #   post:
   #     summary: take item
@@ -1442,17 +1026,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/items/{itemType}/{itemId}/equip:
   #   post:
   #     summary: equip item
@@ -1488,17 +1064,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/items/{itemType}/{itemId}/damage:
   #   post:
   #     summary: damage item
@@ -1539,17 +1107,9 @@ paths:
   #             schema:
   #               $ref: '#/components/schemas/DamageResponse'
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   # /games/{gameId}/items/{itemType}/{itemId}/repair:
   #   post:
   #     summary: repair item
@@ -1585,17 +1145,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         description: resource not found
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
   #       500:
-  #         description: Internal Server Error
-  #         content:
-  #           application/json:
-  #             schema:
-  #               $ref: '#/components/schemas/FailResponse'
+  #         $ref: '#/components/responses/FailResponse'
 security:
   - bearerAuth: []
 components:
@@ -1604,12 +1156,218 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+  requestBodies:
+    LoginRequest:
+      description: login request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+    RegisterRequest:
+      description: register new player request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - email
+              - password
+              - name
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              name:
+                type: string
+    CreateOrUpdateGameRequest:
+      description: Create game requests
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/Game'
+    CreateOrUpdateCharacterRequest:
+      description: Create or Update character requests
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            allOf:
+              - $ref: '#/components/schemas/Character'
+    InvitePlayerRequest:
+      description: Invite a player to a game
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email
+    BattleDamageRequest:
+      description: Deal damage request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - damageType
+              - damageAmt
+            properties:
+              creatures:
+                type: array
+                items:
+                  type: number
+              characters:
+                type: array
+                items:
+                  type: number
+              damageType:
+                type: number
+              damageAmt:
+                type: number
+    MonsterRequest:
+      description: Monster requests
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              monsterId:
+                type: number
+    RenamePetRequest:
+      description: Rename pet
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+  responses:
+    DeleteOrUpateResponse:
+      description: Empty success response from delete or update
+    LocationResponse:
+      description: '201: A response that returns a location header'
+      headers:
+        Location:
+          description: the uri to retrieve the player
+          schema:
+            type: string
+    PlainTextResponse:
+      description: response in plain text/html
+      content:
+        text/html:
+          schema:
+            type: string
+    FailResponse:
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - success
+              - error
+            properties:
+              success:
+                type: boolean
+              error:
+                type: string
+    IdCollectionResponse:
+      description: a response which consists of an array of general object ids
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: number
+    LoginResponse:
+      description: login success
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - token
+              - player
+            properties:
+              token:
+                type: string
+              player:
+                type: string
+    PlayerResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/Player'
+              - $ref: '#/components/schemas/PlayerDetail'
+    GamesResponse:
+      description: Get players games success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/GameCharacter'
+    GameResponse:
+      description: game detail request success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Game'
+    CharacterResponse:
+      description: Get character success
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/Character'
+              - $ref: '#/components/schemas/CharacterDetail'
+    BattleResponse:
+      description: Battle object
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
   schemas:
     Player:
       description: Player object
       type: object
       additionalProperties: false
-
     PlayerDetail:
       description: Player details
       type: object
@@ -1635,22 +1393,6 @@ components:
       additionalProperties: false
       allOf:
         - $ref: '#/components/schemas/Character'
-    RegisterRequest:
-      description: Player request
-      type: object
-      additionalProperties: false
-      required:
-        - email
-        - password
-        - name
-      properties:
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-        name:
-          type: string
     Game:
       description: Create game object
       type: object
@@ -1673,51 +1415,6 @@ components:
           type: object
           allOf:
             - $ref: '#/components/schemas/Character'
-    GameRequest:
-      description: Create game requests
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/Game'
-    BattleResponse:
-      description: Battle object
-      type: object
-      additionalProperties: false
-    MonsterRequest:
-      description: Monster requests
-      type: object
-      additionalProperties: false
-      properties:
-        monsterId:
-          type: number
-    PetRequest:
-      description: rename pet
-      type: object
-      additionalProperties: false
-      properties:
-        name:
-          type: string
-    CharacterRequest:
-      description: Character requests
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/Character'
-    BattleDamageRequest:
-      description: Deal damage request
-      type: object
-      additionalProperties: false
-      properties:
-        creatures:
-          type: array
-          items:
-            type: number
-        characters:
-          type: array
-          items:
-            type: number
-        damageType:
-          type: number
-        damageAmt:
-          type: number
     ItemType:
       description: Item type
       type: string
@@ -1740,27 +1437,3 @@ components:
         result:
           type: string
           enum: [damaged, destroyed]
-    FailResponse:
-      description: request failed
-      type: object
-      additionalProperties: false
-      required:
-        - success
-        - error
-      properties:
-        success:
-          type: boolean
-        error:
-          type: string
-    LoginResponse:
-      description: login
-      type: object
-      additionalProperties: false
-      required:
-        - token
-        - player
-      properties:
-        token:
-          type: string
-        player:
-          type: string

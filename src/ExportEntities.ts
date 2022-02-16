@@ -29,7 +29,7 @@ using System;
 namespace ${namespace}
 {
   [Serializable]
-  public class {modelName} {extends}
+  public class {modelName}{extends}
   {
 {fields}
 
@@ -159,7 +159,7 @@ for (const modelName in typeMap.models) {
     }
     const output = entityTemplate
       .replace('{modelName}', modelName)
-      .replace('{extends}', model.flattenedExtends.length > 0 ? `: ${model.flattenedExtends.join(',')}` : '')
+      .replace('{extends}', model.flattenedExtends.length > 0 ? ` : ${model.flattenedExtends.join(',')}` : '')
       .replace('{fields}', fields.join('\n'))
     if (output.includes('undefined')) {
       console.log(output)
