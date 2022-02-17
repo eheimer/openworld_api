@@ -136,7 +136,7 @@ paths:
         - game
       operationId: createGame
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateGame'
+        $ref: '#/components/requestBodies/CreateGame'
       responses:
         201:
           $ref: '#/components/responses/Location'
@@ -186,7 +186,7 @@ paths:
       tags:
         - game
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateGame'
+        $ref: '#/components/requestBodies/UpdateGame'
       responses:
         204:
           $ref: '#/components/responses/DeleteOrUpate'
@@ -1194,7 +1194,7 @@ components:
                 type: string
               name:
                 type: string
-    CreateOrUpdateGame:
+    CreateGame:
       description: Create game request
       required: true
       content:
@@ -1205,6 +1205,19 @@ components:
             required:
               - name
               - maxPlayers
+            properties:
+              name:
+                type: string
+              maxPlayers:
+                type: number
+    UpdateGame:
+      description: Update game request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
             properties:
               name:
                 type: string

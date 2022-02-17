@@ -2,7 +2,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class CreateGameRequest {
+export class UpdateGameRequest {
   constructor(item: any) {
     const { name, maxPlayers } = item
 
@@ -14,4 +14,4 @@ export class CreateGameRequest {
   maxPlayers: number
 }
 
-export default CreateGameRequest
+export default UpdateGameRequest

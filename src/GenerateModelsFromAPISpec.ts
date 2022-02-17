@@ -3,7 +3,7 @@ import fs from 'fs'
 import YAML from 'yamljs'
 
 const inputFile = path.join(__dirname, '..', 'config/openapi.yml')
-const outputPath = path.join(__dirname, 'api/dto/generated')
+const outputPath = path.join(__dirname, 'api/dto')
 const jsonFilePath = path.join(__dirname, '..', 'build')
 fs.mkdir(outputPath, { recursive: true }, (err) => {
   if (err) throw err
@@ -28,9 +28,9 @@ for (const request in apidef.components.requestBodies) {
     className,
     apidef.components.requestBodies[request].content['application/json'].schema
   )
-  // fs.writeFile(path.join(outputPath, `${className}.ts`), entity, (err) => {
-  //   if (err) throw err
-  // })
+  fs.writeFile(path.join(outputPath, `${className}.ts`), entity, (err) => {
+    if (err) throw err
+  })
 }
 //loop through components.schemas and create <name>.ts models
 for (const schema in apidef.components.schemas) {
@@ -39,6 +39,7 @@ for (const schema in apidef.components.schemas) {
   // fs.writeFile(path.join(outputPath, `${className}.ts`), entity, (err) => {
   //   if (err) throw err
   // })
+  // console.log(entity)
 }
 
 function makeEntity(header: string, className: string, schema: any) {
@@ -54,7 +55,7 @@ function makeEntity(header: string, className: string, schema: any) {
   const properties = schema.properties
   for (const fieldName in properties) {
     fieldNames.push(fieldName)
-    fields[fieldName] = properties[fieldName].type
+    fields[fieldName] = getType(properties[fieldName])
   }
   const fieldList = fieldNames.join(', ')
   const fieldSetList = fieldNames
@@ -89,6 +90,13 @@ export default ${className}
   } else {
     console.log(`${className} has no properties`)
   }
+}
+
+function getType(item: any) {
+  if (item.type == 'array') {
+    return `${item.items.type}[]`
+  }
+  return item.type
 }
 
 // const fieldTemplate = `    public {type} {fieldname};`
