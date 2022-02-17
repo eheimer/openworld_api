@@ -28,7 +28,7 @@ for (const request in apidef.components.requestBodies) {
     className,
     apidef.components.requestBodies[request].content['application/json'].schema
   )
-  fs.writeFile(path.join(outputPath, `${className}.ts`), entity, (err) => {
+  fs.writeFile(path.join(outputPath, 'request', `${className}.ts`), entity, (err) => {
     if (err) throw err
   })
 }

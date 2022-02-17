@@ -5,7 +5,7 @@ import CharacterService from '../services/character'
 import GameService from '../services/game'
 import { makeRoutePath } from '../../utils/server'
 import { PublicCharacter } from '../factories/CharacterFactory'
-import CreateCharacterRequest from '../dto/CreateCharacterRequest'
+import CreateCharacterRequest from '../dto/request/CreateCharacterRequest'
 
 /**
  * Creates a new character for the requesting player in a game
