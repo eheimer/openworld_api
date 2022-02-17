@@ -1,4 +1,9 @@
 openapi: 3.0.2
+##  GENERAL RULES:
+##  Besides defining the api spec for openapi, this file is also
+##  used to auto-generate dto objects from the schemas.  As such:
+##    1) Don't use 'oneOf'. instead, consider multiple endpoints
+##    2) Don't include more than one schema if using 'allOf'
 info:
   title: Openworld API
   description: Openworld API
@@ -89,7 +94,7 @@ paths:
   /players/{playerId}:
     get:
       summary: retrieve a player
-      description: returns more details if the requester is the player being requested
+      description: returns public info for player
       tags:
         - player
       operationId: getPlayer
@@ -103,6 +108,27 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/Player'
+        404:
+          $ref: '#/components/responses/Fail'
+        500:
+          $ref: '#/components/responses/Fail'
+  /players/{playerId}/detail:
+    get:
+      summary: retrieve player details
+      description: returns more details if the requester is the player being requested
+      tags:
+        - player
+      operationId: getPlayerDetail
+      parameters:
+        - name: playerId
+          required: true
+          in: path
+          description: The player id to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          $ref: '#/components/responses/PlayerDetail'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -957,7 +983,23 @@ paths:
           $ref: '#/components/responses/Fail'
         500:
           $ref: '#/components/responses/Fail'
-
+  /characters/{characterId}/detail:
+    parameters:
+      - name: characterId
+        required: true
+        in: path
+        description: the characterId
+        schema:
+          type: string
+    get:
+      summary: retrieve character
+      description: retrieves either the public character or detail, depending on the player making the request
+      tags:
+        - character
+      operationId: getCharacter
+      responses:
+        200:
+          $ref: '#/components/responses/CharacterDetail'
   # /games/{gameId}/characters/{characterId}/resurrect:
   #   post:
   #     summary: resurrect character
@@ -1359,11 +1401,17 @@ components:
           schema:
             $ref: '#/components/schemas/LoginResponse'
     Player:
-      description: Success
+      description: Get player info success
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PlayerResponse'
+    PlayerDetail:
+      description: Get player detail success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PlayerDetailResponse'
     Games:
       description: Get players games success
       content:
@@ -1382,6 +1430,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CharacterResponse'
+    CharacterDetail:
+      description: Get character success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterDetailResponse'
     Battle:
       description: Battle object
       content:
@@ -1389,6 +1443,18 @@ components:
           schema:
             $ref: '#/components/schemas/BattleResponse'
   schemas:
+    Error:
+      description: an error
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - message
+      properties:
+        type:
+          type: string
+        message:
+          type: string
     FailResponse:
       description: request failure
       type: object
@@ -1400,12 +1466,7 @@ components:
         success:
           type: boolean
         error:
-          type: object
-          properties:
-            type:
-              type: string
-            message:
-              type: string
+          $ref: '#/components/schemas/Error'
     LoginResponse:
       description: login response
       type: object
@@ -1420,8 +1481,11 @@ components:
           type: string
     PlayerResponse:
       description: a player
-      oneOf:
+      allOf:
         - $ref: '#/components/schemas/PublicPlayer'
+    PlayerDetailResponse:
+      description: player details
+      allOf:
         - $ref: '#/components/schemas/PlayerDetail'
     GamesResponse:
       description: collection of games
@@ -1433,8 +1497,11 @@ components:
       type: object
     CharacterResponse:
       description: character response
-      oneOf:
+      allOf:
         - $ref: '#/components/schemas/PublicCharacter'
+    CharacterDetailResponse:
+      description: character response
+      allOf:
         - $ref: '#/components/schemas/CharacterDetail'
     PublicPlayer:
       description: Player object

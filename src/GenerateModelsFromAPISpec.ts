@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import YAML from 'yamljs'
+import { type } from 'os'
 
 const inputFile = path.join(__dirname, '..', 'config/openapi.yml')
 const outputPath = path.join(__dirname, 'api/dto')
@@ -28,9 +29,9 @@ for (const request in apidef.components.requestBodies) {
     className,
     apidef.components.requestBodies[request].content['application/json'].schema
   )
-  fs.writeFile(path.join(outputPath, 'request', `${className}.ts`), entity, (err) => {
-    if (err) throw err
-  })
+  // fs.writeFile(path.join(outputPath, 'request', `${className}.ts`), entity, (err) => {
+  //   if (err) throw err
+  // })
 }
 //loop through components.schemas and create <name>.ts models
 for (const schema in apidef.components.schemas) {
@@ -39,7 +40,7 @@ for (const schema in apidef.components.schemas) {
   // fs.writeFile(path.join(outputPath, `${className}.ts`), entity, (err) => {
   //   if (err) throw err
   // })
-  // console.log(entity)
+  console.log(entity)
 }
 
 function makeEntity(header: string, className: string, schema: any) {
@@ -57,6 +58,18 @@ function makeEntity(header: string, className: string, schema: any) {
     fieldNames.push(fieldName)
     fields[fieldName] = getType(properties[fieldName])
   }
+  let extend = ''
+  if (schema.allOf) {
+    //need to extend another class
+    //need to ensure the api definition never uses allOf to extend multiple
+    //  schemas since ts only supports single inheritance.  We should report
+    //  it here if we encounter it
+    if (schema.allOf.length > 1) {
+      console.log(`Schema ${className} conflict: multiple inheritance`)
+    } else {
+      extend = schema.allOf[0].$ref.split('/').pop()
+    }
+  }
   const fieldList = fieldNames.join(', ')
   const fieldSetList = fieldNames
     .map((value) => {
@@ -68,13 +81,23 @@ function makeEntity(header: string, className: string, schema: any) {
       return `${value}: ${fields[value]}`
     })
     .join('\n  ')
-  if (fieldNames.length > 0) {
-    const entityContent = `${header}
-import { Entity } from 'typeorm'
+  if (fieldNames.length == 0) {
+    if (schema.oneOf) {
+      console.log('need to process oneOf')
+    }
+  }
+
+  const entityContent = `${header}
+import { Entity } from 'typeorm'${
+    extend.length
+      ? `
+import ${extend} from '${className.endsWith('Response') ? '../' : './'}${extend}'`
+      : ``
+  }
 
 @Entity()
-export class ${className} {
-  constructor(item: any) {
+export class ${className}${extend.length ? ` extends ${extend}` : ``} {
+  constructor(item: any) {${extend.length ? `\n    super(item)` : ``}
     const { ${fieldList} } = item
 
     ${fieldSetList}
@@ -86,15 +109,25 @@ export class ${className} {
 export default ${className}
 `
 
-    return entityContent
-  } else {
-    console.log(`${className} has no properties`)
-  }
+  return entityContent
 }
 
 function getType(item: any) {
+  const stringFormatTypeMap = {
+    'date-time': 'Date'
+  }
   if (item.type == 'array') {
-    return `${item.items.type}[]`
+    if (item.items.type) {
+      return `${item.items.type}[]`
+    } else if (item.items.$ref) {
+      return item.items.$ref.split('/').pop()
+    }
+  }
+  if (item.$ref) {
+    return item.$ref.split('/').pop()
+  }
+  if (item.type == 'string' && item.format) {
+    return stringFormatTypeMap[item.format]
   }
   return item.type
 }
