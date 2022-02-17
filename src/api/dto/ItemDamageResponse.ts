@@ -1,17 +1,19 @@
 import { Entity } from 'typeorm'
+import ItemDamageType from './ItemDamageType'
 
 @Entity()
-export class DamageResponse {
+export class ItemDamageResponse {
   /**
    * @description returned in response to equipment taking damage
    *
    * @param result string, either 'damaged' or 'destroyed'
    */
-  constructor(result: string) {
+  constructor(args: any) {
+    const { result } = args
     this.result = result
   }
 
-  result: string
+  result: ItemDamageType
 }
 
-export default DamageResponse
+export default ItemDamageResponse

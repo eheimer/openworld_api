@@ -759,7 +759,7 @@ paths:
   #       content:
   #         application/json:
   #           schema:
-  #             $ref: '#/components/schemas/PetRequest'
+  #             $ref: '#/components/schemas/RenamePetRequest'
   #     responses:
   #       204:
   #         description: Success
@@ -1075,41 +1075,41 @@ paths:
   #       - item
   #     operationId: damageItem
   #     parameters:
-  #     - name: gameId
-  #       required: true
-  #       in: path
-  #       description: the gameId
-  #       schema:
-  #         type: number
-  #     - name: itemType
-  #       required: true
-  #       in: path
-  #       description: item type
-  #       schema:
-  #         $ref: '#/components/schemas/DamageableType'
-  #     - name: itemId
-  #       required: true
-  #       in: path
-  #       description: itemId
-  #       schema:
-  #         type: number
-  #     requestBody:
-  #       required: true
-  #       content:
-  #         application/json:
-  #           schema:
-  #             $ref: '#/components/schemas/BasicTokenObject'
+  #       - name: gameId
+  #         required: true
+  #         in: path
+  #         description: the gameId
+  #         schema:
+  #           type: number
+  #       - name: itemType
+  #         required: true
+  #         in: path
+  #         description: item type
+  #         schema:
+  #           $ref: '#/components/schemas/DamageableType'
+  #       - name: itemId
+  #         required: true
+  #         in: path
+  #         description: itemId
+  #         schema:
+  #           type: number
+  #     # requestBody:
+  #     # required: false
+  #     # content:
+  #     # application/json:
+  #     # schema:
+  #     # $ref: '#/components/schemas/BasicTokenObject'
   #     responses:
   #       200:
   #         description: Success
   #         content:
   #           application/json:
   #             schema:
-  #               $ref: '#/components/schemas/DamageResponse'
+  #               $ref: '#/components/schemas/ItemDamageResponse'
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/items/{itemType}/{itemId}/repair:
   #   post:
   #     summary: repair item
@@ -1387,7 +1387,12 @@ components:
         success:
           type: boolean
         error:
-          type: string
+          type: object
+          properties:
+            type:
+              type: string
+            message:
+              type: string
     LoginResponse:
       description: login response
       type: object
@@ -1403,7 +1408,7 @@ components:
     PlayerResponse:
       description: a player
       oneOf:
-        - $ref: '#/components/schemas/Player'
+        - $ref: '#/components/schemas/PublicPlayer'
         - $ref: '#/components/schemas/PlayerDetail'
     GamesResponse:
       description: collection of games
@@ -1416,37 +1421,50 @@ components:
     CharacterResponse:
       description: character response
       oneOf:
-        - $ref: '#/components/schemas/Character'
+        - $ref: '#/components/schemas/PublicCharacter'
         - $ref: '#/components/schemas/CharacterDetail'
-    Player:
+    PublicPlayer:
       description: Player object
       type: object
       additionalProperties: false
+      properties:
+        name:
+          type: string
+        lastSeenAt:
+          type: string
+          format: date-time
     PlayerDetail:
       description: Player details
       type: object
       additionalProperties: false
       allOf:
-        - $ref: '#/components/schemas/Player'
-    Character:
+        - $ref: '#/components/schemas/PublicPlayer'
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+    PublicCharacter:
       description: Character object
       type: object
       additionalProperties: false
       properties:
         name:
           type: string
+    CharacterDetail:
+      description: Character details
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/PublicCharacter'
+      properties:
         maxHp:
           type: number
         baseResist:
           type: number
         inventorySize:
           type: number
-    CharacterDetail:
-      description: Character details
-      type: object
-      additionalProperties: false
-      allOf:
-        - $ref: '#/components/schemas/Character'
     Game:
       description: Create game object
       type: object
@@ -1462,13 +1480,11 @@ components:
       additionalProperties: false
       properties:
         game:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/Game'
+          $ref: '#/components/schemas/Game'
         character:
-          type: object
-          allOf:
-            - $ref: '#/components/schemas/Character'
+          $ref: '#/components/schemas/PublicCharacter'
+        owner:
+          type: boolean
     ItemType:
       description: Item type
       type: string
@@ -1481,6 +1497,10 @@ components:
       description: Item type
       type: string
       enum: [weapon, armor]
+    ItemDamageType:
+      description: Item damage type
+      type: string
+      enum: [damaged, destroyed]
     ItemDamageResponse:
       description: Item damaged
       type: object
@@ -1489,5 +1509,4 @@ components:
         - result
       properties:
         result:
-          type: string
-          enum: [damaged, destroyed]
+          $ref: '#/components/schemas/ItemDamageType'
