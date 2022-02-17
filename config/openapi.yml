@@ -48,11 +48,11 @@ paths:
       operationId: clientFiles
       responses:
         200:
-          $ref: '#/components/responses/PlainTextResponse'
+          $ref: '#/components/responses/PlainText'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /:
     get:
       summary: Socket testing
@@ -65,11 +65,11 @@ paths:
       operationId: socketTest
       responses:
         200:
-          $ref: '#/components/responses/PlainTextResponse'
+          $ref: '#/components/responses/PlainText'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /players:
     post:
       security: []
@@ -78,14 +78,14 @@ paths:
       tags:
         - player
       requestBody:
-        $ref: '#/components/requestBodies/RegisterRequest'
+        $ref: '#/components/requestBodies/Register'
       responses:
         201:
-          $ref: '#/components/responses/LocationResponse'
+          $ref: '#/components/responses/Location'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /players/{playerId}:
     get:
       summary: retrieve a player
@@ -102,11 +102,11 @@ paths:
             type: string
       responses:
         200:
-          $ref: '#/components/responses/PlayerResponse'
+          $ref: '#/components/responses/Player'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /players/{playerId}/games:
     get:
       summary: get player's /games
@@ -124,11 +124,11 @@ paths:
             type: string
       responses:
         200:
-          $ref: '#/components/responses/GamesResponse'
+          $ref: '#/components/responses/Games'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games:
     post:
       summary: create a new game
@@ -136,12 +136,12 @@ paths:
         - game
       operationId: createGame
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateGameRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateGame'
       responses:
         201:
-          $ref: '#/components/responses/LocationResponse'
+          $ref: '#/components/responses/Location'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /login:
     post:
       security: []
@@ -151,15 +151,15 @@ paths:
         - player
       operationId: login
       requestBody:
-        $ref: '#/components/requestBodies/LoginRequest'
+        $ref: '#/components/requestBodies/Login'
 
       responses:
         200:
-          $ref: '#/components/responses/LoginResponse'
+          $ref: '#/components/responses/Login'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games/{gameId}:
     parameters:
       - name: gameId
@@ -175,25 +175,25 @@ paths:
         - game
       responses:
         200:
-          $ref: '#/components/responses/GameResponse'
+          $ref: '#/components/responses/Game'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     patch:
       summary: update game partial
       operationId: updateGame
       tags:
         - game
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateGameRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateGame'
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     delete:
       summary: remove a game
       description: deletes the game, all battles, characters, creatureInstances, inventories, etc
@@ -202,11 +202,11 @@ paths:
       operationId: deleteGame
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games/{gameId}/players/{playerId}:
     parameters:
       - name: gameId
@@ -230,11 +230,11 @@ paths:
       operationId: joinGame
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     delete:
       summary: remove a player from a game
       description: player id must exist at /players/{playerId}
@@ -244,11 +244,11 @@ paths:
       operationId: leaveGame
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games/{gameId}/players:
     parameters:
       - name: gameId
@@ -263,14 +263,14 @@ paths:
         - game
       operationId: invitePlayer
       requestBody:
-        $ref: '#/components/requestBodies/InvitePlayerRequest'
+        $ref: '#/components/requestBodies/InvitePlayer'
       responses:
         201:
-          $ref: '#/components/responses/LocationResponse'
+          $ref: '#/components/responses/Location'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games/{gameId}/battles:
     parameters:
       - name: gameId
@@ -287,9 +287,9 @@ paths:
       operationId: createBattle
       responses:
         201:
-          $ref: '#/components/responses/LocationResponse'
+          $ref: '#/components/responses/Location'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     get:
       summary: get battles
       tags:
@@ -297,11 +297,11 @@ paths:
       operationId: getGameBattles
       responses:
         200:
-          $ref: '#/components/responses/IdCollectionResponse'
+          $ref: '#/components/responses/IdCollection'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games/{gameId}/battles/{battleId}:
     parameters:
       - name: gameId
@@ -323,11 +323,11 @@ paths:
       operationId: getBattle
       responses:
         200:
-          $ref: '#/components/responses/BattleResponse'
+          $ref: '#/components/responses/Battle'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     delete:
       summary: delete a battle
       tags:
@@ -335,11 +335,11 @@ paths:
       operationId: deleteBattle
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /games/{gameId}/battles/{battleId}/enemies:
     post:
       summary: add enemy to battle
@@ -361,14 +361,14 @@ paths:
           schema:
             type: number
       requestBody:
-        $ref: '#/components/requestBodies/MonsterRequest'
+        $ref: '#/components/requestBodies/Monster'
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   # /games/{gameId}/battles/{battleId}/friendlies:
   #   post:
   #     summary: add friendly to battle
@@ -399,9 +399,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/battles/{battleId}/pets/{creatureId}:
   #   parameters:
   #   - name: gameId
@@ -438,9 +438,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #   delete:
   #     summary: remove pet from battle
   #     description: removes the player's pet from the battle
@@ -457,9 +457,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/battles/{battleId}/nextRound:
   #   post:
   #     summary: advance battle to next round
@@ -490,9 +490,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/battles/{battleId}/dealDamage:
   #   post:
   #     summary: deal damage
@@ -523,9 +523,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/battles/{battleId}/join:
   #   post:
   #     summary: join a battle
@@ -556,9 +556,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/creatures/{creatureId}/conditions:
   #   post:
   #     summary: add condition to creature
@@ -587,11 +587,11 @@ paths:
   #             $ref: '#/components/schemas/BasicTokenObject'
   #     responses:
   #       201:
-  #         $ref: '#/components/responses/LocationResponse'
+  #         $ref: '#/components/responses/Location'
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/creatures/{creatureId}/conditions/{conditionId}:
   #   delete:
   #     summary: remove activeCondition from creature
@@ -627,9 +627,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/creatures/{creatureId}/tame:
   #   post:
   #     summary: tame creature
@@ -660,9 +660,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/creatures/{creatureId}/release:
   #   post:
   #     summary: release tamed creature
@@ -699,9 +699,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/creatures/{creatureId}/resurrect:
   #   post:
   #     summary: resurrect player's pet
@@ -731,9 +731,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/creatures/{creatureId}:
   #   parameters:
   #     - name: gameId
@@ -764,9 +764,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #   delete:
   #     summary: delete creature
   #     description: deletes creature, its inventory and conditions
@@ -783,9 +783,9 @@ paths:
   #       204:
   #         description: Success
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/monsters:
   #   get:
   #     summary: get monsters
@@ -815,9 +815,9 @@ paths:
   #               items:
   #                 type: number
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/damageTypes:
   #   get:
   #     summary: get damage types
@@ -847,9 +847,9 @@ paths:
   #               items:
   #                 type: number
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   # /games/{gameId}/conditions:
   #   get:
   #     summary: get conditions
@@ -879,9 +879,9 @@ paths:
   #               items:
   #                 type: number
   #       404:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   #       500:
-  #         $ref: '#/components/responses/FailResponse'
+  #         $ref: '#/components/responses/Fail'
   /games/{gameId}/characters:
     post:
       summary: create character
@@ -890,12 +890,12 @@ paths:
         - game
       operationId: createCharacter
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateCharacterRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateCharacter'
       responses:
         201:
-          $ref: '#/components/responses/LocationResponse'
+          $ref: '#/components/responses/Location'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     get:
       summary: get all characters for game
       tags:
@@ -904,11 +904,11 @@ paths:
       operationId: getGameCharacters
       responses:
         200:
-          $ref: '#/components/responses/IdCollectionResponse'
+          $ref: '#/components/responses/IdCollection'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
   /characters/{characterId}:
     parameters:
       - name: characterId
@@ -925,25 +925,25 @@ paths:
       operationId: getCharacter
       responses:
         200:
-          $ref: '#/components/responses/CharacterResponse'
+          $ref: '#/components/responses/Character'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     patch:
       summary: update character partial
       tags:
         - character
       operationId: updateCharacter
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateCharacterRequest'
+        $ref: '#/components/requestBodies/CreateOrUpdateCharacter'
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
     delete:
       summary: remove a character
       description: deletes the character and its inventory
@@ -952,11 +952,11 @@ paths:
       operationId: deleteCharacter
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpateResponse'
+          $ref: '#/components/responses/DeleteOrUpate'
         404:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
         500:
-          $ref: '#/components/responses/FailResponse'
+          $ref: '#/components/responses/Fail'
 
   # /games/{gameId}/characters/{characterId}/resurrect:
   #   post:
@@ -1157,7 +1157,7 @@ components:
       scheme: bearer
       bearerFormat: JWT
   requestBodies:
-    LoginRequest:
+    Login:
       description: login request
       required: true
       content:
@@ -1174,7 +1174,7 @@ components:
                 format: email
               password:
                 type: string
-    RegisterRequest:
+    Register:
       description: register new player request
       required: true
       content:
@@ -1194,7 +1194,7 @@ components:
                 type: string
               name:
                 type: string
-    CreateOrUpdateGameRequest:
+    CreateOrUpdateGame:
       description: Create game requests
       required: true
       content:
@@ -1203,7 +1203,7 @@ components:
             type: object
             allOf:
               - $ref: '#/components/schemas/Game'
-    CreateOrUpdateCharacterRequest:
+    CreateOrUpdateCharacter:
       description: Create or Update character requests
       required: true
       content:
@@ -1212,7 +1212,7 @@ components:
             type: object
             allOf:
               - $ref: '#/components/schemas/Character'
-    InvitePlayerRequest:
+    InvitePlayer:
       description: Invite a player to a game
       required: true
       content:
@@ -1226,7 +1226,7 @@ components:
               email:
                 type: string
                 format: email
-    BattleDamageRequest:
+    BattleDamage:
       description: Deal damage request
       required: true
       content:
@@ -1250,7 +1250,7 @@ components:
                 type: number
               damageAmt:
                 type: number
-    MonsterRequest:
+    Monster:
       description: Monster requests
       required: true
       content:
@@ -1261,7 +1261,7 @@ components:
             properties:
               monsterId:
                 type: number
-    RenamePetRequest:
+    RenamePet:
       description: Rename pet
       required: true
       content:
@@ -1273,37 +1273,28 @@ components:
               name:
                 type: string
   responses:
-    DeleteOrUpateResponse:
+    DeleteOrUpate:
       description: Empty success response from delete or update
-    LocationResponse:
+    Location:
       description: '201: A response that returns a location header'
       headers:
         Location:
           description: the uri to retrieve the player
           schema:
             type: string
-    PlainTextResponse:
+    PlainText:
       description: response in plain text/html
       content:
         text/html:
           schema:
             type: string
-    FailResponse:
+    Fail:
       description: Request failed
       content:
         application/json:
           schema:
-            type: object
-            additionalProperties: false
-            required:
-              - success
-              - error
-            properties:
-              success:
-                type: boolean
-              error:
-                type: string
-    IdCollectionResponse:
+            $ref: '#/components/schemas/FailResponse'
+    IdCollection:
       description: a response which consists of an array of general object ids
       content:
         application/json:
@@ -1311,59 +1302,85 @@ components:
             type: array
             items:
               type: number
-    LoginResponse:
+    Login:
       description: login success
       content:
         application/json:
           schema:
-            type: object
-            additionalProperties: false
-            required:
-              - token
-              - player
-            properties:
-              token:
-                type: string
-              player:
-                type: string
-    PlayerResponse:
+            $ref: '#/components/schemas/LoginResponse'
+    Player:
       description: Success
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/Player'
-              - $ref: '#/components/schemas/PlayerDetail'
-    GamesResponse:
+            $ref: '#/components/schemas/PlayerResponse'
+    Games:
       description: Get players games success
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/GameCharacter'
-    GameResponse:
+            $ref: '#/components/schemas/GamesResponse'
+    Game:
       description: game detail request success
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Game'
-    CharacterResponse:
+    Character:
       description: Get character success
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/Character'
-              - $ref: '#/components/schemas/CharacterDetail'
-    BattleResponse:
+            $ref: '#/components/schemas/CharacterResponse'
+    Battle:
       description: Battle object
       content:
         application/json:
           schema:
-            type: object
-            additionalProperties: false
+            $ref: '#/components/schemas/BattleResponse'
   schemas:
+    FailResponse:
+      description: request failure
+      type: object
+      additionalProperties: false
+      required:
+        - success
+        - error
+      properties:
+        success:
+          type: boolean
+        error:
+          type: string
+    LoginResponse:
+      description: login response
+      type: object
+      additionalProperties: false
+      required:
+        - token
+        - player
+      properties:
+        token:
+          type: string
+        player:
+          type: string
+    PlayerResponse:
+      description: a player
+      oneOf:
+        - $ref: '#/components/schemas/Player'
+        - $ref: '#/components/schemas/PlayerDetail'
+    GamesResponse:
+      description: collection of games
+      type: array
+      items:
+        $ref: '#/components/schemas/GameCharacter'
+    BattleResponse:
+      description: the battle
+      type: object
+    CharacterResponse:
+      description: character response
+      oneOf:
+        - $ref: '#/components/schemas/Character'
+        - $ref: '#/components/schemas/CharacterDetail'
     Player:
       description: Player object
       type: object
@@ -1427,7 +1444,7 @@ components:
       description: Item type
       type: string
       enum: [weapon, armor]
-    DamageResponse:
+    ItemDamageResponse:
       description: Item damaged
       type: object
       additionalProperties: false
