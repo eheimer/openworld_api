@@ -890,7 +890,7 @@ paths:
         - game
       operationId: createCharacter
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateCharacter'
+        $ref: '#/components/requestBodies/CreateCharacter'
       responses:
         201:
           $ref: '#/components/responses/Location'
@@ -936,7 +936,7 @@ paths:
         - character
       operationId: updateCharacter
       requestBody:
-        $ref: '#/components/requestBodies/CreateOrUpdateCharacter'
+        $ref: '#/components/requestBodies/UpdateCharacter'
       responses:
         204:
           $ref: '#/components/responses/DeleteOrUpate'
@@ -1195,23 +1195,60 @@ components:
               name:
                 type: string
     CreateOrUpdateGame:
-      description: Create game requests
+      description: Create game request
       required: true
       content:
         application/json:
           schema:
             type: object
-            allOf:
-              - $ref: '#/components/schemas/Game'
-    CreateOrUpdateCharacter:
-      description: Create or Update character requests
+            additionalProperties: false
+            required:
+              - name
+              - maxPlayers
+            properties:
+              name:
+                type: string
+              maxPlayers:
+                type: number
+    CreateCharacter:
+      description: Create or Update character request
       required: true
       content:
         application/json:
           schema:
             type: object
-            allOf:
-              - $ref: '#/components/schemas/Character'
+            additionalProperties: false
+            required:
+              - name
+              - maxHp
+              - baseResist
+              - inventorySize
+            properties:
+              name:
+                type: string
+              maxHp:
+                type: number
+              baseResist:
+                type: number
+              inventorySize:
+                type: number
+    UpdateCharacter:
+      description: Create or Update character request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+              maxHp:
+                type: number
+              baseResist:
+                type: number
+              inventorySize:
+                type: number
     InvitePlayer:
       description: Invite a player to a game
       required: true
@@ -1251,7 +1288,7 @@ components:
               damageAmt:
                 type: number
     Monster:
-      description: Monster requests
+      description: Monster request
       required: true
       content:
         application/json:

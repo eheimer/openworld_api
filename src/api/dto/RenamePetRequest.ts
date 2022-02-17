@@ -1,7 +1,7 @@
 import { Entity } from 'typeorm'
 
 @Entity()
-export class PetRequest {
+export class RenamePetRequest {
   constructor(args: any) {
     const { name } = args
     this.name = name
@@ -9,4 +9,4 @@ export class PetRequest {
   name: string
 }
 
-export default PetRequest
+export default RenamePetRequest
