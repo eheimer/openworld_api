@@ -75,7 +75,17 @@ function makeImport(className: string, importClassName: string, map: any) {
 }
 
 function makeEnumEntity(header: string, className: string, map: any) {
+  const schema = map[className].schema
   return `${header}
+${
+  schema.description
+    ? `
+/**
+ * description - ${schema.description}
+ *
+ */`
+    : ``
+}
 export enum ${className} {
   ${map[className].schema.enum.join(',\n  ')}
 }
@@ -142,7 +152,15 @@ import { Entity } from 'typeorm'${
 ${uniqueImports.join('\n')}`
       : ``
   }
-
+${
+  schema.description
+    ? `
+/**
+ * description - ${schema.description}
+ *
+ */`
+    : ``
+}
 @Entity()
 export class ${className}${extend.length ? ` extends ${extend}` : ``} {
   constructor(item: any) {${extend.length ? `\n    super(item)` : ``}
