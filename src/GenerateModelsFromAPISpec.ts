@@ -81,8 +81,7 @@ ${
   schema.description
     ? `
 /**
- * description - ${schema.description}
- *
+ * @description - ${schema.description}
  */`
     : ``
 }
@@ -156,7 +155,6 @@ ${
     ? `
 /**
  * @description - ${schema.description}
- *
  */`
     : ``
 }

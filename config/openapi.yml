@@ -996,7 +996,7 @@ paths:
       description: retrieves either the public character or detail, depending on the player making the request
       tags:
         - character
-      operationId: getCharacter
+      operationId: getCharacterDetail
       responses:
         200:
           $ref: '#/components/responses/CharacterDetail'

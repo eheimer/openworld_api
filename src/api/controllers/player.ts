@@ -6,6 +6,7 @@ import PlayerService from '../services/player'
 import { writeJsonResponse } from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 import PlayerResponse from '../dto/response/PlayerResponse'
+import PlayerDetailResponse from '../dto/response/PlayerDetailResponse'
 
 export async function register(req: express.Request, res: express.Response): Promise<void> {
   const { email, password, name } = req.body
@@ -33,11 +34,12 @@ export async function getPlayer(req: express.Request, res: express.Response): Pr
   let player
   if (playerId && res.locals.auth.userId) {
     try {
-      player = new PlayerResponse(await PlayerService.getPlayer(playerId))
-      //TODO: re-implement this:
-      // if (playerId !== res.locals.auth.userId) {
-      //   player = new PublicPlayer(player)
-      // }
+      const dbPlayer = await PlayerService.getPlayer(playerId)
+      if (playerId == res.locals.auth.userId) {
+        player = new PlayerDetailResponse(dbPlayer)
+      } else {
+        player = new PlayerResponse(await PlayerService.getPlayer(playerId))
+      }
     } catch (err) {
       return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
     }
