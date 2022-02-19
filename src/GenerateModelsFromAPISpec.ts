@@ -27,7 +27,12 @@ fs.writeFileSync(path.join(jsonFilePath, `classMap.json`), JSON.stringify(classM
 
 //TODO: loop through classMap instead, which contains the schema
 for (const className in classMap) {
-  const entity = makeEntity(header, className, classMap)
+  let entity = ''
+  if (classMap[className].schema.enum) {
+    entity = makeEnumEntity(header, className, classMap)
+  } else {
+    entity = makeEntity(header, className, classMap)
+  }
   fs.writeFile(
     path.join(outputPath, classMap[className].path ? classMap[className].path : '', `${className}.ts`),
     entity,
@@ -69,6 +74,16 @@ function makeImport(className: string, importClassName: string, map: any) {
   )}'`
 }
 
+function makeEnumEntity(header: string, className: string, map: any) {
+  return `${header}
+export enum ${className} {
+  ${map[className].schema.enum.join(',\n  ')}
+}
+
+export default ${className}
+`
+}
+
 function makeEntity(header: string, className: string, map: any) {
   //need to be able to handle:
   //  - allOf - one idea is to make the object inherit from the referenced objects
@@ -80,7 +95,6 @@ function makeEntity(header: string, className: string, map: any) {
   const schema = map[className].schema
   const fieldNames = []
   const fields = {}
-  // "name":"type"
   const properties = schema.properties
   const imports = []
   for (const fieldName in properties) {
