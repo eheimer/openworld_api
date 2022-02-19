@@ -4,7 +4,7 @@ import * as respond from '../../utils/express'
 import CharacterService from '../services/character'
 import GameService from '../services/game'
 import { makeRoutePath } from '../../utils/server'
-import { PublicCharacter } from '../factories/CharacterFactory'
+import PublicCharacter from '../dto/PublicCharacter'
 import CreateCharacterRequest from '../dto/request/CreateCharacterRequest'
 
 /**

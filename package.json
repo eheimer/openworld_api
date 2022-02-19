@@ -8,7 +8,7 @@
     "build": "tsc",
     "dev": "cross-env ENV_FILE=./config/.env.dev ts-node ./src/app.ts",
     "dev:reseed": "npm run seed:dev && npm run dev",
-    "typedoc": "typedoc src/api/dto/*.ts src/api/models/*.ts src/utils/entities/*.ts --json build/typedoc.json",
+    "typedoc": "typedoc src/api/dto/*.ts src/api/dto/**/*.ts --json build/typedoc.json",
     "export:entities": "npm run typedoc && ts-node ./src/ExportEntities.ts",
     "export:apispecmodels": "ts-node ./src/GenerateModelsFromAPISpec.ts",
     "test": "npm run test:unit",

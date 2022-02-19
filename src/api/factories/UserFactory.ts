@@ -4,17 +4,6 @@ import EntityFactory from './EntityFactory'
 import { DeepPartial } from 'typeorm'
 import UserRepository from '../repositories/UserRepository'
 
-export class PublicPlayer {
-  id: number | string
-  name: string
-  lastSeenAt: Date
-  constructor(player: User) {
-    this.id = player.id
-    this.name = player.name
-    this.lastSeenAt = player.lastSeenAt
-  }
-}
-
 export default class UserFactory extends EntityFactory<User> {
   constructor() {
     super(User)

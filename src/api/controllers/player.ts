@@ -5,8 +5,7 @@ import * as respond from '../../utils/express'
 import PlayerService from '../services/player'
 import { writeJsonResponse } from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
-import { PublicPlayer } from '../factories/UserFactory'
-import PlayerResponse from '../dto/PlayerResponse'
+import PlayerResponse from '../dto/response/PlayerResponse'
 
 export async function register(req: express.Request, res: express.Response): Promise<void> {
   const { email, password, name } = req.body

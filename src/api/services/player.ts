@@ -75,7 +75,7 @@ async function getGameCharacters(playerId: number | string): Promise<GameCharact
     const gameChars: GameCharacter[] = []
     for (const game of games) {
       const char = await charFactory.getRepository().findOne({ player: { id: playerId }, game: game })
-      gameChars.push(new GameCharacter(game, char, game.owner.id === playerId))
+      gameChars.push(new GameCharacter({ game, char, owner: game.owner.id === playerId }))
     }
     return gameChars
   } catch (err) {

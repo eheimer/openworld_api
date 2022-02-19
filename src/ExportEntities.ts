@@ -89,18 +89,18 @@ function getTypeString(type) {
 }
 
 function getFlattenedExtends(branch: any, fullMap: any) {
-  let extend = []
+  const extend = []
 
   if (branch.extendedTypes) {
     for (const item in branch.extendedTypes) {
       const ext = branch.extendedTypes[item]
       if (ext.type == 'reference' && !excludeModels.includes(ext.name)) {
         extend.push(ext.name)
-        if ((ext.name as string).startsWith('i')) {
-          extend = [...extend, ...getFlattenedExtends(fullMap.interfaces[ext.name], fullMap)]
-        } else {
-          extend = [...extend, ...getFlattenedExtends(fullMap.models[ext.name], fullMap)]
-        }
+        // if ((ext.name as string).startsWith('i')) {
+        //   extend = [...extend, ...getFlattenedExtends(fullMap.interfaces[ext.name], fullMap)]
+        // } else {
+        //   extend = [...extend, ...getFlattenedExtends(fullMap.models[ext.name], fullMap)]
+        // }
       }
     }
   }
@@ -149,6 +149,7 @@ const typeMap = {
 
 for (const modelName in typeMap.models) {
   if (!excludeModels.includes(modelName)) {
+    console.log('processing ' + modelName)
     const model = typeMap.models[modelName]
     model.flattenedExtends = getFlattenedExtends(model, typeMap)
     model.columns = getColumns(model)

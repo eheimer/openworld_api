@@ -101,7 +101,6 @@ function makeEntity(header: string, className: string, map: any) {
   //  - oneOf - I think split these into two endpoints, getPlayer and getPlayerDetail for example
   //  - array - both top-level response arrays and array properties
   //  - enum - good luck
-  console.log(`Making ${className}`)
   const schema = map[className].schema
   const fieldNames = []
   const fields = {}
@@ -156,7 +155,7 @@ ${
   schema.description
     ? `
 /**
- * description - ${schema.description}
+ * @description - ${schema.description}
  *
  */`
     : ``

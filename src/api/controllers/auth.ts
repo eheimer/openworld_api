@@ -3,7 +3,7 @@ import AuthService from '../services/auth'
 import PlayerService from '../services/player'
 import * as respond from '../../utils/express'
 import { ErrorResponse } from '../../../types'
-import LoginResponse from '../dto/LoginResponse'
+import LoginResponse from '../dto/response/LoginResponse'
 
 /**
  * Security controller - attach playerId to the response to make further authorization tests possible
