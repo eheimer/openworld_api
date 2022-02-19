@@ -163,13 +163,10 @@ ${
 }
 @Entity()
 export class ${className}${extend.length ? ` extends ${extend}` : ``} {
-  constructor(item: any) {${extend.length ? `\n    super(item)` : ``}
-    ${fieldList.length ? `const { ${fieldList} } = item` : ``}
-
-    ${fieldSetList}
-  }
-
-  ${fieldDefList}
+  constructor(item: any) {${extend.length ? `\n    super(item)` : ``}${
+    fieldList.length ? `\n    const { ${fieldList} } = item` : ``
+  }${fieldSetList.length ? `\n    ${fieldSetList}` : ''}
+  }${fieldDefList.length ? `\n  ${fieldDefList}` : ''}
 }
 
 export default ${className}
