@@ -1,12 +1,15 @@
 import path from 'path'
 import fs from 'fs'
+import logger from '../../src/utils/logger'
 
-const inputFile = path.join(__dirname, '..', 'build/typedoc.json')
+const serverRoot = path.join(__dirname, '../..')
+
+const inputFile = path.join(serverRoot, 'build/typedoc.json')
 
 const typesContent = fs.readFileSync(inputFile, 'utf8')
 const types = JSON.parse(typesContent)
 
-const outputPath = path.join(__dirname, '..', 'build/UnityModels')
+const outputPath = path.join(serverRoot, 'build/UnityModels')
 fs.mkdir(outputPath, { recursive: true }, (err) => {
   if (err) throw err
 })
@@ -74,7 +77,7 @@ function getTypeString(type) {
       if (unionString == 'string|number' || unionString == 'number|string') {
         ret = typeMap.string
       } else {
-        console.log('union type: ' + type.types.map((x) => x.name).join('|'))
+        logger.warn('unsupported union type: ' + type.types.map((x) => x.name).join('|'))
         ret = '<undetermined union>'
       }
       break
@@ -83,12 +86,12 @@ function getTypeString(type) {
       break
   }
   if (!ret) {
-    console.log(`undefined for ${type.name}`)
+    logger.warn(`undefined type: ${type.name}`)
   }
   return ret
 }
 
-function getFlattenedExtends(branch: any, fullMap: any) {
+function getFlattenedExtends(branch: any) {
   const extend = []
 
   if (branch.extendedTypes) {
@@ -96,11 +99,6 @@ function getFlattenedExtends(branch: any, fullMap: any) {
       const ext = branch.extendedTypes[item]
       if (ext.type == 'reference' && !excludeModels.includes(ext.name)) {
         extend.push(ext.name)
-        // if ((ext.name as string).startsWith('i')) {
-        //   extend = [...extend, ...getFlattenedExtends(fullMap.interfaces[ext.name], fullMap)]
-        // } else {
-        //   extend = [...extend, ...getFlattenedExtends(fullMap.models[ext.name], fullMap)]
-        // }
       }
     }
   }
@@ -160,9 +158,9 @@ const typeMap = {
 
 for (const modelName in typeMap.models) {
   if (!excludeModels.includes(modelName)) {
-    console.log('processing ' + modelName)
+    logger.debug('processing ' + modelName)
     const model = typeMap.models[modelName]
-    model.flattenedExtends = getFlattenedExtends(model, typeMap)
+    model.flattenedExtends = getFlattenedExtends(model)
     model.columns = getColumns(model)
     const fields = []
     for (const fieldName in model.columns) {
@@ -174,17 +172,15 @@ for (const modelName in typeMap.models) {
       .replace('{extends}', model.flattenedExtends.length > 0 ? ` : ${model.flattenedExtends.join(',')}` : '')
       .replace('{fields}', fields.join('\n'))
     if (output.includes('undefined')) {
-      console.log(output)
+      logger.warn(`undefined in ${modelName}: ${output}`)
     }
-    fs.writeFile(path.join(outputPath, `${modelName}.cs`), output, (err) => {
-      if (err) throw err
-    })
+    writeFile(modelName, output)
   }
 }
 
 for (const enumName in typeMap.enums) {
   if (!excludeModels.includes(enumName)) {
-    console.log('processing enum ' + enumName)
+    logger.debug('processing enum ' + enumName)
     const model = typeMap.enums[enumName]
     const enumItems = getEnumItems(model)
     const members = []
@@ -199,8 +195,12 @@ for (const enumName in typeMap.enums) {
     ${members.join(',\n    ')}
   }
 }`
-    fs.writeFile(path.join(outputPath, `${enumName}.cs`), output, (err) => {
-      if (err) throw err
-    })
+    writeFile(enumName, output)
   }
+}
+
+function writeFile(name: string, output: string) {
+  const outFile = path.join(outputPath, `${name}`)
+  fs.writeFileSync(outFile, output)
+  logger.info(`File written: ${outFile}`)
 }
