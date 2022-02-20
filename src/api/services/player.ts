@@ -4,6 +4,8 @@ import GameCharacter from '../dto/GameCharacter'
 import CharacterFactory from '../factories/CharacterFactory'
 import UserFactory from '../factories/UserFactory'
 import Game from '../models/Game'
+import GameDTO from '../dto/Game'
+import Character from '../dto/CharacterDetail'
 import User from '../models/User'
 
 const factory: UserFactory = new UserFactory()
@@ -75,7 +77,13 @@ async function getGameCharacters(playerId: number | string): Promise<GameCharact
     const gameChars: GameCharacter[] = []
     for (const game of games) {
       const char = await charFactory.getRepository().findOne({ player: { id: playerId }, game: game })
-      gameChars.push(new GameCharacter({ game, char, owner: game.owner.id === playerId }))
+      gameChars.push(
+        new GameCharacter({
+          game: new GameDTO(game),
+          character: new Character(char),
+          owner: game.owner.id === playerId
+        })
+      )
     }
     return gameChars
   } catch (err) {

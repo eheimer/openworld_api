@@ -128,6 +128,16 @@ function getObjectsOfKind(branch: any, kind: string) {
   return ret
 }
 
+function getEnumItems(branch: any) {
+  const members = getObjectsOfKind(branch, 'Enumeration member')
+  const items = {}
+  for (const item in members) {
+    const member = members[item]
+    items[member.defaultValue] = member.name
+  }
+  return items
+}
+
 function getColumns(branch: any) {
   const rawColumns = getObjectsOfKind(branch, 'Property')
   const columns = {}
@@ -144,7 +154,8 @@ const modules = { children: getObjectsOfKind(types, 'Module') }
 
 const typeMap = {
   interfaces: getObjectsOfKindFromEach(modules, 'Interface'),
-  models: getObjectsOfKindFromEach(modules, 'Class')
+  models: getObjectsOfKindFromEach(modules, 'Class'),
+  enums: getObjectsOfKindFromEach(modules, 'Enumeration')
 }
 
 for (const modelName in typeMap.models) {
@@ -166,6 +177,29 @@ for (const modelName in typeMap.models) {
       console.log(output)
     }
     fs.writeFile(path.join(outputPath, `${modelName}.cs`), output, (err) => {
+      if (err) throw err
+    })
+  }
+}
+
+for (const enumName in typeMap.enums) {
+  if (!excludeModels.includes(enumName)) {
+    console.log('processing enum ' + enumName)
+    const model = typeMap.enums[enumName]
+    const enumItems = getEnumItems(model)
+    const members = []
+    for (const item in enumItems) {
+      members.push(`${enumItems[item]} = ${item}`)
+    }
+
+    const output = `namespace Openworld.Models
+{
+  public enum ${enumName}
+  {
+    ${members.join(',\n    ')}
+  }
+}`
+    fs.writeFile(path.join(outputPath, `${enumName}.cs`), output, (err) => {
       if (err) throw err
     })
   }

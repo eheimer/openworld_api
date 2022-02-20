@@ -1490,8 +1490,8 @@ components:
     GamesResponse:
       description: collection of games
       type: array
-      items:
-        $ref: '#/components/schemas/GameCharacter'
+      allOf:
+        - $ref: '#/components/schemas/GameCharacter'
     BattleResponse:
       description: the battle
       type: object
@@ -1532,6 +1532,8 @@ components:
       properties:
         name:
           type: string
+        id:
+          type: string
     CharacterDetail:
       description: Character details
       type: object
@@ -1554,6 +1556,8 @@ components:
           type: string
         maxPlayers:
           type: number
+        id:
+          type: string
     GameCharacter:
       description: Game and Character
       type: object
