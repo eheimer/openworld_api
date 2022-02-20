@@ -5,7 +5,7 @@ import CharacterFactory from '../factories/CharacterFactory'
 import UserFactory from '../factories/UserFactory'
 import Game from '../models/Game'
 import GameDTO from '../dto/Game'
-import Character from '../dto/CharacterDetail'
+import PublicCharacter from '../dto/PublicCharacter'
 import User from '../models/User'
 
 const factory: UserFactory = new UserFactory()
@@ -80,7 +80,7 @@ async function getGameCharacters(playerId: number | string): Promise<GameCharact
       gameChars.push(
         new GameCharacter({
           game: new GameDTO(game),
-          character: new Character(char),
+          character: new PublicCharacter(char),
           owner: game.owner.id === playerId
         })
       )
