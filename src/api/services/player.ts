@@ -80,7 +80,7 @@ async function getGameCharacters(playerId: number | string): Promise<GameCharact
       gameChars.push(
         new GameCharacter({
           game: new GameDTO(game),
-          character: new PublicCharacter(char),
+          character: char ? new PublicCharacter(char) : new PublicCharacter({}),
           owner: game.owner.id === playerId
         })
       )

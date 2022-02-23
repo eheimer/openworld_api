@@ -138,8 +138,8 @@ paths:
       summary: get player's /games
       description: returns the games a player has access to
       tags:
-        - player
         - game
+        - player
       operationId: getGames
       parameters:
         - name: playerId

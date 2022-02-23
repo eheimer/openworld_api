@@ -1,50 +1,36 @@
-[{
-  "name": "test",
-  "type": "sqlite",
-  "database": ":memory:",
-  "synchronize": true,
-  "logging": "warn",
-  "entities": [
-    "src/api/models/**/*.ts"
-  ],
-  "migrations": [
-    "src/migration/**/*.ts"
-  ],
-  "subscribers": [
-    "src/subscriber/**/*.ts"
-  ]
-}, {
-  "name": "dev",
-  "type": "sqlite",
-  "database": "development.sqlite",
-  "synchronize": true,
-  "logging": "all",
-  "entities": [
-    "src/api/models/**/*.ts"
-  ],
-  "migrations": [
-    "src/migration/**/*.ts"
-  ],
-  "subscribers": [
-    "src/subscriber/**/*.ts"
-  ]
-}, {
-  "name": "prod",
-  "type": "mysql",
-  "server": "localhost",
-  "port": "3306",
-  "username": "openworld",
-  "password": "entranced",
-  "database": "openworld",
-  "synchronize": true,
-  "logging": "all",
-  "entities": [
-    "build/api/models/**/*.js"
-  ],
-  "migrations": [
-    "build/migration/**/*.js"
-  ],
-  "subscribers": [
-    "build/subscriber/**/*.js"
-  ]
-}]
+[
+  {
+    "name": "test",
+    "type": "sqlite",
+    "database": ":memory:",
+    "synchronize": true,
+    "logging": "warn",
+    "entities": ["src/api/models/**/*.ts"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"]
+  },
+  {
+    "name": "dev",
+    "type": "sqlite",
+    "database": "development.sqlite",
+    "synchronize": true,
+    "logging": "debug",
+    "entities": ["src/api/models/**/*.ts"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"]
+  },
+  {
+    "name": "prod",
+    "type": "mysql",
+    "server": "localhost",
+    "port": "3306",
+    "username": "openworld",
+    "password": "entranced",
+    "database": "openworld",
+    "synchronize": true,
+    "logging": "all",
+    "entities": ["build/api/models/**/*.js"],
+    "migrations": ["build/migration/**/*.js"],
+    "subscribers": ["build/subscriber/**/*.js"]
+  }
+]

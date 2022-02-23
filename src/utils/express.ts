@@ -1,5 +1,6 @@
 import * as express from 'express'
 import { OutgoingHttpHeaders } from 'http'
+import logger from './logger'
 
 export function writeJsonResponse(
   res: express.Response,
@@ -7,6 +8,7 @@ export function writeJsonResponse(
   payload: any,
   headers?: OutgoingHttpHeaders | undefined
 ): void {
+  logger.debug({ 'response payload': payload })
   const data = typeof payload === 'object' ? JSON.stringify(payload, null, 2) : payload
   res.writeHead(code, { ...headers, 'Content-Type': 'application/json' })
   res.end(data)

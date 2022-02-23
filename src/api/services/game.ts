@@ -107,9 +107,7 @@ async function getCharacters(gameId: number | string): Promise<PublicCharacter[]
 }
 
 async function getBattles(gameId: number | string): Promise<Battle[]> {
-  console.log({ gameId, num: gameId })
   const battles = await new BattleFactory().getRepository().find({ game: { id: gameId } })
-  console.log({ battles })
   return battles
 }
 
@@ -148,9 +146,6 @@ async function authorizeMember(gameId: number | string, playerId: number | strin
     if (!game) {
       return
     }
-    console.log({
-      contains: ((game as Game).players as any).includes(playerId)
-    })
     if (((game as Game).players as any).includes(playerId)) {
       return game
     } else {

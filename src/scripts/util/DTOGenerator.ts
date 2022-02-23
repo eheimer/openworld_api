@@ -3,6 +3,14 @@ import logger from '../../utils/logger'
 import fs from 'fs'
 import YAML from 'yamljs'
 
+/**
+ * @description laod the api definition from yaml, convert to json
+ * @param file the yaml file to load
+ * @param output write the json file?
+ * @param outputPath where to write the json file
+ * @param filename the name of the json file towrite
+ * @returns
+ */
 export function getAPIDefinition(file: string, output = false, outputPath = '', filename = 'api.json') {
   const def = YAML.load(file)
   if (output) {
@@ -13,6 +21,7 @@ export function getAPIDefinition(file: string, output = false, outputPath = '', 
   }
   return def
 }
+
 /**
  * @decription convert a yaml type to TypeScript data type
  * @param item the yaml type definition
