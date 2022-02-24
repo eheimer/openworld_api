@@ -1,68 +1,98 @@
 import * as express from 'express'
-import { ErrorResponse } from 'types'
 import * as respond from '../../utils/express'
-
-import PlayerService from '../services/player'
-import { writeJsonResponse } from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
+import RegisterRequest from '../dto/request/RegisterRequest'
+import FailResponse from '../dto/response/FailResponse'
 import PlayerResponse from '../dto/response/PlayerResponse'
 import PlayerDetailResponse from '../dto/response/PlayerDetailResponse'
+import LoginRequest from '../dto/request/LoginRequest'
+import LoginResponse from '../dto/response/LoginResponse'
+import AuthService from '../services/auth'
+import { ErrorResponse } from '../../../types/index'
+import PlayerService from '../services/player'
 
+/**
+ * register new player
+ */
 export async function register(req: express.Request, res: express.Response): Promise<void> {
-  const { email, password, name } = req.body
-
+  const request = new RegisterRequest(req.body)
   try {
-    const resp = await PlayerService.createPlayer(email, password, name)
-    if ((resp as any).error) {
-      if ((resp as ErrorResponse).error.type === 'account_already_exists') {
-        writeJsonResponse(res, 409, resp)
-      } else {
-        throw new Error(`unsupported ${resp}`)
-      }
-    } else {
-      const playerId = (resp as any).playerId
-      const path = makeRoutePath('getPlayer', { playerId })
-      return respond.CREATED(res, path)
-    }
+    /* process the request and produce a response */
+    // handle the following responses:
+    // 201: Success Location Response
+    const path = ''
+    // generate the location path, for example:
+    // const path = makeRoutePath('getGame', { gameId: (resp as any).gameId })
+    return respond.CREATED(res, path)
+    // 404: Resource not found
+    // return respond.NOT_FOUND(res)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
 }
 
+/**
+ * retrieve a player
+ * @description returns public info for player
+ */
 export async function getPlayer(req: express.Request, res: express.Response): Promise<void> {
   const { playerId } = req.params
-  let player
-  if (playerId && res.locals.auth.userId) {
-    try {
-      const dbPlayer = await PlayerService.getPlayer(playerId)
-      player = new PlayerResponse(await PlayerService.getPlayer(playerId))
-    } catch (err) {
-      return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
-    }
-  }
-  if (player) {
-    return respond.OK(res, player)
-  } else {
-    return respond.NOT_FOUND(res)
+  try {
+    /* process the request and produce a response */
+    const response = new PlayerResponse({})
+    // handle the following responses:
+    // 200: Success
+    return respond.OK(res, PlayerResponse)
+    // 404: Resource not found
+    // return respond.NOT_FOUND(res)
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
 }
 
+/**
+ * retrieve player details
+ * @description returns more details if the requester is the player being requested
+ */
 export async function getPlayerDetail(req: express.Request, res: express.Response): Promise<void> {
   const { playerId } = req.params
-  let player
-  if (playerId && res.locals.auth.userId) {
-    try {
-      const dbPlayer = await PlayerService.getPlayer(playerId)
-      if (playerId == res.locals.auth.userId) {
-        player = new PlayerDetailResponse(dbPlayer)
-      }
-    } catch (err) {
-      return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
-    }
+  try {
+    /* process the request and produce a response */
+    const response = new PlayerDetailResponse({})
+    // handle the following responses:
+    // 200: Success
+    return respond.OK(res, PlayerDetailResponse)
+    // 404: Resource not found
+    // return respond.NOT_FOUND(res)
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
-  if (player) {
-    return respond.OK(res, player)
-  } else {
-    return respond.NOT_FOUND(res)
+}
+
+/**
+ * login
+ * @description login the player to the specified game, initiate a socket if successful
+ */
+export async function login(req: express.Request, res: express.Response): Promise<void> {
+  const request = new LoginRequest(req.body)
+  try {
+    /* process the request and produce a response */
+    const response = await AuthService.login(request.email, request.password)
+
+    if ((response as any).error) {
+      if ((response as ErrorResponse).error.type === 'invalid_credentials') {
+        return respond.NOT_FOUND(res, response)
+      } else {
+        throw new Error(`unsupported ${response}`)
+      }
+    }
+
+    await PlayerService.updatePlayerLastSeen((response as LoginResponse).player)
+    // 200: Success
+    return respond.OK(res, LoginResponse)
+    // 404: Resource not found
+    // return respond.NOT_FOUND(res)
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
 }
