@@ -134,6 +134,13 @@ paths:
         500:
           $ref: '#/components/responses/Fail'
   /players/{playerId}/games:
+    parameters:
+      - name: playerId
+        required: true
+        in: path
+        description: The player id to retrieve
+        schema:
+          type: string
     get:
       summary: get player's /games
       description: returns the games a player has access to
@@ -210,7 +217,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateGame'
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -223,7 +230,7 @@ paths:
       operationId: deleteGame
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -251,7 +258,7 @@ paths:
       operationId: joinGame
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -265,7 +272,7 @@ paths:
       operationId: leaveGame
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -286,8 +293,8 @@ paths:
       requestBody:
         $ref: '#/components/requestBodies/InvitePlayer'
       responses:
-        201:
-          $ref: '#/components/responses/Location'
+        204:
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -358,7 +365,7 @@ paths:
       operationId: deleteBattle
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -387,7 +394,7 @@ paths:
         $ref: '#/components/requestBodies/Monster'
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -971,7 +978,7 @@ paths:
         $ref: '#/components/requestBodies/UpdateCharacter'
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -984,7 +991,7 @@ paths:
       operationId: deleteCharacter
       responses:
         204:
-          $ref: '#/components/responses/DeleteOrUpate'
+          $ref: '#/components/responses/DeleteOrUpdate'
         404:
           $ref: '#/components/responses/Fail'
         500:
@@ -1375,7 +1382,7 @@ components:
               name:
                 type: string
   responses:
-    DeleteOrUpate:
+    DeleteOrUpdate:
       description: Empty success response from delete or update
     Location:
       description: '201: A response that returns a location header'
@@ -1433,7 +1440,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Game'
+            $ref: '#/components/schemas/GameResponse'
     Character:
       description: Get character success
       content:
@@ -1502,6 +1509,10 @@ components:
       type: array
       allOf:
         - $ref: '#/components/schemas/GameCharacter'
+    GameResponse:
+      description: game response
+      allOf:
+        - $ref: '#/components/schemas/Game'
     BattleResponse:
       description: the battle
       type: object
