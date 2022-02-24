@@ -76,6 +76,17 @@ export abstract class CharacterService {
     }
   }
 
+  static async getGameCharacter(gameId: number | string, playerId: number | string): Promise<Character> {
+    try {
+      return await CharacterService.factory
+        .getRepository()
+        .findOne({ player: playerId, game: gameId } as DeepPartial<Character>)
+    } catch (err) {
+      logger.error(`getCharacter: ${err}`)
+      throw err
+    }
+  }
+
   static async deleteCharacter(characterId: number | string): Promise<void> {
     try {
       const character = await this.factory
