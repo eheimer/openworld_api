@@ -319,7 +319,7 @@ paths:
     get:
       summary: get battles
       tags:
-        - battle
+        - game
       operationId: getGameBattles
       responses:
         200:
