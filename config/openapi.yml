@@ -159,6 +159,8 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/Location'
+        404:
+          $ref: '#/components/responses/Fail'
         500:
           $ref: '#/components/responses/Fail'
   /login:
@@ -307,6 +309,8 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/Location'
+        404:
+          $ref: '#/components/responses/Fail'
         500:
           $ref: '#/components/responses/Fail'
     get:
@@ -920,6 +924,8 @@ paths:
       responses:
         201:
           $ref: '#/components/responses/Location'
+        404:
+          $ref: '#/components/responses/Fail'
         500:
           $ref: '#/components/responses/Fail'
     get:
@@ -1000,6 +1006,10 @@ paths:
       responses:
         200:
           $ref: '#/components/responses/CharacterDetail'
+        404:
+          $ref: '#/components/responses/Fail'
+        500:
+          $ref: '#/components/responses/Fail'
   # /games/{gameId}/characters/{characterId}/resurrect:
   #   post:
   #     summary: resurrect character
