@@ -45,7 +45,7 @@ for (const className in classMap) {
 
   //Check for entity changes.  We don't want to overwrite if the
   //only thing that has changed is the header
-  let diff = false
+  let diff = true
   if (fs.existsSync(outFile)) {
     let data = fs.readFileSync(outFile, 'utf8')
     const lines = data.split('\n')
