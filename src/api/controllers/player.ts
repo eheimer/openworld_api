@@ -35,10 +35,26 @@ export async function getPlayer(req: express.Request, res: express.Response): Pr
   if (playerId && res.locals.auth.userId) {
     try {
       const dbPlayer = await PlayerService.getPlayer(playerId)
+      player = new PlayerResponse(await PlayerService.getPlayer(playerId))
+    } catch (err) {
+      return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+    }
+  }
+  if (player) {
+    return respond.OK(res, player)
+  } else {
+    return respond.NOT_FOUND(res)
+  }
+}
+
+export async function getPlayerDetail(req: express.Request, res: express.Response): Promise<void> {
+  const { playerId } = req.params
+  let player
+  if (playerId && res.locals.auth.userId) {
+    try {
+      const dbPlayer = await PlayerService.getPlayer(playerId)
       if (playerId == res.locals.auth.userId) {
         player = new PlayerDetailResponse(dbPlayer)
-      } else {
-        player = new PlayerResponse(await PlayerService.getPlayer(playerId))
       }
     } catch (err) {
       return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
