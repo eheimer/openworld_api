@@ -92,19 +92,19 @@ paths:
         500:
           $ref: '#/components/responses/Fail'
   /players/{playerId}:
+    parameters:
+      - name: playerId
+        required: true
+        in: path
+        description: The player id to retrieve
+        schema:
+          type: string
     get:
       summary: retrieve a player
       description: returns public info for player
       tags:
         - player
       operationId: getPlayer
-      parameters:
-        - name: playerId
-          required: true
-          in: path
-          description: The player id to retrieve
-          schema:
-            type: string
       responses:
         200:
           $ref: '#/components/responses/Player'
@@ -113,19 +113,19 @@ paths:
         500:
           $ref: '#/components/responses/Fail'
   /players/{playerId}/detail:
+    parameters:
+      - name: playerId
+        required: true
+        in: path
+        description: The player id to retrieve
+        schema:
+          type: string
     get:
       summary: retrieve player details
       description: returns more details if the requester is the player being requested
       tags:
         - player
       operationId: getPlayerDetail
-      parameters:
-        - name: playerId
-          required: true
-          in: path
-          description: The player id to retrieve
-          schema:
-            type: string
       responses:
         200:
           $ref: '#/components/responses/PlayerDetail'
@@ -141,13 +141,6 @@ paths:
         - game
         - player
       operationId: getGames
-      parameters:
-        - name: playerId
-          required: true
-          in: path
-          description: The player id
-          schema:
-            type: string
       responses:
         200:
           $ref: '#/components/responses/Games'
@@ -367,25 +360,25 @@ paths:
         500:
           $ref: '#/components/responses/Fail'
   /games/{gameId}/battles/{battleId}/enemies:
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId of the battle to modify
+        schema:
+          type: number
+      - name: battleId
+        required: true
+        in: path
+        description: the battle to modify
+        schema:
+          type: number
     post:
       summary: add enemy to battle
       description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
       tags:
         - battle
       operationId: createEnemy
-      parameters:
-        - name: gameId
-          required: true
-          in: path
-          description: the gameId of the battle to modify
-          schema:
-            type: number
-        - name: battleId
-          required: true
-          in: path
-          description: the battle to modify
-          schema:
-            type: number
       requestBody:
         $ref: '#/components/requestBodies/Monster'
       responses:
@@ -909,6 +902,13 @@ paths:
   #       500:
   #         $ref: '#/components/responses/Fail'
   /games/{gameId}/characters:
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId
+        schema:
+          type: string
     post:
       summary: create character
       tags:
