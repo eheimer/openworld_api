@@ -47,3 +47,7 @@ export function NOT_FOUND(res: express.Response, message?: any): void {
 export function NO_CONTENT(res: express.Response): void {
   writeJsonResponse(res, 204, {})
 }
+
+export function CONFLICT(res: express.Response, message?: any): void {
+  writeJsonResponse(res, 409, message)
+}
