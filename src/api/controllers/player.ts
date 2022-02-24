@@ -2,7 +2,6 @@ import * as express from 'express'
 import * as respond from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 import RegisterRequest from '../dto/request/RegisterRequest'
-import FailResponse from '../dto/response/FailResponse'
 import PlayerResponse from '../dto/response/PlayerResponse'
 import PlayerDetailResponse from '../dto/response/PlayerDetailResponse'
 import LoginRequest from '../dto/request/LoginRequest'
@@ -18,14 +17,17 @@ export async function register(req: express.Request, res: express.Response): Pro
   const request = new RegisterRequest(req.body)
   try {
     /* process the request and produce a response */
-    // handle the following responses:
+    const resp = await PlayerService.createPlayer(request.email, request.password, request.name)
+    if ((resp as any).error) {
+      if ((resp as ErrorResponse).error.type === 'account_already_exists') {
+        return respond.CONFLICT(res, resp)
+      } else {
+        throw new Error(`unsupported ${resp}`)
+      }
+    }
+    const path = makeRoutePath('getPlayer', { playerId: (resp as any).playerId })
     // 201: Success Location Response
-    const path = ''
-    // generate the location path, for example:
-    // const path = makeRoutePath('getGame', { gameId: (resp as any).gameId })
     return respond.CREATED(res, path)
-    // 404: Resource not found
-    // return respond.NOT_FOUND(res)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
@@ -39,12 +41,13 @@ export async function getPlayer(req: express.Request, res: express.Response): Pr
   const { playerId } = req.params
   try {
     /* process the request and produce a response */
-    const response = new PlayerResponse({})
-    // handle the following responses:
+    const player = await PlayerService.getPlayer(playerId)
+    if (!player) {
+      return respond.NOT_FOUND(res)
+    }
+    const response = new PlayerResponse(player)
     // 200: Success
-    return respond.OK(res, PlayerResponse)
-    // 404: Resource not found
-    // return respond.NOT_FOUND(res)
+    return respond.OK(res, response)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
@@ -58,12 +61,13 @@ export async function getPlayerDetail(req: express.Request, res: express.Respons
   const { playerId } = req.params
   try {
     /* process the request and produce a response */
-    const response = new PlayerDetailResponse({})
-    // handle the following responses:
+    const player = await PlayerService.getPlayer(playerId)
+    if (!player) {
+      return respond.NOT_FOUND(res)
+    }
+    const response = new PlayerDetailResponse(player)
     // 200: Success
-    return respond.OK(res, PlayerDetailResponse)
-    // 404: Resource not found
-    // return respond.NOT_FOUND(res)
+    return respond.OK(res, response)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
