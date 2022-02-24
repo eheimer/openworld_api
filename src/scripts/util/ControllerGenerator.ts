@@ -68,7 +68,6 @@ export function addImports(imports: string[], toAdd: string[]): string[] {
 export function makeController(controller: any): string {
   return `import * as express from 'express'
 import * as respond from '../../utils/express'
-import { writeJsonResponse } from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 `
 }
