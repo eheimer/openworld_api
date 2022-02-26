@@ -91,7 +91,7 @@ Method call flow:
   the `npm run generate:server:models` command
 - In order to keep these DTO's in sync between client and server, the
   C# models are generated from the TypeScript modules via the
-  `generate:client:entities` command
+  `npm run generate:client:entities` command
 
 ### error handling
 
