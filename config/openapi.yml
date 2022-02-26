@@ -1532,6 +1532,8 @@ components:
       properties:
         id:
           type: string
+        displayName:
+          type: string
     CharacterResponse:
       description: character response
       allOf:
