@@ -87,11 +87,11 @@ Method call flow:
   objects in sync with the DTO objects, for simplicity.
 - DTO's are defined in the config/openapi.yml file in the components
   section.
-- The TypeScript modules are generated from the openapi spec via the
-  `npm run export:apispecmodels` command
+- The TypeScript DTO modules are generated from the openapi spec via
+  the `npm run generate:server:models` command
 - In order to keep these DTO's in sync between client and server, the
   C# models are generated from the TypeScript modules via the
-  `npm run export:entities` command
+  `generate:client:entities` command
 
 ### error handling
 
