@@ -5,7 +5,6 @@ import RandomService from '../services/random'
 
 export abstract class CreatureService {
   static factory: CreatureInstanceFactory = new CreatureInstanceFactory()
-  static repo = new CreatureInstanceFactory().getRepository()
 
   /**
    * Generate a creature from a monster definition, save it to the database, and return it

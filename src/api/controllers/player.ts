@@ -93,9 +93,7 @@ export async function login(req: express.Request, res: express.Response): Promis
 
     await PlayerService.updatePlayerLastSeen((response as LoginResponse).player)
     // 200: Success
-    return respond.OK(res, LoginResponse)
-    // 404: Resource not found
-    // return respond.NOT_FOUND(res)
+    return respond.OK(res, response)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }

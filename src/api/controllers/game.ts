@@ -2,17 +2,14 @@ import * as express from 'express'
 import * as respond from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 import GamesResponse from '../dto/response/GamesResponse'
-import FailResponse from '../dto/response/FailResponse'
 import CreateGameRequest from '../dto/request/CreateGameRequest'
 import GameResponse from '../dto/response/GameResponse'
-import UpdateGameRequest from '../dto/request/UpdateGameRequest'
 import InvitePlayerRequest from '../dto/request/InvitePlayerRequest'
 import GameService from '../services/game'
 import PlayerService from '../services/player'
-import GameCharacter from '../dto/GameCharacter'
-import { AuthResponse } from '../../../types/index'
 import Game from '../models/Game'
 import User from '../models/User'
+import BattleResponse from '../dto/response/BattleResponse'
 
 /**
  * get player's /games
@@ -192,8 +189,11 @@ export async function getGameBattles(req: express.Request, res: express.Response
     if ((game as { error }).error === 'unauthorized') {
       return respond.UNAUTHORIZED(res)
     }
+    const battles = (await GameService.getBattles(gameId)).map((battle) => {
+      return new BattleResponse(battle)
+    })
     // 200: Success
-    return respond.OK(res, await GameService.getBattles(gameId))
+    return respond.OK(res, battles)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }

@@ -2,15 +2,14 @@ import * as express from 'express'
 import * as respond from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 import CreateCharacterRequest from '../dto/request/CreateCharacterRequest'
-import FailResponse from '../dto/response/FailResponse'
 import CharacterResponse from '../dto/response/CharacterResponse'
-import UpdateCharacterRequest from '../dto/request/UpdateCharacterRequest'
 import CharacterDetailResponse from '../dto/response/CharacterDetailResponse'
 import GameService from '../services/game'
-import User from '../models/User'
 import CharacterService from '../services/character'
 import Game from '../models/Game'
-import PublicCharacter from '../dto/PublicCharacter'
+import Character from '../models/Character'
+import InventoryFactory from '../factories/InventoryFactory'
+import InventoryResponse from '../dto/response/InventoryResponse'
 
 /**
  * create character
@@ -149,7 +148,14 @@ export async function getCharacterDetail(req: express.Request, res: express.Resp
       return respond.UNAUTHORIZED(res)
     }
     // 200: Success
-    return respond.OK(res, new CharacterDetailResponse(character))
+    const response = new CharacterDetailResponse(character)
+    if (character as Character) {
+      const inventory = new InventoryResponse(
+        await new InventoryFactory().getRepository().findOne((character as Character).inventory)
+      )
+      response.inventory = inventory
+    }
+    return respond.OK(res, response)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }

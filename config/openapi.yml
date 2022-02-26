@@ -1513,9 +1513,25 @@ components:
       description: game response
       allOf:
         - $ref: '#/components/schemas/Game'
+      properties:
+        players:
+          type: array
+          items:
+            type: string
+        characters:
+          type: array
+          items:
+            type: string
+        battles:
+          type: array
+          items:
+            type: string
     BattleResponse:
       description: the battle
       type: object
+      properties:
+        id:
+          type: string
     CharacterResponse:
       description: character response
       allOf:
@@ -1524,6 +1540,10 @@ components:
       description: character response
       allOf:
         - $ref: '#/components/schemas/CharacterDetail'
+    InventoryResponse:
+      description: inventory response
+      allOf:
+        - $ref: '#/components/schemas/Inventory'
     PublicPlayer:
       description: Player object
       type: object
@@ -1562,12 +1582,55 @@ components:
       allOf:
         - $ref: '#/components/schemas/PublicCharacter'
       properties:
+        player:
+          type: string
+        hp:
+          type: number
         maxHp:
           type: number
         baseResist:
           type: number
         inventorySize:
           type: number
+        resistPh:
+          type: number
+        resistF:
+          type: number
+        resistP:
+          type: number
+        resistC:
+          type: number
+        resistE:
+          type: number
+        inventory:
+          $ref: '#/components/schemas/Inventory'
+    Inventory:
+      description: an inventory
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        capacity:
+          type: number
+        gold:
+          type: number
+        weapons:
+          type: array
+          items:
+            type: string
+        armor:
+          type: array
+          items:
+            type: string
+        jewelry:
+          type: array
+          items:
+            type: string
+        spellbooks:
+          type: array
+          items:
+            type: string
     Game:
       description: Create game object
       type: object
@@ -1578,6 +1641,8 @@ components:
         maxPlayers:
           type: number
         id:
+          type: string
+        owner:
           type: string
     GameCharacter:
       description: Game and Character

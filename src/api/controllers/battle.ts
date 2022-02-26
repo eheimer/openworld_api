@@ -6,6 +6,7 @@ import MonsterRequest from '../dto/request/MonsterRequest'
 import BattleService from '../services/battle'
 import GameService from '../services/game'
 import CreatureService from '../services/creature'
+import BattleResponse from '../dto/response/BattleResponse'
 
 /**
  * create a new battle
@@ -23,7 +24,7 @@ export async function createBattle(req: express.Request, res: express.Response):
     if ((game as { error }).error === 'unauthorized') {
       return respond.UNAUTHORIZED(res)
     }
-    const path = makeRoutePath('getBattle', { gameId, battleId: (resp as any).gameId })
+    const path = makeRoutePath('getBattle', { gameId, battleId: (resp as any).battleId })
     return respond.CREATED(res, path)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, new FailResponse({ error: err }))
@@ -44,7 +45,7 @@ export async function getBattle(req: express.Request, res: express.Response): Pr
     if ((game as { error }).error === 'unauthorized') {
       return respond.UNAUTHORIZED(res)
     }
-    return respond.OK(res, await BattleService.getBattle(battleId))
+    return respond.OK(res, new BattleResponse(await BattleService.getBattle(battleId)))
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }
