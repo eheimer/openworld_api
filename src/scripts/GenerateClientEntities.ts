@@ -35,7 +35,7 @@ for (const enumName in typeMap.enums) {
 }
 
 function writeFile(name: string, output: string) {
-  const outFile = path.join(outputPath, `${name}`)
+  const outFile = path.join(outputPath, `${name}.cs`)
   fs.writeFileSync(outFile, output)
   logger.info(`File written: ${outFile}`)
 }

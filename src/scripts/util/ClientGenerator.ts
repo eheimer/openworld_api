@@ -64,7 +64,8 @@ export function makeClientEnumEntity(header: string, enumName: string, model: an
     members.push(`${enumItems[item]} = ${item}`)
   }
 
-  return `namespace Openworld.Models
+  return `${header}
+namespace Openworld.Models
 {
   public enum ${enumName}
   {
