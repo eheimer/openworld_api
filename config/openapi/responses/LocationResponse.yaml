@@ -1,0 +1,6 @@
+description: '201: A response that returns a location header'
+headers:
+  Location:
+    description: the uri to retrieve the player
+    schema:
+      type: string

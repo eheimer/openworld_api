@@ -1,0 +1,10 @@
+description: Game and Character
+type: object
+additionalProperties: false
+properties:
+  game:
+    $ref: './_index.yaml#/Game'
+  character:
+    $ref: './_index.yaml#/PublicCharacter'
+  owner:
+    type: boolean

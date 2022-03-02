@@ -1,0 +1,15 @@
+description: Create game request
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+        - maxPlayers
+      properties:
+        name:
+          type: string
+        maxPlayers:
+          type: number

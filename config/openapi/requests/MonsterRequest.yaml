@@ -1,0 +1,10 @@
+description: Monster request
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      properties:
+        monsterId:
+          type: number

@@ -1,0 +1,6 @@
+description: Get player info success
+content:
+  application/json:
+    schema:
+      allOf:
+        - $ref: '../schemas/_index.yaml#/PublicPlayer'

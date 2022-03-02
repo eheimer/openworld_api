@@ -1,0 +1,11 @@
+description: Player details
+type: object
+additionalProperties: false
+allOf:
+  - $ref: './_index.yaml#/PublicPlayer'
+properties:
+  id:
+    type: string
+  email:
+    type: string
+    format: email

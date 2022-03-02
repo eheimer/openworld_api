@@ -1,0 +1,28 @@
+description: Character details
+type: object
+additionalProperties: false
+allOf:
+  - $ref: './_index.yaml#/PublicCharacter'
+properties:
+  player:
+    type: string
+  hp:
+    type: number
+  maxHp:
+    type: number
+  baseResist:
+    type: number
+  inventorySize:
+    type: number
+  resistPh:
+    type: number
+  resistF:
+    type: number
+  resistP:
+    type: number
+  resistC:
+    type: number
+  resistE:
+    type: number
+  inventory:
+    $ref: './_index.yaml#/Inventory'

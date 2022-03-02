@@ -1,0 +1,20 @@
+parameters:
+  - name: playerId
+    required: true
+    in: path
+    description: The player id to retrieve
+    schema:
+      type: string
+get:
+  summary: retrieve player details
+  description: returns more details if the requester is the player being requested
+  tags:
+    - player
+  operationId: getPlayerDetail
+  responses:
+    200:
+      $ref: '../responses/_index.yaml#/PlayerDetail'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

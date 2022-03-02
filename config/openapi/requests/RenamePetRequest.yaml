@@ -1,0 +1,10 @@
+description: Rename pet
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string

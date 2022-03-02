@@ -1,0 +1,20 @@
+Login:
+  $ref: './LoginRequest.yaml'
+Register:
+  $ref: './RegisterRequest.yaml'
+CreateGame:
+  $ref: './CreateGameRequest.yaml'
+UpdateGame:
+  $ref: './UpdateGameRequest.yaml'
+CreateCharacter:
+  $ref: './CreateCharacterRequest.yaml'
+UpdateCharacter:
+  $ref: './UpdateCharacterRequest.yaml'
+InvitePlayer:
+  $ref: './InvitePlayerRequest.yaml'
+BattleDamage:
+  $ref: './BattleDamageRequest.yaml'
+Monster:
+  $ref: './MonsterRequest.yaml'
+RenamePet:
+  $ref: './RenamePetRequest.yaml'

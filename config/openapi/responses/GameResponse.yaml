@@ -1,0 +1,19 @@
+description: game detail request success
+content:
+  application/json:
+    schema:
+      allOf:
+        - $ref: '../schemas/_index.yaml#/Game'
+      properties:
+        players:
+          type: array
+          items:
+            type: string
+        characters:
+          type: array
+          items:
+            type: string
+        battles:
+          type: array
+          items:
+            type: string

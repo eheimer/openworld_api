@@ -1,0 +1,3 @@
+description: Item type
+type: string
+enum: [weapon, armor, jewelry, spellbook]

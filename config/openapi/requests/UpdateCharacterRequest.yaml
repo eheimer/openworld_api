@@ -1,0 +1,16 @@
+description: Create or Update character request
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+        maxHp:
+          type: number
+        baseResist:
+          type: number
+        inventorySize:
+          type: number

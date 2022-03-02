@@ -1,0 +1,23 @@
+description: Deal damage request
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - damageType
+        - damageAmt
+      properties:
+        creatures:
+          type: array
+          items:
+            type: number
+        characters:
+          type: array
+          items:
+            type: number
+        damageType:
+          type: number
+        damageAmt:
+          type: number

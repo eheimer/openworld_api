@@ -1,0 +1,9 @@
+description: Player object
+type: object
+additionalProperties: false
+properties:
+  name:
+    type: string
+  lastSeenAt:
+    type: string
+    format: date-time

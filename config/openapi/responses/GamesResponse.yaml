@@ -1,0 +1,7 @@
+description: Get players games success
+content:
+  application/json:
+    schema:
+      type: array
+      allOf:
+        - $ref: '../schemas/_index.yaml#/GameCharacter'

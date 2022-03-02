@@ -1,0 +1,13 @@
+description: Invite a player to a game
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email

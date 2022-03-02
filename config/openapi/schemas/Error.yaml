@@ -1,0 +1,11 @@
+description: an error
+type: object
+additionalProperties: false
+required:
+  - type
+  - message
+properties:
+  type:
+    type: string
+  message:
+    type: string

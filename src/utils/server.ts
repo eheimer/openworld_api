@@ -34,7 +34,7 @@ export async function createServer(): Promise<{
   api: Express
   socket: Http2Server
 }> {
-  const yamlSpecFile = './config/openapi.yml'
+  const yamlSpecFile = './config/openapi.yaml'
   const apiDefinition = YAML.load(yamlSpecFile)
   const apiSummary = summarise(apiDefinition)
   logger.info(apiSummary)

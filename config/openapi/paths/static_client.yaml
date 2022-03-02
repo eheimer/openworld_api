@@ -1,0 +1,16 @@
+get:
+  summary: Download client files
+  description: Static files
+  servers:
+    - url: /
+  security: []
+  tags:
+    - static
+  operationId: clientFiles
+  responses:
+    200:
+      $ref: '../responses/_index.yaml#/PlainText'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

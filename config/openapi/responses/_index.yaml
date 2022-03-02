@@ -1,0 +1,26 @@
+DeleteOrUpdate:
+  description: Empty success response from delete or update
+Location:
+  $ref: './LocationResponse.yaml'
+PlainText:
+  $ref: './PlainTextResponse.yaml'
+Fail:
+  $ref: './FailResponse.yaml'
+IdCollection:
+  $ref: './IdCollectionResponse.yaml'
+Login:
+  $ref: './LoginResponse.yaml'
+Player:
+  $ref: './PlayerResponse.yaml'
+PlayerDetail:
+  $ref: './PlayerDetailResponse.yaml'
+Games:
+  $ref: './GamesResponse.yaml'
+Game:
+  $ref: './GameResponse.yaml'
+Character:
+  $ref: './CharacterResponse.yaml'
+CharacterDetail:
+  $ref: './CharacterDetailResponse.yaml'
+Battle:
+  $ref: './BattleResponse.yaml'

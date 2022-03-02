@@ -1,0 +1,15 @@
+post:
+  security: []
+  summary: register new player
+  operationId: register
+  tags:
+    - player
+  requestBody:
+    $ref: '../requests/_index.yaml#/Register'
+  responses:
+    201:
+      $ref: '../responses/_index.yaml#/Location'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

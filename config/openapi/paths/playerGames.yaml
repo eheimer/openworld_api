@@ -1,0 +1,21 @@
+parameters:
+  - name: playerId
+    required: true
+    in: path
+    description: The player id to retrieve
+    schema:
+      type: string
+get:
+  summary: get player's /games
+  description: returns the games a player has access to
+  tags:
+    - game
+    - player
+  operationId: getGames
+  responses:
+    200:
+      $ref: '../responses/_index.yaml#/Games'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

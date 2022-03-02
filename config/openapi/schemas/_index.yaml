@@ -1,0 +1,37 @@
+Error:
+  $ref: './Error.yaml'
+# InventoryResponse:
+#   description: inventory response
+#   allOf:
+#     - $ref: '#/Inventory'
+PublicPlayer:
+  $ref: './PublicPlayer.yaml'
+PlayerDetail:
+  $ref: './PlayerDetail.yaml'
+PublicCharacter:
+  $ref: './PublicCharacter.yaml'
+CharacterDetail:
+  $ref: './CharacterDetail.yaml'
+Inventory:
+  $ref: './Inventory.yaml'
+Game:
+  $ref: './Game.yaml'
+GameCharacter:
+  $ref: './GameCharacter.yaml'
+ItemType:
+  $ref: './ItemType.yaml'
+EquipableType:
+  $ref: './EquipableType.yaml'
+DamageableType:
+  $ref: './DamageableType.yaml'
+ItemDamageType:
+  $ref: './ItemDamageType.yaml'
+# ItemDamageResponse:
+#   description: Item damaged
+#   type: object
+#   additionalProperties: false
+#   required:
+#     - result
+#   properties:
+#     result:
+#       $ref: '#/ItemDamageType'

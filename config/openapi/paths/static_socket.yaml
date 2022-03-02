@@ -1,0 +1,16 @@
+get:
+  summary: Socket testing
+  description: Socket entrypoint for testing sockets in a browser
+  servers:
+    - url: /
+  security: []
+  tags:
+    - testing
+  operationId: socketTest
+  responses:
+    200:
+      $ref: '../responses/_index.yaml#/PlainText'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
