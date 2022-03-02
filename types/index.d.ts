@@ -32,6 +32,8 @@ export type APIParameter = {
 export type APIResponse = { $ref: string }
 export type APIRequest = { $ref: string }
 export type APIMethod = {
+  path: string
+  verb: string
   security: any[]
   summary: string
   description: string

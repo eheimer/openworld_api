@@ -12,7 +12,7 @@ const apiPath = path.join(sourcePath, 'api')
 const configPath = path.join(serverRoot, 'config')
 const APIDefinitionFile = path.join(configPath, 'openapi.yml')
 const buildPath = path.join(serverRoot, 'build')
-const outputAPIJSON = false
+const outputAPIJSON = true
 const APIJSONOutputPath = buildPath
 const outputClassMap = true
 const classMapOutputPath = buildPath
@@ -33,7 +33,7 @@ fs.mkdir(controllerOutputPath, { recursive: true }, (err) => {
   if (err) throw err
 })
 
-const header = buildStandardHeader('GenerateServerControllers', false)
+const header = buildStandardHeader('GenerateServerControllers', true)
 
 const controllerMap = GENERATOR.buildControllerMapFromAPI(
   getAPIDefinition(APIDefinitionFile, outputAPIJSON, APIJSONOutputPath),
@@ -68,7 +68,7 @@ for (const controllerName in controllerMap) {
     ${existingMethods[method][0]}
     ${signature}`)
     } else if (!existingMethods[method]) {
-      const makeResult = GENERATOR.makeControllerMethod(controller.methods[method])
+      const makeResult = GENERATOR.makeControllerMethod(controller.methods[method], header)
       if (makeResult.imports) {
         controllerImports = GENERATOR.addImports(controllerImports, makeResult.imports)
       }

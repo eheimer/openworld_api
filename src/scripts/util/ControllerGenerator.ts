@@ -23,12 +23,9 @@ export function buildControllerMapFromAPI(
     for (const verb of verbs) {
       if (def.paths[path][verb]) {
         const method: APIMethod = def.paths[path][verb]
+        method.path = path
+        method.verb = verb
         //parameters
-        if (method.parameters && method.parameters.length > 0) {
-          method.parameters = [...parameters, ...method.parameters]
-        } else {
-          method.parameters = parameters
-        }
         method.parameters = [...parameters, ...(method.parameters ?? [])]
         //requestObject
         if (method.requestBody && method.requestBody.$ref) {
@@ -72,7 +69,7 @@ import { makeRoutePath } from '../../utils/server'
 `
 }
 
-export function makeControllerMethod(method: APIMethod): { imports: string[]; method: string } {
+export function makeControllerMethod(method: APIMethod, header: string): { imports: string[]; method: string } {
   const methodName = method.operationId
   const methodRows = [
     `/**
@@ -82,7 +79,8 @@ export function makeControllerMethod(method: APIMethod): { imports: string[]; me
  * @description ${method.description}`
         : ''
     }
- */`
+ */
+${header}`
   ]
   methodRows.push(makeMethodSignature(methodName))
   const imports = []
