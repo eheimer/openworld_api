@@ -1,9 +1,5 @@
 Error:
   $ref: './Error.yaml'
-# InventoryResponse:
-#   description: inventory response
-#   allOf:
-#     - $ref: '#/Inventory'
 PublicPlayer:
   $ref: './PublicPlayer.yaml'
 PlayerDetail:
@@ -35,3 +31,7 @@ ItemDamageType:
 #   properties:
 #     result:
 #       $ref: '#/ItemDamageType'
+# InventoryResponse:
+#   description: inventory response
+#   allOf:
+#     - $ref: '#/Inventory'

@@ -1,0 +1,21 @@
+parameters:
+  - name: gameId
+    required: true
+    in: path
+    description: the gameId to invite a player to
+    schema:
+      type: string
+post:
+  summary: invite a player to a game
+  tags:
+    - game
+  operationId: invitePlayer
+  requestBody:
+    $ref: '../requests/_index.yaml#/InvitePlayer'
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

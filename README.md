@@ -2,6 +2,18 @@
 
 Node/Express API for Openworld game
 
+## OpenAPI
+
+- openapi config has been split into individual files in the config/openapi directory
+- before starting the server, or running the generators, this needs to be compiled into
+  a single file
+- run `npm run bundle:swagger` to build the config/openapi.yaml file.
+- all of the generators start from the config/openapi.yaml
+  - server-side dto's are built from the components/requestBodies and components/schemas
+  - client-side models are then built from the server-side dto's
+  - server-side controllers are built from the paths
+  - client-side communicator class is built from the paths
+
 ## Data flow
 
 - player logs in (HTTP)

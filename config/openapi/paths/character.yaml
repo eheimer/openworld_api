@@ -1,0 +1,47 @@
+parameters:
+  - name: characterId
+    required: true
+    in: path
+    description: the characterId
+    schema:
+      type: string
+get:
+  summary: retrieve character
+  description: retrieves either the public character or detail, depending on the player making the request
+  tags:
+    - character
+  operationId: getCharacter
+  responses:
+    200:
+      $ref: '../responses/_index.yaml#/Character'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+patch:
+  summary: update character partial
+  tags:
+    - character
+  operationId: updateCharacter
+  requestBody:
+    $ref: '../requests/_index.yaml#/UpdateCharacter'
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+delete:
+  summary: remove a character
+  description: deletes the character and its inventory
+  tags:
+    - character
+  operationId: deleteCharacter
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

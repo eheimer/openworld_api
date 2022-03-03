@@ -1,0 +1,28 @@
+parameters:
+  - name: gameId
+    required: true
+    in: path
+    description: the gameId of the battle to modify
+    schema:
+      type: number
+  - name: battleId
+    required: true
+    in: path
+    description: the battle to modify
+    schema:
+      type: number
+post:
+  summary: add enemy to battle
+  description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
+  tags:
+    - battle
+  operationId: createEnemy
+  requestBody:
+    $ref: '../requests/_index.yaml#/Monster'
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

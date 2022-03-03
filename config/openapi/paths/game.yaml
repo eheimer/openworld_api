@@ -1,0 +1,46 @@
+parameters:
+  - name: gameId
+    required: true
+    in: path
+    description: The gameId to delete
+    schema:
+      type: string
+get:
+  summary: retrieve game
+  operationId: getGame
+  tags:
+    - game
+  responses:
+    200:
+      $ref: '../responses/_index.yaml#/Game'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+patch:
+  summary: update game partial
+  operationId: updateGame
+  tags:
+    - game
+  requestBody:
+    $ref: '../requests/_index.yaml#/UpdateGame'
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+delete:
+  summary: remove a game
+  description: deletes the game, all battles, characters, creatureInstances, inventories, etc
+  tags:
+    - game
+  operationId: deleteGame
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

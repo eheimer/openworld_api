@@ -1,0 +1,41 @@
+parameters:
+  - name: gameId
+    required: true
+    in: path
+    description: the gameId
+    schema:
+      type: string
+  - name: playerId
+    required: true
+    in: path
+    description: the playerId
+    schema:
+      type: string
+post:
+  summary: add a player to a game
+  description: player id must exist at /players/{playerId}
+  tags:
+    - game
+    - player
+  operationId: joinGame
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+delete:
+  summary: remove a player from a game
+  description: player id must exist at /players/{playerId}
+  tags:
+    - game
+    - player
+  operationId: leaveGame
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
