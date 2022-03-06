@@ -1,17 +1,17 @@
 import logger from './utils/logger'
 import DB from './utils/db'
 import { createServer } from './utils/server'
+import config from './config'
 
-const api_port = 3000
-const socket_port: number = api_port + 1
+const http_port: number = config.port
 
 DB.init()
   .then(() => {
     return createServer()
   })
   .then((server) => {
-    server.socket.listen(socket_port, () => {
-      logger.info(`Socket listening on http://localhost:${socket_port}`)
+    server.socket.listen(http_port, () => {
+      logger.info(`Socket listening on http://localhost:${http_port}`)
     })
   })
   .catch((err) => {

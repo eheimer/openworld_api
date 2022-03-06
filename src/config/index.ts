@@ -16,6 +16,7 @@ type LogLevel = 'silent' | 'error' | 'warn' | 'info' | 'http' | 'verbose' | 'deb
 
 interface Config {
   env: string
+  port: number
   morganLogger: boolean
   morganBodyLogger: boolean
   openworldDevLogger: boolean
@@ -27,6 +28,7 @@ interface Config {
 
 const config: Config = {
   env: parsedEnv.ENV as string,
+  port: parsedEnv.HTTP_PORT as number,
   morganLogger: parsedEnv.MORGAN_LOGGER as boolean,
   morganBodyLogger: parsedEnv.MORGAN_BODY_LOGGER as boolean,
   openworldDevLogger: parsedEnv.OPENWORLD_DEV_LOGGER as boolean,
