@@ -8,10 +8,12 @@ import { Entity } from 'typeorm'
 @Entity()
 export class PublicPlayer {
   constructor(item: any) {
-    const { name, lastSeenAt } = item
+    const { id, name, lastSeenAt } = item
+    this.id = id
     this.name = name
     this.lastSeenAt = lastSeenAt
   }
+  id: string
   name: string
   lastSeenAt: Date
 }

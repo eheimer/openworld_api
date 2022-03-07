@@ -60,6 +60,10 @@ export async function getPlayer(req: express.Request, res: express.Response): Pr
 export async function getPlayerDetail(req: express.Request, res: express.Response): Promise<void> {
   const { playerId } = req.params
   try {
+    /* player detail only available for the player itself */
+    if (res.locals.auth.userId != playerId) {
+      return respond.UNAUTHORIZED(res)
+    }
     /* process the request and produce a response */
     const player = await PlayerService.getPlayer(playerId)
     if (!player) {

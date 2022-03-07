@@ -14,6 +14,8 @@ get:
   responses:
     200:
       $ref: '../responses/_index.yaml#/PlayerDetail'
+    401:
+      $ref: '../responses/_index.yaml#/Fail'
     404:
       $ref: '../responses/_index.yaml#/Fail'
     500:

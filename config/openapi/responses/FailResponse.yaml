@@ -5,10 +5,10 @@ content:
       type: object
       additionalProperties: false
       required:
-        - success
         - error
       properties:
         success:
+          nullable: true
           type: boolean
         error:
           $ref: '../schemas/_index.yaml#/Error'

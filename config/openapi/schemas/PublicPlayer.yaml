@@ -1,9 +1,11 @@
 description: Player object
 type: object
-additionalProperties: false
 properties:
+  id:
+    type: string
   name:
     type: string
   lastSeenAt:
+    nullable: true
     type: string
     format: date-time

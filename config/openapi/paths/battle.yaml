@@ -18,11 +18,11 @@ get:
   operationId: getBattle
   responses:
     200:
-      $ref: '../responses/_index.yaml'#/Battle'
+      $ref: '../responses/_index.yaml#/Battle'
     404:
-      $ref: '../responses/_index.yaml'#/Fail'
+      $ref: '../responses/_index.yaml#/Fail'
     500:
-      $ref: '../responses/_index.yaml'#/Fail'
+      $ref: '../responses/_index.yaml#/Fail'
 delete:
   summary: delete a battle
   tags:
@@ -30,8 +30,8 @@ delete:
   operationId: deleteBattle
   responses:
     204:
-      $ref: '../responses/_index.yaml'#/DeleteOrUpdate'
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
     404:
-      $ref: '../responses/_index.yaml'#/Fail'
+      $ref: '../responses/_index.yaml#/Fail'
     500:
-      $ref: '../responses/_index.yaml'#/Fail'
+      $ref: '../responses/_index.yaml#/Fail'

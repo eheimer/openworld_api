@@ -3,9 +3,9 @@ type: object
 additionalProperties: false
 required:
   - type
-  - message
 properties:
   type:
     type: string
   message:
+    nullable: true
     type: string

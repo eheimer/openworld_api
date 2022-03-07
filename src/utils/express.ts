@@ -27,7 +27,7 @@ export function UNAUTHORIZED(res: express.Response, message?: any): void {
 
 export function CREATED(res: express.Response, location: string): void {
   res.setHeader('Location', location)
-  writeJsonResponse(res, 201, {})
+  writeJsonResponse(res, 201, null)
 }
 
 export function OK(res: express.Response, payload: any, headers?: OutgoingHttpHeaders | undefined): void {

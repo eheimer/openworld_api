@@ -10,11 +10,9 @@ import PublicPlayer from './PublicPlayer'
 export class PlayerDetail extends PublicPlayer {
   constructor(item: any) {
     super(item)
-    const { id, email } = item
-    this.id = id
+    const { email } = item
     this.email = email
   }
-  id: string
   email: string
 }
 
