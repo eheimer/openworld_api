@@ -1,0 +1,7 @@
+description: Battle object
+type: object
+properties:
+  id:
+    type: string
+  displayName:
+    type: string

@@ -4,13 +4,13 @@ parameters:
     in: path
     description: the gameId of the battle to retrieve
     schema:
-      type: number
+      type: string
   - name: battleId
     required: true
     in: path
     description: the battle to retrieve
     schema:
-      type: number
+      type: string
 get:
   summary: retrieve a battle
   tags:

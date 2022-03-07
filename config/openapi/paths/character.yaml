@@ -41,6 +41,8 @@ delete:
   responses:
     204:
       $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    401:
+      $ref: '../responses/_index.yaml#/Fail'
     404:
       $ref: '../responses/_index.yaml#/Fail'
     500:

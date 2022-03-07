@@ -1,6 +1,5 @@
 description: Create game object
 type: object
-additionalProperties: false
 properties:
   name:
     type: string

@@ -4,4 +4,4 @@ content:
     schema:
       type: array
       items:
-        $ref: '../schemas/_index.yaml#/GameCharacter'
+        $ref: '../schemas/_index.yaml#/Battle'

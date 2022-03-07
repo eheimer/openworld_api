@@ -1,6 +1,5 @@
 description: Character details
 type: object
-additionalProperties: false
 allOf:
   - $ref: './_index.yaml#/PublicCharacter'
 properties:

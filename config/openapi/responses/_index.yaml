@@ -24,3 +24,5 @@ CharacterDetail:
   $ref: './CharacterDetailResponse.yaml'
 Battle:
   $ref: './BattleResponse.yaml'
+GameBattles:
+  $ref: './GameBattlesResponse.yaml'

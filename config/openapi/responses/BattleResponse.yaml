@@ -2,9 +2,4 @@ description: Battle object
 content:
   application/json:
     schema:
-      type: object
-      properties:
-        id:
-          type: string
-        displayName:
-          type: string
+      $ref: '../schemas/_index.yaml#/Battle'

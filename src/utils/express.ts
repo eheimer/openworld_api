@@ -1,6 +1,5 @@
 import * as express from 'express'
 import { OutgoingHttpHeaders } from 'http'
-import logger from './logger'
 
 export function writeJsonResponse(
   res: express.Response,
@@ -40,7 +39,9 @@ export function HTML_OK(res: express.Response, body: any, headers?: OutgoingHttp
 }
 
 export function NOT_FOUND(res: express.Response, message?: any): void {
-  writeJsonResponse(res, 404, message)
+  writeJsonResponse(res, 404, {
+    error: { type: 'not_found', message }
+  })
 }
 
 export function NO_CONTENT(res: express.Response): void {
@@ -48,5 +49,7 @@ export function NO_CONTENT(res: express.Response): void {
 }
 
 export function CONFLICT(res: express.Response, message?: any): void {
-  writeJsonResponse(res, 409, message)
+  writeJsonResponse(res, 409, {
+    error: { type: 'conflict', message }
+  })
 }

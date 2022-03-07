@@ -12,6 +12,8 @@ Inventory:
   $ref: './Inventory.yaml'
 Game:
   $ref: './Game.yaml'
+Battle:
+  $ref: './Battle.yaml'
 GameCharacter:
   $ref: './GameCharacter.yaml'
 ItemType:

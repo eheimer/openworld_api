@@ -1,21 +1,22 @@
-import axios from 'axios'
-import config from '../../config'
 import RegisterRequest from '../../api/dto/request/RegisterRequest'
-import logger from '../../utils/logger'
-import AuthInitializer from '../../utils/tests/auth'
+import APITestHelper from '../../utils/tests/apiTestHelper'
+import APIValidator from '../../utils/tests/apiValidator'
+import Error from '../../api/dto/Error'
+import PlayerResponse from '../../api/dto/response/PlayerResponse'
+import faker from 'faker'
+
+const helper = new APITestHelper()
+let player: string
 
 beforeAll(async () => {
-  await AuthInitializer.initJestOpenAPI()
+  await APIValidator.init()
 })
-
-let token
-let player
 
 describe('Register a player, authenticate, retrieve player details', () => {
   describe('POST /players', () => {
     it('should register new player', async () => {
       const data = new RegisterRequest({ email: 'eric@heimerman.org', name: 'eric', password: 'eric' })
-      const res = await axios.post(`http://localhost:${config.port}/api/v1/players`, data)
+      const res = await helper.post('/players', data, true)
 
       expect(res.status).toEqual(201)
       expect(res).toSatisfyApiSpec()
@@ -23,25 +24,19 @@ describe('Register a player, authenticate, retrieve player details', () => {
   })
   describe('POST /login', () => {
     it('should satisfy OpenAPI spec', async () => {
-      // Get an HTTP response from your server (e.g. using axios)
       const data = { email: 'eric@heimerman.org', password: 'eric' }
-      const res = await axios.post(`http://localhost:${config.port}/api/v1/login`, data)
+      const res = await helper.post('/login', data, true)
 
       expect(res.status).toEqual(200)
-
-      // Assert that the HTTP response satisfies the OpenAPI spec
       expect(res).toSatisfyApiSpec()
 
-      token = res.data.token
+      helper.token = res.data.token
       player = res.data.player
     })
   })
   describe('GET /players/{playerId}/detail', () => {
     it('should retrieve player detail', async () => {
-      const url = `http://localhost:${config.port}/api/v1/players/${player}/detail`
-      const res = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const res = await helper.get(`/players/${player}/detail`)
 
       expect(res.status).toEqual(200)
       expect(res).toSatisfyApiSpec()
@@ -53,8 +48,12 @@ describe('Register a player and retrieve it from the location header', () => {
   let player2
   describe('POST /players', () => {
     it('should register new player', async () => {
-      const data = new RegisterRequest({ email: 'eric2@heimerman.org', name: 'eric', password: 'eric' })
-      const res = await axios.post(`http://localhost:${config.port}/api/v1/players`, data)
+      const data = new RegisterRequest({
+        email: faker.internet.email(),
+        name: faker.name.firstName(),
+        password: faker.random.word()
+      })
+      const res = await helper.post('/players', data, true)
 
       expect(res.status).toEqual(201)
       expect(res).toSatisfyApiSpec()
@@ -63,31 +62,26 @@ describe('Register a player and retrieve it from the location header', () => {
   })
   describe('GET {player2loc}', () => {
     it('should retrieve public player from Location header', async () => {
-      const url = `http://localhost:${config.port}${player2loc}`
-      const header = `Bearer ${token}`
-      const res = await axios.get(url, {
-        headers: { Authorization: header }
-      })
+      const res = await helper.get(player2loc)
 
       expect(res.status).toEqual(200)
       expect(res).toSatisfyApiSpec()
 
-      player2 = res.data.id
+      const player = new PlayerResponse(res.data)
+
+      player2 = player.id
     })
   })
   describe('GET /players/{playerId}/detail', () => {
     it('should fail retrieving player2 detail', async () => {
-      const url = `http://localhost:${config.port}/api/v1/players/${player2}/detail`
-      const header = `Bearer ${token}`
       let res
       try {
-        res = await axios.get(url, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        res = await helper.get(`/players/${player2}/detail`)
       } catch (err) {
         expect(err.response.status).toEqual(401)
-        expect(err.response.data).toEqual({ error: { type: 'authorization_failed' } })
         expect(err.response).toSatisfyApiSpec()
+        const error = new Error(err.response.data.error)
+        expect(error.type).toEqual('authorization_failed')
       }
       expect(res).toBeUndefined()
     })

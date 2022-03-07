@@ -25,7 +25,7 @@ get:
   operationId: getGameBattles
   responses:
     200:
-      $ref: '../responses/_index.yaml#/IdCollection'
+      $ref: '../responses/_index.yaml#/GameBattles'
     404:
       $ref: '../responses/_index.yaml#/Fail'
     500:
