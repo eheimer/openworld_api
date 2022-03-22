@@ -10,7 +10,7 @@ import { buildRequestMap } from './util/CommunicatorGenerator'
 
 const serverRoot = path.join(__dirname, '../..')
 const configPath = path.join(serverRoot, 'config')
-const APIDefinitionFile = path.join(configPath, 'openapi.yml')
+const APIDefinitionFile = path.join(configPath, 'openapi.yaml')
 const buildPath = path.join(serverRoot, 'build')
 const outputAPIJSON = false
 const APIJSONOutputPath = buildPath

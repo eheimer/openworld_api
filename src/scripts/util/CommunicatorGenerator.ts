@@ -115,9 +115,7 @@ export function makeMethod(header: string, methodName: string, method: APIMethod
           ? `req.Body = new ${req} { ${reqVars.map((i) => `${i} = ${i} `).join(', ')} };
       `
           : ''
-      }RestClient.${method.verb[0].toUpperCase() + method.verb.slice(1)}${
-    method.verb === 'delete' ? '' : `<${res ? res : 'ResponseHelper'}>`
-  }(req)
+      }RestClient.${method.verb[0].toUpperCase() + method.verb.slice(1)}${res ? `<${res}>` : ''}(req)
       .Then(res => { Debug.Log(res); success(res); })
       .Catch(err => HandleError(err, error));
     }

@@ -6,7 +6,7 @@ import { buildStandardHeader } from './util/CommonGenerator'
 
 const serverRoot = path.join(__dirname, '../..')
 const sourcePath = path.join(serverRoot, 'src')
-const APIDefinitionFile = path.join(serverRoot, 'config/openapi.yml')
+const APIDefinitionFile = path.join(serverRoot, 'config/openapi.yaml')
 const outputAPIJSON = true
 const APIJSONOutputPath = path.join(serverRoot, 'build')
 const outputClassMap = true
