@@ -21,7 +21,6 @@ describe('inventory', () => {
 
     expect(fetched).not.toBeNull()
 
-    expect(fetched.capacity).toBe(c.capacity)
     expect(fetched.limit).toBe(c.limit)
     expect(fetched.gold).toBe(c.gold)
 
