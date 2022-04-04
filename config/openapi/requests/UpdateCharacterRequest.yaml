@@ -8,9 +8,11 @@ content:
       properties:
         name:
           type: string
-        maxHp:
+        strength:
           type: number
-        baseResist:
+        dexterity:
           type: number
-        inventorySize:
+        intelligence:
+          type: number
+        movement:
           type: number

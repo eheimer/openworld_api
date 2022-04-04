@@ -18,9 +18,10 @@ beforeAll(async () => {
   gameId = get.data.id
   const charReq = new CreateCharacterRequest({
     name: faker.name.firstName(),
-    maxHp: 100,
-    inventorySize: 10,
-    baseResist: 10
+    strength: 3,
+    dexterity: 2,
+    intelligence: 1,
+    movement: 2
   })
   const createChar = await helper.post(`/games/${gameId}/characters`, charReq)
   const getChar = await helper.get(createChar.headers.location)
@@ -51,6 +52,7 @@ describe('create and retrieve a battle', () => {
       const res = await helper.get(`games/${gameId}/battles`)
       expect(res.status).toEqual(200)
       expect(res).toSatisfyApiSpec()
+      expect(new Array(...res.data).map((i) => i.id)).toContain(battleId)
     })
   })
 })

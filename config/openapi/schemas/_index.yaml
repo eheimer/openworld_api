@@ -8,6 +8,8 @@ PublicCharacter:
   $ref: './PublicCharacter.yaml'
 CharacterDetail:
   $ref: './CharacterDetail.yaml'
+CharacterSkill:
+  $ref: './CharacterSkill.yaml'
 Inventory:
   $ref: './Inventory.yaml'
 Game:
@@ -24,16 +26,3 @@ DamageableType:
   $ref: './DamageableType.yaml'
 ItemDamageType:
   $ref: './ItemDamageType.yaml'
-# ItemDamageResponse:
-#   description: Item damaged
-#   type: object
-#   additionalProperties: false
-#   required:
-#     - result
-#   properties:
-#     result:
-#       $ref: '#/ItemDamageType'
-# InventoryResponse:
-#   description: inventory response
-#   allOf:
-#     - $ref: '#/Inventory'

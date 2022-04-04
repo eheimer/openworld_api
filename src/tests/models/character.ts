@@ -3,6 +3,8 @@ import faker from 'faker'
 import { Repository } from 'typeorm'
 import Character from '../../api/models/Character'
 import CharacterFactory from '../../api/factories/CharacterFactory'
+import InventoryFactory from '../../api/factories/InventoryFactory'
+import CharacterService from '../../api/services/character'
 
 let repo: Repository<Character>
 const factory = new CharacterFactory()
@@ -37,6 +39,13 @@ describe('character', () => {
     const bdb2 = await repo.findOne(cdb.id)
 
     expect(bdb2.name).toEqual(cdb.name)
+  })
+  it('should delete character, inventory, and skills', async () => {
+    const c = await factory.makeDummyWithAll()
+    const cdb = await factory.create(c)
+    await CharacterService.deleteCharacter(cdb.id)
+    const inv = await new InventoryFactory().getRepository().findOne({ id: cdb.inventory.id })
+    expect(inv).toBeUndefined()
   })
   it('should not save character without game', async () => {
     const b = await factory.makeDummyWithAll()

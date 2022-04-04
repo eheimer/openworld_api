@@ -51,7 +51,7 @@ export class CreatureInstance extends EntityBase implements iResistHaver {
   @ManyToOne(() => Battle, (battle) => battle.friendlies, { nullable: true })
   battleAsFriendly: Battle
 
-  @ManyToOne(() => Character, (character) => character.pets, { nullable: true })
+  @ManyToOne(() => Character, (character) => character.pets, { nullable: true, onDelete: 'CASCADE' })
   owner: Character
 
   @ManyToOne(() => Monster, { nullable: false })

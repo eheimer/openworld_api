@@ -1,0 +1,12 @@
+description: A character's skill
+type: object
+additionalProperties: false
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  description:
+    type: string
+  level:
+    type: number

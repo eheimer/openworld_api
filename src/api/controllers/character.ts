@@ -3,7 +3,6 @@ import * as respond from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 import CreateCharacterRequest from '../dto/request/CreateCharacterRequest'
 import CharacterResponse from '../dto/response/CharacterResponse'
-import CharacterDetailResponse from '../dto/response/CharacterDetailResponse'
 import GameService from '../services/game'
 import CharacterService from '../services/character'
 import Game from '../models/Game'
@@ -27,9 +26,10 @@ export async function createCharacter(req: express.Request, res: express.Respons
     }
     const resp = await CharacterService.createCharacter(
       request.name,
-      request.maxHp,
-      request.baseResist,
-      request.inventorySize,
+      request.strength,
+      request.dexterity,
+      request.intelligence,
+      request.movement,
       res.locals.auth.userId,
       gameId
     )
@@ -148,7 +148,7 @@ export async function getCharacterDetail(req: express.Request, res: express.Resp
       return respond.UNAUTHORIZED(res)
     }
     // 200: Success
-    const response = new CharacterDetailResponse(character)
+    const response = CharacterService.buildCharacterDetail(character as Character)
     if (character as Character) {
       const inventory = new InventoryResponse(
         await new InventoryFactory().getRepository().findOne((character as Character).inventory)

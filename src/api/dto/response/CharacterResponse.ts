@@ -2,13 +2,14 @@
 //   by GenerateServerModels. DO NOT MODIFY
 import { Entity } from 'typeorm'
 import PublicCharacter from '../PublicCharacter'
+import Character from '../../models/Character'
 
 /**
  * @description - character response
  */
 @Entity()
 export class CharacterResponse extends PublicCharacter {
-  constructor(item: any) {
+  constructor(item: Character) {
     super(item)
   }
 }

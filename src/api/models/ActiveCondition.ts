@@ -29,12 +29,12 @@ export class ActiveCondition extends EntityBase {
 
   @ValidateIf((o) => o.character == null)
   @IsNotEmpty()
-  @ManyToOne(() => CreatureInstance, (ci) => ci.conditions)
+  @ManyToOne(() => CreatureInstance, (ci) => ci.conditions, { onDelete: 'CASCADE' })
   creature: CreatureInstance
 
   @ValidateIf((o) => o.creature == null)
   @IsNotEmpty()
-  @ManyToOne(() => Character, (character) => character.conditions)
+  @ManyToOne(() => Character, (character) => character.conditions, { onDelete: 'CASCADE' })
   character: Character
 
   @ManyToOne(() => CreatureInstance)

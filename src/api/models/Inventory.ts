@@ -7,8 +7,7 @@ import WeaponInstance from './WeaponInstance'
 
 @Entity()
 export class Inventory extends EntityBase {
-  @Column() capacity: number
-  @Column() limit: boolean
+  @Column({ default: false }) limit: boolean
   @Column() gold: number
 
   @OneToMany(() => WeaponInstance, (wi) => wi.inventory, { nullable: true })

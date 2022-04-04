@@ -27,9 +27,10 @@ describe('Create and retrieve a character', () => {
     it('should create a character', async () => {
       const charReq = new CreateCharacterRequest({
         name: faker.name.firstName(),
-        maxHp: 100,
-        baseResist: 10,
-        inventorySize: 10
+        strength: 3,
+        dexterity: 2,
+        intelligence: 1,
+        movement: 2
       })
       const res = await helper.post(`/games/${gameId}/characters`, charReq)
 
@@ -55,7 +56,16 @@ describe('Create and retrieve a character', () => {
       expect(res.status).toEqual(200)
       expect(res).toSatisfyApiSpec()
       const resp = new CharacterDetailResponse(res.data)
-      expect(resp.maxHp).toEqual(100)
+      expect(resp.hp).toEqual(1)
+      expect(resp.inventorySize).toBeGreaterThan(1)
+      expect(resp.stamina).toBeGreaterThan(1)
+      expect(resp.swingSpeed).toBeLessThan(1)
+      expect(resp.castSpeed).toBeLessThan(1)
+      expect(resp.healSpeed).toBeLessThan(1)
+      expect(resp.strength).toEqual(3)
+      expect(resp.dexterity).toEqual(2)
+      expect(resp.intelligence).toEqual(1)
+      expect(resp.movement).toEqual(2)
     })
   })
   describe('GET /games/{gameId}/characters', () => {
@@ -98,7 +108,7 @@ describe('Attempt to retrieve character detail and delete character from another
 describe('update character and verify', () => {
   describe('PATCH /characters/{char}', () => {
     it('should update character', async () => {
-      const data = new UpdateCharacterRequest({ maxHp: 120 })
+      const data = new UpdateCharacterRequest({ intelligence: 2 })
       const res = await helper.patch(`/characters/${charId}`, data)
       expect(res.status).toEqual(204)
       expect(res).toSatisfyApiSpec()
@@ -111,7 +121,10 @@ describe('update character and verify', () => {
       expect(res.status).toEqual(200)
       expect(res).toSatisfyApiSpec()
       const resp = new CharacterDetailResponse(res.data)
-      expect(resp.maxHp).toEqual(120)
+      expect(resp.strength).toEqual(3)
+      expect(resp.dexterity).toEqual(2)
+      expect(resp.intelligence).toEqual(2)
+      expect(resp.movement).toEqual(2)
     })
   })
 })

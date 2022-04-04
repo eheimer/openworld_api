@@ -6,6 +6,7 @@ import Battle from './Battle'
 import CreatureInstance from './CreatureInstance'
 import ActiveCondition from './ActiveCondition'
 import Inventory from './Inventory'
+import CharacterSkill from './CharacterSkill'
 
 /**
  * @description the Character created by a User for a particular Game.  Each user can have only one per game.
@@ -13,22 +14,23 @@ import Inventory from './Inventory'
 @Entity()
 export class Character extends EntityBase {
   @Column() name: string
-  @Column() maxHp: number
-  @Column() hp: number
-  @Column({ default: 0 }) dmgIncrease: number
-  @Column({ default: 0 }) baseDmgIncrease: number
-  @Column({ default: 0 }) spellDmgIncrease: number
-  @Column({ default: 0 }) baseResist: number
-  @Column({ default: 0 }) resistPh: number
-  @Column({ default: 0 }) resistC: number
-  @Column({ default: 0 }) resistF: number
-  @Column({ default: 0 }) resistE: number
-  @Column({ default: 0 }) resistP: number
-  @Column({ default: 0 }) dePh: number
-  @Column({ default: 0 }) deC: number
-  @Column({ default: 0 }) deF: number
-  @Column({ default: 0 }) deE: number
-  @Column({ default: 0 }) deP: number
+  // when character is created, hp should be set to the calculated maxHp
+  @Column({ default: 1 }) hp: number
+  @Column({ default: 0 }) mana: number
+  // maxHp and maxMana are based on stats
+  @Column() strength: number
+  @Column() dexterity: number
+  @Column() intelligence: number
+  // sleep = 1-24, when >= 17, maxMana drops to 75%, when >=20, maxMana drops to 50%, when >= 23, maxMana drops to 25%
+  @Column({ default: 1 }) sleep: number
+  // hunger = 1-24, when >= 17, maxHp drops to 75%, when >= 20, maxHp drops to 50%, when >= 23, maxHp drops to 25%
+  @Column({ default: 1 }) hunger: number
+  // these increase numbers are calculated from stats and skills
+  // @Column({ default: 0 }) dmgIncrease: number
+  // @Column({ default: 0 }) baseDmgIncrease: number
+  // @Column({ default: 0 }) spellDmgIncrease: number
+  // movement will be based on race, when races are implemented
+  @Column() movement: number
 
   @ManyToOne(() => Game, { nullable: false })
   game: Game
@@ -44,10 +46,16 @@ export class Character extends EntityBase {
   inventory: Inventory
 
   @OneToMany(() => ActiveCondition, (ac) => ac.character, { nullable: true })
+  @JoinColumn()
   conditions: ActiveCondition[]
 
   @OneToMany(() => CreatureInstance, (ci) => ci.owner, { nullable: true })
+  @JoinColumn()
   pets: CreatureInstance[]
+
+  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true })
+  @JoinColumn()
+  skills: CharacterSkill[]
 }
 
 export default Character

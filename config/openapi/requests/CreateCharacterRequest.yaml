@@ -1,4 +1,4 @@
-description: Create or Update character request
+description: Create character request
 required: true
 content:
   application/json:
@@ -7,15 +7,18 @@ content:
       additionalProperties: false
       required:
         - name
-        - maxHp
-        - baseResist
-        - inventorySize
+        - strength
+        - dexterity
+        - intelligence
+        - movement
       properties:
         name:
           type: string
-        maxHp:
+        strength:
           type: number
-        baseResist:
+        dexterity:
           type: number
-        inventorySize:
+        intelligence:
+          type: number
+        movement:
           type: number

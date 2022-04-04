@@ -10,7 +10,6 @@ export default class InventoryFactory extends EntityFactory<Inventory> {
   makeDummy(faker?: Faker.FakerStatic): Inventory {
     if (!faker) faker = defaultFaker
     const i = new Inventory()
-    i.capacity = faker.datatype.number(20)
     i.limit = faker.datatype.boolean()
     i.gold = faker.datatype.number(500)
     return i

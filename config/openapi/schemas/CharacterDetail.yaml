@@ -7,9 +7,29 @@ properties:
     type: string
   hp:
     type: number
-  maxHp:
+  mana:
     type: number
-  baseResist:
+  strength:
+    type: number
+  dexterity:
+    type: number
+  intelligence:
+    type: number
+  stamina:
+    type: number
+  movement:
+    type: number
+  hitChance:
+    type: number
+  defChance:
+    type: number
+  parry:
+    type: number
+  swingSpeed:
+    type: number
+  castSpeed:
+    type: number
+  healSpeed:
     type: number
   inventorySize:
     type: number
@@ -25,3 +45,7 @@ properties:
     type: number
   inventory:
     $ref: './_index.yaml#/Inventory'
+  skills:
+    type: array
+    items:
+      $ref: './_index.yaml#/CharacterSkill'
