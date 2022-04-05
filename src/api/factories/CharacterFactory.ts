@@ -4,7 +4,6 @@ import defaultFaker from 'faker'
 import UserFactory from './UserFactory'
 import GameFactory from './GameFactory'
 import InventoryFactory from './InventoryFactory'
-//import CharacterService from '../services/character'
 
 export default class CharacterFactory extends EntityFactory<Character> {
   constructor() {
@@ -27,7 +26,7 @@ export default class CharacterFactory extends EntityFactory<Character> {
     dummy.player = await new UserFactory().findOrCreateDummy()
     dummy.game = await new GameFactory().findOrCreateDummy()
     dummy.inventory = await new InventoryFactory().createDummy()
-
+    dummy.skills = []
     return dummy
   }
 }

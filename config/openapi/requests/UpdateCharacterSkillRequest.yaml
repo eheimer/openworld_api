@@ -1,0 +1,12 @@
+description: Update the character skill level
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - level
+      properties:
+        level:
+          type: number

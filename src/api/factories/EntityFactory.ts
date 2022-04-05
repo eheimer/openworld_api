@@ -25,7 +25,7 @@ export default abstract class EntityFactory<T> {
    */
   async create(t: DeepPartial<T>): Promise<T> {
     const a = await this.getRepository().create(t)
-    this.postCreate(a, t)
+    await this.postCreate(a, t)
     await this.getRepository().save(a)
     return a
   }
@@ -71,8 +71,9 @@ export default abstract class EntityFactory<T> {
    */
   async createDummy(faker?: Faker.FakerStatic): Promise<T> {
     const t = await this.makeDummyWithAll(faker)
-    await this.getRepository().save(t)
-    return t
+    // const a = await this.getRepository().save(t)
+    const a = await this.create(t)
+    return a
   }
 
   /**

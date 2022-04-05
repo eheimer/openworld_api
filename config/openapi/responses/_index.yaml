@@ -26,6 +26,8 @@ Battle:
   $ref: './BattleResponse.yaml'
 GameBattles:
   $ref: './GameBattlesResponse.yaml'
+Skills:
+  $ref: './SkillsResponse.yaml'
 # ItemDamageResponse:
 #   description: Item damaged
 #   type: object

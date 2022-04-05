@@ -5,6 +5,7 @@ import Character from '../../api/models/Character'
 import CharacterFactory from '../../api/factories/CharacterFactory'
 import InventoryFactory from '../../api/factories/InventoryFactory'
 import CharacterService from '../../api/services/character'
+import CharacterSkillFactory from '../../api/factories/CharacterSkillFactory'
 
 let repo: Repository<Character>
 const factory = new CharacterFactory()
@@ -42,10 +43,14 @@ describe('character', () => {
   })
   it('should delete character, inventory, and skills', async () => {
     const c = await factory.makeDummyWithAll()
+    c.skills.push(await new CharacterSkillFactory().findOrCreateDummy())
     const cdb = await factory.create(c)
+    expect(cdb.skills).toHaveLength(1)
     await CharacterService.deleteCharacter(cdb.id)
     const inv = await new InventoryFactory().getRepository().findOne({ id: cdb.inventory.id })
     expect(inv).toBeUndefined()
+    const skills = await new CharacterSkillFactory().getRepository().find({ character: { id: cdb.id } })
+    expect(skills).toHaveLength(0)
   })
   it('should not save character without game', async () => {
     const b = await factory.makeDummyWithAll()
@@ -62,10 +67,11 @@ describe('character', () => {
     delete b.inventory
     await expect(factory.create(b)).rejects.toThrowError(/character.inventoryId/)
   })
-  it('should save character without conditions and pets', async () => {
+  it('should save character without conditions, pets, and skills', async () => {
     const b = await factory.makeDummyWithAll()
     delete b.conditions
     delete b.pets
+    delete b.skills
     await expect(factory.create(b)).resolves.toMatchObject({ name: b.name })
   })
 })

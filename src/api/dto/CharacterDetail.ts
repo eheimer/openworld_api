@@ -3,7 +3,7 @@
 import { Entity } from 'typeorm'
 import Inventory from './Inventory'
 import PublicCharacter from './PublicCharacter'
-import CharacterSkill from '../models/CharacterSkill'
+import CharacterSkill from '../dto/CharacterSkill'
 
 /**
  * @description - Character details

@@ -9,6 +9,11 @@ import Game from '../models/Game'
 import Character from '../models/Character'
 import InventoryFactory from '../factories/InventoryFactory'
 import InventoryResponse from '../dto/response/InventoryResponse'
+import UpdateCharacterSkillRequest from '../dto/request/UpdateCharacterSkillRequest'
+import CharacterSkill from '../models/CharacterSkill'
+import CharacterSkillDTO from '../dto/CharacterSkill'
+import { getRepo } from '../../utils/db'
+import CharacterSkillFactory from '../factories/CharacterSkillFactory'
 
 /**
  * create character
@@ -150,12 +155,108 @@ export async function getCharacterDetail(req: express.Request, res: express.Resp
     // 200: Success
     const response = CharacterService.buildCharacterDetail(character as Character)
     if (character as Character) {
+      //populate inventory
       const inventory = new InventoryResponse(
         await new InventoryFactory().getRepository().findOne((character as Character).inventory)
       )
       response.inventory = inventory
+      //populate skills
+      response.skills = []
+      const csRepo = new CharacterSkillFactory().getRepository()
+      const skills = await csRepo.findByIds((character as Character).skills, { relations: ['skill'] })
+      for (const a of skills) {
+        response.skills.push(
+          new CharacterSkillDTO({
+            id: a.id,
+            name: a.skill.name,
+            description: a.skill.description,
+            level: a.level
+          })
+        )
+      }
     }
+    //TODO: populate conditions
     return respond.OK(res, response)
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+  }
+}
+
+/**
+ * add a skill to a given character
+ * @description creates a new skill at level 1 and adds it to the character
+ */
+export async function addCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
+  const { characterId, skillId } = req.params
+  try {
+    //verify that character belongs to player
+    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
+    if (!character) {
+      return respond.NOT_FOUND(res)
+    }
+    if ((character as { error }).error === 'unauthorized') {
+      return respond.UNAUTHORIZED(res)
+    }
+    await CharacterService.addCharacterSkill(characterId, skillId, 1)
+    // 204: Success, no content
+    return respond.NO_CONTENT(res)
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+  }
+}
+
+/**
+ * update the skill level
+ */
+export async function updateCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
+  const request = new UpdateCharacterSkillRequest(req.body)
+  const { characterId, skillId } = req.params
+  try {
+    //verify that character belongs to player
+    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
+    if (!character) {
+      return respond.NOT_FOUND(res)
+    }
+    if ((character as { error }).error === 'unauthorized') {
+      return respond.UNAUTHORIZED(res)
+    }
+    const repo = getRepo('CharacterSkill', CharacterSkill)
+    const cSkill = await repo.findOne(skillId, { loadRelationIds: true })
+    if (cSkill && (cSkill.character as unknown as string) === characterId) {
+      cSkill.level = request.level > 4 ? 1 : request.level
+      await repo.save(cSkill)
+      return respond.NO_CONTENT(res)
+    } else {
+      return respond.NOT_FOUND(res, 'bad skill id')
+    }
+  } catch (err) {
+    return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
+  }
+}
+
+/**
+ * remove a skill from a character
+ */
+export async function deleteCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
+  const { characterId, skillId } = req.params
+  try {
+    //verify that character belongs to player
+    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
+    if (!character) {
+      return respond.NOT_FOUND(res)
+    }
+    if ((character as { error }).error === 'unauthorized') {
+      return respond.UNAUTHORIZED(res)
+    }
+    const repo = getRepo('CharacterSkill', CharacterSkill)
+    const cSkill = await repo.findOne(skillId, { loadRelationIds: true })
+    if (cSkill && (cSkill.character as unknown as string) === characterId) {
+      await repo.delete(skillId)
+      // 204: Success, no content
+      return respond.NO_CONTENT(res)
+    } else {
+      return respond.NOT_FOUND(res, 'bad skill id')
+    }
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
   }

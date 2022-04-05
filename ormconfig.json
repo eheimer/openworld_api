@@ -2,7 +2,7 @@
   {
     "name": "test",
     "type": "sqlite",
-    "database": ":memory:",
+    "database": "test.sqlite",
     "synchronize": true,
     "logging": "warn",
     "entities": ["src/api/models/**/*.ts"],

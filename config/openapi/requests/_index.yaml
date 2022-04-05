@@ -10,6 +10,10 @@ CreateCharacter:
   $ref: './CreateCharacterRequest.yaml'
 UpdateCharacter:
   $ref: './UpdateCharacterRequest.yaml'
+CreateCharacterSkill:
+  $ref: './CreateCharacterSkillRequest.yaml'
+UpdateCharacterSkill:
+  $ref: './UpdateCharacterSkillRequest.yaml'
 InvitePlayer:
   $ref: './InvitePlayerRequest.yaml'
 BattleDamage:

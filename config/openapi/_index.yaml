@@ -75,6 +75,13 @@ paths:
     $ref: './paths/battle.yaml'
   /games/{gameId}/battles/{battleId}/enemies:
     $ref: './paths/battleEnemies.yaml'
+  /skills:
+    description: GET list of all skills
+    $ref: './paths/skills.yaml'
+  /characters/{characterId}/skills/{skillId}:
+    description: add/remove skills from character, update skill level
+    $ref: './paths/characterSkill.yaml'
+
   # /games/{gameId}/battles/{battleId}/friendlies:
   #   post:
   #     summary: add friendly to battle

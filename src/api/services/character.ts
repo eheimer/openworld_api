@@ -1,4 +1,4 @@
-import { Any, DeepPartial, getRepository, In } from 'typeorm'
+import { DeepPartial, In } from 'typeorm'
 
 import logger from '../../utils/logger'
 import CharacterFactory from '../factories/CharacterFactory'
@@ -9,6 +9,9 @@ import GameService from './game'
 import CharacterDetail from '../dto/CharacterDetail'
 import CreatureInstanceFactory from '../factories/CreatureInstanceFactory'
 import ActiveConditionFactory from '../factories/ActiveConditionFactory'
+import CharacterSkill from '../models/CharacterSkill'
+import { getRepo } from '../../utils/db'
+import Skill from '../models/Skill'
 
 export abstract class CharacterService {
   static factory: CharacterFactory = new CharacterFactory()
@@ -96,6 +99,28 @@ export abstract class CharacterService {
       }
     } catch (err) {
       logger.error(`deleteCharacter: ${err}`)
+      throw err
+    }
+  }
+
+  static async addCharacterSkill(characterId: number | string, skillId: number | string, level: number): Promise<void> {
+    try {
+      const character = await this.factory
+        .getRepository()
+        .findOne(characterId, { relations: ['skills', 'skills.skill'] })
+      if (character) {
+        if (!character.skills) character.skills = []
+        const skill = await getRepo('Skill', Skill).findOne(skillId)
+        if (!character.skills.map((i) => i.skill).includes(skill)) {
+          const cSkill = new CharacterSkill()
+          cSkill.character = character
+          cSkill.skill = skill
+          cSkill.level = level
+          await getRepo('CharacterSkill', CharacterSkill).save(cSkill)
+        }
+      }
+    } catch (err) {
+      logger.error(`addCharacterSkill: ${err}`)
       throw err
     }
   }

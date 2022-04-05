@@ -1,0 +1,12 @@
+description: Create a character skill
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      additionalProperties: false
+      required:
+        - skillId
+      properties:
+        skillId:
+          type: string

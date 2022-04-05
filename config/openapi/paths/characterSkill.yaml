@@ -1,0 +1,54 @@
+parameters:
+  - name: characterId
+    required: true
+    in: path
+    description: the character to modify
+    schema:
+      type: string
+  - name: skillId
+    required: true
+    in: path
+    description: the skill id
+    schema:
+      type: string
+post:
+  summary: add a skill to a given character
+  description: creates a new skill at level 1 and adds it to the character
+  tags:
+    - character
+  # requestBody:
+  #   $ref: '../requests/_index.yaml#/CreateCharacterSkill'
+  operationId: addCharacterSkill
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+patch:
+  summary: update the skill level
+  operationId: updateCharacterSkill
+  tags:
+    - character
+  requestBody:
+    $ref: '../requests/_index.yaml#/UpdateCharacterSkill'
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'
+delete:
+  summary: remove a skill from a character
+  tags:
+    - character
+  operationId: deleteCharacterSkill
+  responses:
+    204:
+      $ref: '../responses/_index.yaml#/DeleteOrUpdate'
+    404:
+      $ref: '../responses/_index.yaml#/Fail'
+    500:
+      $ref: '../responses/_index.yaml#/Fail'

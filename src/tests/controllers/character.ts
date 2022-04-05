@@ -1,15 +1,20 @@
-import APIValidator from '../../utils/tests/apiValidator'
-import APITestHelper from '../../utils/tests/apiTestHelper'
-import CreateGameRequest from '../../api/dto/request/CreateGameRequest'
 import faker from 'faker'
-import CreateCharacterRequest from '../../api/dto/request/CreateCharacterRequest'
+
+import CharacterDetail from '../../api/dto/CharacterDetail'
 import Error from '../../api/dto/Error'
+import CreateCharacterRequest from '../../api/dto/request/CreateCharacterRequest'
+import CreateGameRequest from '../../api/dto/request/CreateGameRequest'
 import UpdateCharacterRequest from '../../api/dto/request/UpdateCharacterRequest'
+import UpdateCharacterSkillRequest from '../../api/dto/request/UpdateCharacterSkillRequest'
 import CharacterDetailResponse from '../../api/dto/response/CharacterDetailResponse'
 import CharacterResponse from '../../api/dto/response/CharacterResponse'
+import APITestHelper from '../../utils/tests/apiTestHelper'
+import APIValidator from '../../utils/tests/apiValidator'
 
 let gameId
 let charId
+let skillName
+let cSkillId
 const helper = new APITestHelper()
 
 beforeAll(async () => {
@@ -128,6 +133,70 @@ describe('update character and verify', () => {
     })
   })
 })
+
+describe('add character skill and verify', () => {
+  describe('add character skill', () => {
+    it('should add a characterskill to the character', async () => {
+      const skills = await helper.get('skills')
+      expect(skills.data).toBeInstanceOf(Array)
+      expect(skills.data.length).toBeGreaterThan(0)
+      skillName = skills.data[0].name
+      // const req = new CreateCharacterSkillRequest()
+      const res = await helper.post(`characters/${charId}/skills/${skills.data[0].id}`, {})
+      expect(res.status).toEqual(204)
+      expect(res).toSatisfyApiSpec()
+    })
+  })
+  describe('verify add character skill', () => {
+    it('should retrieve updated character', async () => {
+      const char = await helper.get(`characters/${charId}/detail`)
+      const detail = new CharacterDetail(char.data)
+      expect(detail.skills).toBeInstanceOf(Array)
+      expect(detail.skills.length).toEqual(1)
+      expect(detail.skills[0].name).toEqual(skillName)
+      expect(detail.skills[0].level).toEqual(1)
+      cSkillId = detail.skills[0].id
+    })
+  })
+})
+describe('update character skill level and verify', () => {
+  describe('update character skill level', () => {
+    it('should update a characterskill level', async () => {
+      const req = new UpdateCharacterSkillRequest({ level: 2 })
+      const res = await helper.patch(`characters/${charId}/skills/${cSkillId}`, req)
+      expect(res.status).toEqual(204)
+      expect(res).toSatisfyApiSpec()
+    })
+  })
+  describe('verify update character skill', () => {
+    it('should retrieve updated character', async () => {
+      const char = await helper.get(`characters/${charId}/detail`)
+      const detail = new CharacterDetail(char.data)
+      expect(detail.skills).toBeInstanceOf(Array)
+      expect(detail.skills.length).toEqual(1)
+      expect(detail.skills[0].name).toEqual(skillName)
+      expect(detail.skills[0].level).toEqual(2)
+    })
+  })
+})
+describe('remove character skill and verify', () => {
+  describe('remove character skill', () => {
+    it('should remove a characterskill from the character', async () => {
+      const res = await helper.delete(`characters/${charId}/skills/${cSkillId}`)
+      expect(res.status).toEqual(204)
+      expect(res).toSatisfyApiSpec()
+    })
+  })
+  describe('verify remove character skill', () => {
+    it('should retrieve updated character', async () => {
+      const char = await helper.get(`characters/${charId}/detail`)
+      const detail = new CharacterDetail(char.data)
+      expect(detail.skills).toBeInstanceOf(Array)
+      expect(detail.skills.length).toEqual(0)
+    })
+  })
+})
+
 describe('delete character and verify', () => {
   describe('DELETE /characters/{charId}', () => {
     it('should remove character', async () => {
