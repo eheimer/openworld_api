@@ -10,6 +10,7 @@ import CharacterDetailResponse from '../../api/dto/response/CharacterDetailRespo
 import CharacterResponse from '../../api/dto/response/CharacterResponse'
 import APITestHelper from '../../utils/tests/apiTestHelper'
 import APIValidator from '../../utils/tests/apiValidator'
+import CreateCharacterSkillRequest from '../../api/dto/request/CreateCharacterSkillRequest'
 
 let gameId
 let charId
@@ -141,8 +142,10 @@ describe('add character skill and verify', () => {
       expect(skills.data).toBeInstanceOf(Array)
       expect(skills.data.length).toBeGreaterThan(0)
       skillName = skills.data[0].name
-      // const req = new CreateCharacterSkillRequest()
-      const res = await helper.post(`characters/${charId}/skills/${skills.data[0].id}`, {})
+      const res = await helper.post(
+        `characters/${charId}/skills`,
+        new CreateCharacterSkillRequest({ skillId: skills.data[0].id })
+      )
       expect(res.status).toEqual(204)
       expect(res).toSatisfyApiSpec()
     })

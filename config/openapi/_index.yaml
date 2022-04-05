@@ -78,8 +78,11 @@ paths:
   /skills:
     description: GET list of all skills
     $ref: './paths/skills.yaml'
+  /characters/{characterId}/skills:
+    description: add skills to a character
+    $ref: './paths/characterSkillAdd.yaml'
   /characters/{characterId}/skills/{skillId}:
-    description: add/remove skills from character, update skill level
+    description: remove skills from character, update skill level
     $ref: './paths/characterSkill.yaml'
 
   # /games/{gameId}/battles/{battleId}/friendlies:

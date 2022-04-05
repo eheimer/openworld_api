@@ -14,6 +14,7 @@ import CharacterSkill from '../models/CharacterSkill'
 import CharacterSkillDTO from '../dto/CharacterSkill'
 import { getRepo } from '../../utils/db'
 import CharacterSkillFactory from '../factories/CharacterSkillFactory'
+import CreateCharacterSkillRequest from '../dto/request/CreateCharacterSkillRequest'
 
 /**
  * create character
@@ -187,7 +188,8 @@ export async function getCharacterDetail(req: express.Request, res: express.Resp
  * @description creates a new skill at level 1 and adds it to the character
  */
 export async function addCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
-  const { characterId, skillId } = req.params
+  const request = new CreateCharacterSkillRequest(req.body)
+  const { characterId } = req.params
   try {
     //verify that character belongs to player
     const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
@@ -197,7 +199,7 @@ export async function addCharacterSkill(req: express.Request, res: express.Respo
     if ((character as { error }).error === 'unauthorized') {
       return respond.UNAUTHORIZED(res)
     }
-    await CharacterService.addCharacterSkill(characterId, skillId, 1)
+    await CharacterService.addCharacterSkill(characterId, request.skillId, 1)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
