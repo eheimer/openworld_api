@@ -86,6 +86,7 @@ describe('Create and retrieve a character', () => {
 })
 describe('Attempt to retrieve character detail and delete character from another account', () => {
   const newHelper = new APITestHelper()
+  newHelper.authenticate()
   it('should fail retrieving character detail', async () => {
     let res
     try {
@@ -95,6 +96,7 @@ describe('Attempt to retrieve character detail and delete character from another
       expect(err.response).toSatisfyApiSpec()
       const error = new Error(err.response.data.error)
       expect(error.type).toEqual('authorization_failed')
+      expect(error.message).toEqual('Character operation not available to requestor')
     }
     expect(res).toBeUndefined()
   })
@@ -107,6 +109,7 @@ describe('Attempt to retrieve character detail and delete character from another
       expect(err.response).toSatisfyApiSpec()
       const error = new Error(err.response.data.error)
       expect(error.type).toEqual('authorization_failed')
+      expect(error.message).toEqual('Character operation not available to requestor')
     }
     expect(res).toBeUndefined()
   })

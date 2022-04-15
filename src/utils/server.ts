@@ -102,7 +102,8 @@ export async function createServer(): Promise<{
       logger.verbose(`${method}: ${handlers.map((d: any) => d.name).join(', ')}`)
     },
     security: {
-      bearerAuth: api.auth
+      bearerAuth: api.auth,
+      playerCharacterOwner: api.playerCharacterOwner
     }
   })
 

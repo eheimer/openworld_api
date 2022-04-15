@@ -97,17 +97,9 @@ export async function getCharacter(req: express.Request, res: express.Response):
  * update character partial
  */
 export async function updateCharacter(req: express.Request, res: express.Response): Promise<void> {
-  const { characterId } = req.params
   try {
-    //verify that character belongs to player
-    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((character as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await CharacterService.updateCharacter(characterId, req.body)
+    const character = res.locals.character
+    await CharacterService.updateCharacter(character.id, req.body)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -120,17 +112,9 @@ export async function updateCharacter(req: express.Request, res: express.Respons
  * @description deletes the character and its inventory
  */
 export async function deleteCharacter(req: express.Request, res: express.Response): Promise<void> {
-  const { characterId } = req.params
   try {
-    //verify that character belongs to player
-    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((character as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await CharacterService.deleteCharacter(characterId)
+    const character = res.locals.character
+    await CharacterService.deleteCharacter(character.id)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -145,14 +129,7 @@ export async function deleteCharacter(req: express.Request, res: express.Respons
 export async function getCharacterDetail(req: express.Request, res: express.Response): Promise<void> {
   const { characterId } = req.params
   try {
-    //verify that character belongs to player
-    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((character as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
+    const character = res.locals.character
     // 200: Success
     const response = CharacterService.buildCharacterDetail(character as Character)
     if (character as Character) {
@@ -189,17 +166,9 @@ export async function getCharacterDetail(req: express.Request, res: express.Resp
  */
 export async function addCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
   const request = new CreateCharacterSkillRequest(req.body)
-  const { characterId } = req.params
+  const character = res.locals.character
   try {
-    //verify that character belongs to player
-    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((character as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await CharacterService.addCharacterSkill(characterId, request.skillId, 1)
+    await CharacterService.addCharacterSkill(character.id, request.skillId, 1)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -212,19 +181,12 @@ export async function addCharacterSkill(req: express.Request, res: express.Respo
  */
 export async function updateCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
   const request = new UpdateCharacterSkillRequest(req.body)
-  const { characterId, skillId } = req.params
+  const character = res.locals.character
+  const { skillId } = req.params
   try {
-    //verify that character belongs to player
-    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((character as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
     const repo = getRepo('CharacterSkill', CharacterSkill)
     const cSkill = await repo.findOne(skillId, { loadRelationIds: true })
-    if (cSkill && (cSkill.character as unknown as string) === characterId) {
+    if (cSkill && (cSkill.character as unknown as string) === character.id) {
       cSkill.level = request.level > 4 ? 1 : request.level
       await repo.save(cSkill)
       return respond.NO_CONTENT(res)
@@ -240,19 +202,12 @@ export async function updateCharacterSkill(req: express.Request, res: express.Re
  * remove a skill from a character
  */
 export async function deleteCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
-  const { characterId, skillId } = req.params
+  const { skillId } = req.params
+  const character = res.locals.character
   try {
-    //verify that character belongs to player
-    const character = await CharacterService.authorizePlayer(characterId, res.locals.auth.userId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((character as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
     const repo = getRepo('CharacterSkill', CharacterSkill)
     const cSkill = await repo.findOne(skillId, { loadRelationIds: true })
-    if (cSkill && (cSkill.character as unknown as string) === characterId) {
+    if (cSkill && (cSkill.character as unknown as string) === character.id) {
       await repo.delete(skillId)
       // 204: Success, no content
       return respond.NO_CONTENT(res)

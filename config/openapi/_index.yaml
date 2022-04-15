@@ -796,6 +796,10 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    playerCharacterOwner:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   requestBodies:
     $ref: './requests/_index.yaml'
   responses:

@@ -22,6 +22,8 @@ patch:
   summary: update character partial
   tags:
     - character
+  security:
+    - playerCharacterOwner: []
   operationId: updateCharacter
   requestBody:
     $ref: '../requests/_index.yaml#/UpdateCharacter'
@@ -37,6 +39,8 @@ delete:
   description: deletes the character and its inventory
   tags:
     - character
+  security:
+    - playerCharacterOwner: []
   operationId: deleteCharacter
   responses:
     204:

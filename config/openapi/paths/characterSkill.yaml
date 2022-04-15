@@ -16,6 +16,8 @@ patch:
   operationId: updateCharacterSkill
   tags:
     - character
+  security:
+    - playerCharacterOwner: []
   requestBody:
     $ref: '../requests/_index.yaml#/UpdateCharacterSkill'
   responses:
@@ -29,6 +31,8 @@ delete:
   summary: remove a skill from a character
   tags:
     - character
+  security:
+    - playerCharacterOwner: []
   operationId: deleteCharacterSkill
   responses:
     204:

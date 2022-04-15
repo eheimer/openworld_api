@@ -8,6 +8,8 @@ parameters:
 get:
   summary: retrieve character
   description: retrieves either the public character or detail, depending on the player making the request
+  security:
+    - playerCharacterOwner: []
   tags:
     - character
   operationId: getCharacterDetail

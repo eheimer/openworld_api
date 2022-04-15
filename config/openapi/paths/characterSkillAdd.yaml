@@ -10,6 +10,8 @@ post:
   description: creates a new skill at level 1 and adds it to the character
   tags:
     - character
+  security:
+    - playerCharacterOwner: []
   requestBody:
     $ref: '../requests/_index.yaml#/CreateCharacterSkill'
   operationId: addCharacterSkill
