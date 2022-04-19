@@ -17,6 +17,8 @@ post:
   tags:
     - game
     - player
+  security:
+    - playerGameOwner: []
   operationId: joinGame
   responses:
     204:
@@ -31,6 +33,8 @@ delete:
   tags:
     - game
     - player
+  security:
+    - playerGameOwner: []
   operationId: leaveGame
   responses:
     204:

@@ -9,6 +9,8 @@ post:
   summary: invite a player to a game
   tags:
     - game
+  security:
+    - playerGameOwner: []
   operationId: invitePlayer
   requestBody:
     $ref: '../requests/_index.yaml#/InvitePlayer'

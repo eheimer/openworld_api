@@ -103,7 +103,12 @@ export async function createServer(): Promise<{
     },
     security: {
       bearerAuth: api.auth,
-      playerCharacterOwner: api.playerCharacterOwner
+      playerCharacterOwner: api.playerCharacterOwner,
+      playerGameOwner: api.playerGameOwner,
+      playerGameMember: api.playerGameMember,
+      playerGameCharacter: api.playerGameCharacter,
+      battleDiscard: api.battleDiscard,
+      playerBattleParticipant: api.playerBattleParticipant
     }
   })
 

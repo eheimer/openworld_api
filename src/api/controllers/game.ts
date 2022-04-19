@@ -12,7 +12,7 @@ import User from '../models/User'
 import BattleResponse from '../dto/response/BattleResponse'
 
 /**
- * get player's /games
+ * get player's games
  * @description returns the games a player has access to
  */
 export async function getGames(req: express.Request, res: express.Response): Promise<void> {
@@ -34,8 +34,8 @@ export async function getGames(req: express.Request, res: express.Response): Pro
  * create a new game
  */
 export async function createGame(req: express.Request, res: express.Response): Promise<void> {
-  const request = new CreateGameRequest(req.body)
   try {
+    const request = new CreateGameRequest(req.body)
     const resp = await GameService.createGame(request.name, request.maxPlayers, res.locals.auth.userId)
     // 201: Success Location Response
     const path = makeRoutePath('getGame', { gameId: (resp as any).gameId })
@@ -49,16 +49,8 @@ export async function createGame(req: express.Request, res: express.Response): P
  * retrieve game
  */
 export async function getGame(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId } = req.params
   try {
-    /* process the request and produce a response */
-    const game = await GameService.authorizeMember(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
+    const game: Game = res.locals.game
     // 200: Success
     return respond.OK(res, new GameResponse(game))
   } catch (err) {
@@ -70,16 +62,9 @@ export async function getGame(req: express.Request, res: express.Response): Prom
  * update game partial
  */
 export async function updateGame(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId } = req.params
   try {
-    const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await GameService.updateGame(gameId, req.body)
+    const game: Game = res.locals.game
+    await GameService.updateGame(game.id, req.body)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -92,16 +77,9 @@ export async function updateGame(req: express.Request, res: express.Response): P
  * @description deletes the game, all battles, characters, creatureInstances, inventories, etc
  */
 export async function deleteGame(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId } = req.params
   try {
-    const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await GameService.deleteGame(gameId)
+    const game: Game = res.locals.game
+    await GameService.deleteGame(game.id)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -114,16 +92,10 @@ export async function deleteGame(req: express.Request, res: express.Response): P
  * @description player id must exist at /players/{playerId}
  */
 export async function joinGame(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId, playerId } = req.params
   try {
-    const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await GameService.addPlayer(gameId, playerId)
+    const { playerId } = req.params
+    const game: Game = res.locals.game
+    await GameService.addPlayer(game.id, playerId)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -136,16 +108,10 @@ export async function joinGame(req: express.Request, res: express.Response): Pro
  * @description player id must exist at /players/{playerId}
  */
 export async function leaveGame(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId, playerId } = req.params
   try {
-    const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized' && playerId !== res.locals.auth.userId) {
-      return respond.UNAUTHORIZED(res)
-    }
-    await GameService.removePlayer(gameId, playerId)
+    const { playerId } = req.params
+    const game: Game = res.locals.game
+    await GameService.removePlayer(game.id, playerId)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -157,18 +123,11 @@ export async function leaveGame(req: express.Request, res: express.Response): Pr
  * invite a player to a game
  */
 export async function invitePlayer(req: express.Request, res: express.Response): Promise<void> {
-  const request = new InvitePlayerRequest(req.body)
-  const { gameId } = req.params
   try {
-    const game = await GameService.authorizeOwner(gameId, res.locals.auth.userId)
+    const request = new InvitePlayerRequest(req.body)
+    const game: Game = res.locals.game
     const player = await PlayerService.findPlayerWithEmail(request.email)
-    if (!game || !player) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    await GameService.addPlayer((game as Game).id, (player as User).id)
+    await GameService.addPlayer(game.id, (player as User).id)
     // 201: Success Location Response
     return respond.NO_CONTENT(res)
   } catch (err) {
@@ -180,16 +139,9 @@ export async function invitePlayer(req: express.Request, res: express.Response):
  * get battles
  */
 export async function getGameBattles(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId } = req.params
   try {
-    const game = await GameService.authorizeMember(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    const battles = (await GameService.getBattles(gameId)).map((battle) => {
+    const game = res.locals.game
+    const battles = (await GameService.getBattles(game.id)).map((battle) => {
       return new BattleResponse(battle)
     })
     // 200: Success

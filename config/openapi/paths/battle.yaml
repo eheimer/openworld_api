@@ -15,6 +15,8 @@ get:
   summary: retrieve a battle
   tags:
     - battle
+  security:
+    - playerGameMember: []
   operationId: getBattle
   responses:
     200:
@@ -27,6 +29,8 @@ delete:
   summary: delete a battle
   tags:
     - battle
+  security:
+    - battleDiscard: []
   operationId: deleteBattle
   responses:
     204:

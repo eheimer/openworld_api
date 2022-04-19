@@ -10,6 +10,8 @@ post:
   description: creates a new battle, adding the player's character associated with /games/{gameId} to the battle
   tags:
     - battle
+  security:
+    - playerGameMember: []
   operationId: createBattle
   responses:
     201:
@@ -22,6 +24,8 @@ get:
   summary: get battles
   tags:
     - game
+  security:
+    - playerGameMember: []
   operationId: getGameBattles
   responses:
     200:

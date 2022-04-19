@@ -7,9 +7,11 @@ parameters:
       type: string
 get:
   summary: retrieve character
-  description: retrieves either the public character or detail, depending on the player making the request
+  description: retrieves the public character
   tags:
     - character
+  security:
+    - playerGameCharacter: []
   operationId: getCharacter
   responses:
     200:

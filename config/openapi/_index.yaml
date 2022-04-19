@@ -788,15 +788,43 @@ paths:
   #         $ref: '#/components/responses/FailResponse'
   #       500:
   #         $ref: '#/components/responses/FailResponse'
+# top-level security specification applies to all paths, unless overridden
 security:
   - bearerAuth: []
 components:
   securitySchemes:
+    # authentication
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    # verify player owns requested character
     playerCharacterOwner:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    # verify player is owner of game
+    playerGameOwner:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    # verify player is member of game
+    playerGameMember:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    # verify battle can be deleted by player
+    battleDiscard:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    # verify player is participant of battle
+    playerBattleParticipant:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    # verify player and character are in the same game
+    playerGameCharacter:
       type: http
       scheme: bearer
       bearerFormat: JWT

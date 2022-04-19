@@ -10,6 +10,8 @@ get:
   operationId: getGame
   tags:
     - game
+  security:
+    - playerGameMember: []
   responses:
     200:
       $ref: '../responses/_index.yaml#/Game'
@@ -22,6 +24,8 @@ patch:
   operationId: updateGame
   tags:
     - game
+  security:
+    - playerGameOwner: []
   requestBody:
     $ref: '../requests/_index.yaml#/UpdateGame'
   responses:
@@ -36,6 +40,8 @@ delete:
   description: deletes the game, all battles, characters, creatureInstances, inventories, etc
   tags:
     - game
+  security:
+    - playerGameOwner: []
   operationId: deleteGame
   responses:
     204:

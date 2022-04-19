@@ -3,7 +3,6 @@ import * as respond from '../../utils/express'
 import { makeRoutePath } from '../../utils/server'
 import CreateCharacterRequest from '../dto/request/CreateCharacterRequest'
 import CharacterResponse from '../dto/response/CharacterResponse'
-import GameService from '../services/game'
 import CharacterService from '../services/character'
 import Game from '../models/Game'
 import Character from '../models/Character'
@@ -20,16 +19,9 @@ import CreateCharacterSkillRequest from '../dto/request/CreateCharacterSkillRequ
  * create character
  */
 export async function createCharacter(req: express.Request, res: express.Response): Promise<void> {
-  const request = new CreateCharacterRequest(req.body)
-  const { gameId } = req.params
   try {
-    const game = await GameService.authorizeMember(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
+    const request = new CreateCharacterRequest(req.body)
+    const game = res.locals.game
     const resp = await CharacterService.createCharacter(
       request.name,
       request.strength,
@@ -37,10 +29,10 @@ export async function createCharacter(req: express.Request, res: express.Respons
       request.intelligence,
       request.movement,
       res.locals.auth.userId,
-      gameId
+      game.id
     )
     // 201: Success Location Response
-    const path = makeRoutePath('getCharacter', { gameId, characterId: (resp as any).characterId })
+    const path = makeRoutePath('getCharacter', { gameId: game.id, characterId: (resp as any).characterId })
     return respond.CREATED(res, path)
   } catch (err) {
     return respond.INTERNAL_SERVER_ERROR(res, 'Internal Server Error')
@@ -51,15 +43,8 @@ export async function createCharacter(req: express.Request, res: express.Respons
  * get all characters for game
  */
 export async function getGameCharacters(req: express.Request, res: express.Response): Promise<void> {
-  const { gameId } = req.params
   try {
-    const game = await GameService.authorizeMember(gameId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
+    const game = res.locals.game
     // 200: Success
     return respond.OK(res, (game as Game).characters)
   } catch (err) {
@@ -72,20 +57,8 @@ export async function getGameCharacters(req: express.Request, res: express.Respo
  * @description retrieves either the public character or detail, depending on the player making the request
  */
 export async function getCharacter(req: express.Request, res: express.Response): Promise<void> {
-  const { characterId } = req.params
   try {
-    //verify that player and character are both in same game
-    const game = await GameService.authorizePlayerCharacter(characterId, res.locals.auth.userId)
-    if (!game) {
-      return respond.NOT_FOUND(res)
-    }
-    if ((game as { error }).error === 'unauthorized') {
-      return respond.UNAUTHORIZED(res)
-    }
-    const character = await CharacterService.getCharacter(characterId)
-    if (!character) {
-      return respond.NOT_FOUND(res)
-    }
+    const character = res.locals.character
     // 200: Success
     return respond.OK(res, new CharacterResponse(character))
   } catch (err) {
@@ -124,34 +97,29 @@ export async function deleteCharacter(req: express.Request, res: express.Respons
 
 /**
  * retrieve character
- * @description retrieves either the public character or detail, depending on the player making the request
+ * @description retrieves character detail
  */
 export async function getCharacterDetail(req: express.Request, res: express.Response): Promise<void> {
-  const { characterId } = req.params
   try {
-    const character = res.locals.character
+    const character: Character = res.locals.character
     // 200: Success
-    const response = CharacterService.buildCharacterDetail(character as Character)
-    if (character as Character) {
-      //populate inventory
-      const inventory = new InventoryResponse(
-        await new InventoryFactory().getRepository().findOne((character as Character).inventory)
+    const response = CharacterService.buildCharacterDetail(character)
+    //populate inventory
+    const inventory = new InventoryResponse(await new InventoryFactory().getRepository().findOne(character.inventory))
+    response.inventory = inventory
+    //populate skills
+    response.skills = []
+    const csRepo = new CharacterSkillFactory().getRepository()
+    const skills = await csRepo.findByIds(character.skills, { relations: ['skill'] })
+    for (const a of skills) {
+      response.skills.push(
+        new CharacterSkillDTO({
+          id: a.id,
+          name: a.skill.name,
+          description: a.skill.description,
+          level: a.level
+        })
       )
-      response.inventory = inventory
-      //populate skills
-      response.skills = []
-      const csRepo = new CharacterSkillFactory().getRepository()
-      const skills = await csRepo.findByIds((character as Character).skills, { relations: ['skill'] })
-      for (const a of skills) {
-        response.skills.push(
-          new CharacterSkillDTO({
-            id: a.id,
-            name: a.skill.name,
-            description: a.skill.description,
-            level: a.level
-          })
-        )
-      }
     }
     //TODO: populate conditions
     return respond.OK(res, response)
@@ -165,9 +133,9 @@ export async function getCharacterDetail(req: express.Request, res: express.Resp
  * @description creates a new skill at level 1 and adds it to the character
  */
 export async function addCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
-  const request = new CreateCharacterSkillRequest(req.body)
-  const character = res.locals.character
   try {
+    const request = new CreateCharacterSkillRequest(req.body)
+    const character: Character = res.locals.character
     await CharacterService.addCharacterSkill(character.id, request.skillId, 1)
     // 204: Success, no content
     return respond.NO_CONTENT(res)
@@ -180,10 +148,10 @@ export async function addCharacterSkill(req: express.Request, res: express.Respo
  * update the skill level
  */
 export async function updateCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
-  const request = new UpdateCharacterSkillRequest(req.body)
-  const character = res.locals.character
-  const { skillId } = req.params
   try {
+    const request = new UpdateCharacterSkillRequest(req.body)
+    const character: Character = res.locals.character
+    const { skillId } = req.params
     const repo = getRepo('CharacterSkill', CharacterSkill)
     const cSkill = await repo.findOne(skillId, { loadRelationIds: true })
     if (cSkill && (cSkill.character as unknown as string) === character.id) {
@@ -202,9 +170,9 @@ export async function updateCharacterSkill(req: express.Request, res: express.Re
  * remove a skill from a character
  */
 export async function deleteCharacterSkill(req: express.Request, res: express.Response): Promise<void> {
-  const { skillId } = req.params
-  const character = res.locals.character
   try {
+    const { skillId } = req.params
+    const character: Character = res.locals.character
     const repo = getRepo('CharacterSkill', CharacterSkill)
     const cSkill = await repo.findOne(skillId, { loadRelationIds: true })
     if (cSkill && (cSkill.character as unknown as string) === character.id) {

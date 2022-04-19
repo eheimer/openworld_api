@@ -125,32 +125,6 @@ export abstract class CharacterService {
     }
   }
 
-  /**
-   * Validate that character belongs to player
-   *
-   * @param characterId
-   * @param playerId
-   */
-  static async authorizePlayer(
-    characterId: number | string,
-    playerId: number | string
-  ): Promise<Character | { error }> {
-    try {
-      const character = await this.factory.getRepository().findOne(characterId, { loadRelationIds: true })
-      if (!character) {
-        return
-      }
-      if (character.player.toString() === playerId.toString()) {
-        return character
-      } else {
-        return { error: 'unauthorized' }
-      }
-    } catch (err) {
-      logger.error(`authorizePlayer: ${err}`)
-      throw err
-    }
-  }
-
   static buildCharacterDetail(character: Character): CharacterDetail {
     const detail = new CharacterDetail(character)
     detail.hp = character.hp / this.calcMaxHp(character.strength)

@@ -10,6 +10,8 @@ post:
   tags:
     - character
     - game
+  security:
+    - playerGameMember: []
   operationId: createCharacter
   requestBody:
     $ref: '../requests/_index.yaml#/CreateCharacter'
@@ -25,6 +27,8 @@ get:
   tags:
     - character
     - game
+  security:
+    - playerGameMember: []
   operationId: getGameCharacters
   responses:
     200:

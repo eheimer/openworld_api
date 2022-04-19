@@ -16,6 +16,8 @@ post:
   description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
   tags:
     - battle
+  security:
+    - playerBattleParticipant: []
   operationId: createEnemy
   requestBody:
     $ref: '../requests/_index.yaml#/Monster'

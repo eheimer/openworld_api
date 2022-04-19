@@ -59,7 +59,7 @@ export abstract class GameService {
     }
   }
 
-  static async deleteGame(gameId: string): Promise<void> {
+  static async deleteGame(gameId: string | number): Promise<void> {
     try {
       await this.factory.getRepository().delete(gameId)
     } catch (err) {
@@ -110,78 +110,6 @@ export abstract class GameService {
   static async getBattles(gameId: number | string): Promise<Battle[]> {
     const battles = await BattleService.factory.getRepository().find({ game: { id: gameId } })
     return battles
-  }
-
-  /**
-   * Validates that playerId is the game owner
-   */
-  static async authorizeOwner(gameId: number | string, playerId: number | string): Promise<Game | { error }> {
-    try {
-      const game = await this.factory.getRepository().findOne(gameId, { loadRelationIds: true })
-      if (!game) {
-        return
-      }
-      if (game.owner.toString() === playerId.toString()) {
-        return game
-      } else {
-        return { error: 'unauthorized' }
-      }
-    } catch (err) {
-      logger.error(`authorizeOwner: ${err}`)
-      throw err
-    }
-  }
-
-  /**
-   * Validates that playerId is a member of the game
-   *
-   * @param gameId
-   * @param playerId
-   */
-  static async authorizeMember(gameId: number | string, playerId: number | string): Promise<Game | { error }> {
-    try {
-      let game = await this.authorizeOwner(gameId, playerId)
-      if (!game || (game as { error }).error) {
-        game = await this.factory.getRepository().findOne(gameId, { loadRelationIds: true })
-      }
-      if (!game) {
-        return
-      }
-      if (((game as Game).players as any).includes(playerId)) {
-        return game
-      } else {
-        return { error: 'unauthorized' }
-      }
-    } catch (err) {
-      logger.error(`authorizeMember: ${err}`)
-      throw err
-    }
-  }
-
-  /**
-   * Validates that playerId and characterId are in the same game
-   *
-   * @param playerId
-   * @param characterId
-   */
-  static async authorizePlayerCharacter(
-    characterId: number | string,
-    playerId: number | string
-  ): Promise<Game | { error }> {
-    try {
-      const character = await CharacterService.factory.getRepository().findOne(characterId, { loadRelationIds: true })
-      if (character) {
-        const player = await PlayerService.factory.getRepository().findOne(playerId, { loadRelationIds: true })
-        if (player && player.games.includes(character.game)) {
-          return await this.factory.getRepository().findOne(character.game)
-        } else {
-          return { error: 'unauthorized' }
-        }
-      }
-    } catch (err) {
-      logger.error(`authorizePlayerCharacter: ${err}`)
-      throw err
-    }
   }
 }
 export default GameService
