@@ -113,12 +113,12 @@ export function makeTSEntity(header: string, className: string, map: any) {
   }
   const uniqueImports = Array.from(new Set(imports))
   const entityContent = `${header}
-import { Entity } from 'typeorm'${
-    uniqueImports.length
-      ? `
+${
+  uniqueImports.length
+    ? `
 ${uniqueImports.join('\n')}`
-      : ``
-  }
+    : ``
+}
 ${
   schema.description
     ? `
@@ -127,7 +127,6 @@ ${
  */`
     : ``
 }
-@Entity()
 export class ${className}${extend.length ? ` extends ${extend}` : ``} {
   constructor(item: any) {${extend.length ? `\n    super(item)` : ``}${
     fieldList.length ? `\n    const { ${fieldList} } = item` : ``
