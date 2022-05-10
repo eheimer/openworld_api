@@ -122,3 +122,13 @@ Service methods are generally the only ones that should be logging to the consol
 ## API Testing
 
 API test procedure has been implemented in Postman
+
+## Production Server
+
+Server is running on spinach.heimerman.org as openworld-game.com
+Jenkins starts and stops the server as CI builds are run
+To manually start/stop the server:
+
+- ssh to spinach.heimerman.org
+- `sudo su - jenkins` and enter your password
+- `systemctl --user start/stop/status openworld-api`
