@@ -1,5 +1,23 @@
 import logger from '../../utils/logger'
 
+class ModelDef {
+  kindString: string
+  name: string
+  type: string
+  extendedTypes: ModelDef[]
+  children: ModelDef[]
+  flattenedExtends: string[]
+  columns: ColumnDef[]
+}
+
+class ColumnDef extends ModelDef {
+  inheritedFrom: string
+}
+
+class EnumItemDef extends ModelDef {
+  defaultValue: number
+}
+
 /**
  * @description Generate a C# module from the TypeScript definition
  * @param header A header to place on the file
@@ -7,41 +25,44 @@ import logger from '../../utils/logger'
  * @param map Complete map of all entities to use for references
  * @returns The module content as a string
  */
-export function makeClientEntity(header: string, modelName: string, model: any) {
+export function makeClientEntity(header: string, modelName: string, model: ModelDef): string {
   logger.debug('processing ' + modelName)
   const namespace = 'Openworld.Models'
 
-  const toStringMethod = `public override string ToString(){
-      return UnityEngine.JsonUtility.ToJson (this, true);
-    }`
-
   const entityTemplate = `${header}
 using System;
+using Openworld.Binding;
 
 namespace ${namespace}
 {
-  [Serializable]
   public class {modelName}{extends}
   {
 {fields}
-
-    ${toStringMethod} 
   }
 }`
 
-  const fieldTemplate = `    public {type} {fieldname};`
+  const fieldTemplate = `    private {type} _{fieldname};
+    public {type} {fieldname} {
+      get => _{fieldname};
+      set => Set(ref _{fieldname}, value);
+    }`
+
   model.flattenedExtends = getFlattenedExtends(model)
+  if (model.flattenedExtends.length == 0) {
+    model.flattenedExtends = ['ObservableObject']
+  }
   model.columns = getEntityColumns(model)
   const fields = []
-  for (const fieldName in model.columns) {
-    const type = model.columns[fieldName]
-    fields.push(fieldTemplate.replace('{type}', type).replace('{fieldname}', fieldName))
+  for (const column of model.columns) {
+    fields.push(
+      fieldTemplate.replace(new RegExp('{type}', 'g'), column.type).replace(new RegExp('{fieldname}', 'g'), column.name)
+    )
   }
 
   const output = entityTemplate
     .replace('{modelName}', modelName)
-    .replace('{extends}', model.flattenedExtends.length > 0 ? ` : ${model.flattenedExtends.join(',')}` : '')
-    .replace('{fields}', fields.join('\n'))
+    .replace('{extends}', model.flattenedExtends.length > 0 ? ` : ${model.flattenedExtends.join(', ')}` : '')
+    .replace('{fields}', fields.join('\n\n'))
   if (output.includes('undefined')) {
     logger.warn(`undefined in ${modelName}: ${output}`)
   }
@@ -56,12 +77,12 @@ namespace ${namespace}
  * @param map Complete map of all entities to use for references
  * @returns The enum module content as a string
  */
-export function makeClientEnumEntity(header: string, enumName: string, model: any) {
+export function makeClientEnumEntity(header: string, enumName: string, model: ModelDef): string {
   logger.debug('processing enum ' + enumName)
-  const enumItems = getEnumItems(model)
+  const enumItems = getObjectsOfKind(model, 'Enumeration member') as EnumItemDef[]
   const members = []
-  for (const item in enumItems) {
-    members.push(`${enumItems[item]} = ${item}`)
+  for (const item of enumItems) {
+    members.push(`${item.name} = ${item.defaultValue}`)
   }
 
   return `${header}
@@ -75,32 +96,16 @@ namespace Openworld.Models
 }
 
 /**
- * @description get all objects that are enums
- * @param branch the parent branch to check
- * @returns collection of enum items
- */
-export function getEnumItems(branch: any) {
-  const members = getObjectsOfKind(branch, 'Enumeration member')
-  const items = {}
-  for (const item in members) {
-    const member = members[item]
-    items[member.defaultValue] = member.name
-  }
-  return items
-}
-
-/**
  * @description get properties from the TypeScript module definition
  * @param branch TypeScript module definition
  * @returns collection of properties with their types
  */
-export function getEntityColumns(branch: any) {
-  const rawColumns = getObjectsOfKind(branch, 'Property')
-  const columns = {}
-  for (const item in rawColumns) {
-    const field = rawColumns[item]
+export function getEntityColumns(branch: ModelDef): ColumnDef[] {
+  const rawColumns = getObjectsOfKind(branch, 'Property') as ColumnDef[]
+  const columns = []
+  for (const field of rawColumns) {
     if (!field.inheritedFrom) {
-      columns[field.name] = getTypeString(field.type)
+      columns.push({ name: field.name, type: getTypeString(field.type) })
     }
   }
   return columns
@@ -111,7 +116,7 @@ export function getEntityColumns(branch: any) {
  * @param branch an object
  * @returns array of strings
  */
-export function getFlattenedExtends(branch: any) {
+export function getFlattenedExtends(branch: ModelDef): string[] {
   const extend = []
 
   if (branch.extendedTypes) {
@@ -131,12 +136,12 @@ export function getFlattenedExtends(branch: any) {
  * @param kind the kindString to match
  * @returns collection of matching objects
  */
-export function getObjectsOfKindFromEach(branch: any, kind: string) {
-  let ret = {}
+export function getObjectsOfKindFromEach(branch: any, kind: string): ModelDef[] {
+  const ret = []
   for (const item in branch.children) {
     const childItem = branch.children[item]
     const children = getObjectsOfKind(childItem, kind)
-    ret = { ...ret, ...children }
+    ret.push(...children)
   }
   return ret
 }
@@ -147,12 +152,12 @@ export function getObjectsOfKindFromEach(branch: any, kind: string) {
  * @param kind the kindString to match
  * @returns collection of matching objects
  */
-export function getObjectsOfKind(branch: any, kind: string) {
-  const ret = {}
+export function getObjectsOfKind(branch: ModelDef, kind: string): ModelDef[] {
+  const ret = []
   for (const item in branch.children) {
     const child = branch.children[item]
     if (child.kindString == kind) {
-      ret[child.name] = child
+      ret.push(child)
     }
   }
   return ret
@@ -163,7 +168,7 @@ export function getObjectsOfKind(branch: any, kind: string) {
  * @param type the typescript data type to convert
  * @returns the equivalent c# data type
  */
-export function getTypeString(type) {
+export function getTypeString(type): string {
   const typeMap = {
     uuid: 'string',
     datetime: 'string',

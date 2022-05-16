@@ -24,14 +24,14 @@ const typeMap = {
   enums: GENERATOR.getObjectsOfKindFromEach(modules, 'Enumeration')
 }
 
-for (const modelName in typeMap.models) {
-  const output = GENERATOR.makeClientEntity(header, modelName, typeMap.models[modelName])
-  writeFile(modelName, output)
+for (const model of typeMap.models) {
+  const output = GENERATOR.makeClientEntity(header, model.name, model)
+  writeFile(model.name, output)
 }
 
-for (const enumName in typeMap.enums) {
-  const output = GENERATOR.makeClientEnumEntity(header, enumName, typeMap.enums[enumName])
-  writeFile(enumName, output)
+for (const e of typeMap.enums) {
+  const output = GENERATOR.makeClientEnumEntity(header, e.name, e)
+  writeFile(e.name, output)
 }
 
 function writeFile(name: string, output: string) {
