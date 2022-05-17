@@ -7,8 +7,22 @@ properties:
     type: string
   hp:
     type: number
+    format: float
+  maxHp:
+    type: number
+    format: integer
+  hpReplenish:
+    type: number
+    format: integer
   mana:
     type: number
+    format: float
+  maxMana:
+    type: number
+    format: integer
+  manaReplenish:
+    type: number
+    format: integer
   strength:
     type: number
   dexterity:
@@ -17,6 +31,18 @@ properties:
     type: number
   stamina:
     type: number
+  maxStamina:
+    type: number
+    format: integer
+  staminaReplenish:
+    type: number
+    format: integer
+  hunger:
+    type: number
+    format: float
+  sleep:
+    type: number
+    format: float
   movement:
     type: number
   hitChance:

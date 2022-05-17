@@ -25,6 +25,8 @@ export class Character extends EntityBase {
   @Column({ default: 1 }) sleep: number
   // hunger = 1-24, when >= 17, maxHp drops to 75%, when >= 20, maxHp drops to 50%, when >= 23, maxHp drops to 25%
   @Column({ default: 1 }) hunger: number
+  // stamina - maxStamina is a calculated value, this field is needed to track the current value
+  @Column({ default: 1 }) stamina: number
   // these increase numbers are calculated from stats and skills
   // @Column({ default: 0 }) dmgIncrease: number
   // @Column({ default: 0 }) baseDmgIncrease: number

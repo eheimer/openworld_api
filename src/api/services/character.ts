@@ -39,8 +39,11 @@ export abstract class CharacterService {
         dexterity,
         intelligence,
         movement,
-        hp: this.calcMaxHp(strength),
-        mana: this.calcMaxMana(intelligence),
+        sleep: 1,
+        hunger: 1,
+        hp: this.calcMaxHp(strength, 1),
+        mana: this.calcMaxMana(intelligence, 1),
+        stamina: this.calcMaxStamina(dexterity),
         player,
         game,
         inventory
@@ -127,19 +130,35 @@ export abstract class CharacterService {
 
   static buildCharacterDetail(character: Character): CharacterDetail {
     const detail = new CharacterDetail(character)
-    detail.hp = character.hp / this.calcMaxHp(character.strength)
-    detail.mana = character.mana / this.calcMaxMana(character.intelligence)
+    // detail.hunger = (25 - character.hunger) / 24
+    // detail.sleep = (25 - character.sleep) / 24
+    detail.hunger = 17 / 24
+    detail.sleep = 7 / 24
+    detail.maxHp = this.calcMaxHp(character.strength, character.hunger)
+    detail.hp = Math.min(character.hp / detail.maxHp, 1)
+    detail.maxMana = this.calcMaxMana(character.intelligence, character.sleep)
+    detail.mana = Math.min(character.mana / detail.maxMana, 1)
     detail.inventorySize = this.calcInventorySize(character.strength)
     detail.castSpeed = this.calcCastingSpeed(character.dexterity)
     detail.healSpeed = this.calcHealSpeed(character.dexterity)
-    detail.stamina = this.calcStamina(character.dexterity)
+    detail.maxStamina = this.calcMaxStamina(character.dexterity)
+    detail.stamina = Math.min(character.stamina / detail.maxStamina, 1)
     detail.swingSpeed = this.calcSwingSpeed(character.dexterity)
     //TODO: calculate defChance, hitChance, parry, resistances based on equipment and conditions
+    //TODO: calculate hpReplenish, manaReplenish, staminaReplenish based on equipment and conditions
+    detail.hpReplenish = Math.floor(detail.maxHp * 0.3)
+    detail.manaReplenish = Math.floor(detail.maxMana * 0.3)
+    detail.staminaReplenish = Math.floor(detail.maxStamina * 0.3)
     return detail
   }
 
-  static calcMaxHp(strength: number): number {
-    return strength * 25 + 50
+  static calcMaxHp(strength: number, hunger: number): number {
+    const maxHp = strength * 25 + 50
+    if (hunger >= 23) return Math.floor(maxHp * 0.25)
+    if (hunger >= 20) return Math.floor(maxHp * 0.5)
+    if (hunger >= 17) return Math.floor(maxHp * 0.75)
+
+    return maxHp
   }
 
   static calcInventorySize(strength: number): number {
@@ -151,8 +170,13 @@ export abstract class CharacterService {
     return meleeDmg[strength - 1]
   }
 
-  static calcMaxMana(intelligence: number): number {
-    return intelligence * 25
+  static calcMaxMana(intelligence: number, sleep: number): number {
+    const maxMana = intelligence * 25
+    if (sleep >= 23) return Math.floor(maxMana * 0.25)
+    if (sleep >= 20) return Math.floor(maxMana * 0.5)
+    if (sleep >= 17) return Math.floor(maxMana * 0.75)
+
+    return maxMana
   }
 
   static calcSpellDamage(intelligence: number): number {
@@ -168,7 +192,7 @@ export abstract class CharacterService {
     return this.calcFocusBonus(intelligence)
   }
 
-  static calcStamina(dexterity: number): number {
+  static calcMaxStamina(dexterity: number): number {
     return dexterity * 25
   }
 
