@@ -13,12 +13,12 @@ export const expressDevLogger = (req: express.Request, res: express.Response, ne
 
   const [oldWrite, oldEnd] = [res.write, res.end]
   const chunks: Buffer[] = []
-  ;(res.write as unknown) = function (chunk: any): any {
+  ;(res.write as unknown) = function (chunk: any): void {
     chunks.push(Buffer.from(chunk))
     ;(oldWrite as Function).apply(res, arguments)
   }
 
-  res.end = function (chunk: any): void {
+  res.end = function (chunk: any): any {
     if (chunk) {
       chunks.push(Buffer.from(chunk))
     }
