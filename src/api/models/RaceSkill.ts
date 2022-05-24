@@ -11,7 +11,7 @@ export class RaceSkill extends EntityBase {
   race: Race
 
   @ManyToOne(() => Skill)
-  category: Skill
+  skill: Skill
 }
 
 export default RaceSkill
