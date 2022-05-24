@@ -7,6 +7,7 @@ import CreatureInstance from './CreatureInstance'
 import ActiveCondition from './ActiveCondition'
 import Inventory from './Inventory'
 import CharacterSkill from './CharacterSkill'
+import Race from './Race'
 
 /**
  * @description the Character created by a User for a particular Game.  Each user can have only one per game.
@@ -33,6 +34,9 @@ export class Character extends EntityBase {
   // @Column({ default: 0 }) spellDmgIncrease: number
   // movement will be based on race, when races are implemented
   @Column() movement: number
+
+  @ManyToOne(() => Race)
+  race: Race
 
   @ManyToOne(() => Game, { nullable: false })
   game: Game
