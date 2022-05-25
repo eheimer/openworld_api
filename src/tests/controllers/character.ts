@@ -35,8 +35,7 @@ describe('Create and retrieve a character', () => {
         name: faker.name.firstName(),
         strength: 3,
         dexterity: 2,
-        intelligence: 1,
-        movement: 2
+        intelligence: 1
       })
       const res = await helper.post(`/games/${gameId}/characters`, charReq)
 
@@ -71,7 +70,6 @@ describe('Create and retrieve a character', () => {
       expect(resp.strength).toEqual(3)
       expect(resp.dexterity).toEqual(2)
       expect(resp.intelligence).toEqual(1)
-      expect(resp.movement).toEqual(2)
     })
   })
   describe('GET /games/{gameId}/characters', () => {
@@ -133,7 +131,6 @@ describe('update character and verify', () => {
       expect(resp.strength).toEqual(3)
       expect(resp.dexterity).toEqual(2)
       expect(resp.intelligence).toEqual(2)
-      expect(resp.movement).toEqual(2)
     })
   })
 })
