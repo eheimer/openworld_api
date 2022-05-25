@@ -4,7 +4,7 @@ import RaceSkill from './RaceSkill'
 
 @Entity()
 export class Race extends EntityBase {
-  @Column() description: string
+  @Column({ type: 'varchar', length: 65535 }) description: string
   @Column() name: string
   @Column() movement: string
   @Column() hpReplenish: number
