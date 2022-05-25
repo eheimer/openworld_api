@@ -1,4 +1,4 @@
-import { createConnection, EntityTarget, getRepository, Repository } from 'typeorm'
+import { createConnection, EntityTarget, getConnection, getRepository, Repository } from 'typeorm'
 import conf from '../config'
 
 import RepoContainer from '../api/repositories'
@@ -28,6 +28,12 @@ export class DB {
       DB._instance.repos = new RepoContainer(conf.env)
     }
     return DB._instance
+  }
+}
+
+export async function runMigrations(): Promise<void> {
+  if (conf.runMigrations) {
+    await getConnection(DB.getInstance().conn).runMigrations()
   }
 }
 

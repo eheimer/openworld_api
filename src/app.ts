@@ -1,11 +1,14 @@
 import logger from './utils/logger'
-import DB from './utils/db'
+import DB, { runMigrations } from './utils/db'
 import { createServer } from './utils/server'
 import config from './config'
 
 const http_port: number = config.port
 
 DB.init()
+  .then(() => {
+    runMigrations()
+  })
   .then(() => {
     return createServer()
   })

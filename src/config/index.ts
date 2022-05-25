@@ -24,6 +24,7 @@ interface Config {
   privateKeyFile: string
   privateKeyPassphrase: string
   publicKeyFile: string
+  runMigrations: boolean
 }
 
 const config: Config = {
@@ -35,7 +36,8 @@ const config: Config = {
   loggerLevel: parsedEnv.LOGGER_LEVEL as LogLevel,
   privateKeyFile: parsedEnv.PRIVATE_KEY_FILE as string,
   privateKeyPassphrase: parsedEnv.PRIVATE_KEY_PASSPHRASE as string,
-  publicKeyFile: parsedEnv.PUBLIC_KEY_FILE as string
+  publicKeyFile: parsedEnv.PUBLIC_KEY_FILE as string,
+  runMigrations: parsedEnv.RUN_MIGRATIONS as boolean
 }
 
 export default config
