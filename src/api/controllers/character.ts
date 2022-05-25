@@ -27,7 +27,6 @@ export async function createCharacter(req: express.Request, res: express.Respons
       request.strength,
       request.dexterity,
       request.intelligence,
-      request.movement,
       res.locals.auth.userId,
       game.id
     )

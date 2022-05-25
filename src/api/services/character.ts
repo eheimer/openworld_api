@@ -10,6 +10,7 @@ import CharacterDetail from '../dto/CharacterDetail'
 import CreatureInstanceFactory from '../factories/CreatureInstanceFactory'
 import ActiveConditionFactory from '../factories/ActiveConditionFactory'
 import CharacterSkill from '../models/CharacterSkill'
+import CharacterSkillDTO from '../dto/CharacterSkill'
 import { getRepo } from '../../utils/db'
 import Skill from '../models/Skill'
 
@@ -21,7 +22,6 @@ export abstract class CharacterService {
     strength: number,
     dexterity: number,
     intelligence: number,
-    movement: number,
     playerId: number | string,
     gameId: number | string
   ): Promise<{ characterId: number | string }> {
@@ -38,7 +38,6 @@ export abstract class CharacterService {
         strength,
         dexterity,
         intelligence,
-        movement,
         sleep: 1,
         hunger: 1,
         hp: this.calcMaxHp(strength, 1),
@@ -129,15 +128,10 @@ export abstract class CharacterService {
   }
 
   static buildCharacterDetail(character: Character): CharacterDetail {
+    //get the race definition for the character
     const detail = new CharacterDetail(character)
-    // detail.hunger = (25 - character.hunger) / 24
-    // detail.sleep = (25 - character.sleep) / 24
-    detail.hunger = 17 / 24
-    detail.sleep = 7 / 24
-    detail.maxHp = this.calcMaxHp(character.strength, character.hunger)
-    detail.hp = Math.min(character.hp / detail.maxHp, 1)
-    detail.maxMana = this.calcMaxMana(character.intelligence, character.sleep)
-    detail.mana = Math.min(character.mana / detail.maxMana, 1)
+    detail.hunger = 1
+    detail.sleep = 1
     detail.inventorySize = this.calcInventorySize(character.strength)
     detail.castSpeed = this.calcCastingSpeed(character.dexterity)
     detail.healSpeed = this.calcHealSpeed(character.dexterity)
@@ -145,19 +139,38 @@ export abstract class CharacterService {
     detail.stamina = Math.min(character.stamina / detail.maxStamina, 1)
     detail.swingSpeed = this.calcSwingSpeed(character.dexterity)
     //TODO: calculate defChance, hitChance, parry, resistances based on equipment and conditions
-    //TODO: calculate hpReplenish, manaReplenish, staminaReplenish based on equipment and conditions
-    detail.hpReplenish = Math.floor(detail.maxHp * 0.3)
-    detail.manaReplenish = Math.floor(detail.maxMana * 0.3)
-    detail.staminaReplenish = Math.floor(detail.maxStamina * 0.3)
+    if (character.race) {
+      //TODO: replenish values will also be affected by equipment and conditions
+      detail.hpReplenish = character.race.hpReplenish
+      detail.manaReplenish = character.race.manaReplenish
+      detail.staminaReplenish = character.race.staminaReplenish
+      detail.movement = character.race.movement
+      if (character.race.hunger) {
+        detail.hunger = Math.min(character.hunger / character.race.hunger, 1)
+      }
+      if (character.race.sleep) {
+        detail.sleep = Math.min(character.sleep / character.race.sleep, 1)
+      }
+      detail.raceName = character.race.name
+      detail.raceDescription = character.race.description
+      detail.raceSkills = character.race.skills.map((raceSkill) => {
+        return new CharacterSkillDTO({
+          id: raceSkill.skill.id,
+          name: raceSkill.skill.name,
+          description: raceSkill.skill.description,
+          level: raceSkill.level
+        })
+      })
+    }
+    detail.maxHp = this.calcMaxHp(character.strength, character.hunger)
+    detail.hp = Math.min(character.hp / detail.maxHp, 1)
+    detail.maxMana = this.calcMaxMana(character.intelligence, character.sleep)
+    detail.mana = Math.min(character.mana / detail.maxMana, 1)
     return detail
   }
 
   static calcMaxHp(strength: number, hunger: number): number {
-    const maxHp = strength * 25 + 50
-    if (hunger >= 23) return Math.floor(maxHp * 0.25)
-    if (hunger >= 20) return Math.floor(maxHp * 0.5)
-    if (hunger >= 17) return Math.floor(maxHp * 0.75)
-
+    const maxHp = (strength * 25 + 50) * Math.max(hunger, 0.25)
     return maxHp
   }
 
@@ -171,11 +184,7 @@ export abstract class CharacterService {
   }
 
   static calcMaxMana(intelligence: number, sleep: number): number {
-    const maxMana = intelligence * 25
-    if (sleep >= 23) return Math.floor(maxMana * 0.25)
-    if (sleep >= 20) return Math.floor(maxMana * 0.5)
-    if (sleep >= 17) return Math.floor(maxMana * 0.75)
-
+    const maxMana = intelligence * 25 * Math.max(sleep, 0.25)
     return maxMana
   }
 

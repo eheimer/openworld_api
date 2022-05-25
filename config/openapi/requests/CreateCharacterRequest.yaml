@@ -10,7 +10,6 @@ content:
         - strength
         - dexterity
         - intelligence
-        - movement
       properties:
         name:
           type: string
@@ -19,6 +18,4 @@ content:
         dexterity:
           type: number
         intelligence:
-          type: number
-        movement:
           type: number

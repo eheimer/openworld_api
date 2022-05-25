@@ -34,7 +34,7 @@ properties:
   sleep:
     type: number
   movement:
-    type: number
+    type: string
   hitChance:
     type: number
   defChance:
@@ -61,6 +61,14 @@ properties:
     type: number
   inventory:
     $ref: './_index.yaml#/Inventory'
+  raceName:
+    type: string
+  raceDescription:
+    type: string
+  raceSkills:
+    type: array
+    items:
+      $ref: './_index.yaml#/CharacterSkill'
   skills:
     type: array
     items:

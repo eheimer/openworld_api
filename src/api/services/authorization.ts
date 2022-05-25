@@ -21,7 +21,10 @@ export abstract class AuthorizationService {
     playerId: number | string
   ): Promise<Character | { error }> {
     try {
-      const character = await new CharacterFactory().getRepository().findOne(characterId, { loadRelationIds: true })
+      const character = await new CharacterFactory().getRepository().findOne(characterId, {
+        loadRelationIds: true,
+        relations: ['inventory', 'pets', 'skills', 'conditions', 'race', 'race.skills', 'battles']
+      })
       if (!character) {
         return
       }

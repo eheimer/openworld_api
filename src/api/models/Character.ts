@@ -15,25 +15,14 @@ import Race from './Race'
 @Entity()
 export class Character extends EntityBase {
   @Column() name: string
-  // when character is created, hp should be set to the calculated maxHp
   @Column({ default: 1 }) hp: number
   @Column({ default: 0 }) mana: number
-  // maxHp and maxMana are based on stats
   @Column() strength: number
   @Column() dexterity: number
   @Column() intelligence: number
-  // sleep = 1-24, when >= 17, maxMana drops to 75%, when >=20, maxMana drops to 50%, when >= 23, maxMana drops to 25%
   @Column({ default: 1 }) sleep: number
-  // hunger = 1-24, when >= 17, maxHp drops to 75%, when >= 20, maxHp drops to 50%, when >= 23, maxHp drops to 25%
   @Column({ default: 1 }) hunger: number
-  // stamina - maxStamina is a calculated value, this field is needed to track the current value
   @Column({ default: 1 }) stamina: number
-  // these increase numbers are calculated from stats and skills
-  // @Column({ default: 0 }) dmgIncrease: number
-  // @Column({ default: 0 }) baseDmgIncrease: number
-  // @Column({ default: 0 }) spellDmgIncrease: number
-  // movement will be based on race, when races are implemented
-  @Column() movement: number
 
   @ManyToOne(() => Race)
   race: Race
