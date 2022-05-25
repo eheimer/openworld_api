@@ -7,7 +7,7 @@ import Monster from './Monster'
 @Entity()
 export class MonsterAction extends EntityBase {
   @Column() value: number
-  @Column({ type: 'varchar', length: 16383 }) description: string
+  @Column({ type: 'text', length: 65535 }) description: string
   @Column() weight: number
 
   @ManyToOne(() => Monster)

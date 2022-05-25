@@ -27,7 +27,7 @@ export class CreatureInstance extends EntityBase implements iResistHaver {
   @Column() tamed: boolean
   @Column() actionName: string
   @Column() actionValue: number
-  @Column({ type: 'varchar', length: 16383 }) actionDescription: string
+  @Column({ type: 'text', length: 65535 }) actionDescription: string
   @Column() actionDmgAmount: number
   @Column() hoverStats: string
   @Column() specials: string

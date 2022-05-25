@@ -8,7 +8,7 @@ import SlayerType from './SlayerType'
 @Entity()
 export class Monster extends EntityBase {
   @Column() name: string
-  @Column({ type: 'varchar', length: 16383 }) hoverStats: string
+  @Column({ type: 'text', length: 65535 }) hoverStats: string
   @Column() karma: string
   @Column() gold: string
   @Column() alignment: string
@@ -32,7 +32,7 @@ export class Monster extends EntityBase {
   @Column() baseDmg: string
   @Column() preferredFood: string
   @Column() controlSlots: number
-  @Column({ type: 'varchar', length: 16383 }) specials: string
+  @Column({ type: 'text', length: 65535 }) specials: string
   @Column() animate: boolean
   @Column() packInstinct: string
   @Column() tracking: string
