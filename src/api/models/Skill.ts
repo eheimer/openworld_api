@@ -4,7 +4,7 @@ import { Column, Entity } from 'typeorm'
 @Entity()
 export class Skill extends EntityBase {
   @Column() name: string
-  @Column({ nullable: true, type: 'varchar', length: 65535 }) description: string
+  @Column({ nullable: true, type: 'varchar', length: 16383 }) description: string
   @Column() spellbook: boolean
 }
 
