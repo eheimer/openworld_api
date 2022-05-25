@@ -16,7 +16,6 @@ export default class CharacterFactory extends EntityFactory<Character> {
     c.strength = faker.datatype.number(4)
     c.dexterity = faker.datatype.number(4)
     c.intelligence = faker.datatype.number(4)
-    c.movement = faker.datatype.number(4)
     c.hp = faker.datatype.number(100)
     return c
   }
