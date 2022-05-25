@@ -15,7 +15,7 @@ export class Action extends EntityBase {
    */
   @Column() value: number
 
-  @Column({ type: 'text', length: 65535 }) description: string
+  @Column({ type: 'text' }) description: string
   /**
    * determines order of actions
    */
