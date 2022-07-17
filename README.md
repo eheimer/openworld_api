@@ -2,6 +2,10 @@
 
 Node/Express API for Openworld game
 
+## Nestjs
+
+With the impending migration to Nestjs framework, some of the details below may change, but this file should be updated to reflect the current state of the app.
+
 ## OpenAPI
 
 - openapi config has been split into individual files in the config/openapi directory
