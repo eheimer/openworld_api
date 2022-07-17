@@ -8,4 +8,9 @@ tmp/
 temp/
 coverage/
 *.sqlite
+nest_migration_reference/*.sqlite
+nest_migration_reference/build/
+nest_migration_reference/coverage/
+nest_migration_reference/config/.env.prod
+nest_migration_reference/config/openapi.yaml
 openworld-api.code-workspace
