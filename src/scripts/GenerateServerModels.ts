@@ -13,11 +13,12 @@ const outputClassMap = true
 const classMapOutputPath = path.join(serverRoot, 'build')
 const entityOutputPath = path.join(sourcePath, 'api/dto')
 const entityOutputSubdirs = { Request: { subdir: 'request' }, Response: { subdir: 'response' } }
+console.log({ args: process.argv })
 
-let requestedModel = undefined
-if (process.argv.length > 2) {
-  requestedModel = process.argv[2]
+for (let i = 0; i < Math.min(process.argv.length, 2); i++) {
+  process.argv.shift()
 }
+console.log({ args: process.argv })
 
 //Make sure output directories exist
 fs.mkdir(entityOutputPath, { recursive: true }, (err) => {
@@ -41,7 +42,7 @@ const classMap = GENERATOR.buildEntityMapFromAPI(
 )
 
 for (const className in classMap) {
-  if (requestedModel && requestedModel != className) {
+  if (process.argv.length > 0 && !process.argv.includes(className)) {
     continue
   }
   const entity = GENERATOR.makeTSEntity(header, className, classMap)

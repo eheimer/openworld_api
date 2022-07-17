@@ -12,6 +12,8 @@ CharacterSkill:
   $ref: './CharacterSkill.yaml'
 Skill:
   $ref: './Skill.yaml'
+Race:
+  $ref: './Race.yaml'
 Inventory:
   $ref: './Inventory.yaml'
 Game:

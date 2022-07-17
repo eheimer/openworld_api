@@ -78,6 +78,9 @@ paths:
   /skills:
     description: GET list of all skills
     $ref: './paths/skills.yaml'
+  /races:
+    description: GET list of all races
+    $ref: './paths/races.yaml'
   /characters/{characterId}/skills:
     description: add skills to a character
     $ref: './paths/characterSkillAdd.yaml'

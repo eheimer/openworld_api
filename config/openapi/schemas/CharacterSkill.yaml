@@ -1,12 +1,8 @@
 description: A character's skill
 type: object
 additionalProperties: false
+allOf:
+  - $ref: './_index.yaml#/Skill'
 properties:
-  id:
-    type: string
-  name:
-    type: string
-  description:
-    type: string
   level:
     type: number
