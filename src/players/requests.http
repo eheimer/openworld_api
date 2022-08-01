@@ -1,0 +1,30 @@
+### Create a new player
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "eric2",
+  "email": "eric2@heimerman.org",
+  "password": "eric"
+}
+
+### Login a player
+# @name login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "eric",
+  "password": "eric"
+}
+
+###
+@bearerAuth = {{login.response.body.access_token}}
+
+### Get all players
+GET http://localhost:3000/players
+Authorization: Bearer {{bearerAuth}}
+
+### Get a player
+GET http://localhost:3000/players/1
+Authorization: Bearer {{bearerAuth}}
