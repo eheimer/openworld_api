@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common'
-import { AppController } from './app.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PlayersModule } from './players/players.module'
 import { Player } from './players/player.entity'
@@ -18,7 +17,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard'
     PlayersModule,
     AuthModule
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
 })
 export class AppModule {}

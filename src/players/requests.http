@@ -28,3 +28,8 @@ Authorization: Bearer {{bearerAuth}}
 ### Get a player
 GET http://localhost:3000/players/1
 Authorization: Bearer {{bearerAuth}}
+
+### Log out
+# @name logout
+GET http://localhost:3000/auth/logout
+Authorization: Bearer {{bearerAuth}}

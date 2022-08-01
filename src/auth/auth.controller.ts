@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
-import { AuthService } from './auth/auth.service'
-import { CreatePlayerDto } from './players/dto/create-player.dto'
-import { PlayersService } from './players/players.service'
-import { Public } from './common/public.decorator'
-import { Player } from './players/player.entity'
-import { LocalAuthGuard } from './auth/local-auth.guard'
+import { AuthService } from './auth.service'
+import { PlayersService } from '../players/players.service'
+import { Public } from 'src/common/public.decorator'
+import { LocalAuthGuard } from './local-auth.guard'
+import { Player } from '../players/player.entity'
+import { CreatePlayerDto } from 'src/players/dto/create-player.dto'
 
-@Controller('/auth')
-export class AppController {
+@Controller('auth')
+export class AuthController {
   constructor(private authService: AuthService, private playersService: PlayersService) {}
 
   @Post('login')
