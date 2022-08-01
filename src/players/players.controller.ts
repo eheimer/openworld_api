@@ -1,9 +1,11 @@
 import { Controller, Get, Param, Request } from '@nestjs/common'
 import { PlayersService } from './players.service'
-import { Serialize } from 'src/common/serialize.interceptor'
+import { Serialize } from 'src/interceptors/serialize.interceptor'
 import { PlayerDto } from './dto/player.dto'
-import { SerializeResponse } from '../common/serialize.interceptor'
+import { SerializeResponse } from '../interceptors/serialize.interceptor'
 import { PlayerDetailDto } from './dto/player-detail.dto'
+import { CurrentUser } from 'src/decorators/current-user.decorator'
+import { Player } from './player.entity'
 
 @Controller('players')
 export class PlayersController {
@@ -17,10 +19,10 @@ export class PlayersController {
 
   @Get('/:id')
   @Serialize(PlayerDto, PlayerDetailDto)
-  async getPlayer(@Param('id') id: string, @Request() req): Promise<Partial<SerializeResponse>> {
+  async getPlayer(@Param('id') id: string, @CurrentUser() player: Player): Promise<Partial<SerializeResponse>> {
     //set detail to true if and only if the requestor is the player being requested
     let detail = false
-    if (req.user.id === parseInt(id)) {
+    if (player.id === parseInt(id)) {
       detail = true
     }
     return new SerializeResponse(detail, await this.playersService.findOne(parseInt(id)))

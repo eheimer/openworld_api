@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { PlayersService } from '../players/players.service'
-import { Public } from 'src/common/public.decorator'
+import { Public } from 'src/decorators/public-auth.decorator'
 import { LocalAuthGuard } from './local-auth.guard'
 import { Player } from '../players/player.entity'
 import { CreatePlayerDto } from 'src/players/dto/create-player.dto'
+import { CurrentUser } from 'src/decorators/current-user.decorator'
 
 @Controller('auth')
 export class AuthController {
@@ -13,13 +14,12 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalAuthGuard)
   @Public()
-  async login(@Request() req) {
-    return this.authService.login(req.user)
+  async login(@CurrentUser() player: Player) {
+    return this.authService.login(player)
   }
 
   @Get('logout')
-  async logout(@Request() req) {
-    const player = req.user as Player
+  async logout(@CurrentUser() player: Player) {
     //do whatever stuff is needed when the player logs out
   }
 
