@@ -1,5 +1,5 @@
 import { CallHandler, ExecutionContext, NestInterceptor, UseInterceptors } from '@nestjs/common'
-import { plainToInstance } from 'class-transformer'
+import { ClassConstructor, plainToInstance } from 'class-transformer'
 import { map, Observable } from 'rxjs'
 
 /**
@@ -16,14 +16,17 @@ class SerializeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((result: SerializeResponse | object) => {
-        return plainToInstance(
+        return convertToDto(
           shouldReturnDetail(result) && this.dtoDetail !== undefined ? this.dtoDetail : this.dto,
-          determineData(result),
-          { excludeExtraneousValues: true }
+          determineData(result)
         )
       })
     )
   }
+}
+
+export function convertToDto(dto: ClassConstructor<unknown>, plain: unknown) {
+  return plainToInstance(dto, plain, { excludeExtraneousValues: true })
 }
 
 function isSerializeResponse(response: any): boolean {
@@ -50,7 +53,7 @@ export function Serialize(dto: object, detailDto: object = undefined) {
 }
 
 function shouldReturnDetail(result: any): boolean {
-  return isSerializeResponse(result) ? result.detail : false
+  return isSerializeResponse(result) && result.detail
 }
 
 function determineData(result: any): any {

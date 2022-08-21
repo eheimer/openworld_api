@@ -36,6 +36,8 @@ lerna-debug.log*
 
 # nest migration
 config/.env.prod
+config/.env.test
+config/.env.dev
 config/openapi.yaml
 build/
 tmp/

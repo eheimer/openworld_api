@@ -40,6 +40,14 @@ export class PlayersService {
     return player
   }
 
+  /**
+   * @description - Find all games that a player is in
+   */
+  async findAllGames(player: Player) {
+    return (await this.repo.findOne({ where: { id: player.id }, relations: ['games', 'games.owner', 'games.players'] }))
+      .games
+  }
+
   async update(id: number, attrs: Partial<Player>) {
     const player = await this.findOne(id)
     if (!player) {

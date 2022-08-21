@@ -21,10 +21,9 @@ export class AuthService {
       throw new BadRequestException('Email already in use')
     }
 
-    const salt = randomBytes(8).toString('hex')
-    const hash = (await scrypt(password, salt, 64)) as Buffer
-    const passwd = `${salt}.${hash.toString('hex')}`
-    player = await this.playersService.create(username, email, passwd)
+    const salt = this.makeSalt()
+    const hash = await this.hashPassword(password, salt)
+    player = await this.playersService.create(username, email, `${salt}.${hash}`)
     return player
   }
 
@@ -34,11 +33,20 @@ export class AuthService {
       throw new NotFoundException('User not found')
     }
     const [salt, storedHash] = player.password.split('.')
-    const hash = (await scrypt(password, salt, 64)) as Buffer
-    if (storedHash !== hash.toString('hex')) {
+    const hash = await this.hashPassword(password, salt)
+    if (storedHash !== hash) {
       throw new BadRequestException('Invalid password')
     }
     return player
+  }
+
+  makeSalt() {
+    return randomBytes(8).toString('hex')
+  }
+
+  async hashPassword(password: string, salt: string): Promise<string> {
+    const hash = (await scrypt(password, salt, 64)) as Buffer
+    return hash.toString('hex')
   }
 
   async login(player: any) {

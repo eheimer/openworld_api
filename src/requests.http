@@ -1,0 +1,70 @@
+@baseUrl = http://localhost:3000
+@bearerAuth = {{login.response.body.access_token}}
+
+### Create a new player
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "eric",
+  "email": "eric@heimerman.org",
+  "password": "eric"
+}
+
+### Login a player
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "eric",
+  "password": "eric"
+}
+
+### Get all players
+GET {{baseUrl}}/players
+Authorization: Bearer {{bearerAuth}}
+
+### Get a player
+GET {{baseUrl}}/players/1
+Authorization: Bearer {{bearerAuth}}
+
+### Log out
+# @name logout
+GET {{baseUrl}}/auth/logout
+Authorization: Bearer {{bearerAuth}}
+
+### Create a game
+POST {{baseUrl}}/games
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test game"
+}
+
+### Get all games
+GET {{baseUrl}}/games
+Authorization: Bearer {{bearerAuth}}
+
+### Get one game
+GET {{baseUrl}}/games/4
+Authorization: Bearer {{bearerAuth}}
+
+### Update game name
+PATCH {{baseUrl}}/games/4
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "RENAMED GAME 6"
+}
+
+### Delete a game
+DELETE {{baseUrl}}/games/4
+Authorization: Bearer {{bearerAuth}}
+
+### Add player to a game
+POST {{baseUrl}}/games/4/players/2
+Authorization: Bearer {{bearerAuth}}
+
