@@ -98,16 +98,29 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "test character",
-  "strength": 3,
+  "name": "test character 2",
+  "strength": 4,
   "dexterity": 1,
   "intelligence": 2
 }
 
 ### Delete a character
-DELETE {{baseUrl}}/characters/3
+DELETE {{baseUrl}}/characters/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Get all characters for a game
 GET {{baseUrl}}/games/1/characters
 Authorization: Bearer {{bearerAuth}}
+
+### Get a character
+GET {{baseUrl}}/characters/2
+Authorization: Bearer {{bearerAuth}}
+
+### Update a character
+PATCH {{baseUrl}}/characters/2
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character 2"
+}

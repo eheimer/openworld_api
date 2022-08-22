@@ -36,7 +36,7 @@ export class CharactersService {
   }
 
   async find(id: number): Promise<Character> {
-    return await this.repo.findOne({ where: { id }, relations: ['player'] })
+    return await this.repo.findOne({ where: { id }, relations: ['game', 'player'] })
   }
 
   async findByPlayerAndGame(playerId: number, gameId: number): Promise<Character> {
@@ -53,5 +53,14 @@ export class CharactersService {
       throw new NotFoundException('Character not found')
     }
     return await this.repo.remove(character)
+  }
+
+  //async method to update a character in the database
+  async update(id: number, character: Partial<Character>): Promise<Character> {
+    const existing = await this.repo.findOne({ where: { id } })
+    if (!existing) {
+      throw new NotFoundException('Character not found')
+    }
+    return await this.repo.save({ ...existing, ...character })
   }
 }
