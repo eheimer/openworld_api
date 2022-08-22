@@ -44,7 +44,7 @@ export class CharactersService {
   }
 
   async findAllByGame(gameId: number): Promise<Character[]> {
-    return this.repo.find({ where: { game: { id: gameId } } })
+    return this.repo.find({ where: { game: { id: gameId } }, relations: ['game', 'player'] })
   }
 
   async delete(id: number): Promise<Character> {

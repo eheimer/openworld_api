@@ -1,17 +1,17 @@
 import { Expose } from 'class-transformer'
 import { DTO } from 'src/decorators/dto-property.decorator'
-import { Game } from '../../games/game.entity'
-import { Player } from '../../players/player.entity'
+import { PlayerDto } from '../../players/dto/player.dto'
+import { GameDto } from '../../games/dto/game.dto'
 
 export class CharacterDto {
   @Expose() id: number
   @Expose() name: string
 
   @Expose()
-  @DTO(Game)
-  game: Game
+  @DTO(GameDto)
+  game: GameDto
 
   @Expose()
-  @DTO(Player)
-  player: Player
+  @DTO(PlayerDto)
+  player: PlayerDto
 }

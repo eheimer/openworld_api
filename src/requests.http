@@ -46,7 +46,7 @@ GET {{baseUrl}}/players
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a player
-GET {{baseUrl}}/players/1
+GET {{baseUrl}}/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Log out
@@ -68,7 +68,7 @@ GET {{baseUrl}}/games
 Authorization: Bearer {{bearerAuth}}
 
 ### Get one game
-GET {{baseUrl}}/games/6
+GET {{baseUrl}}/games/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Update game name
@@ -85,11 +85,11 @@ DELETE {{baseUrl}}/games/6
 Authorization: Bearer {{bearerAuth}}
 
 ### Add player to a game
-POST {{baseUrl}}/games/4/players/2
+POST {{baseUrl}}/games/1/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Remove player from a game
-DELETE {{baseUrl}}/games/4/players/2
+DELETE {{baseUrl}}/games/1/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Create a character
@@ -106,4 +106,8 @@ Content-Type: application/json
 
 ### Delete a character
 DELETE {{baseUrl}}/characters/3
+Authorization: Bearer {{bearerAuth}}
+
+### Get all characters for a game
+GET {{baseUrl}}/games/1/characters
 Authorization: Bearer {{bearerAuth}}

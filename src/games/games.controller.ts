@@ -13,6 +13,7 @@ import { PlayerGameCharacterGuard } from '../guards/authorization/player-game-ch
 import { CharacterDetailDto } from '../characters/dto/character-detail.dto'
 import { GameCharacterDto } from '../players/dto/game-character.dto'
 import { CharacterDto } from '../characters/dto/character.dto'
+import { SerializeResponse } from '../interceptors/serialize.interceptor'
 
 @Controller('games')
 export class GamesController {
@@ -64,6 +65,7 @@ export class GamesController {
   //add a player to a game
   @Post('/:gameId/players/:playerId')
   @UseGuards(GameOwnerGuard)
+  @Serialize(GameDto)
   async addPlayer(@Param('gameId') gameId: string, @Param('playerId') playerId: string) {
     return await this.gamesService.addPlayer(parseInt(gameId), parseInt(playerId))
   }
@@ -71,6 +73,7 @@ export class GamesController {
   //remove a player from a game
   @Delete('/:gameId/players/:playerId')
   @UseGuards(GameOwnerGuard)
+  @Serialize(GameDto)
   async removePlayer(@Param('gameId') gameId: string, @Param('playerId') playerId: string) {
     return await this.gamesService.removePlayer(parseInt(gameId), parseInt(playerId))
   }
@@ -96,8 +99,8 @@ export class GamesController {
 
   //get all characters for a game
   @Get('/:gameId/characters')
-  @Serialize(CharacterDto)
-  async findAllCharacters(@Param('gameId') gameId: string) {
-    return await this.charactersService.findAllByGame(parseInt(gameId))
+  @Serialize(CharacterDto, CharacterDetailDto)
+  async findAllCharacters(@Param('gameId') gameId: string, @CurrentPlayer() player: Player) {
+    return new SerializeResponse(await this.charactersService.findAllByGame(parseInt(gameId)), 'player.id', player.id)
   }
 }

@@ -1,4 +1,4 @@
-import { CallHandler, ExecutionContext, NestInterceptor, UseInterceptors } from '@nestjs/common'
+import { CallHandler, ExecutionContext, Logger, NestInterceptor, UseInterceptors } from '@nestjs/common'
 import { ClassConstructor, plainToInstance } from 'class-transformer'
 import { map, Observable } from 'rxjs'
 
@@ -16,23 +16,54 @@ class SerializeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((result: SerializeResponse | object) => {
-        return convertToDto(
-          shouldReturnDetail(result) && this.dtoDetail !== undefined ? this.dtoDetail : this.dto,
-          determineData(result)
-        )
+        const ctx = context.switchToHttp().getRequest()
+        if (result instanceof SerializeResponse) {
+          // if result.data is not an array, convert it to an array
+          if (!Array.isArray(result.data)) {
+            result.data = [result.data]
+          }
+          return result.data.map((item) => {
+            const value = getPossiblyNestedPropertyValue(item, result.propertyName)
+            if (!value) {
+              Logger.warn(
+                `[${ctx.method} ${ctx.url}] - ${result.propertyName} not found in ${JSON.stringify(item, null, 2)}`
+              )
+            }
+            if (value === result.value && !this.dtoDetail) {
+              Logger.warn(`[${ctx.method} ${ctx.url}] - No detail DTO provided`)
+            }
+            const dto = result.propertyName && this.dtoDetail && value === result.value ? this.dtoDetail : this.dto
+            return convertToDto(dto, item)
+          })
+        } else {
+          //log a warning if dtoDetail is defined, but result is not a SerializeResponse object
+          if (this.dtoDetail) {
+            Logger.warn(
+              `[${ctx.method} ${ctx.url}] : SerializeInterceptor: Detail DTO was requested, but result is not a SerializeResponse object`
+            )
+          }
+        }
+        return convertToDto(this.dto, result)
       })
     )
   }
 }
 
-export function convertToDto(dto: ClassConstructor<unknown>, plain: unknown) {
-  return plainToInstance(dto, plain, { excludeExtraneousValues: true })
+function getPossiblyNestedPropertyValue(item: any, propertyName: string): any {
+  const properties = propertyName.split('.')
+  let value = item
+  try {
+    for (const property of properties) {
+      value = value[property]
+    }
+  } catch (error) {
+    return null
+  }
+  return value
 }
 
-function isSerializeResponse(response: any): boolean {
-  return (
-    typeof response === 'object' && response !== null && response.detail !== undefined && response.data !== undefined
-  )
+export function convertToDto(dto: ClassConstructor<unknown>, plain: unknown) {
+  return plainToInstance(dto, plain, { excludeExtraneousValues: true })
 }
 
 /**
@@ -40,7 +71,7 @@ function isSerializeResponse(response: any): boolean {
  *              - serialized and whether or not to use the private DTO.
  */
 export class SerializeResponse {
-  constructor(public detail: boolean, public data: any) {}
+  constructor(public data: any, public propertyName: string, public value) {}
 }
 
 /**
@@ -50,12 +81,4 @@ export class SerializeResponse {
  */
 export function Serialize(dto: object, detailDto: object = undefined) {
   return UseInterceptors(new SerializeInterceptor(dto, detailDto))
-}
-
-function shouldReturnDetail(result: any): boolean {
-  return isSerializeResponse(result) && result.detail
-}
-
-function determineData(result: any): any {
-  return isSerializeResponse(result) ? result.data : result
 }

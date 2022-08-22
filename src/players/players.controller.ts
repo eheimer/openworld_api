@@ -13,18 +13,13 @@ export class PlayersController {
 
   @Get('/')
   @Serialize(PlayerDto, PlayerDetailDto)
-  getAllPlayers() {
-    return this.playersService.findAll()
+  async getAllPlayers(@CurrentPlayer() player: Player) {
+    return new SerializeResponse(await this.playersService.findAll(), 'id', player.id)
   }
 
   @Get('/:id')
   @Serialize(PlayerDto, PlayerDetailDto)
   async getPlayer(@Param('id') id: string, @CurrentPlayer() player: Player): Promise<Partial<SerializeResponse>> {
-    //set detail to true if and only if the requestor is the player being requested
-    let detail = false
-    if (player.id === parseInt(id)) {
-      detail = true
-    }
-    return new SerializeResponse(detail, await this.playersService.findOne(parseInt(id)))
+    return new SerializeResponse(await this.playersService.findOne(parseInt(id)), 'id', player.id)
   }
 }
