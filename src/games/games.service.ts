@@ -30,19 +30,10 @@ export class GamesService {
     return await this.find(id)
   }
 
-  async findAllByPlayer(player: Player): Promise<Game[]> {
-    //retrieve all games where players array includes the player
-
-    // const games = await this.repo.find({ where: { players: { id: player.id } }, relations: ['players', 'owner'] })
-    const games = await this.repo.find({ where: { players: { id: player.id } }, relations: ['players', 'owner'] })
-    return games
-  }
-
   async find(id: number): Promise<Game> {
     return await this.repo.findOne({ where: { id }, relations: ['players', 'owner'] })
   }
 
-  //async method to delete a game
   async delete(id: number): Promise<Game> {
     const game = await this.repo.findOne({ where: { id } })
     if (!game) {
@@ -51,7 +42,6 @@ export class GamesService {
     return await this.repo.remove(game)
   }
 
-  //async method to add a player to a game
   async addPlayer(gameId: number, playerId: number): Promise<Game> {
     const game = await this.repo.findOne({ where: { id: gameId }, relations: ['players'] })
     if (!game) {
@@ -63,5 +53,22 @@ export class GamesService {
     }
     game.players.push(player)
     return await this.repo.save(game)
+  }
+
+  async removePlayer(gameId: number, playerId: number): Promise<Game> {
+    const game = await this.repo.findOne({ where: { id: gameId }, relations: ['players'] })
+    if (!game) {
+      throw new NotFoundException('Game not found')
+    }
+    const player = await this.playerRepo.findOne({ where: { id: playerId } })
+    if (!player) {
+      throw new NotFoundException('Player not found')
+    }
+    game.players = game.players.filter((p) => p.id !== player.id)
+    return await this.repo.save(game)
+  }
+
+  async findWithPlayer(gameId: number, playerId: number): Promise<Game> {
+    return await this.repo.findOne({ where: { id: gameId, players: { id: playerId } }, relations: ['players'] })
   }
 }

@@ -12,7 +12,7 @@ export class PlayersController {
   constructor(private playersService: PlayersService) {}
 
   @Get('/')
-  @Serialize(PlayerDto)
+  @Serialize(PlayerDto, PlayerDetailDto)
   getAllPlayers() {
     return this.playersService.findAll()
   }

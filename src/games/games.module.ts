@@ -4,11 +4,12 @@ import { GamesController } from './games.controller'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Game } from './game.entity'
 import { Player } from '../players/player.entity'
-import { PlayersService } from '../players/players.service'
+import { PlayersModule } from '../players/players.module'
+import { CharactersModule } from '../characters/characters.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Game, Player])],
-  providers: [GamesService, PlayersService],
+  imports: [TypeOrmModule.forFeature([Game, Player]), PlayersModule, CharactersModule],
+  providers: [GamesService],
   controllers: [GamesController],
   exports: [GamesService]
 })

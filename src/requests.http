@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3000
 @bearerAuth = {{login.response.body.access_token}}
 
-### Create a new player
+### Create PLAYER 1
 POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
@@ -11,13 +11,33 @@ Content-Type: application/json
   "password": "eric"
 }
 
-### Login a player
+### Create PLAYER 2
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "eric2",
+  "email": "eric2@heimerman.org",
+  "password": "eric"
+}
+
+### Login PLAYER 1
 # @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
   "username": "eric",
+  "password": "eric"
+}
+
+### Login PLAYER 2
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "eric2",
   "password": "eric"
 }
 
@@ -48,7 +68,7 @@ GET {{baseUrl}}/games
 Authorization: Bearer {{bearerAuth}}
 
 ### Get one game
-GET {{baseUrl}}/games/4
+GET {{baseUrl}}/games/6
 Authorization: Bearer {{bearerAuth}}
 
 ### Update game name
@@ -61,10 +81,29 @@ Content-Type: application/json
 }
 
 ### Delete a game
-DELETE {{baseUrl}}/games/4
+DELETE {{baseUrl}}/games/6
 Authorization: Bearer {{bearerAuth}}
 
 ### Add player to a game
 POST {{baseUrl}}/games/4/players/2
 Authorization: Bearer {{bearerAuth}}
 
+### Remove player from a game
+DELETE {{baseUrl}}/games/4/players/2
+Authorization: Bearer {{bearerAuth}}
+
+### Create a character
+POST {{baseUrl}}/games/1/characters
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character",
+  "strength": 3,
+  "dexterity": 1,
+  "intelligence": 2
+}
+
+### Delete a character
+DELETE {{baseUrl}}/characters/3
+Authorization: Bearer {{bearerAuth}}

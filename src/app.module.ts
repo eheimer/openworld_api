@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PlayersModule } from './players/players.module'
-import { Player } from './players/player.entity'
 import { AuthModule } from './auth/auth.module'
 import { APP_GUARD } from '@nestjs/core'
-import { JwtAuthGuard } from './guards/jwt-auth.guard'
+import { JwtAuthGuard } from './guards/authentication/jwt-auth.guard'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GamesModule } from './games/games.module'
-import { Game } from './games/game.entity'
+import { CharactersModule } from './characters/characters.module'
 
 @Module({
   imports: [
@@ -28,7 +27,8 @@ import { Game } from './games/game.entity'
     }),
     PlayersModule,
     AuthModule,
-    GamesModule
+    GamesModule,
+    CharactersModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
