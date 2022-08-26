@@ -12,7 +12,7 @@ export class GameOwnerGuard implements CanActivate {
     if (!request.params.gameId) {
       throw new BadRequestException('Game id is required')
     }
-    const game = await this.gamesService.find(request.params.gameId)
+    const game = await this.gamesService.findOne(request.params.gameId)
     if (!game) {
       throw new NotFoundException('Game not found')
     }

@@ -1,40 +1,46 @@
-import { Body, Controller, Delete, Get, Param, Patch, UseGuards } from '@nestjs/common'
+import { Controller, Get, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
 import { CharactersService } from './characters.service'
-import { CharacterOwnerGuard } from '../guards/authorization/character-owner.guard'
-import { Serialize } from 'src/interceptors/serialize.interceptor'
-import { CharacterDto } from './dto/character.dto'
-import { CharacterDetailDto } from './dto/character-detail.dto'
+import { UpdateCharacterDto } from './dto/update-character.dto'
+import { Player } from '../players/entities/player.entity'
 import { CurrentPlayer } from 'src/decorators/current-player.decorator'
-import { Player } from '../players/player.entity'
+import { Serialize } from 'src/interceptors/serialize.interceptor'
+import { CharacterDto } from '../characters/dto/character.dto'
+import { CharacterDetailDto } from '../characters/dto/character-detail.dto'
+import { CharacterOwnerGuard } from '../guards/authorization/character-owner.guard'
 import { SerializeResponse } from '../interceptors/serialize.interceptor'
-import { CreateCharacterDto } from './dto/create-character.dto'
 
 @Controller('characters')
 export class CharactersController {
-  constructor(private charactersService: CharactersService) {}
+  constructor(private readonly charactersService: CharactersService) {}
 
-  @Delete('/:characterId')
-  @UseGuards(CharacterOwnerGuard)
-  deleteCharacter(@Param('characterId') id) {
-    return this.charactersService.delete(id)
-  }
+  // create is in the games controller
+  // @Post()
+  // create(@Body() createCharacterDto: CreateCharacterDto) {
+  //   return this.charactersService.create(createCharacterDto)
+  // }
 
-  // get a character
-  @Get('/:characterId')
+  // findAll is in the games controller
+  // @Get()
+  // findAll() {
+  //   return this.charactersService.findAll()
+  // }
+
+  @Get(':characterId')
   @Serialize(CharacterDto, CharacterDetailDto)
   async findOne(@Param('characterId') id: string, @CurrentPlayer() player: Player) {
-    return new SerializeResponse(await this.charactersService.find(parseInt(id)), 'player.id', player.id)
+    return new SerializeResponse(await this.charactersService.findOne(+id), 'player.id', player.id)
   }
 
-  // update a character
-  @Patch('/:characterId')
+  @Patch(':characterId')
   @UseGuards(CharacterOwnerGuard)
-  async update(@Param('characterId') id: string, @Body() character: Partial<CreateCharacterDto>) {
-    return this.charactersService.update(parseInt(id), {
-      name: character.name,
-      strength: character.strength,
-      dexterity: character.dexterity,
-      intelligence: character.intelligence
-    })
+  @Serialize(CharacterDto)
+  update(@Param('characterId') id: string, @Body() updateCharacterDto: Partial<UpdateCharacterDto>) {
+    return this.charactersService.update(+id, updateCharacterDto)
+  }
+
+  @Delete(':characterId')
+  @UseGuards(CharacterOwnerGuard)
+  remove(@Param('characterId') id: string) {
+    return this.charactersService.remove(+id)
   }
 }

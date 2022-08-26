@@ -46,7 +46,7 @@ GET {{baseUrl}}/players
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a player
-GET {{baseUrl}}/players/2
+GET {{baseUrl}}/players/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Log out
@@ -72,28 +72,28 @@ GET {{baseUrl}}/games/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Update game name
-PATCH {{baseUrl}}/games/4
+PATCH {{baseUrl}}/games/1
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "RENAMED GAME 6"
+  "name": "RENAMED GAME 1"
 }
 
 ### Delete a game
-DELETE {{baseUrl}}/games/6
+DELETE {{baseUrl}}/games/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Add player to a game
-POST {{baseUrl}}/games/1/players/2
+POST {{baseUrl}}/games/2/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Remove player from a game
-DELETE {{baseUrl}}/games/1/players/2
+DELETE {{baseUrl}}/games/2/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Create a character
-POST {{baseUrl}}/games/1/characters
+POST {{baseUrl}}/games/2/characters
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
@@ -105,11 +105,11 @@ Content-Type: application/json
 }
 
 ### Delete a character
-DELETE {{baseUrl}}/characters/2
+DELETE {{baseUrl}}/characters/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Get all characters for a game
-GET {{baseUrl}}/games/1/characters
+GET {{baseUrl}}/games/2/characters
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a character
@@ -122,5 +122,5 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "test character 2"
+  "name": "test character renamed"
 }

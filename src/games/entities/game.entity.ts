@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../common/base.entity'
-import { Player } from '../players/player.entity'
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
+import { BaseEntity } from '../../common/base.entity'
+import { Player } from '../../players/entities/player.entity'
 // import { ArrayNotEmpty } from 'class-validator'
+import { Character } from '../../characters/entities/character.entity'
 
 /**
  * @description Represents a real person with login credentials for the game
@@ -17,8 +18,8 @@ export class Game extends BaseEntity {
   @ManyToMany(() => Player, (player) => player.games, { nullable: false, cascade: ['remove'] })
   players: Player[]
 
-  // @OneToMany(() => Character, (character) => character.game, { nullable: true })
-  // characters: Character[]
+  @OneToMany(() => Character, (character) => character.game, { nullable: true })
+  characters: Character[]
 
   // @OneToMany(() => Battle, (battle) => battle.game, { nullable: true })
   // battles: Battle[]

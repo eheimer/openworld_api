@@ -1,12 +1,9 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../common/base.entity'
-import { Player } from '../players/player.entity'
+import { BaseEntity } from '../../common/base.entity'
+import { Player } from '../../players/entities/player.entity'
 // import { ArrayNotEmpty } from 'class-validator'
-import { Game } from '../games/game.entity'
+import { Game } from '../../games/entities/game.entity'
 
-/**
- * @description Represents a real person with login credentials for the game
- */
 @Entity()
 export class Character extends BaseEntity {
   @Column({ nullable: false }) name: string

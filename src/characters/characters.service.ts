@@ -1,9 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Player } from 'src/players/player.entity'
-import { Character } from './character.entity'
+import { CreateCharacterDto } from './dto/create-character.dto'
+import { UpdateCharacterDto } from './dto/update-character.dto'
+import { Character } from './entities/character.entity'
 import { Repository } from 'typeorm'
-import { Game } from '../games/game.entity'
+import { Game } from '../games/entities/game.entity'
+import { Player } from '../players/entities/player.entity'
 
 @Injectable()
 export class CharactersService {
@@ -12,55 +14,41 @@ export class CharactersService {
     @InjectRepository(Game) private gameRepo: Repository<Game>
   ) {}
 
-  async createCharacter(
-    gameId: number,
-    name: string,
-    strength: number,
-    dexterity: number,
-    intelligence: number,
-    player: Player
-  ) {
+  async create(gameId: number, player: Player, createCharacterDto: CreateCharacterDto) {
     const game = await this.gameRepo.findOne({ where: { id: gameId }, relations: ['players'] })
     if (!game) {
       throw new NotFoundException('Game not found')
     }
-    const character = await this.repo.create({
-      name,
-      strength,
-      dexterity,
-      intelligence,
-      game,
-      player
-    })
+    const character = await this.repo.create({ ...createCharacterDto, game, player })
     return this.repo.save(character)
   }
 
-  async find(id: number): Promise<Character> {
-    return await this.repo.findOne({ where: { id }, relations: ['game', 'player'] })
+  findOne(id: number) {
+    return this.repo.findOne({ where: { id }, relations: ['game', 'player'] })
   }
 
-  async findByPlayerAndGame(playerId: number, gameId: number): Promise<Character> {
-    return await this.repo.findOneBy({ player: { id: playerId }, game: { id: gameId } })
+  async update(id: number, updateCharacterDto: UpdateCharacterDto) {
+    const character = await this.repo.findOneBy({ id })
+    if (!character) {
+      throw new NotFoundException('Character not found')
+    }
+    await this.repo.update(id, updateCharacterDto)
+    return await this.findOne(id)
   }
 
-  async findAllByGame(gameId: number): Promise<Character[]> {
-    return this.repo.find({ where: { game: { id: gameId } }, relations: ['game', 'player'] })
-  }
-
-  async delete(id: number): Promise<Character> {
-    const character = await this.repo.findOne({ where: { id } })
+  async remove(id: number) {
+    const character = await this.repo.findOneBy({ id })
     if (!character) {
       throw new NotFoundException('Character not found')
     }
     return await this.repo.remove(character)
   }
 
-  //async method to update a character in the database
-  async update(id: number, character: Partial<Character>): Promise<Character> {
-    const existing = await this.repo.findOne({ where: { id } })
-    if (!existing) {
-      throw new NotFoundException('Character not found')
-    }
-    return await this.repo.save({ ...existing, ...character })
+  findByPlayerAndGame(playerId: number, gameId: number) {
+    return this.repo.findOneBy({ player: { id: playerId }, game: { id: gameId } })
+  }
+
+  findAllByGame(gameId: number) {
+    return this.repo.find({ where: { game: { id: gameId } }, relations: ['game', 'player'] })
   }
 }

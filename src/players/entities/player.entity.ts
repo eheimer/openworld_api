@@ -1,7 +1,7 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../common/base.entity'
-import { Game } from '../games/game.entity'
-import { Character } from '../characters/character.entity'
+import { BaseEntity } from '../../common/base.entity'
+import { Game } from '../../games/entities/game.entity'
+import { Character } from '../../characters/entities/character.entity'
 
 /**
  * @description Represents a real person with login credentials for the game

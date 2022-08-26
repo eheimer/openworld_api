@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Player } from './player.entity'
+import { CreatePlayerDto } from './dto/create-player.dto'
+import { UpdatePlayerDto } from './dto/update-player.dto'
+import { Player } from './entities/player.entity'
 import { Repository } from 'typeorm'
-import { Character } from '../characters/character.entity'
+import { Character } from '../characters/entities/character.entity'
 
 @Injectable()
 export class PlayersService {
@@ -11,13 +13,13 @@ export class PlayersService {
     @InjectRepository(Character) private characterRepo: Repository<Character>
   ) {}
 
-  create(username: string, email: string, password: string) {
-    const player = this.repo.create({ username, email, password })
+  create(createPlayerDto: CreatePlayerDto) {
+    const player = this.repo.create(createPlayerDto)
     return this.repo.save(player)
   }
 
-  async findAll() {
-    return await this.repo.find()
+  findAll() {
+    return this.repo.find()
   }
 
   async findOne(id: number) {
@@ -28,18 +30,29 @@ export class PlayersService {
     return player
   }
 
-  /**
-   * @description - Find a single player by email
-   */
-  async findByEmail(email: string) {
+  async update(id: number, updatePlayerDto: UpdatePlayerDto | Partial<Player>) {
+    const player = await this.findOne(id)
+    if (!player) {
+      throw new NotFoundException('User not found')
+    }
+    Object.assign(player, updatePlayerDto)
+    return this.repo.save(player)
+  }
+
+  async remove(id: number) {
+    const player = await this.findOne(id)
+    if (!player) {
+      throw new NotFoundException('User not found')
+    }
+    return this.repo.remove(player)
+  }
+
+  async findOneByEmail(email: string) {
     const player = await this.repo.findOneBy({ email })
     return player
   }
 
-  /**
-   * @description - Find a single player by username
-   */
-  async findByUsername(username: string) {
+  async findOneByUsername(username: string) {
     const player = await this.repo.findOneBy({ username })
     return player
   }
@@ -69,22 +82,5 @@ export class PlayersService {
       })
     )
     return gameCharacters
-  }
-
-  async update(id: number, attrs: Partial<Player>) {
-    const player = await this.findOne(id)
-    if (!player) {
-      throw new NotFoundException('User not found')
-    }
-    Object.assign(player, attrs)
-    return this.repo.save(player)
-  }
-
-  async remove(id: number) {
-    const player = await this.findOne(id)
-    if (!player) {
-      throw new NotFoundException('User not found')
-    }
-    return this.repo.remove(player)
   }
 }

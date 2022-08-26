@@ -7,6 +7,7 @@ import { JwtAuthGuard } from './guards/authentication/jwt-auth.guard'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GamesModule } from './games/games.module'
 import { CharactersModule } from './characters/characters.module'
+import { MonstersModule } from './monsters/monsters.module'
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { CharactersModule } from './characters/characters.module'
     PlayersModule,
     AuthModule,
     GamesModule,
-    CharactersModule
+    CharactersModule,
+    MonstersModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]

@@ -1,53 +1,54 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
-import { Game } from './game.entity'
-import { Repository } from 'typeorm'
-import { Player } from '../players/player.entity'
 import { CreateGameDto } from './dto/create-game.dto'
+import { UpdateGameDto } from './dto/update-game.dto'
+import { Player } from '../players/entities/player.entity'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Game } from './entities/game.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class GamesService {
   constructor(
-    @InjectRepository(Game) private repo: Repository<Game>,
-    @InjectRepository(Player) private playerRepo: Repository<Player>
+    @InjectRepository(Game) private readonly repo: Repository<Game>,
+    @InjectRepository(Player) private readonly playerRepo: Repository<Player>
   ) {}
 
-  async create(name: string, owner: Player) {
-    let game = await this.repo.findOneBy({ name, owner })
+  async create(createGameDto: CreateGameDto, player: Player) {
+    let game = await this.repo.findOneBy({ name: createGameDto.name, owner: player })
     if (game) {
       throw new BadRequestException('Game already exists')
     }
-    game = await this.repo.create({ name, owner, players: [owner] })
+    game = await this.repo.create({ name: createGameDto.name, owner: player, players: [player] })
     return this.repo.save(game)
   }
 
-  async update(id: number, game: Partial<CreateGameDto>) {
-    const storedGame = await this.repo.findOne({ where: { id } })
+  findOne(id: number) {
+    return this.repo.findOne({ where: { id }, relations: ['players', 'owner'] })
+  }
+
+  async update(id: number, updateGameDto: UpdateGameDto) {
+    const storedGame = await this.repo.findOneBy({ id })
     if (!storedGame) {
-      throw new BadRequestException('Game does not exist')
+      throw new NotFoundException('Game does not exist')
     }
-    await this.repo.update(id, game)
-    return await this.find(id)
+    await this.repo.update(id, updateGameDto)
+    return await this.findOne(id)
   }
 
-  async find(id: number): Promise<Game> {
-    return await this.repo.findOne({ where: { id }, relations: ['players', 'owner'] })
-  }
-
-  async delete(id: number): Promise<Game> {
-    const game = await this.repo.findOne({ where: { id } })
+  async remove(id: number) {
+    const game = await this.repo.findOneBy({ id })
     if (!game) {
       throw new NotFoundException('Game not found')
     }
     return await this.repo.remove(game)
   }
 
-  async addPlayer(gameId: number, playerId: number): Promise<Game> {
-    const game = await this.repo.findOne({ where: { id: gameId }, relations: ['players'] })
+  async addPlayer(gameId: number, playerId: number) {
+    const game = await this.findOne(gameId)
     if (!game) {
       throw new NotFoundException('Game not found')
     }
-    const player = await this.playerRepo.findOne({ where: { id: playerId } })
+    const player = await this.playerRepo.findOneBy({ id: playerId })
     if (!player) {
       throw new NotFoundException('Player not found')
     }
@@ -55,12 +56,12 @@ export class GamesService {
     return await this.repo.save(game)
   }
 
-  async removePlayer(gameId: number, playerId: number): Promise<Game> {
-    const game = await this.repo.findOne({ where: { id: gameId }, relations: ['players'] })
+  async removePlayer(gameId: number, playerId: number) {
+    const game = await this.findOne(gameId)
     if (!game) {
       throw new NotFoundException('Game not found')
     }
-    const player = await this.playerRepo.findOne({ where: { id: playerId } })
+    const player = await this.playerRepo.findOneBy({ id: playerId })
     if (!player) {
       throw new NotFoundException('Player not found')
     }
@@ -68,7 +69,10 @@ export class GamesService {
     return await this.repo.save(game)
   }
 
-  async findWithPlayer(gameId: number, playerId: number): Promise<Game> {
-    return await this.repo.findOne({ where: { id: gameId, players: { id: playerId } }, relations: ['players'] })
+  findWithPlayer(gameId: number, playerId: number) {
+    return this.repo.findOne({
+      where: { id: gameId, players: { id: playerId } },
+      relations: ['players']
+    })
   }
 }

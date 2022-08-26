@@ -9,7 +9,7 @@ export class CharacterOwnerGuard implements CanActivate {
   constructor(private charactersService: CharactersService) {}
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest()
-    const character = await this.charactersService.find(request.params.characterId)
+    const character = await this.charactersService.findOne(request.params.characterId)
     if (!character) {
       throw new NotFoundException('Character not found')
     }

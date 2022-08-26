@@ -1,0 +1,36 @@
+[
+  {
+    "name": "test",
+    "type": "sqlite",
+    "database": "test.sqlite",
+    "synchronize": true,
+    "logging": "warn",
+    "entities": ["**/*.entity.ts"],
+    "migrations": ["**/*.migration.ts"],
+    "subscribers": ["**/*.subscriber.ts"]
+  },
+  {
+    "name": "dev",
+    "type": "sqlite",
+    "database": "dev.sqlite",
+    "synchronize": true,
+    "logging": "debug",
+    "entities": ["**/*.entity.ts"],
+    "migrations": ["**/*.migration.ts"],
+    "subscribers": ["**/*.subscriber.ts"]
+  },
+  {
+    "name": "prod",
+    "type": "mysql",
+    "server": "localhost",
+    "port": "3306",
+    "username": "openworld",
+    "password": "entranced",
+    "database": "openworld",
+    "synchronize": false,
+    "logging": "all",
+    "entities": ["build/**/*.entities.js"],
+    "migrations": ["build/**/*.migration.js"],
+    "subscribers": ["build/**/*.subscriber.js"]
+  }
+]
