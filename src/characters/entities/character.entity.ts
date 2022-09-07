@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/base.entity'
+import { BaseEntity } from '../../common/BaseEntity'
 import { Player } from '../../players/entities/player.entity'
 // import { ArrayNotEmpty } from 'class-validator'
 import { Game } from '../../games/entities/game.entity'

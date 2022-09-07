@@ -11,24 +11,4 @@ export class MonstersController {
   create(@Body() createMonsterDto: CreateMonsterDto) {
     return this.monstersService.create(createMonsterDto)
   }
-
-  @Get()
-  findAll() {
-    return this.monstersService.findAll()
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.monstersService.findOne(+id)
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMonsterDto: UpdateMonsterDto) {
-    return this.monstersService.update(+id, updateMonsterDto)
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.monstersService.remove(+id)
-  }
 }

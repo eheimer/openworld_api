@@ -8,22 +8,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GamesModule } from './games/games.module'
 import { CharactersModule } from './characters/characters.module'
 import { MonstersModule } from './monsters/monsters.module'
+import dbConfig from './config/database'
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `./config/.env.${process.env.NODE_ENV}`
+      envFilePath: `./config/.env.${process.env.NODE_ENV}`,
+      load: [dbConfig]
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('DB_NAME'),
-          synchronize: true,
-          entities: [`${__dirname}/**/*.entity{.ts,.js}`]
-        }
+        return config.get('db')
       }
     }),
     PlayersModule,

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../common/base.entity'
+import { BaseEntity } from '../../common/BaseEntity'
 import { Game } from '../../games/entities/game.entity'
 import { Character } from '../../characters/entities/character.entity'
 

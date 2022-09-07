@@ -85,15 +85,15 @@ DELETE {{baseUrl}}/games/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Add player to a game
-POST {{baseUrl}}/games/2/players/2
+POST {{baseUrl}}/games/1/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Remove player from a game
-DELETE {{baseUrl}}/games/2/players/2
+DELETE {{baseUrl}}/games/1/players/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Create a character
-POST {{baseUrl}}/games/2/characters
+POST {{baseUrl}}/games/1/characters
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
@@ -109,18 +109,19 @@ DELETE {{baseUrl}}/characters/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Get all characters for a game
-GET {{baseUrl}}/games/2/characters
+GET {{baseUrl}}/games/1/characters
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a character
-GET {{baseUrl}}/characters/2
+GET {{baseUrl}}/characters/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Update a character
-PATCH {{baseUrl}}/characters/2
+PATCH {{baseUrl}}/characters/1
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
   "name": "test character renamed"
 }
+
