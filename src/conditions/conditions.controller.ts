@@ -13,8 +13,16 @@ export class ConditionsController {
   }
 
   @Get()
-  findAll() {
-    return this.conditionsService.findAll()
+  async findAll() {
+    const conditions = await this.conditionsService.findAll()
+    //dereference the overrides array on each condition to just return the names
+    //wow, copilot wrote this just from the comment above
+    return conditions.map((condition) => {
+      return {
+        ...condition,
+        overrides: condition.overrides.map((override) => override.name)
+      }
+    })
   }
 
   @Get(':id')

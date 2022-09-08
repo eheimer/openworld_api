@@ -13,10 +13,8 @@ export class ConditionsService {
     return 'This action adds a new condition'
   }
 
-  async findAll() {
-    const conditions = await this.repo.find()
-    console.log(conditions.map((c) => c.overrides))
-    return this.repo.find({ loadRelationIds: true })
+  findAll() {
+    return this.repo.find({ relations: ['overrides'] })
   }
 
   findOne(id: number) {
