@@ -6,7 +6,20 @@ Node/Express API for Openworld game
 
 With the impending migration to Nestjs framework, some of the details below may change, but this file should be updated to reflect the current state of the app.
 
+## package.json scripts
+
+When using the `npm run migration:run` command, the typeorm cli will look in the `migration/` directory for any new migration files.
+Because of some weird flaw in the cli, when using the `migration:generate` or `migration:create` commands, it will not create the migration scripts in the proper directory as
+specified in the ormconfig. As such...
+when running the `npm run migration:generate` command, you must specify the `migration/` directory as part of the migration name, e.g. `npm run migration:generate migration/test-migration`
+
+## Nestjs cli
+
+To create a new module, run the `nest g resource {plural_name}` command. This will generate the directory, module, controller, service, and entity stub files
+
 ## OpenAPI
+
+**_Migration NOTE:_** _openapi is not yet incorporated into the Nestjs app_
 
 - openapi config has been split into individual files in the config/openapi directory
 - before starting the server, or running the generators, this needs to be compiled into
@@ -18,7 +31,7 @@ With the impending migration to Nestjs framework, some of the details below may 
   - server-side controllers are built from the paths
   - client-side communicator class is built from the paths
 
-## Data flow
+## Data Flow
 
 - player logs in (HTTP)
   - if successful, they get their playerId and a token
@@ -30,38 +43,41 @@ With the impending migration to Nestjs framework, some of the details below may 
   - socket room is created (if it didn't already exist) with the id of the battle
   - message is sent to the room of player joining (SOCKET)
 
-NOTES: Generally, when the client needs to request data from the server, it will be done via an AJAX request to an HTTP endpoint.  
+**_NOTES:_** Generally, when the client needs to request data from the server, it will be done via an AJAX request to an HTTP endpoint.  
 If the client just needs to update the server and doesn't need to wait for a response, that will be done via a socket message.
 
 ## Coding Standards
 
-### directory structure
+### Directory Structure
 
-- `/build` _compiled javascript_
 - `/config` _app startup configuration_
-- `/coverage` _test coverage reports_
+- `/dist` _compiled javascript_
+- `/migration` _typeorm migration scripts_
 - `/node_modules` _required dependencies_
-- `/src` _typescript code_
-  - `/api` _all api code_
-    - `/controllers` _route controllers_
-    - `/dto` _json-serializable objects that exist on both client/server_
-    - `/factories` _entity factories_
-    - `/models` _typeorm entities_
-    - `/repositories` _custom typeorm repositories_
-    - `/services` _bulk of game logic_
-  - `/config` _api configuration_
-  - `/migration` _typeorm migration objects_
-  - `/seed` _typeorm seed objects_
-  - `/subscriber` _typeorm subscriber objects_
-  - `/tests` _all test_
-  - `/utils` _utilitiy scripts_
-- `/types` _custom type definitions_
+- `src` _typescript code_
 
-### logic separation
+  - `/{module_name}` _Nestjs module directory_
+    - `/dto` _json-serializable objects used by this module for api responses_
+    - `/entities` _typeorm enitities for this module_
+    - `{module_name}.controller.ts` _main controller file for this module_
+    - `{module_name}.module.ts` _main module file for this module_
+    - `{module_name}.service.ts` _main service file for this module_
+    - `{module_name}.*.spec.ts` _jest test files_
+  - `/common` _general utility classes usable by modules_
+  - `/config` _general configuration classes usable by modules_
+  - `/decorators` _custom typescript decorator definitions_
+  - `/guards` _authorization guards used by module controllers_
+  - `/interceptors` _interceptors used by module controllers_
+
+- `/test` _jest integration tests_
+- `ormconfig.ts` _typeorm config file for the nest app_
+- `ormDataSource.ts` _a modified typeorm config for use by the typeorm cli_
+
+### Logic Separation
 
 Method call flow:
 
-`Request -> Controller -> Service -> Factory -> [Repository] -> [Model]`
+`Request -> Controller -> Service -> Factory -> [Repository] -> [Entity]`
 
 #### Controllers
 
@@ -83,20 +99,20 @@ Method call flow:
 
 - should be used for creating/building entities, as well as mock
   data for tests.
-- NOTE: Currently, repositories need to be built from an instantiated
-  factory. This is not ideal, and should be refactored at some point.
 
 #### Repositories
 
 - should contain all database logic for retrieval of records,
   associations, etc.
 
-#### Models
+#### Entities
 
 - should contain entity definitions only
 - no logic of any kind
 
-### Model and DTO notes
+### Entities and DTO notes
+
+**_Migration NOTE:_** _these scripts have not yet been created for the Nestjs app_
 
 - Entities should strictly be used on the server for interfacing with
   the database. Care should be taken to keep properties on these
@@ -104,18 +120,18 @@ Method call flow:
 - DTO's are defined in the config/openapi.yml file in the components
   section.
 - The TypeScript DTO modules are generated from the openapi spec via
-  the `npm run generate:server:models` command
+  the `npm run generate:server:entities` command
 - In order to keep these DTO's in sync between client and server, the
-  C# models are generated from the TypeScript modules via the
+  C# entities are generated from the TypeScript modules via the
   `npm run generate:client:entities` command
 
-### error handling
+### Error handling
 
 Error flow:
 
-`Model -> Repository -> Factory -> Service -> Controller -> Response`
+`Entity -> Repository -> Factory -> Service -> Controller -> Response`
 
-- Models should catch any errors and rethrow
+- Entities should catch any errors and rethrow
 - Repositories should catch any errors and rethrow
 - Factories should catch any errors and rethrow
 - Services should log as much detail as necessary to the console and rethrow
@@ -125,9 +141,11 @@ Service methods are generally the only ones that should be logging to the consol
 
 ## API Testing
 
-API test procedure has been implemented in Postman
+API testing for now is done manually via the `src/requests.http` file
 
 ## Production Server
+
+**_Migration NOTE:_** _production server is not yet ready to handle the Nestjs app_
 
 Server is running on spinach.heimerman.org as openworld-game.com
 Jenkins starts and stops the server as CI builds are run

@@ -17,7 +17,14 @@ module.exports = {
     node: true,
     jest: true
   },
-  ignorePatterns: ['.eslintrc.js', 'ormconfig.ts', 'ormDataSource.ts'],
+  ignorePatterns: [
+    '.eslintrc.js',
+    'ormconfig.ts',
+    'ormDataSource.ts',
+    'migration/**/*.ts',
+    'seed/**/*.ts',
+    'nest_migration_reference/src/**/*.ts'
+  ],
   rules: {
     'no-console': 'warn',
     '@typescript-eslint/interface-name-prefix': 'off',

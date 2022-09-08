@@ -8,6 +8,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GamesModule } from './games/games.module'
 import { CharactersModule } from './characters/characters.module'
 import { MonstersModule } from './monsters/monsters.module'
+import { ConditionsModule } from './conditions/conditions.module';
+import { DamageTypesModule } from './damage-types/damage-types.module';
 import dbConfig from './config/database'
 
 @Module({
@@ -27,7 +29,9 @@ import dbConfig from './config/database'
     AuthModule,
     GamesModule,
     CharactersModule,
-    MonstersModule
+    MonstersModule,
+    ConditionsModule,
+    DamageTypesModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]

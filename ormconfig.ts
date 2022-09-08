@@ -7,12 +7,7 @@ const configDefault = {
   database: 'dev.sqlite',
   synchronize: false,
   logging: 'warn',
-  entities: ['**/*.entity.js'],
-  migrations: [`migrations/*.js`],
-  subscribers: ['subscribers/*.js'],
-  cli: {
-    migationsDir: 'migrations'
-  }
+  entities: ['**/*.entity.js']
 }
 
 // these env values override the defaults
@@ -32,10 +27,22 @@ const dbConfig = {
   }
 }
 
+/* it's important that these properties are not set for the dev environment 
+      because the TypeOrmModule pukes on the .ts files when the nestjs app starts up. */
+const cliOptions = {
+  migrations: [`migration/DDL/*.ts`, `migration/DML/*.ts`],
+  migrationsDir: 'migration',
+  migrationsTableName: 'migration_history'
+}
+
 // again, default to 'dev' if an environment is not specified
 // to prevent production data from being overwritten
 const env: string = process.env.NODE_ENV || 'dev'
 const config = dbConfig[env]
+
+if (process.env['TYPEORM_CLI'] === '1') {
+  Object.assign(config, cliOptions)
+}
 
 if (!config) {
   throw new Error(`unknown environment: ${env}`)
