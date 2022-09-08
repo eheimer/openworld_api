@@ -125,3 +125,6 @@ Content-Type: application/json
   "name": "test character renamed"
 }
 
+### Get all conditions
+GET {{baseUrl}}/conditions
+Authorization: Bearer {{bearerAuth}}

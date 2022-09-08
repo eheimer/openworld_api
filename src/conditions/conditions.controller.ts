@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ConditionsService } from './conditions.service';
-import { CreateConditionDto } from './dto/create-condition.dto';
-import { UpdateConditionDto } from './dto/update-condition.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
+import { ConditionsService } from './conditions.service'
+import { CreateConditionDto } from './dto/create-condition.dto'
+import { UpdateConditionDto } from './dto/update-condition.dto'
 
 @Controller('conditions')
 export class ConditionsController {
@@ -9,26 +9,26 @@ export class ConditionsController {
 
   @Post()
   create(@Body() createConditionDto: CreateConditionDto) {
-    return this.conditionsService.create(createConditionDto);
+    return this.conditionsService.create(createConditionDto)
   }
 
   @Get()
   findAll() {
-    return this.conditionsService.findAll();
+    return this.conditionsService.findAll()
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.conditionsService.findOne(+id);
+    return this.conditionsService.findOne(+id)
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateConditionDto: UpdateConditionDto) {
-    return this.conditionsService.update(+id, updateConditionDto);
+    return this.conditionsService.update(+id, updateConditionDto)
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.conditionsService.remove(+id);
+    return this.conditionsService.remove(+id)
   }
 }

@@ -1,5 +1,5 @@
 import { DamageType } from 'src/damage-types/entities/damage-type.entity'
-import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 
 @Entity()
@@ -14,6 +14,12 @@ export class Condition extends BaseEntity {
   @Column() allowMultiple: boolean
 
   @ManyToMany(() => Condition)
+  @JoinTable({
+    name: 'condition_overrides_condition',
+    joinColumn: { name: 'conditionId_1' },
+    inverseJoinColumn: { name: 'conditionId_2' }
+  })
+  @JoinColumn()
   overrides: Condition[]
 
   @ManyToOne(() => DamageType)
