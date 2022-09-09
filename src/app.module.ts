@@ -10,6 +10,7 @@ import { CharactersModule } from './characters/characters.module'
 import { MonstersModule } from './monsters/monsters.module'
 import { ConditionsModule } from './conditions/conditions.module';
 import { DamageTypesModule } from './damage-types/damage-types.module';
+import { SkillsModule } from './skills/skills.module';
 import dbConfig from './config/database'
 
 @Module({
@@ -31,7 +32,8 @@ import dbConfig from './config/database'
     CharactersModule,
     MonstersModule,
     ConditionsModule,
-    DamageTypesModule
+    DamageTypesModule,
+    SkillsModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
