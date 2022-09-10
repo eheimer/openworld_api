@@ -14,7 +14,7 @@ export class GamesService {
   ) {}
 
   async create(createGameDto: CreateGameDto, player: Player) {
-    let game = await this.repo.findOneBy({ name: createGameDto.name, owner: player })
+    let game = await this.repo.findOneBy({ name: createGameDto.name, owner: { id: player.id } })
     if (game) {
       throw new BadRequestException('Game already exists')
     }

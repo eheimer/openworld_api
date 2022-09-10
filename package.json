@@ -23,7 +23,7 @@
     "**** DATA ****": "",
     "typeorm": "cross-env NODE_ENV=dev TYPEORM_CLI=1 typeorm-ts-node-esm -d ormDataSource.ts",
     "typeorm-no-d": "cross-env NODE_ENV=dev TYPEORM_CLI=1 typeorm-ts-node-esm",
-    "migration:generate": "npm run typeorm -- 'migration:generate'",
+    "migration:generate": "npm run build && npm run typeorm -- 'migration:generate'",
     "migration:create": "npm run typeorm-no-d -- 'migration:create'",
     "migration:run": "npm run typeorm -- 'migration:run'",
     "schema:drop": "npm run typeorm -- 'schema:drop'",

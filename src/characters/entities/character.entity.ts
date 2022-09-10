@@ -5,6 +5,7 @@ import { Player } from '../../players/entities/player.entity'
 import { Game } from '../../games/entities/game.entity'
 import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
 import { CharacterCondition } from '../../conditions/entities/character-condition.entity'
+import { Battle } from '../../battles/entities/battle.entity'
 
 @Entity()
 export class Character extends BaseEntity {
@@ -27,8 +28,8 @@ export class Character extends BaseEntity {
   @ManyToOne(() => Player, (player) => player.characters, { nullable: false })
   player: Player
 
-  // @ManyToMany(() => Battle, (battle) => battle.participants, { nullable: true })
-  // battles: Battle[]
+  @ManyToMany(() => Battle, (battle) => battle.participants, { nullable: true })
+  battles: Battle[]
 
   // @OneToOne(() => Inventory, { nullable: false })
   // @JoinColumn()

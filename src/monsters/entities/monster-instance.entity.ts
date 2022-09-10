@@ -3,6 +3,9 @@ import { BaseEntity } from '../../common/BaseEntity'
 import { Character } from '../../characters/entities/character.entity'
 import { Monster } from './monster.entity'
 import { MonsterCondition } from '../../conditions/entities/monster-condition.entity'
+import { DamageType } from '../../damage-types/entities/damage-type.entity'
+import { MonsterAction } from './monster-action.entity'
+import { Battle } from '../../battles/entities/battle.entity'
 
 @Entity()
 export class MonsterInstance extends BaseEntity {
@@ -40,11 +43,11 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) resistF: number
   @Column({ nullable: false }) resistP: number
 
-  // @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true })
-  // battleAsEnemy: Battle
+  @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true })
+  battleAsEnemy: Battle
 
-  // @ManyToOne(() => Battle, (battle) => battle.friendlies, { nullable: true })
-  // battleAsFriendly: Battle
+  @ManyToOne(() => Battle, (battle) => battle.friendlies, { nullable: true })
+  battleAsFriendly: Battle
 
   @ManyToOne(() => Character, (character) => character.pets, { nullable: true, onDelete: 'CASCADE' })
   owner: Character
@@ -52,14 +55,14 @@ export class MonsterInstance extends BaseEntity {
   @ManyToOne(() => Monster, { nullable: false })
   monster: Monster
 
-  // @ManyToOne(() => MonsterAction, { nullable: true })
-  // nextAction: MonsterAction
+  @ManyToOne(() => MonsterAction, { nullable: true })
+  nextAction: MonsterAction
 
   @OneToMany(() => MonsterCondition, (ac) => ac.creature, { nullable: true })
   conditions: MonsterCondition[]
 
-  // @ManyToOne(() => DamageType, { nullable: true })
-  // actionDamageType: DamageType
+  @ManyToOne(() => DamageType, { nullable: true })
+  actionDamageType: DamageType
 
   // @OneToOne(() => Inventory, { nullable: true })
   // @JoinColumn()
