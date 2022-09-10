@@ -6,6 +6,7 @@ import { Game } from '../../games/entities/game.entity'
 import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
 import { CharacterCondition } from '../../conditions/entities/character-condition.entity'
 import { Battle } from '../../battles/entities/battle.entity'
+import { Race } from '../../race/entities/race.entity'
 
 @Entity()
 export class Character extends BaseEntity {
@@ -19,8 +20,8 @@ export class Character extends BaseEntity {
   @Column({ default: 1 }) hunger: number
   @Column({ default: 1 }) stamina: number
 
-  // @ManyToOne(() => Race)
-  // race: Race
+  @ManyToOne(() => Race)
+  race: Race
 
   @ManyToOne(() => Game, { nullable: false })
   game: Game

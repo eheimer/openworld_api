@@ -8,10 +8,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GamesModule } from './games/games.module'
 import { CharactersModule } from './characters/characters.module'
 import { MonstersModule } from './monsters/monsters.module'
-import { ConditionsModule } from './conditions/conditions.module';
-import { DamageTypesModule } from './damage-types/damage-types.module';
-import { SkillsModule } from './skills/skills.module';
-import { BattlesModule } from './battles/battles.module';
+import { ConditionsModule } from './conditions/conditions.module'
+import { DamageTypesModule } from './damage-types/damage-types.module'
+import { SkillsModule } from './skills/skills.module'
+import { BattlesModule } from './battles/battles.module'
+import { RaceModule } from './race/race.module'
 import dbConfig from './config/database'
 
 @Module({
@@ -35,7 +36,8 @@ import dbConfig from './config/database'
     ConditionsModule,
     DamageTypesModule,
     SkillsModule,
-    BattlesModule
+    BattlesModule,
+    RaceModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
