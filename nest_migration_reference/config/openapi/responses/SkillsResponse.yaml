@@ -1,7 +1,0 @@
-description: List of all skills
-content:
-  application/json:
-    schema:
-      type: array
-      items:
-        $ref: '../schemas/_index.yaml#/Skill'

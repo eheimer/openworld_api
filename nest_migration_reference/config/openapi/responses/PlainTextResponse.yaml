@@ -1,5 +1,0 @@
-description: response in plain text/html
-content:
-  text/html:
-    schema:
-      type: string

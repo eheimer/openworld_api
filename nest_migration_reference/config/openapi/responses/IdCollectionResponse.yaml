@@ -1,7 +1,0 @@
-description: a response which consists of an array of general object ids
-content:
-  application/json:
-    schema:
-      type: array
-      items:
-        type: string

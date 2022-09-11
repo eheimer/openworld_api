@@ -1,5 +1,0 @@
-description: Battle object
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/_index.yaml#/Battle'

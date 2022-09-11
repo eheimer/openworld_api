@@ -1,8 +1,0 @@
-description: A character's skill
-type: object
-additionalProperties: false
-allOf:
-  - $ref: './_index.yaml#/Skill'
-properties:
-  level:
-    type: number

@@ -1,8 +1,0 @@
-description: Player details
-type: object
-allOf:
-  - $ref: './_index.yaml#/PublicPlayer'
-properties:
-  email:
-    type: string
-    format: email

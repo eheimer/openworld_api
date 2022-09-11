@@ -1,0 +1,1239 @@
+openapi: 3.0.2
+info:
+  title: Openworld API
+  description: Openworld API
+  termsOfService: 'http://swagger.io.terms'
+  contact:
+    email: eric@heimerman.org
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+servers:
+  - url: /api/v1
+tags:
+  - name: game
+    description: Game APIs
+  - name: player
+    description: Player APIs
+  - name: battle
+    description: Battle APIs
+  - name: creature
+    description: Creature APIs
+  - name: lists
+    description: Game APIs
+  - name: character
+    description: Character APIs
+  - name: item
+    description: Item APIs
+  - name: deprecated
+    description: Only use for testing
+  - name: testing
+    description: Urls for testing api and sockets
+paths:
+  /client:
+    get:
+      summary: Download client files
+      description: Static files
+      servers:
+        - url: /
+      security: []
+      tags:
+        - static
+      operationId: clientFiles
+      responses:
+        '200':
+          $ref: '#/components/responses/PlainText'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  /:
+    get:
+      summary: Socket testing
+      description: Socket entrypoint for testing sockets in a browser
+      servers:
+        - url: /
+      security: []
+      tags:
+        - testing
+      operationId: socketTest
+      responses:
+        '200':
+          $ref: '#/components/responses/PlainText'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  # /players:
+  #   post:
+  #     security: []
+  #     summary: register new player
+  #     operationId: register
+  #     tags:
+  #       - player
+  #     requestBody:
+  #       $ref: '#/components/requestBodies/Register'
+  #     responses:
+  #       '201':
+  #         $ref: '#/components/responses/Location'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # '/players/{playerId}':
+  #   parameters:
+  #     - name: playerId
+  #       required: true
+  #       in: path
+  #       description: The player id to retrieve
+  #       schema:
+  #         type: string
+  #   get:
+  #     summary: retrieve a player
+  #     description: returns public info for player
+  #     tags:
+  #       - player
+  #     operationId: getPlayer
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/Player'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # '/players/{playerId}/detail':
+  #   parameters:
+  #     - name: playerId
+  #       required: true
+  #       in: path
+  #       description: The player id to retrieve
+  #       schema:
+  #         type: string
+  #   get:
+  #     summary: retrieve player details
+  #     description: returns more details if the requester is the player being requested
+  #     tags:
+  #       - player
+  #     operationId: getPlayerDetail
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/PlayerDetail'
+  #       '401':
+  #         $ref: '#/components/responses/Fail'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # '/players/{playerId}/games':
+  #   parameters:
+  #     - name: playerId
+  #       required: true
+  #       in: path
+  #       description: The player id to retrieve
+  #       schema:
+  #         type: string
+  #   get:
+  #     summary: get player's /games
+  #     description: returns the games a player has access to
+  #     tags:
+  #       - game
+  #       - player
+  #     operationId: getGames
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/Games'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # /games:
+  #   post:
+  #     summary: create a new game
+  #     tags:
+  #       - game
+  #     operationId: createGame
+  #     requestBody:
+  #       $ref: '#/components/requestBodies/CreateGame'
+  #     responses:
+  #       '201':
+  #         $ref: '#/components/responses/Location'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # /login:
+  #   post:
+  #     security: []
+  #     summary: login
+  #     description: 'login the player to the specified game, initiate a socket if successful'
+  #     tags:
+  #       - player
+  #     operationId: login
+  #     requestBody:
+  #       $ref: '#/components/requestBodies/Login'
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/Login'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # '/games/{gameId}':
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: The gameId to delete
+  #       schema:
+  #         type: string
+  # get:
+  #   summary: retrieve game
+  #   operationId: getGame
+  #   tags:
+  #     - game
+  #   security:
+  #     - playerGameMember: []
+  #   responses:
+  #     '200':
+  #       $ref: '#/components/responses/Game'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # patch:
+  #   summary: update game partial
+  #   operationId: updateGame
+  #   tags:
+  #     - game
+  #   security:
+  #     - playerGameOwner: []
+  #   requestBody:
+  #     $ref: '#/components/requestBodies/UpdateGame'
+  #   responses:
+  #     '204':
+  #       $ref: '#/components/responses/DeleteOrUpdate'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # delete:
+  #   summary: remove a game
+  #   description: 'deletes the game, all battles, characters, creatureInstances, inventories, etc'
+  #   tags:
+  #     - game
+  #   security:
+  #     - playerGameOwner: []
+  #   operationId: deleteGame
+  #   responses:
+  #     '204':
+  #       $ref: '#/components/responses/DeleteOrUpdate'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # '/games/{gameId}/players/{playerId}':
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: string
+  #     - name: playerId
+  #       required: true
+  #       in: path
+  #       description: the playerId
+  #       schema:
+  #         type: string
+  #   post:
+  #     summary: add a player to a game
+  #     description: 'player id must exist at /players/{playerId}'
+  #     tags:
+  #       - game
+  #       - player
+  #     security:
+  #       - playerGameOwner: []
+  #     operationId: joinGame
+  #     responses:
+  #       '204':
+  #         $ref: '#/components/responses/DeleteOrUpdate'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  #   delete:
+  #     summary: remove a player from a game
+  #     description: 'player id must exist at /players/{playerId}'
+  #     tags:
+  #       - game
+  #       - player
+  #     security:
+  #       - playerGameOwner: []
+  #     operationId: leaveGame
+  #     responses:
+  #       '204':
+  #         $ref: '#/components/responses/DeleteOrUpdate'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  '/games/{gameId}/players':
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId to invite a player to
+        schema:
+          type: string
+    post:
+      summary: invite a player to a game
+      tags:
+        - game
+      security:
+        - playerGameOwner: []
+      operationId: invitePlayer
+      requestBody:
+        $ref: '#/components/requestBodies/InvitePlayer'
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteOrUpdate'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  '/games/{gameId}/characters':
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId
+        schema:
+          type: string
+    # post:
+    #   summary: create character
+    #   tags:
+    #     - character
+    #     - game
+    #   security:
+    #     - playerGameMember: []
+    #   operationId: createCharacter
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/CreateCharacter'
+    #   responses:
+    #     '201':
+    #       $ref: '#/components/responses/Location'
+    #     '404':
+    #       $ref: '#/components/responses/Fail'
+    #     '500':
+    #       $ref: '#/components/responses/Fail'
+    # get:
+    #   summary: get all characters for game
+    #   tags:
+    #     - character
+    #     - game
+    #   security:
+    #     - playerGameMember: []
+    #   operationId: getGameCharacters
+    #   responses:
+    #     '200':
+    #       $ref: '#/components/responses/IdCollection'
+    #     '404':
+    #       $ref: '#/components/responses/Fail'
+    #     '500':
+    #       $ref: '#/components/responses/Fail'
+  '/characters/{characterId}':
+    parameters:
+      - name: characterId
+        required: true
+        in: path
+        description: the characterId
+        schema:
+          type: string
+    # get:
+    #   summary: retrieve character
+    #   description: retrieves the public character
+    #   tags:
+    #     - character
+    #   security:
+    #     - playerGameCharacter: []
+    #   operationId: getCharacter
+    #   responses:
+    #     '200':
+    #       $ref: '#/components/responses/Character'
+    #     '404':
+    #       $ref: '#/components/responses/Fail'
+    #     '500':
+    #       $ref: '#/components/responses/Fail'
+    # patch:
+    #   summary: update character partial
+    #   tags:
+    #     - character
+    #   security:
+    #     - playerCharacterOwner: []
+    #   operationId: updateCharacter
+    #   requestBody:
+    #     $ref: '#/components/requestBodies/UpdateCharacter'
+    #   responses:
+    #     '204':
+    #       $ref: '#/components/responses/DeleteOrUpdate'
+    #     '404':
+    #       $ref: '#/components/responses/Fail'
+    #     '500':
+    #       $ref: '#/components/responses/Fail'
+    # delete:
+    #   summary: remove a character
+    #   description: deletes the character and its inventory
+    #   tags:
+    #     - character
+    #   security:
+    #     - playerCharacterOwner: []
+    #   operationId: deleteCharacter
+    #   responses:
+    #     '204':
+    #       $ref: '#/components/responses/DeleteOrUpdate'
+    #     '401':
+    #       $ref: '#/components/responses/Fail'
+    #     '404':
+    #       $ref: '#/components/responses/Fail'
+    #     '500':
+    #       $ref: '#/components/responses/Fail'
+  # '/characters/{characterId}/detail':
+  #   parameters:
+  #     - name: characterId
+  #       required: true
+  #       in: path
+  #       description: the characterId
+  #       schema:
+  #         type: string
+  #   get:
+  #     summary: retrieve character
+  #     description: 'retrieves either the public character or detail, depending on the player making the request'
+  #     tags:
+  #       - character
+  #     security:
+  #       - playerCharacterOwner: []
+  #     operationId: getCharacterDetail
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/CharacterDetail'
+  #       '401':
+  #         $ref: '#/components/responses/Fail'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  '/games/{gameId}/battles':
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId to add the battle to
+        schema:
+          type: string
+    post:
+      summary: create a new battle
+      description: "creates a new battle, adding the player's character associated with /games/{gameId} to the battle"
+      tags:
+        - battle
+      security:
+        - playerGameMember: []
+      operationId: createBattle
+      responses:
+        '201':
+          $ref: '#/components/responses/Location'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+    get:
+      summary: get battles
+      tags:
+        - game
+      security:
+        - playerGameMember: []
+      operationId: getGameBattles
+      responses:
+        '200':
+          $ref: '#/components/responses/GameBattles'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  '/games/{gameId}/battles/{battleId}':
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId of the battle to retrieve
+        schema:
+          type: string
+      - name: battleId
+        required: true
+        in: path
+        description: the battle to retrieve
+        schema:
+          type: string
+    get:
+      summary: retrieve a battle
+      tags:
+        - battle
+      security:
+        - playerGameMember: []
+      operationId: getBattle
+      responses:
+        '200':
+          $ref: '#/components/responses/Battle'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+    delete:
+      summary: delete a battle
+      tags:
+        - battle
+      security:
+        - battleDiscard: []
+      operationId: deleteBattle
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteOrUpdate'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  '/games/{gameId}/battles/{battleId}/enemies':
+    parameters:
+      - name: gameId
+        required: true
+        in: path
+        description: the gameId of the battle to modify
+        schema:
+          type: string
+      - name: battleId
+        required: true
+        in: path
+        description: the battle to modify
+        schema:
+          type: string
+    post:
+      summary: add enemy to battle
+      description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
+      tags:
+        - battle
+      security:
+        - playerBattleParticipant: []
+      operationId: createEnemy
+      requestBody:
+        $ref: '#/components/requestBodies/Monster'
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteOrUpdate'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  /skills:
+    description: GET list of all skills
+    get:
+      summary: get all available skills
+      tags:
+        - lists
+      operationId: getSkills
+      responses:
+        '200':
+          $ref: '#/components/responses/Skills'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  /races:
+    description: GET list of all races
+    get:
+      summary: get all available races
+      tags:
+        - lists
+      operationId: getRaces
+      responses:
+        '200':
+          $ref: '#/components/responses/Races'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  '/characters/{characterId}/skills':
+    description: add skills to a character
+    parameters:
+      - name: characterId
+        required: true
+        in: path
+        description: the character to modify
+        schema:
+          type: string
+    post:
+      summary: add a skill to a given character
+      description: creates a new skill at level 1 and adds it to the character
+      tags:
+        - character
+      security:
+        - playerCharacterOwner: []
+      requestBody:
+        $ref: '#/components/requestBodies/CreateCharacterSkill'
+      operationId: addCharacterSkill
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteOrUpdate'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+  '/characters/{characterId}/skills/{skillId}':
+    description: 'remove skills from character, update skill level'
+    parameters:
+      - name: characterId
+        required: true
+        in: path
+        description: the character to modify
+        schema:
+          type: string
+      - name: skillId
+        required: true
+        in: path
+        description: the skill id
+        schema:
+          type: string
+    patch:
+      summary: update the skill level
+      operationId: updateCharacterSkill
+      tags:
+        - character
+      security:
+        - playerCharacterOwner: []
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateCharacterSkill'
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteOrUpdate'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+    delete:
+      summary: remove a skill from a character
+      tags:
+        - character
+      security:
+        - playerCharacterOwner: []
+      operationId: deleteCharacterSkill
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteOrUpdate'
+        '404':
+          $ref: '#/components/responses/Fail'
+        '500':
+          $ref: '#/components/responses/Fail'
+security:
+  - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    playerCharacterOwner:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    playerGameOwner:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    playerGameMember:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    battleDiscard:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    playerBattleParticipant:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    playerGameCharacter:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  requestBodies:
+    Login:
+      description: login request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+    Register:
+      description: register new player request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - email
+              - password
+              - name
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              name:
+                type: string
+    CreateGame:
+      description: Create game request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - name
+              - maxPlayers
+            properties:
+              name:
+                type: string
+              maxPlayers:
+                type: number
+    UpdateGame:
+      description: Update game request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+              maxPlayers:
+                type: number
+    CreateCharacter:
+      description: Create character request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - name
+              - strength
+              - dexterity
+              - intelligence
+            properties:
+              name:
+                type: string
+              strength:
+                type: number
+              dexterity:
+                type: number
+              intelligence:
+                type: number
+    UpdateCharacter:
+      description: Create or Update character request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+              strength:
+                type: number
+              dexterity:
+                type: number
+              intelligence:
+                type: number
+              movement:
+                type: number
+    CreateCharacterSkill:
+      description: Create a character skill
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - skillId
+            properties:
+              skillId:
+                type: string
+    UpdateCharacterSkill:
+      description: Update the character skill level
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - level
+            properties:
+              level:
+                type: number
+    InvitePlayer:
+      description: Invite a player to a game
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email
+    BattleDamage:
+      description: Deal damage request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - damageType
+              - damageAmt
+            properties:
+              creatures:
+                type: array
+                items:
+                  type: number
+              characters:
+                type: array
+                items:
+                  type: number
+              damageType:
+                type: number
+              damageAmt:
+                type: number
+    Monster:
+      description: Monster request
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              monsterId:
+                type: number
+    RenamePet:
+      description: Rename pet
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            properties:
+              name:
+                type: string
+  responses:
+    DeleteOrUpdate:
+      description: Empty success response from delete or update
+    Location:
+      description: '201: A response that returns a location header'
+      headers:
+        Location:
+          description: the uri to retrieve the player
+          schema:
+            type: string
+    PlainText:
+      description: response in plain text/html
+      content:
+        text/html:
+          schema:
+            type: string
+    Fail:
+      description: Request failed
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - error
+            properties:
+              success:
+                nullable: true
+                type: boolean
+              error:
+                $ref: '#/components/schemas/Error'
+    IdCollection:
+      description: a response which consists of an array of general object ids
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string
+    Login:
+      description: login success
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - token
+              - player
+            properties:
+              token:
+                type: string
+              player:
+                type: string
+    Player:
+      description: Get player info success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PublicPlayer'
+    PlayerDetail:
+      description: Get player detail success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PlayerDetail'
+    Games:
+      description: Get players games success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/GameCharacter'
+    Game:
+      description: game detail request success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Game'
+            properties:
+              players:
+                type: array
+                items:
+                  type: string
+              characters:
+                type: array
+                items:
+                  type: string
+              battles:
+                type: array
+                items:
+                  type: string
+    Character:
+      description: Get character success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PublicCharacter'
+    CharacterDetail:
+      description: Get character success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/CharacterDetail'
+    Battle:
+      description: Battle object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Battle'
+    GameBattles:
+      description: Get players games success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Battle'
+    Skills:
+      description: List of all skills
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Skill'
+    Races:
+      description: List of all races
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/Race'
+  schemas:
+    Error:
+      description: an error
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+        message:
+          nullable: true
+          type: string
+    PublicPlayer:
+      description: Player object
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        lastSeenAt:
+          nullable: true
+          type: string
+          format: date-time
+    PlayerDetail:
+      description: Player details
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PublicPlayer'
+      properties:
+        email:
+          type: string
+          format: email
+    PublicCharacter:
+      description: Character object
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+    CharacterDetail:
+      description: Character details
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PublicCharacter'
+      properties:
+        player:
+          type: string
+        hp:
+          type: number
+        maxHp:
+          type: number
+        hpReplenish:
+          type: number
+        mana:
+          type: number
+        maxMana:
+          type: number
+        manaReplenish:
+          type: number
+        strength:
+          type: number
+        dexterity:
+          type: number
+        intelligence:
+          type: number
+        stamina:
+          type: number
+        maxStamina:
+          type: number
+        staminaReplenish:
+          type: number
+        hunger:
+          type: number
+        sleep:
+          type: number
+        movement:
+          type: string
+        hitChance:
+          type: number
+        defChance:
+          type: number
+        parry:
+          type: number
+        swingSpeed:
+          type: number
+        castSpeed:
+          type: number
+        healSpeed:
+          type: number
+        inventorySize:
+          type: number
+        resistPh:
+          type: number
+        resistF:
+          type: number
+        resistP:
+          type: number
+        resistC:
+          type: number
+        resistE:
+          type: number
+        inventory:
+          $ref: '#/components/schemas/Inventory'
+        raceName:
+          type: string
+        raceDescription:
+          type: string
+        raceSkills:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharacterSkill'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharacterSkill'
+    CharacterSkill:
+      description: A character's skill
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: '#/components/schemas/Skill'
+      properties:
+        level:
+          type: number
+    Skill:
+      description: A skill
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    Race:
+      description: A race
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/CharacterSkill'
+    Inventory:
+      description: an inventory
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        capacity:
+          type: number
+        gold:
+          type: number
+        weapons:
+          type: array
+          items:
+            type: string
+        armor:
+          type: array
+          items:
+            type: string
+        jewelry:
+          type: array
+          items:
+            type: string
+        spellbooks:
+          type: array
+          items:
+            type: string
+    Game:
+      description: Create game object
+      type: object
+      properties:
+        name:
+          type: string
+        maxPlayers:
+          type: number
+        id:
+          type: string
+        owner:
+          type: string
+    Battle:
+      description: Battle object
+      type: object
+      properties:
+        id:
+          type: string
+        displayName:
+          type: string
+    GameCharacter:
+      description: Game and Character
+      type: object
+      additionalProperties: false
+      properties:
+        game:
+          $ref: '#/components/schemas/Game'
+        character:
+          $ref: '#/components/schemas/PublicCharacter'
+        owner:
+          type: boolean
+    ItemType:
+      description: Item type
+      type: string
+      enum:
+        - weapon
+        - armor
+        - jewelry
+        - spellbook
+    EquipableType:
+      description: Item type
+      type: string
+      enum:
+        - weapon
+        - armor
+        - jewelry
+    DamageableType:
+      description: Item type
+      type: string
+      enum:
+        - weapon
+        - armor
+    ItemDamageType:
+      description: Item damage type
+      type: string
+      enum:
+        - damaged
+        - destroyed
