@@ -2,34 +2,25 @@
 
 Node/Express API for Openworld game
 
-## Nestjs
+## Welcome to Nestjs!
 
-With the impending migration to Nestjs framework, some of the details below may change, but this file should be updated to reflect the current state of the app.
+This project is now fully implemented in the Nestjs framework. Some of the old files
+are still hanging out in the nest_migration_reference directory, until the remainder of
+the previous functionality has been re-implemented.
 
 ## package.json scripts
 
 When using the `npm run migration:run` command, the typeorm cli will look in the `migration/` directory for any new migration files.
-Because of some weird flaw in the cli, when using the `migration:generate` or `migration:create` commands, it will not create the migration scripts in the proper directory as
-specified in the ormconfig. As such...
+
+Because of some weird flaw in the cli, when using the `migration:generate` or `migration:create` commands, it will not create the migration scripts in the proper directory as specified in the ormconfig. As such...
+
 when running the `npm run migration:generate` command, you must specify the `migration/` directory as part of the migration name, e.g. `npm run migration:generate migration/test-migration`
+
+Also, by convention, I have been splitting the migration scripts between DDL and DML subdirectories
 
 ## Nestjs cli
 
 To create a new module, run the `nest g resource {plural_name}` command. This will generate the directory, module, controller, service, and entity stub files
-
-## OpenAPI
-
-**_Migration NOTE:_** _openapi is not yet incorporated into the Nestjs app_
-
-- openapi config has been split into individual files in the config/openapi directory
-- before starting the server, or running the generators, this needs to be compiled into
-  a single file
-- run `npm run bundle:swagger` to build the config/openapi.yaml file.
-- all of the generators start from the config/openapi.yaml
-  - server-side dto's are built from the components/requestBodies and components/schemas
-  - client-side models are then built from the server-side dto's
-  - server-side controllers are built from the paths
-  - client-side communicator class is built from the paths
 
 ## Data Flow
 
@@ -43,8 +34,11 @@ To create a new module, run the `nest g resource {plural_name}` command. This wi
   - socket room is created (if it didn't already exist) with the id of the battle
   - message is sent to the room of player joining (SOCKET)
 
-**_NOTES:_** Generally, when the client needs to request data from the server, it will be done via an AJAX request to an HTTP endpoint.  
-If the client just needs to update the server and doesn't need to wait for a response, that will be done via a socket message.
+**_NOTES:_**
+
+- Generally, when the client needs to request data from the server, it will be done via an AJAX request to an HTTP endpoint.
+
+- If the client just needs to update the server and doesn't need to wait for a response, that will be done via a socket message.
 
 ## Coding Standards
 
@@ -68,6 +62,9 @@ If the client just needs to update the server and doesn't need to wait for a res
   - `/decorators` _custom typescript decorator definitions_
   - `/guards` _authorization guards used by module controllers_
   - `/interceptors` _interceptors used by module controllers_
+  - `app.module.ts` _the core nestjs module_
+  - `main.ts` _nestjs startup script_
+  - `requests.http` _api rest testing file_
 
 - `/test` _jest integration tests_
 - `ormconfig.ts` _typeorm config file for the nest app_
@@ -86,8 +83,8 @@ Method call flow:
   back in the response.
 - req/res should be processed here, and not passed directly to services
 - should not deal directly with factories and repositories
-- all data sent back to the client should be in the form of a response
-  object from /src/api/dto/response
+- all data sent back to the client should be packaged in the form of a
+  response dto object
 
 #### Services
 
@@ -112,18 +109,10 @@ Method call flow:
 
 ### Entities and DTO notes
 
-**_Migration NOTE:_** _these scripts have not yet been created for the Nestjs app_
-
 - Entities should strictly be used on the server for interfacing with
-  the database. Care should be taken to keep properties on these
-  objects in sync with the DTO objects, for simplicity.
-- DTO's are defined in the config/openapi.yml file in the components
-  section.
-- The TypeScript DTO modules are generated from the openapi spec via
-  the `npm run generate:server:entities` command
-- In order to keep these DTO's in sync between client and server, the
-  C# entities are generated from the TypeScript modules via the
-  `npm run generate:client:entities` command
+  the database.
+- DTO's are based on the Entities, but are customized to carry data as needed
+  between client and server in requests/responses
 
 ### Error handling
 
@@ -145,7 +134,7 @@ API testing for now is done manually via the `src/requests.http` file
 
 ## Production Server
 
-**_Migration NOTE:_** _production server is not yet ready to handle the Nestjs app_
+**_Migration NOTE:_** _production server is not yet implemented_
 
 Server is running on spinach.heimerman.org as openworld-game.com
 Jenkins starts and stops the server as CI builds are run
