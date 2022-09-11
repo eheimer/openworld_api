@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { GemRarity } from './gem-rarity.entity'
-import { ItemCategory } from './item-category.entity'
+import { ItemCategory } from '../../entities/item-category.entity'
 
 @Entity()
 export class Gem extends BaseEntity {

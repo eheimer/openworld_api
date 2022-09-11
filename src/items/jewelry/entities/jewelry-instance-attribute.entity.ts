@@ -1,6 +1,6 @@
-import { Skill } from '../../skills/entities/skill.entity'
+import { Skill } from '../../../skills/entities/skill.entity'
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { JewelryAttribute } from './jewelry-attribute.entity'
 import { JewelryInstance } from './jewelry-instance.entity'
 

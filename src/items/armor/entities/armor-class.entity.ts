@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { ArmorClassDamageReduction } from './armor-class-damage-reduction.entity'
 
 @Entity()

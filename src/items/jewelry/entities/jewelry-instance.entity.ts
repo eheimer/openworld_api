@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { Gem } from './gem.entity'
-import { Inventory } from './inventory.entity'
+import { Inventory } from '../../entities/inventory.entity'
 import { JewelryInstanceAttribute } from './jewelry-instance-attribute.entity'
 import { JewelryLocation } from './jewelry-location.entity'
 

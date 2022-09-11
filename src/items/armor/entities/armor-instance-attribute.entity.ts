@@ -1,6 +1,6 @@
-import { DamageType } from '../../damage-types/entities/damage-type.entity'
+import { DamageType } from '../../../damage-types/entities/damage-type.entity'
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { ArmorAttribute } from './armor-attribute.entity'
 import { ArmorInstance } from './armor-instance.entity'
 

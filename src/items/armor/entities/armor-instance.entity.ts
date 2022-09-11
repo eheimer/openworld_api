@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { ArmorClass } from './armor-class.entity'
 import { ArmorInstanceAttribute } from './armor-instance-attribute.entity'
 import { ArmorInstanceDamageReduction } from './armor-instance-damage-reduction.entity'
 import { ArmorLocation } from './armor-location.entity'
-import { Inventory } from './inventory.entity'
+import { Inventory } from '../../entities/inventory.entity'
 
 @Entity()
 export class ArmorInstance extends BaseEntity {

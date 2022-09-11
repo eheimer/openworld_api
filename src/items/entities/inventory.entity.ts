@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
-import { ArmorInstance } from './armor-instance.entity'
-import { JewelryInstance } from './jewelry-instance.entity'
+import { ArmorInstance } from '../armor/entities/armor-instance.entity'
+import { JewelryInstance } from '../jewelry/entities/jewelry-instance.entity'
 
 @Entity()
 export class Inventory extends BaseEntity {
