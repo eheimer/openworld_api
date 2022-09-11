@@ -1,4 +1,4 @@
-export const ClassDamageReductionSeed = [
+export const ArmorClassDamageReductionSeed = [
   { id: 1, level: 0, reduction: `2`, armorClass: 1, damageType: 1 },
   { id: 2, level: 0, reduction: `4`, armorClass: 1, damageType: 2 },
   { id: 3, level: 0, reduction: `3`, armorClass: 1, damageType: 3 },

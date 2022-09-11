@@ -13,6 +13,7 @@ import { DamageTypesModule } from './damage-types/damage-types.module'
 import { SkillsModule } from './skills/skills.module'
 import { BattlesModule } from './battles/battles.module'
 import { RaceModule } from './race/race.module'
+import { ItemsModule } from './items/items.module'
 import dbConfig from './config/database'
 
 @Module({
@@ -37,7 +38,8 @@ import dbConfig from './config/database'
     DamageTypesModule,
     SkillsModule,
     BattlesModule,
-    RaceModule
+    RaceModule,
+    ItemsModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
