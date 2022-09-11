@@ -6,6 +6,7 @@ import { MonsterCondition } from '../../conditions/entities/monster-condition.en
 import { DamageType } from '../../damage-types/entities/damage-type.entity'
 import { MonsterAction } from './monster-action.entity'
 import { Battle } from '../../battles/entities/battle.entity'
+import { Inventory } from '../../items/entities/inventory.entity'
 
 @Entity()
 export class MonsterInstance extends BaseEntity {
@@ -64,7 +65,7 @@ export class MonsterInstance extends BaseEntity {
   @ManyToOne(() => DamageType, { nullable: true })
   actionDamageType: DamageType
 
-  // @OneToOne(() => Inventory, { nullable: true })
-  // @JoinColumn()
-  // loot: Inventory
+  @OneToOne(() => Inventory, { nullable: true })
+  @JoinColumn()
+  loot: Inventory
 }

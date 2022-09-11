@@ -1,12 +1,12 @@
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 import { Player } from '../../players/entities/player.entity'
-// import { ArrayNotEmpty } from 'class-validator'
 import { Game } from '../../games/entities/game.entity'
 import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
 import { CharacterCondition } from '../../conditions/entities/character-condition.entity'
 import { Battle } from '../../battles/entities/battle.entity'
 import { Race } from '../../race/entities/race.entity'
+import { Inventory } from '../../items/entities/inventory.entity'
 
 @Entity()
 export class Character extends BaseEntity {
@@ -32,9 +32,9 @@ export class Character extends BaseEntity {
   @ManyToMany(() => Battle, (battle) => battle.participants, { nullable: true })
   battles: Battle[]
 
-  // @OneToOne(() => Inventory, { nullable: false })
-  // @JoinColumn()
-  // inventory: Inventory
+  @OneToOne(() => Inventory, { nullable: false })
+  @JoinColumn()
+  inventory: Inventory
 
   @OneToMany(() => CharacterCondition, (ac) => ac.character, { nullable: true })
   @JoinColumn()
