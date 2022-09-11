@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 import { DamageType } from '../../damage-types/entities/damage-type.entity'
 import { MonsterAction } from './monster-action.entity'
+import { SlayerType } from '../../damage-types/entities/slayer-type.entity'
 
 @Entity()
 export class Monster extends BaseEntity {
@@ -44,8 +45,9 @@ export class Monster extends BaseEntity {
   @ManyToOne(() => DamageType)
   breathDmgType: DamageType
 
-  // @ManyToMany(() => SlayerType, (st) => st.monsters)
-  // slayers: SlayerType[]
+  @ManyToMany(() => SlayerType, (st) => st.monsters)
+  @JoinTable()
+  slayers: SlayerType[]
 
   // @OneToMany(() => MonsterClue, (mc) => mc.monster)
   // clues: MonsterClue[]
