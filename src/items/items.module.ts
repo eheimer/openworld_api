@@ -11,8 +11,8 @@ import { SpellbooksService } from './spellbooks/spellbooks.service'
 import { WeaponsService } from './weapons.service'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Inventory } from './entities/inventory.entity'
-import EquipLocation from '../../nest_migration_reference/src/api/models/_completed/EquipLocation'
-import ItemCategory from '../../nest_migration_reference/src/api/models/_completed/ItemCategory'
+import { EquipLocation } from './entities/equip-location.entity'
+import { ItemCategory } from './entities/item-category.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([Inventory, EquipLocation, ItemCategory])],

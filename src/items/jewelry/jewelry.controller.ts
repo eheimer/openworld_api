@@ -1,16 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
 import { JewelryService } from './jewelry.service'
-import { CreateJewelryDto } from './dto/create-jewelry.dto'
-import { UpdateJewelryDto } from './dto/update-jewelry.dto'
 
 @Controller('jewelry')
 export class JewelryController {
   constructor(private readonly jewelryService: JewelryService) {}
 
-  @Post()
-  create(@Body() createJewelryDto: CreateJewelryDto) {
-    return this.jewelryService.create(createJewelryDto)
-  }
+  // @Post()
+  // create(@Body() createJewelryDto: CreateJewelryDto) {
+  //   return this.jewelryService.create(createJewelryDto)
+  // }
 
   @Get()
   findAll() {
@@ -22,10 +20,10 @@ export class JewelryController {
     return this.jewelryService.findOne(+id)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateJewelryDto: UpdateJewelryDto) {
-    return this.jewelryService.update(+id, updateJewelryDto)
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateJewelryDto: UpdateJewelryDto) {
+  //   return this.jewelryService.update(+id, updateJewelryDto)
+  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
