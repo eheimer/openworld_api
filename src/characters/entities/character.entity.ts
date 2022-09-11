@@ -7,6 +7,7 @@ import { CharacterCondition } from '../../conditions/entities/character-conditio
 import { Battle } from '../../battles/entities/battle.entity'
 import { Race } from '../../race/entities/race.entity'
 import { Inventory } from '../../items/entities/inventory.entity'
+import { CharacterSkill } from './character-skill.entity'
 
 @Entity()
 export class Character extends BaseEntity {
@@ -44,7 +45,7 @@ export class Character extends BaseEntity {
   @JoinColumn()
   pets: MonsterInstance[]
 
-  // @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true })
-  // @JoinColumn()
-  // skills: CharacterSkill[]
+  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true })
+  @JoinColumn()
+  skills: CharacterSkill[]
 }
