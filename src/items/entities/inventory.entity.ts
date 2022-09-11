@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 import { ArmorInstance } from './armor-instance.entity'
+import { JewelryInstance } from './jewelry-instance.entity'
 
 @Entity()
 export class Inventory extends BaseEntity {
@@ -13,8 +14,8 @@ export class Inventory extends BaseEntity {
   @OneToMany(() => ArmorInstance, (ai) => ai.inventory, { nullable: true })
   armor: ArmorInstance[]
 
-  // @OneToMany(() => JewelryInstance, (ji) => ji.inventory, { nullable: true })
-  // jewelry: JewelryInstance[]
+  @OneToMany(() => JewelryInstance, (ji) => ji.inventory, { nullable: true })
+  jewelry: JewelryInstance[]
 
   // @OneToMany(() => SpellbookInstance, (si) => si.inventory, { nullable: true })
   // spellbooks: SpellbookInstance[]

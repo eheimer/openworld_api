@@ -6,7 +6,7 @@ export const GemSeed = [
     image: ``,
     level: 1,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const GemSeed = [
     image: ``,
     level: 1,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const GemSeed = [
     image: ``,
     level: 1,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const GemSeed = [
     image: ``,
     level: 2,
     rarity: 2,
-    category: null
+    category: 1
   },
   {
     id: 5,
@@ -42,7 +42,7 @@ export const GemSeed = [
     image: ``,
     level: 2,
     rarity: 2,
-    category: null
+    category: 1
   },
   {
     id: 6,
@@ -51,7 +51,7 @@ export const GemSeed = [
     image: ``,
     level: 2,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 7,
@@ -60,7 +60,7 @@ export const GemSeed = [
     image: ``,
     level: 3,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 8,
@@ -69,7 +69,7 @@ export const GemSeed = [
     image: ``,
     level: 3,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 9,
@@ -78,7 +78,7 @@ export const GemSeed = [
     image: ``,
     level: 3,
     rarity: 2,
-    category: null
+    category: 1
   },
   {
     id: 10,
@@ -87,7 +87,7 @@ export const GemSeed = [
     image: ``,
     level: 3,
     rarity: 2,
-    category: null
+    category: 1
   },
   {
     id: 11,
@@ -96,7 +96,7 @@ export const GemSeed = [
     image: ``,
     level: 3,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 12,
@@ -105,7 +105,7 @@ export const GemSeed = [
     image: ``,
     level: 2,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 13,
@@ -114,7 +114,7 @@ export const GemSeed = [
     image: ``,
     level: 2,
     rarity: 1,
-    category: null
+    category: 1
   },
   {
     id: 14,
@@ -123,7 +123,7 @@ export const GemSeed = [
     image: ``,
     level: 1,
     rarity: 2,
-    category: null
+    category: 1
   },
   {
     id: 15,
@@ -132,7 +132,7 @@ export const GemSeed = [
     image: ``,
     level: 1,
     rarity: 2,
-    category: null
+    category: 1
   },
   {
     id: 16,
@@ -141,6 +141,6 @@ export const GemSeed = [
     image: ``,
     level: 1,
     rarity: 2,
-    category: null
+    category: 1
   }
 ]
