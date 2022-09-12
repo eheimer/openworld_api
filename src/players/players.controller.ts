@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
 import { PlayersService } from './players.service'
 import { UpdatePlayerDto } from './dto/update-player.dto'
 import { Serialize } from 'src/interceptors/serialize.interceptor'
@@ -7,6 +7,7 @@ import { PlayerDetailDto } from '../players/dto/player-detail.dto'
 import { SerializeResponse } from '../interceptors/serialize.interceptor'
 import { CurrentPlayer } from 'src/decorators/current-player.decorator'
 import { Player } from './entities/player.entity'
+import { CurrentPlayerGuard } from '../guards/authorization/player-current-player.guard'
 
 @Controller('players')
 export class PlayersController {
@@ -24,15 +25,17 @@ export class PlayersController {
     return new SerializeResponse(await this.playersService.findOne(+id), 'id', player.id)
   }
 
-  @Patch(':id')
-  //TODO: create a @CurrentPlayerGuard()
-  update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
+  @Patch(':playerId')
+  @UseGuards(CurrentPlayerGuard)
+  @Serialize(PlayerDetailDto)
+  update(@Param('playerId') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
     return this.playersService.update(+id, updatePlayerDto)
   }
 
-  @Delete(':id')
-  //TODO: create a @CurrentPlayerGuard()
-  remove(@Param('id') id: string) {
+  @Delete(':playerId')
+  @UseGuards(CurrentPlayerGuard)
+  @Serialize(PlayerDetailDto)
+  remove(@Param('playerId') id: string) {
     return this.playersService.remove(+id)
   }
 }

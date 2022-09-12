@@ -45,6 +45,19 @@ Content-Type: application/json
 GET {{baseUrl}}/players
 Authorization: Bearer {{bearerAuth}}
 
+### update a player
+PATCH {{baseUrl}}/players/1
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "email": "whatever@heimerman.org"
+}
+
+### delete a player
+DELETE {{baseUrl}}/players/1
+Authorization: Bearer {{bearerAuth}}
+
 ### Get a player
 GET {{baseUrl}}/players/1
 Authorization: Bearer {{bearerAuth}}
