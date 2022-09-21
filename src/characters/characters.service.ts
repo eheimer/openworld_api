@@ -22,29 +22,18 @@ export class CharactersService {
       throw new NotFoundException('Game not found')
     }
     const inventory = await this.inventoryRepo.save(await this.inventoryRepo.create({ limit: true }))
-    const inventories = await this.inventoryRepo.find()
-    console.log({ inventories })
-    console.log({ inventory })
     const character = await this.repo.create({
       ...createCharacterDto,
       game,
       player,
       inventory
     })
-    console.log({ character })
     await this.repo.save(character)
-    const storedCharacter = await this.repo.findOne({
-      where: { id: character.id },
-      relations: ['game', 'player', 'inventory']
-    })
-    console.log({ storedCharacter })
-    return storedCharacter
-
-    // return this.repo.save(character)
+    return this.findOne(character.id)
   }
 
   findOne(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['game', 'player'] })
+    return this.repo.findOne({ where: { id }, relations: ['game', 'player', 'inventory'] })
   }
 
   async update(id: number, updateCharacterDto: UpdateCharacterDto) {

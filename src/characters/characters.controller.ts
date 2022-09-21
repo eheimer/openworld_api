@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
+import { Controller, Get, Body, Patch, Param, Delete, UseGuards, NotFoundException } from '@nestjs/common'
 import { CharactersService } from './characters.service'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Player } from '../players/entities/player.entity'
@@ -28,7 +28,11 @@ export class CharactersController {
   @Get(':characterId')
   @Serialize(CharacterDto, CharacterDetailDto)
   async findOne(@Param('characterId') id: string, @CurrentPlayer() player: Player) {
-    return new SerializeResponse(await this.charactersService.findOne(+id), 'player.id', player.id)
+    const c = await this.charactersService.findOne(+id)
+    if (!c) {
+      throw new NotFoundException('Character not found')
+    }
+    return new SerializeResponse(c, 'player.id', player.id)
   }
 
   @Patch(':characterId')

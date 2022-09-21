@@ -111,7 +111,7 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "test character 2",
+  "name": "test character",
   "strength": 4,
   "dexterity": 1,
   "intelligence": 2
@@ -126,7 +126,7 @@ GET {{baseUrl}}/games/1/characters
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a character
-GET {{baseUrl}}/characters/2
+GET {{baseUrl}}/characters/1
 Authorization: Bearer {{bearerAuth}}
 
 ### Update a character
