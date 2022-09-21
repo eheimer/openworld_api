@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Inventory } from './entities/inventory.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class InventoryService {
+  constructor(@InjectRepository(Inventory) private repo: Repository<Inventory>) {}
+
   // create(createInventoryDto: CreateInventoryDto) {
   //   return 'This action adds a new inventory'
   // }
 
   findAll() {
+    return this.repo.find()
     return `This action returns all inventory`
   }
 

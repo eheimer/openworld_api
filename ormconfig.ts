@@ -3,8 +3,12 @@
 //set up correctly, we won't overwrite any data
 //if dev gets overwritten, we don't care
 const configDefault = {
-  type: 'sqlite',
-  database: 'dev.sqlite',
+  type: 'mysql',
+  host: '127.0.0.1',
+  port: '3306',
+  database: 'openworld',
+  username: 'openworld',
+  password: 'entranced',
   synchronize: false,
   logging: 'warn',
   entities: ['**/*.entity.js']
@@ -19,7 +23,7 @@ const dbConfig = {
   dev: {},
   prod: {
     type: 'mysql',
-    server: 'localhost',
+    host: 'localhost',
     port: '3306',
     username: 'openworld',
     password: 'entranced',

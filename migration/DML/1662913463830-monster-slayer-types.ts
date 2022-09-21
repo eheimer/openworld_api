@@ -4,8 +4,8 @@ import { SlayerType } from '../../src/damage-types/entities/slayer-type.entity'
 
 export class monsterSlayerTypes1662913463830 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const slayerTypes: SlayerType[] = await queryRunner.query(`SELECT * FROM "slayer_type"`)
-    const monsters: Monster[] = await queryRunner.query(`SELECT * FROM "monster"`)
+    const slayerTypes: SlayerType[] = await queryRunner.query(`SELECT * FROM \`slayer_type\``)
+    const monsters: Monster[] = await queryRunner.query(`SELECT * FROM \`monster\``)
     for (const monster of monsters) {
       let matchingSlayerTypes: SlayerType[] = []
       // add the monster-specific slayer if it exists
@@ -37,7 +37,7 @@ export class monsterSlayerTypes1662913463830 implements MigrationInterface {
       )
       for (const slayerType of matchingSlayerTypes) {
         await queryRunner.query(
-          `INSERT INTO "monster_slayers_slayer_type"("monsterId", "slayerTypeId") VALUES (${monster.id}, ${slayerType.id})`
+          `INSERT INTO \`monster_slayers_slayer_type\`(\`monsterId\`, \`slayerTypeId\`) VALUES (${monster.id}, ${slayerType.id})`
         )
       }
     }
@@ -45,6 +45,6 @@ export class monsterSlayerTypes1662913463830 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     //not worth trying to figure out how to undo this, so we'll just truncate the table
-    await queryRunner.query(`DELETE FROM "monster_slayers_slayer_type"`)
+    await queryRunner.query(`DELETE FROM \`monster_slayers_slayer_type\``)
   }
 }

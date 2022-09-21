@@ -126,7 +126,7 @@ GET {{baseUrl}}/games/1/characters
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a character
-GET {{baseUrl}}/characters/1
+GET {{baseUrl}}/characters/2
 Authorization: Bearer {{bearerAuth}}
 
 ### Update a character
@@ -140,4 +140,8 @@ Content-Type: application/json
 
 ### Get all conditions
 GET {{baseUrl}}/conditions
+Authorization: Bearer {{bearerAuth}}
+
+### Get all inventories
+GET {{baseUrl}}/inventory
 Authorization: Bearer {{bearerAuth}}

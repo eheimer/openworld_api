@@ -10,33 +10,35 @@ export class jewelry1662902682806 implements MigrationInterface {
     // GemRarity
     for (const gemRarity of GemRaritySeed) {
       await queryRunner.query(
-        `INSERT INTO "gem_rarity" ("id", "name", "durability") VALUES (${gemRarity.id}, '${gemRarity.name}', ${gemRarity.durability})`
+        `INSERT INTO \`gem_rarity\` (\`id\`, \`name\`, \`durability\`) VALUES (${gemRarity.id}, '${gemRarity.name}', ${gemRarity.durability})`
       )
     }
 
     // ItemCategory
     for (const category of ItemCategorySeed) {
-      await queryRunner.query(`INSERT INTO "item_category" ("id", "name") VALUES (${category.id}, '${category.name}')`)
+      await queryRunner.query(
+        `INSERT INTO \`item_category\` (\`id\`, \`name\`) VALUES (${category.id}, '${category.name}')`
+      )
     }
 
     // Gem
     for (const gem of GemSeed) {
       await queryRunner.query(
-        `INSERT INTO "gem" ("id", "name", "weight", "image", "level", "rarityId", "categoryId") VALUES (${gem.id}, '${gem.name}', ${gem.weight}, '${gem.image}', ${gem.level}, ${gem.rarity}, ${gem.category})`
+        `INSERT INTO \`gem\` (\`id\`, \`name\`, \`weight\`, \`image\`, \`level\`, \`rarityId\`, \`categoryId\`) VALUES (${gem.id}, '${gem.name}', ${gem.weight}, '${gem.image}', ${gem.level}, ${gem.rarity}, ${gem.category})`
       )
     }
 
     //JewelryAttribute
     for (const jewelryAttribute of JewelryAttributeSeed) {
       await queryRunner.query(
-        `INSERT INTO "jewelry_attribute" ("id", "name", "value") VALUES (${jewelryAttribute.id}, '${jewelryAttribute.name}', '${jewelryAttribute.value}')`
+        `INSERT INTO \`jewelry_attribute\` (\`id\`, \`name\`, \`value\`) VALUES (${jewelryAttribute.id}, '${jewelryAttribute.name}', '${jewelryAttribute.value}')`
       )
     }
 
     //JewelryLocation
     for (const jewelryLocation of JewelryLocationSeed) {
       await queryRunner.query(
-        `INSERT INTO "jewelry_location" ("id", "name", "locationId") VALUES (${jewelryLocation.id}, '${jewelryLocation.name}', ${jewelryLocation.location})`
+        `INSERT INTO \`jewelry_location\` (\`id\`, \`name\`, \`locationId\`) VALUES (${jewelryLocation.id}, '${jewelryLocation.name}', ${jewelryLocation.location})`
       )
     }
   }
@@ -44,27 +46,27 @@ export class jewelry1662902682806 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     // JewelryLocation
     for (const jewelryLocation of JewelryLocationSeed) {
-      await queryRunner.query(`DELETE FROM "jewelry_location" WHERE "id" = ${jewelryLocation.id}`)
+      await queryRunner.query(`DELETE FROM \`jewelry_location\` WHERE \`id\` = ${jewelryLocation.id}`)
     }
 
     // JewelryAttribute
     for (const jewelryAttribute of JewelryAttributeSeed) {
-      await queryRunner.query(`DELETE FROM "jewelry_attribute" WHERE "id" = ${jewelryAttribute.id}`)
+      await queryRunner.query(`DELETE FROM \`jewelry_attribute\` WHERE \`id\` = ${jewelryAttribute.id}`)
     }
 
     // Gem
     for (const gem of GemSeed) {
-      await queryRunner.query(`DELETE FROM "gem" WHERE "id" = ${gem.id}`)
+      await queryRunner.query(`DELETE FROM \`gem\` WHERE \`id\` = ${gem.id}`)
     }
 
     // ItemCategory
     for (const category of ItemCategorySeed) {
-      await queryRunner.query(`DELETE FROM "item_category" WHERE "id" = ${category.id}`)
+      await queryRunner.query(`DELETE FROM \`item_category\` WHERE \`id\` = ${category.id}`)
     }
 
     // GemRarity
     for (const gemRarity of GemRaritySeed) {
-      await queryRunner.query(`DELETE FROM "gem_rarity" WHERE "id" = ${gemRarity.id}`)
+      await queryRunner.query(`DELETE FROM \`gem_rarity\` WHERE \`id\` = ${gemRarity.id}`)
     }
   }
 }

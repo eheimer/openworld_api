@@ -8,17 +8,17 @@ import { WeaponInstance } from '../weapons/entities/weapon-instance.entity'
 @Entity()
 export class Inventory extends BaseEntity {
   @Column({ default: false }) limit: boolean
-  @Column() gold: number
+  @Column({ default: 0 }) gold: number
 
-  @OneToMany(() => WeaponInstance, (wi) => wi.inventory, { nullable: true })
+  @OneToMany(() => WeaponInstance, (wi) => wi.inventory, { nullable: true, cascade: ['remove'] })
   weapons: WeaponInstance[]
 
-  @OneToMany(() => ArmorInstance, (ai) => ai.inventory, { nullable: true })
+  @OneToMany(() => ArmorInstance, (ai) => ai.inventory, { nullable: true, cascade: ['remove'] })
   armor: ArmorInstance[]
 
-  @OneToMany(() => JewelryInstance, (ji) => ji.inventory, { nullable: true })
+  @OneToMany(() => JewelryInstance, (ji) => ji.inventory, { nullable: true, cascade: ['remove'] })
   jewelry: JewelryInstance[]
 
-  @OneToMany(() => SpellbookInstance, (si) => si.inventory, { nullable: true })
+  @OneToMany(() => SpellbookInstance, (si) => si.inventory, { nullable: true, cascade: ['remove'] })
   spellbooks: SpellbookInstance[]
 }

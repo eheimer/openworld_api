@@ -5,14 +5,14 @@ export class slayerTypes1662912373209 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     for (const slayerType of SlayerTypeSeed) {
       await queryRunner.query(
-        `INSERT INTO "slayer_type" ("id", "name") VALUES (${slayerType.id}, '${slayerType.name}')`
+        `INSERT INTO \`slayer_type\` (\`id\`, \`name\`) VALUES (${slayerType.id}, '${slayerType.name}')`
       )
     }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     for (const slayerType of SlayerTypeSeed) {
-      await queryRunner.query(`DELETE FROM "slayer_type" WHERE id = ${slayerType.id}`)
+      await queryRunner.query(`DELETE FROM \`slayer_type\` WHERE id = ${slayerType.id}`)
     }
   }
 }

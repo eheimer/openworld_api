@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 import { Player } from '../../players/entities/player.entity'
-// import { ArrayNotEmpty } from 'class-validator'
 import { Character } from '../../characters/entities/character.entity'
 import { Battle } from '../../battles/entities/battle.entity'
 
@@ -15,12 +14,12 @@ export class Game extends BaseEntity {
   @ManyToOne(() => Player, { nullable: false })
   owner: Player
 
-  @ManyToMany(() => Player, (player) => player.games, { nullable: false, cascade: ['remove'] })
+  @ManyToMany(() => Player, (player) => player.games, { nullable: false })
   players: Player[]
 
-  @OneToMany(() => Character, (character) => character.game, { nullable: true })
+  @OneToMany(() => Character, (character) => character.game, { nullable: true, cascade: ['remove'] })
   characters: Character[]
 
-  @OneToMany(() => Battle, (battle) => battle.game, { nullable: true })
+  @OneToMany(() => Battle, (battle) => battle.game, { nullable: true, cascade: ['remove'] })
   battles: Battle[]
 }
