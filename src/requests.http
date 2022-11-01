@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3000
-@bearerAuth = {{login.response.body.access_token}}
+@bearerAuth = {{login.response.body.token}}
 
 ### Create PLAYER 1
 POST {{baseUrl}}/auth/register

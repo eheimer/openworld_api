@@ -8,10 +8,7 @@ import { Repository } from 'typeorm'
 
 @Injectable()
 export class GamesService {
-  constructor(
-    @InjectRepository(Game) private readonly repo: Repository<Game>,
-    @InjectRepository(Player) private readonly playerRepo: Repository<Player>
-  ) {}
+  constructor(@InjectRepository(Game) private readonly repo: Repository<Game>) {}
 
   async create(createGameDto: CreateGameDto, player: Player) {
     let game = await this.repo.findOneBy({ name: createGameDto.name, owner: { id: player.id } })
@@ -48,11 +45,7 @@ export class GamesService {
     if (!game) {
       throw new NotFoundException('Game not found')
     }
-    const player = await this.playerRepo.findOneBy({ id: playerId })
-    if (!player) {
-      throw new NotFoundException('Player not found')
-    }
-    game.players.push(player)
+    game.players.push({ id: playerId } as any)
     return await this.repo.save(game)
   }
 
@@ -61,18 +54,39 @@ export class GamesService {
     if (!game) {
       throw new NotFoundException('Game not found')
     }
-    const player = await this.playerRepo.findOneBy({ id: playerId })
-    if (!player) {
-      throw new NotFoundException('Player not found')
-    }
-    game.players = game.players.filter((p) => p.id !== player.id)
+    game.players = game.players.filter((p) => p.id !== playerId)
     return await this.repo.save(game)
+  }
+
+  findWithPlayers(gameId: number) {
+    return this.repo.findOne({
+      where: { id: gameId },
+      relations: ['players']
+    })
   }
 
   findWithPlayer(gameId: number, playerId: number) {
     return this.repo.findOne({
       where: { id: gameId, players: { id: playerId } },
       relations: ['players']
+    })
+  }
+
+  findWithBattles(gameId: number) {
+    return this.repo.findOne({
+      where: { id: gameId },
+      relations: ['battles']
+    })
+  }
+
+  async findAllGamesWithCharacterForPlayer(playerId: number) {
+    const games = await this.repo.find({
+      where: { players: { id: playerId } },
+      relations: ['characters', 'characters.player']
+    })
+    return games.map((game) => {
+      const character = game.characters.find((c) => c.player.id === playerId)
+      return { game, character }
     })
   }
 }

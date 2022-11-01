@@ -1,4 +1,4 @@
-import { CanActivate, Injectable, ExecutionContext, NotFoundException, BadRequestException } from '@nestjs/common'
+import { CanActivate, Injectable, ExecutionContext, NotFoundException } from '@nestjs/common'
 import { CharactersService } from '../../characters/characters.service'
 
 /**

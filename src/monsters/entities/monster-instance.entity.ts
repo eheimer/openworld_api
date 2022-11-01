@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 import { Character } from '../../characters/entities/character.entity'
 import { Monster } from './monster.entity'

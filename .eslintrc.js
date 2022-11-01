@@ -23,7 +23,9 @@ module.exports = {
     'ormDataSource.ts',
     'migration/**/*.ts',
     'seed/**/*.ts',
-    'nest_migration_reference/src/**/*.ts'
+    'nest_migration_reference/src/**/*.ts',
+    'src/**/*.spec.ts',
+    'test/**/*'
   ],
   rules: {
     'no-console': 'warn',

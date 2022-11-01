@@ -4,28 +4,21 @@ import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Character } from './entities/character.entity'
 import { Repository } from 'typeorm'
-import { Game } from '../games/entities/game.entity'
-import { Player } from '../players/entities/player.entity'
-import { Inventory } from '../items/entities/inventory.entity'
+import { InventoryService } from '../items/inventory.service'
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(Character) private repo: Repository<Character>,
-    @InjectRepository(Game) private gameRepo: Repository<Game>,
-    @InjectRepository(Inventory) private inventoryRepo: Repository<Inventory>
+    private inventoryService: InventoryService
   ) {}
 
-  async create(gameId: number, player: Player, createCharacterDto: CreateCharacterDto) {
-    const game = await this.gameRepo.findOne({ where: { id: gameId }, relations: ['players'] })
-    if (!game) {
-      throw new NotFoundException('Game not found')
-    }
-    const inventory = await this.inventoryRepo.save(await this.inventoryRepo.create({ limit: true }))
+  async create(gameId: number, playerId: number, createCharacterDto: CreateCharacterDto) {
+    const inventory = await this.inventoryService.createInventory(true)
     const character = await this.repo.create({
       ...createCharacterDto,
-      game,
-      player,
+      game: { id: gameId },
+      player: { id: playerId },
       inventory
     })
     await this.repo.save(character)

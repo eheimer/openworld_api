@@ -27,4 +27,9 @@ export class InventoryService {
   remove(id: number) {
     return `This action removes a #${id} inventory`
   }
+
+  createInventory(limit: boolean) {
+    const inventory = this.repo.create({ limit })
+    return this.repo.save(inventory)
+  }
 }

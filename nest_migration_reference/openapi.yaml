@@ -281,126 +281,126 @@ paths:
   #         $ref: '#/components/responses/Fail'
   #       '500':
   #         $ref: '#/components/responses/Fail'
-  '/games/{gameId}/players':
-    parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId to invite a player to
-        schema:
-          type: string
-    post:
-      summary: invite a player to a game
-      tags:
-        - game
-      security:
-        - playerGameOwner: []
-      operationId: invitePlayer
-      requestBody:
-        $ref: '#/components/requestBodies/InvitePlayer'
-      responses:
-        '204':
-          $ref: '#/components/responses/DeleteOrUpdate'
-        '404':
-          $ref: '#/components/responses/Fail'
-        '500':
-          $ref: '#/components/responses/Fail'
-  '/games/{gameId}/characters':
-    parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId
-        schema:
-          type: string
-    # post:
-    #   summary: create character
-    #   tags:
-    #     - character
-    #     - game
-    #   security:
-    #     - playerGameMember: []
-    #   operationId: createCharacter
-    #   requestBody:
-    #     $ref: '#/components/requestBodies/CreateCharacter'
-    #   responses:
-    #     '201':
-    #       $ref: '#/components/responses/Location'
-    #     '404':
-    #       $ref: '#/components/responses/Fail'
-    #     '500':
-    #       $ref: '#/components/responses/Fail'
-    # get:
-    #   summary: get all characters for game
-    #   tags:
-    #     - character
-    #     - game
-    #   security:
-    #     - playerGameMember: []
-    #   operationId: getGameCharacters
-    #   responses:
-    #     '200':
-    #       $ref: '#/components/responses/IdCollection'
-    #     '404':
-    #       $ref: '#/components/responses/Fail'
-    #     '500':
-    #       $ref: '#/components/responses/Fail'
-  '/characters/{characterId}':
-    parameters:
-      - name: characterId
-        required: true
-        in: path
-        description: the characterId
-        schema:
-          type: string
-    # get:
-    #   summary: retrieve character
-    #   description: retrieves the public character
-    #   tags:
-    #     - character
-    #   security:
-    #     - playerGameCharacter: []
-    #   operationId: getCharacter
-    #   responses:
-    #     '200':
-    #       $ref: '#/components/responses/Character'
-    #     '404':
-    #       $ref: '#/components/responses/Fail'
-    #     '500':
-    #       $ref: '#/components/responses/Fail'
-    # patch:
-    #   summary: update character partial
-    #   tags:
-    #     - character
-    #   security:
-    #     - playerCharacterOwner: []
-    #   operationId: updateCharacter
-    #   requestBody:
-    #     $ref: '#/components/requestBodies/UpdateCharacter'
-    #   responses:
-    #     '204':
-    #       $ref: '#/components/responses/DeleteOrUpdate'
-    #     '404':
-    #       $ref: '#/components/responses/Fail'
-    #     '500':
-    #       $ref: '#/components/responses/Fail'
-    # delete:
-    #   summary: remove a character
-    #   description: deletes the character and its inventory
-    #   tags:
-    #     - character
-    #   security:
-    #     - playerCharacterOwner: []
-    #   operationId: deleteCharacter
-    #   responses:
-    #     '204':
-    #       $ref: '#/components/responses/DeleteOrUpdate'
-    #     '401':
-    #       $ref: '#/components/responses/Fail'
-    #     '404':
-    #       $ref: '#/components/responses/Fail'
-    #     '500':
-    #       $ref: '#/components/responses/Fail'
+  # '/games/{gameId}/players':
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId to invite a player to
+  #       schema:
+  #         type: string
+  #   post:
+  #     summary: invite a player to a game
+  #     tags:
+  #       - game
+  #     security:
+  #       - playerGameOwner: []
+  #     operationId: invitePlayer
+  #     requestBody:
+  #       $ref: '#/components/requestBodies/InvitePlayer'
+  #     responses:
+  #       '204':
+  #         $ref: '#/components/responses/DeleteOrUpdate'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # '/games/{gameId}/characters':
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId
+  #       schema:
+  #         type: string
+  # post:
+  #   summary: create character
+  #   tags:
+  #     - character
+  #     - game
+  #   security:
+  #     - playerGameMember: []
+  #   operationId: createCharacter
+  #   requestBody:
+  #     $ref: '#/components/requestBodies/CreateCharacter'
+  #   responses:
+  #     '201':
+  #       $ref: '#/components/responses/Location'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # get:
+  #   summary: get all characters for game
+  #   tags:
+  #     - character
+  #     - game
+  #   security:
+  #     - playerGameMember: []
+  #   operationId: getGameCharacters
+  #   responses:
+  #     '200':
+  #       $ref: '#/components/responses/IdCollection'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # '/characters/{characterId}':
+  #   parameters:
+  #     - name: characterId
+  #       required: true
+  #       in: path
+  #       description: the characterId
+  #       schema:
+  #         type: string
+  # get:
+  #   summary: retrieve character
+  #   description: retrieves the public character
+  #   tags:
+  #     - character
+  #   security:
+  #     - playerGameCharacter: []
+  #   operationId: getCharacter
+  #   responses:
+  #     '200':
+  #       $ref: '#/components/responses/Character'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # patch:
+  #   summary: update character partial
+  #   tags:
+  #     - character
+  #   security:
+  #     - playerCharacterOwner: []
+  #   operationId: updateCharacter
+  #   requestBody:
+  #     $ref: '#/components/requestBodies/UpdateCharacter'
+  #   responses:
+  #     '204':
+  #       $ref: '#/components/responses/DeleteOrUpdate'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
+  # delete:
+  #   summary: remove a character
+  #   description: deletes the character and its inventory
+  #   tags:
+  #     - character
+  #   security:
+  #     - playerCharacterOwner: []
+  #   operationId: deleteCharacter
+  #   responses:
+  #     '204':
+  #       $ref: '#/components/responses/DeleteOrUpdate'
+  #     '401':
+  #       $ref: '#/components/responses/Fail'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
   # '/characters/{characterId}/detail':
   #   parameters:
   #     - name: characterId
@@ -449,20 +449,20 @@ paths:
           $ref: '#/components/responses/Fail'
         '500':
           $ref: '#/components/responses/Fail'
-    get:
-      summary: get battles
-      tags:
-        - game
-      security:
-        - playerGameMember: []
-      operationId: getGameBattles
-      responses:
-        '200':
-          $ref: '#/components/responses/GameBattles'
-        '404':
-          $ref: '#/components/responses/Fail'
-        '500':
-          $ref: '#/components/responses/Fail'
+    # get:
+    #   summary: get battles
+    #   tags:
+    #     - game
+    #   security:
+    #     - playerGameMember: []
+    #   operationId: getGameBattles
+    #   responses:
+    #     '200':
+    #       $ref: '#/components/responses/GameBattles'
+    #     '404':
+    #       $ref: '#/components/responses/Fail'
+    #     '500':
+    #       $ref: '#/components/responses/Fail'
   '/games/{gameId}/battles/{battleId}':
     parameters:
       - name: gameId

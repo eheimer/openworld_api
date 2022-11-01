@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, NotFoundException } from '@nestjs/common'
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { PlayersService } from '../players/players.service'
 import { Public } from 'src/decorators/public-auth.decorator'

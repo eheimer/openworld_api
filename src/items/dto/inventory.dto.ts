@@ -6,6 +6,8 @@ import { SpellbookInstanceDto } from '../spellbooks/dto/spellbook-instance.dto'
 import { DTO } from 'src/decorators/dto-property.decorator'
 
 export class InventoryDto {
+  @Expose() id: number
+  @Expose() capacity: number
   @Expose() gold: number
   @Expose() @DTO(WeaponInstanceDto) weapons: WeaponInstanceDto[]
   @Expose() @DTO(ArmorInstanceDto) armor: ArmorInstanceDto[]
