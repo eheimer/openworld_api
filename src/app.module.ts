@@ -14,6 +14,7 @@ import { SkillsModule } from './skills/skills.module'
 import { BattlesModule } from './battles/battles.module'
 import { RaceModule } from './race/race.module'
 import { ItemsModule } from './items/items.module'
+import { MapModule } from './map/map.module'
 import dbConfig from './config/database'
 
 @Module({
@@ -39,7 +40,8 @@ import dbConfig from './config/database'
     SkillsModule,
     BattlesModule,
     RaceModule,
-    ItemsModule
+    ItemsModule,
+    MapModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
