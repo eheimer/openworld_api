@@ -50,3 +50,6 @@ nest_migration_reference/coverage/
 nest_migration_reference/config/.env.prod
 nest_migration_reference/config/openapi.yaml
 openworld-api.code-workspace
+
+# Unity client
+src/_static/client/**/*

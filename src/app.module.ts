@@ -16,9 +16,15 @@ import { RaceModule } from './race/race.module'
 import { ItemsModule } from './items/items.module'
 import { MapModule } from './map/map.module'
 import dbConfig from './config/database'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { join } from 'path'
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '_static', 'client'),
+      serveRoot: '/client'
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `./config/.env.${process.env.NODE_ENV}`,
