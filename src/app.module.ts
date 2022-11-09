@@ -23,7 +23,7 @@ import { join } from 'path'
   imports: [
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '_static', 'client'),
-      serveRoot: '/client'
+      serveRoot: '/mapeditor'
     }),
     ConfigModule.forRoot({
       isGlobal: true,
