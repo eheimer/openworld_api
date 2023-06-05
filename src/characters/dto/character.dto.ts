@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer'
-import { DTO } from 'src/decorators/dto-property.decorator'
+import { DTO } from '../../decorators/dto-property.decorator'
 import { PlayerDto } from '../../players/dto/player.dto'
 import { GameDto } from '../../games/dto/game.dto'
 

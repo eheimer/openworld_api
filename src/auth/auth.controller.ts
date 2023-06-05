@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { PlayersService } from '../players/players.service'
-import { Public } from 'src/decorators/public-auth.decorator'
+import { Public } from '../decorators/public-auth.decorator'
 import { LocalAuthGuard } from '../guards/authentication/local-auth.guard'
 import { Player } from '../players/entities/player.entity'
-import { CreatePlayerDto } from 'src/players/dto/create-player.dto'
-import { CurrentPlayer } from 'src/decorators/current-player.decorator'
+import { CreatePlayerDto } from '../players/dto/create-player.dto'
+import { CurrentPlayer } from '../decorators/current-player.decorator'
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
-import { Serialize } from 'src/interceptors/serialize.interceptor'
+import { Serialize } from '../interceptors/serialize.interceptor'
 import { PlayerDetailDto } from '../players/dto/player-detail.dto'
 
 @Controller('auth')

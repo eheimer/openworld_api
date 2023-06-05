@@ -1,11 +1,11 @@
 import { Controller, Get, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
 import { PlayersService } from './players.service'
 import { UpdatePlayerDto } from './dto/update-player.dto'
-import { Serialize } from 'src/interceptors/serialize.interceptor'
+import { Serialize } from '../interceptors/serialize.interceptor'
 import { PlayerDto } from '../players/dto/player.dto'
 import { PlayerDetailDto } from '../players/dto/player-detail.dto'
 import { SerializeResponse } from '../interceptors/serialize.interceptor'
-import { CurrentPlayer } from 'src/decorators/current-player.decorator'
+import { CurrentPlayer } from '../decorators/current-player.decorator'
 import { Player } from './entities/player.entity'
 import { CurrentPlayerGuard } from '../guards/authorization/player-current-player.guard'
 

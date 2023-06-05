@@ -2,9 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { AuthService } from './auth.service'
 import { PlayersService } from '../players/players.service'
 import { JwtService } from '@nestjs/jwt'
-import { Player } from '../players/player.entity'
+import { Player } from '../players/entities/player.entity'
 import { Not } from 'typeorm'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
+import { CreateBattleDto } from '../battles/dto/create-battle.dto'
+import { CreatePlayerDto } from '../players/dto/create-player.dto'
 
 describe('AuthService', () => {
   let service: AuthService
@@ -13,9 +15,11 @@ describe('AuthService', () => {
   beforeEach(async () => {
     //create a fake copy of PlayersService
     fakePlayersService = {
-      findByUsername: async (username) => Promise.resolve(null),
-      findByEmail: async (email) => Promise.resolve(null),
-      create: async (username, email, password) => Promise.resolve({ id: 1, username, email, password } as Player),
+      findOneByUsername: async (username) => Promise.resolve(null),
+      findOneByEmail: async (email) => Promise.resolve(null),
+      create: async (dto: CreatePlayerDto) =>
+        Promise.resolve({ id: 1, username: dto.username, email: dto.email, password: dto.password } as Player),
+      //create: async (username, email, password) => Promise.resolve({ id: 1, username, email, password } as Player),
       update: async (id, data: Partial<Player>) => Promise.resolve({ id, ...data } as Player)
     }
     const fakeJwtService: Partial<JwtService> = {
@@ -41,7 +45,7 @@ describe('AuthService', () => {
   })
 
   it('should salt and hash password', async () => {
-    const user = await service.register('eric', 'eric@asdf.com', 'asdf')
+    const user = await service.register({ username: 'eric', email: 'eric@asdf.com', password: 'asdf' })
     expect(user.password).not.toBe('asdf')
     const [salt, hash] = user.password.split('.')
     expect(salt).toBeDefined()
@@ -52,9 +56,11 @@ describe('AuthService', () => {
   })
 
   it('should throw an error if email is in use', async () => {
-    fakePlayersService.findByEmail = (email) =>
+    fakePlayersService.findOneByEmail = (email) =>
       Promise.resolve({ id: 1, username: 'eric', email, password: 'asdf' } as Player)
-    await expect(service.register('eric', 'eric@asdf.com', 'asdf')).rejects.toThrowError('Email already in use')
+    await expect(service.register({ username: 'eric', email: 'eric@asdf.com', password: 'asdf' })).rejects.toThrowError(
+      'Email already in use'
+    )
   })
 
   it('should throw if authenticate is called with invalid username', async () => {
@@ -62,7 +68,7 @@ describe('AuthService', () => {
   })
 
   it('throws if an invalid password is provided', async () => {
-    fakePlayersService.findByUsername = (username) =>
+    fakePlayersService.findOneByUsername = (username) =>
       Promise.resolve({ id: 1, username, email: 'asdf@asdf.com', password: 'asdf' } as Player)
     await expect(service.authenticate('eric', 'asdf')).rejects.toThrowError('Invalid password')
   })
@@ -71,7 +77,7 @@ describe('AuthService', () => {
     const password = 'asdf'
     const salt = service.makeSalt()
     const hash = await service.hashPassword(password, salt)
-    fakePlayersService.findByUsername = (username) =>
+    fakePlayersService.findOneByUsername = (username) =>
       Promise.resolve({ id: 1, username, email: 'asdf@asdf.com', password: `${salt}.${hash}` } as Player)
     const user = await service.authenticate('eric', 'asdf')
     expect(user).toBeDefined()

@@ -1,5 +1,5 @@
 import { Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
-import { GamesService } from 'src/games/games.service'
+import { GamesService } from '../../games/games.service'
 import { CharactersService } from '../../characters/characters.service'
 import { GamePlayerGuard } from './game-player.guard'
 

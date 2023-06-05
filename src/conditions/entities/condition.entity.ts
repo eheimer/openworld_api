@@ -1,4 +1,4 @@
-import { DamageType } from 'src/damage-types/entities/damage-type.entity'
+import { DamageType } from '../../damage-types/entities/damage-type.entity'
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 

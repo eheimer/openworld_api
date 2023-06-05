@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Logger, Request } from '@nestjs/common'
 import { MapService } from './map.service'
-import { Serialize } from 'src/interceptors/serialize.interceptor'
+import { Serialize } from '../interceptors/serialize.interceptor'
 import { TileDataDto } from './dto/tile-data.dto'
-import { Public } from 'src/decorators/public-auth.decorator'
+import { Public } from '../decorators/public-auth.decorator'
 
 @Controller('map')
 export class MapController {

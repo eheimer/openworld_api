@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer'
 import { CharacterDto } from './character.dto'
 import { InventoryDto } from '../../items/dto/inventory.dto'
-import { DTO } from 'src/decorators/dto-property.decorator'
+import { DTO } from '../../decorators/dto-property.decorator'
 
 export class CharacterDetailDto extends CharacterDto {
   @Expose() strength: number
