@@ -1,0 +1,96 @@
+@baseUrl = http://localhost:3000
+@rnd = {{$randomInt 1000 9999}}
+@bearerAuth = {{login.response.body.token}}
+@player1Name = {{register1.response.body.username}}
+@player1Id = {{register1.response.body.id}}
+@player2Name = {{register2.response.body.username}}
+@player2Id = {{register2.response.body.id}}
+
+### Create PLAYER 1
+# @name register1
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "email": "player{{rnd}}@example.com",
+  "password": "password"
+}
+
+### Create PLAYER 2
+# @name register2
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "email": "player{{rnd}}@example.com",
+  "password": "password"
+}
+
+### Login PLAYER 1
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{player1Name}}",
+  "password": "password"
+}
+
+### Get all players
+# verify that only {{player1Id}} has an email field
+GET {{baseUrl}}/players
+Authorization: Bearer {{bearerAuth}}
+
+### update player 1 email
+PATCH {{baseUrl}}/players/{{player1Id}}
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "email": "whatever{{rnd}}@example.com"
+}
+
+### update player 2 email
+# verify that this fails
+PATCH {{baseUrl}}/players/{{player2Id}}
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "email": "whatever{{rnd}}@example.com"
+}
+
+### delete player 2
+# verify that this fails
+DELETE {{baseUrl}}/players/{{player2Id}}
+Authorization: Bearer {{bearerAuth}}
+
+### Log out
+# verify next request fails
+GET {{baseUrl}}/auth/logout
+Authorization: Bearer {{bearerAuth}}
+
+### Get all players
+GET {{baseUrl}}/players
+Authorization: Bearer {{bearerAuth}}
+
+### Log in as player 2
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{player2Name}}",
+  "password": "password"
+}
+
+### Delete player 2
+DELETE {{baseUrl}}/players/{{player2Id}}
+Authorization: Bearer {{bearerAuth}}
+
+### Get a player
+GET {{baseUrl}}/players/{{player1Id}}
+Authorization: Bearer {{bearerAuth}}
+

@@ -1,0 +1,73 @@
+@baseUrl = http://localhost:3000
+@rnd = {{$randomInt 1000 9999}}
+@rndStat = {{$randomInt 1 4}}
+@bearerAuth = {{login.response.body.token}}
+@playerName = {{register.response.body.username}}
+@playerId = {{register.response.body.id}}
+@gameId = {{createGame.response.body.id}}
+@battleId = {{createBattle.response.body.id}}
+
+### Create PLAYER
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "email": "player{{rnd}}@example.com",
+  "password": "password"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{playerName}}",
+  "password": "password"
+}
+
+### Create a game
+# @name createGame
+POST {{baseUrl}}/games
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test game {{rnd}}"
+}
+
+### Create a character
+POST {{baseUrl}}/games/{{gameId}}/characters
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character {{rnd}}",
+  "strength": {{rndStat}},
+  "dexterity": {{rndStat}},
+  "intelligence": {{rndStat}} 
+}
+
+### Create a battle
+# @name createBattle
+POST {{baseUrl}}/games/{{gameId}}/battles
+Authorization: Bearer {{bearerAuth}}
+
+### Get all battles for a game
+GET {{baseUrl}}/games/{{gameId}}/battles
+Authorization: Bearer {{bearerAuth}}
+
+### Get a battle
+GET {{baseUrl}}/games/{{gameId}}/battles/{{battleId}}
+Authorization: Bearer {{bearerAuth}}
+
+### Delete a battle
+DELETE {{baseUrl}}/games/{{gameId}}/battles/{{battleId}}
+Authorization: Bearer {{bearerAuth}}
+
+### Verify battle is deleted
+GET {{baseUrl}}/games/{{gameId}}/battles
+Authorization: Bearer {{bearerAuth}}
+

@@ -426,43 +426,43 @@ paths:
   #         $ref: '#/components/responses/Fail'
   #       '500':
   #         $ref: '#/components/responses/Fail'
-  '/games/{gameId}/battles':
-    parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId to add the battle to
-        schema:
-          type: string
-    post:
-      summary: create a new battle
-      description: "creates a new battle, adding the player's character associated with /games/{gameId} to the battle"
-      tags:
-        - battle
-      security:
-        - playerGameMember: []
-      operationId: createBattle
-      responses:
-        '201':
-          $ref: '#/components/responses/Location'
-        '404':
-          $ref: '#/components/responses/Fail'
-        '500':
-          $ref: '#/components/responses/Fail'
-    # get:
-    #   summary: get battles
-    #   tags:
-    #     - game
-    #   security:
-    #     - playerGameMember: []
-    #   operationId: getGameBattles
-    #   responses:
-    #     '200':
-    #       $ref: '#/components/responses/GameBattles'
-    #     '404':
-    #       $ref: '#/components/responses/Fail'
-    #     '500':
-    #       $ref: '#/components/responses/Fail'
+  # '/games/{gameId}/battles':
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId to add the battle to
+  #       schema:
+  #         type: string
+  #   post:
+  #     summary: create a new battle
+  #     description: "creates a new battle, adding the player's character associated with /games/{gameId} to the battle"
+  #     tags:
+  #       - battle
+  #     security:
+  #       - playerGameMember: []
+  #     operationId: createBattle
+  #     responses:
+  #       '201':
+  #         $ref: '#/components/responses/Location'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
+  # get:
+  #   summary: get battles
+  #   tags:
+  #     - game
+  #   security:
+  #     - playerGameMember: []
+  #   operationId: getGameBattles
+  #   responses:
+  #     '200':
+  #       $ref: '#/components/responses/GameBattles'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
   '/games/{gameId}/battles/{battleId}':
     parameters:
       - name: gameId
