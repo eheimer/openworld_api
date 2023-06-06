@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:3000
+@rnd = {{$randomInt 1000 9999}}
+@bearerAuth = {{login.response.body.token}}
+@player1Name = {{register1.response.body.username}}
+@player1Id = {{register1.response.body.id}}
+
+### Create PLAYER 1
+# @name register1
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "email": "player{{rnd}}@example.com",
+  "password": "password"
+}
+
+### Login PLAYER 1
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{player1Name}}",
+  "password": "password"
+}
+
+### Get all conditions
+GET {{baseUrl}}/conditions
+Authorization: Bearer {{bearerAuth}}
+
+### Get all inventories
+GET {{baseUrl}}/inventory
+Authorization: Bearer {{bearerAuth}}
+
