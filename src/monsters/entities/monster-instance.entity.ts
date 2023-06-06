@@ -5,7 +5,7 @@ import { Monster } from './monster.entity'
 import { MonsterCondition } from '../../conditions/entities/monster-condition.entity'
 import { DamageType } from '../../damage-types/entities/damage-type.entity'
 import { MonsterAction } from './monster-action.entity'
-import { Battle } from '../../battles/entities/battle.entity'
+import { Battle } from '../../games/battles/entities/battle.entity'
 import { Inventory } from '../../items/entities/inventory.entity'
 
 @Entity()

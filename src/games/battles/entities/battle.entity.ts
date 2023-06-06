@@ -1,9 +1,9 @@
 import { IsNotEmpty } from 'class-validator'
-import { Character } from '../../characters/entities/character.entity'
-import { Game } from '../../games/entities/game.entity'
+import { Character } from '../../../characters/entities/character.entity'
+import { Game } from '../../entities/game.entity'
 import { AfterLoad, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
-import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
+import { BaseEntity } from '../../../common/BaseEntity'
+import { MonsterInstance } from '../../../monsters/entities/monster-instance.entity'
 
 @Entity()
 export class Battle extends BaseEntity {

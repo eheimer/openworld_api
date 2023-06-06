@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  NotFoundException,
-  BadRequestException
-} from '@nestjs/common'
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
 import { GamesService } from './games.service'
 import { CreateGameDto } from './dto/create-game.dto'
 import { UpdateGameDto } from './dto/update-game.dto'
@@ -25,19 +14,13 @@ import { CharacterDetailDto } from '../characters/dto/character-detail.dto'
 import { CreateCharacterDto } from '../characters/dto/create-character.dto'
 import { CharacterDto } from '../characters/dto/character.dto'
 import { SerializeResponse } from '../interceptors/serialize.interceptor'
-import { BattleDto } from '../battles/dto/battle.dto'
 import { GamePlayerGuard } from '../guards/authorization/game-player.guard'
-import { BattlesService } from '../battles/battles.service'
 import { Character } from '../characters/entities/character.entity'
 import { Game } from './entities/game.entity'
 
 @Controller('games')
 export class GamesController {
-  constructor(
-    private readonly gamesService: GamesService,
-    private readonly charactersService: CharactersService,
-    private readonly battlesService: BattlesService
-  ) {}
+  constructor(private readonly gamesService: GamesService, private readonly charactersService: CharactersService) {}
 
   @Post()
   @Serialize(GameDto)
@@ -110,29 +93,5 @@ export class GamesController {
   @Serialize(CharacterDto, CharacterDetailDto)
   async findAllCharacters(@Param('gameId') gameId: string, @CurrentPlayer() player: Player) {
     return new SerializeResponse(await this.charactersService.findAllByGame(parseInt(gameId)), 'player.id', player.id)
-  }
-
-  //get all battles for a game
-  @Get(':gameId/battles')
-  @UseGuards(GamePlayerGuard)
-  @Serialize(BattleDto)
-  async findAllBattles(@Param('gameId') gameId: string) {
-    const game = await this.gamesService.findWithBattles(+gameId)
-    if (!game) {
-      throw new NotFoundException('Game not found')
-    }
-    return game.battles
-  }
-
-  //create a new battle
-  @Post(':gameId/battles')
-  @UseGuards(GamePlayerGuard)
-  @Serialize(BattleDto)
-  async createBattle(@Param('gameId') gameId: string, @CurrentPlayer() player: Player) {
-    const character = await this.charactersService.findByPlayerAndGame(player.id, +gameId)
-    if (!character) {
-      throw new BadRequestException('You must have a character to create a battle')
-    }
-    return this.battlesService.createBattle(+gameId, character.id)
   }
 }

@@ -2,7 +2,7 @@ import { Expose } from 'class-transformer'
 import { DTO } from '../../decorators/dto-property.decorator'
 import { PlayerDto } from '../../players/dto/player.dto'
 import { CharacterDto } from '../../characters/dto/character.dto'
-import { BattleDto } from '../../battles/dto/battle.dto'
+import { BattleDto } from '../battles/dto/battle.dto'
 
 export class GameDto {
   @Expose() id: number

@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Player } from '../players/entities/player.entity'
 import { Not } from 'typeorm'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
-import { CreateBattleDto } from '../battles/dto/create-battle.dto'
+import { CreateBattleDto } from '../games/battles/dto/create-battle.dto'
 import { CreatePlayerDto } from '../players/dto/create-player.dto'
 
 describe('AuthService', () => {

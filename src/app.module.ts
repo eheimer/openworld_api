@@ -11,7 +11,6 @@ import { MonstersModule } from './monsters/monsters.module'
 import { ConditionsModule } from './conditions/conditions.module'
 import { DamageTypesModule } from './damage-types/damage-types.module'
 import { SkillsModule } from './skills/skills.module'
-import { BattlesModule } from './battles/battles.module'
 import { RaceModule } from './race/race.module'
 import { ItemsModule } from './items/items.module'
 import { MapModule } from './map/map.module'
@@ -44,7 +43,6 @@ import { join } from 'path'
     ConditionsModule,
     DamageTypesModule,
     SkillsModule,
-    BattlesModule,
     RaceModule,
     ItemsModule,
     MapModule

@@ -138,6 +138,22 @@ Content-Type: application/json
   "name": "test character renamed"
 }
 
+### Create a battle
+POST {{baseUrl}}/games/1/battles
+Authorization: Bearer {{bearerAuth}}
+
+### Get all battles for a game
+GET {{baseUrl}}/games/1/battles
+Authorization: Bearer {{bearerAuth}}
+
+### Get a battle
+GET {{baseUrl}}/games/1/battles/1
+Authorization: Bearer {{bearerAuth}}
+
+### Delete a battle
+DELETE {{baseUrl}}/games/1/battles/1
+Authorization: Bearer {{bearerAuth}}
+
 ### Get all conditions
 GET {{baseUrl}}/conditions
 Authorization: Bearer {{bearerAuth}}
