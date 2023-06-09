@@ -8,7 +8,15 @@ This project is now fully implemented in the Nestjs framework. Some of the old f
 are still hanging out in the nest_migration_reference directory, until the remainder of
 the previous functionality has been re-implemented.
 
-## package.json scripts
+[Trello url](https://trello.com/b/XOHPkuwM/development-life-cycle)
+
+## Database schema changes
+
+Database changes are driven by the Entities. After making changes to the entities that you wish to affect the schema, run the `migration:generate` script (see [package.json scripts](#packagejson-scripts) below), using the `migration/DDL` directory parameter. Verify the created file is doing what you expected it to.
+
+Whenever making schema changes, always run tests, start up the server with start:dev:reseed, and run all of the http regression tests to make sure everything is still functioning.
+
+## package.json scripts <a name="scripts"></a>
 
 When using the `npm run migration:run` command, the typeorm cli will look in the `migration/` directory for any new migration files.
 
