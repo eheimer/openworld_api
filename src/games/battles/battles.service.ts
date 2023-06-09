@@ -1,14 +1,16 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { Battle } from './entities/battle.entity'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CharactersService } from '../../characters/characters.service'
+import { MonstersService } from '../../monsters/monsters.service'
 
 @Injectable()
 export class BattlesService {
   constructor(
     @InjectRepository(Battle) private readonly repo: Repository<Battle>,
-    private readonly charactersService: CharactersService
+    private readonly charactersService: CharactersService,
+    private readonly monstersService: MonstersService
   ) {}
 
   async create(gameId: number, playerId: number) {
@@ -25,7 +27,7 @@ export class BattlesService {
   }
 
   findOne(battleId: number) {
-    return this.repo.findOne({ where: { id: battleId }, relations: ['initiator', 'participants'] })
+    return this.repo.findOne({ where: { id: battleId }, relations: ['initiator', 'participants', 'enemies'] })
   }
 
   async remove(id: number) {
@@ -34,5 +36,18 @@ export class BattlesService {
       throw new NotFoundException('Battle not found')
     }
     return await this.repo.remove(battle)
+  }
+
+  async addEnemyToBattle(battleId: number, enemyId: number) {
+    const battle = await this.repo.findOne({ where: { id: battleId }, relations: ['enemies'] })
+    if (!battle) {
+      throw new NotFoundException('Battle not found')
+    }
+    const enemy = await this.monstersService.findOneInstance(enemyId)
+    if (!enemy) {
+      throw new NotFoundException('Monster instance not found')
+    }
+    battle.enemies.push(enemy)
+    return await this.repo.save(battle)
   }
 }

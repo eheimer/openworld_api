@@ -46,7 +46,7 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "test game {{rnd}}",
+  "name": "test game {{rnd}}"
 }
 
 ### Get all games

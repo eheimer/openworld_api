@@ -22,18 +22,13 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) dexterity: number
   @Column({ nullable: false }) intelligence: number
   @Column({ nullable: false }) baseDmg: string
-  @Column({ nullable: false }) initiative: number
-  @Column({ nullable: false }) tamed: boolean
-  @Column({ nullable: false }) actionName: string
-  @Column({ nullable: false }) actionValue: number
-  @Column({ type: 'text' }) actionDescription: string
-  @Column({ nullable: false }) actionDmgAmount: number
+  @Column({ nullable: false, default: false }) tamed: boolean
   @Column({ nullable: false }) hoverStats: string
   @Column({ nullable: false }) specials: string
-  @Column({ nullable: false }) animate: boolean
-  @Column({ nullable: false }) counter: number
-  @Column({ nullable: false }) meleeDmg: number
-  @Column({ nullable: false }) tameName: string
+  @Column({ nullable: true }) animate: boolean
+  @Column({ nullable: true }) counter: number
+  @Column({ nullable: true }) meleeDmg: number
+  @Column({ nullable: true }) tameName: string
   @Column({ nullable: false }) stomach: number
   @Column({ nullable: false }) appetite: number
   @Column({ nullable: false }) obedience: number
@@ -61,9 +56,6 @@ export class MonsterInstance extends BaseEntity {
 
   @OneToMany(() => MonsterCondition, (ac) => ac.creature, { nullable: true })
   conditions: MonsterCondition[]
-
-  @ManyToOne(() => DamageType, { nullable: true })
-  actionDamageType: DamageType
 
   @OneToOne(() => Inventory, { nullable: true })
   @JoinColumn()

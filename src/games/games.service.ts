@@ -20,7 +20,7 @@ export class GamesService {
   }
 
   findOne(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['players', 'owner'] })
+    return this.repo.findOne({ where: { id }, relations: ['players', 'owner', 'battles'] })
   }
 
   async update(id: number, updateGameDto: UpdateGameDto) {

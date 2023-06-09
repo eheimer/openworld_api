@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { MonstersController } from './monsters.controller'
 import { MonstersService } from './monsters.service'
+import { Monster } from './entities/monster.entity'
+import { RandomService } from '../utils/random.service'
 
 describe('MonstersController', () => {
   let controller: MonstersController
@@ -8,7 +10,11 @@ describe('MonstersController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MonstersController],
-      providers: [MonstersService]
+      providers: [
+        { provide: Monster, useValue: Monster },
+        { provide: MonstersService, useValue: MonstersService },
+        { provide: RandomService, useValue: RandomService }
+      ]
     }).compile()
 
     controller = module.get<MonstersController>(MonstersController)

@@ -17,6 +17,7 @@ import { MapModule } from './map/map.module'
 import dbConfig from './config/database'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
+import { UtilsModule } from './utils/utils.module'
 
 @Module({
   imports: [
@@ -45,7 +46,8 @@ import { join } from 'path'
     SkillsModule,
     RaceModule,
     ItemsModule,
-    MapModule
+    MapModule,
+    UtilsModule
   ],
   controllers: [],
   providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
