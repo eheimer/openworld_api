@@ -19,8 +19,12 @@ export class GamesService {
     return this.repo.save(game)
   }
 
-  findOne(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['players', 'owner', 'battles'] })
+  async findOne(id: number) {
+    const game = await this.repo.findOne({ where: { id }, relations: ['players', 'owner', 'battles'] })
+    if (!game) {
+      throw new NotFoundException('Game not found')
+    }
+    return game
   }
 
   async update(id: number, updateGameDto: UpdateGameDto) {

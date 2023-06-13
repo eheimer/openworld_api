@@ -45,8 +45,8 @@ export class GamesController {
 
   @Get(':gameId')
   @Serialize(GameDto)
-  findOne(@Param('gameId') id: string) {
-    return this.gamesService.findOne(+id)
+  async findOne(@Param('gameId') id: string) {
+    return await this.gamesService.findOne(+id)
   }
 
   @Patch(':gameId')
