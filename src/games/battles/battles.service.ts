@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { Battle } from './entities/battle.entity'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CharactersService } from '../../characters/characters.service'
+import { CharactersService } from '../characters/characters.service'
 import { MonstersService } from '../../monsters/monsters.service'
 
 @Injectable()

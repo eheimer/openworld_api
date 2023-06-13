@@ -1,5 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext, NotFoundException } from '@nestjs/common'
-import { CharactersService } from '../../characters/characters.service'
+import { CharactersService } from '../../games/characters/characters.service'
 
 /**
  * @description - This guard verifies that the current player is the owner of the requested character

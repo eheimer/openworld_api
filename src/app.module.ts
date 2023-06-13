@@ -6,7 +6,6 @@ import { APP_GUARD } from '@nestjs/core'
 import { JwtAuthGuard } from './guards/authentication/jwt-auth.guard'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GamesModule } from './games/games.module'
-import { CharactersModule } from './characters/characters.module'
 import { MonstersModule } from './monsters/monsters.module'
 import { ConditionsModule } from './conditions/conditions.module'
 import { DamageTypesModule } from './damage-types/damage-types.module'
@@ -39,7 +38,6 @@ import { UtilsModule } from './utils/utils.module'
     PlayersModule,
     AuthModule,
     GamesModule,
-    CharactersModule,
     MonstersModule,
     ConditionsModule,
     DamageTypesModule,

@@ -1,5 +1,5 @@
 import { IsNotEmpty } from 'class-validator'
-import { Character } from '../../../characters/entities/character.entity'
+import { Character } from '../../characters/entities/character.entity'
 import { Game } from '../../entities/game.entity'
 import { AfterLoad, Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../../common/BaseEntity'

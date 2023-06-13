@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
 import { Player } from '../../players/entities/player.entity'
-import { Character } from '../../characters/entities/character.entity'
+import { Character } from '../characters/entities/character.entity'
 import { Battle } from '../battles/entities/battle.entity'
 
 /**

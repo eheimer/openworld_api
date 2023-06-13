@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
 import { BaseEntity } from '../../common/BaseEntity'
-import { Character } from '../../characters/entities/character.entity'
+import { Character } from '../../games/characters/entities/character.entity'
 import { Monster } from './monster.entity'
 import { MonsterCondition } from '../../conditions/entities/monster-condition.entity'
 import { DamageType } from '../../damage-types/entities/damage-type.entity'

@@ -4,7 +4,7 @@ import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Character } from './entities/character.entity'
 import { Repository } from 'typeorm'
-import { InventoryService } from '../items/inventory.service'
+import { InventoryService } from '../../items/inventory.service'
 
 @Injectable()
 export class CharactersService {

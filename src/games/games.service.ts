@@ -83,11 +83,15 @@ export class GamesService {
     })
   }
 
-  async findAllGamesWithCharacterForPlayer(playerId: number) {
-    const games = await this.repo.find({
+  findAllGamesForPlayerWithCharacters(playerId: number) {
+    return this.repo.find({
       where: { players: { id: playerId } },
       relations: ['characters', 'characters.player']
     })
+  }
+
+  async findAllGamesWithCharacterForPlayer(playerId: number) {
+    const games = await this.findAllGamesForPlayerWithCharacters(playerId)
     return games.map((game) => {
       const character = game.characters.find((c) => c.player.id === playerId)
       return { game, character }

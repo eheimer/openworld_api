@@ -1,6 +1,6 @@
-import { Skill } from '../../skills/entities/skill.entity'
+import { Skill } from '../../../skills/entities/skill.entity'
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from '../../../common/BaseEntity'
 import { Character } from './character.entity'
 
 @Entity()

@@ -4,7 +4,7 @@ import { CreatePlayerDto } from './dto/create-player.dto'
 import { UpdatePlayerDto } from './dto/update-player.dto'
 import { Player } from './entities/player.entity'
 import { Repository } from 'typeorm'
-import { CharactersService } from '../characters/characters.service'
+import { CharactersService } from '../games/characters/characters.service'
 
 @Injectable()
 export class PlayersService {

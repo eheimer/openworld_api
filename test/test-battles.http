@@ -4,6 +4,10 @@
 @bearerAuth = {{login.response.body.token}}
 @playerName = {{register.response.body.username}}
 @playerId = {{register.response.body.id}}
+@character1 = {{createCharacter1.response.body.id}}
+@player2Name = {{register2.response.body.username}}
+@player2Id = {{register2.response.body.id}}
+@character2 = {{createCharacter2.response.body.id}}
 @gameId = {{createGame.response.body.id}}
 @battleId = {{createBattle.response.body.id}}
 @monsterId = {{monsters.response.body.0.id}}
@@ -19,7 +23,18 @@ Content-Type: application/json
   "password": "password"
 }
 
-### Login
+### Create PLAYER 2
+# @name register2
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "email": "player{{rnd}}@example.com",
+  "password": "password"
+}
+
+### Login PLAYER 1
 # @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
@@ -40,6 +55,7 @@ Content-Type: application/json
 }
 
 ### Create a character
+# @name createCharacter1
 POST {{baseUrl}}/games/{{gameId}}/characters
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
@@ -50,6 +66,37 @@ Content-Type: application/json
   "dexterity": {{rndStat}},
   "intelligence": {{rndStat}} 
 }
+
+### Add PLAYER 2 to game
+POST {{baseUrl}}/games/{{gameId}}/players/{{player2Id}}
+Authorization: Bearer {{bearerAuth}}
+
+### Log in PLAYER 2
+# @name login2
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{player2Name}}",
+  "password": "password"
+}
+
+### Create a character
+# @name createCharacter2
+POST {{baseUrl}}/games/{{gameId}}/characters
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character {{rnd}}",
+  "strength": {{rndStat}},
+  "dexterity": {{rndStat}},
+  "intelligence": {{rndStat}} 
+}
+
+### Get the character for player 1
+GET {{baseUrl}}/characters/{{character1}}
+Authorization: Bearer {{bearerAuth}}
 
 ### Create a battle
 # @name createBattle
@@ -62,6 +109,10 @@ Authorization: Bearer {{bearerAuth}}
 
 ### Get one game
 GET {{baseUrl}}/games/{{gameId}}
+Authorization: Bearer {{bearerAuth}}
+
+### Get games for a player
+GET {{baseUrl}}/games
 Authorization: Bearer {{bearerAuth}}
 
 ### Get a battle

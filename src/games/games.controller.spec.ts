@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { GamesController } from './games.controller'
 import { GamesService } from './games.service'
-import { CharactersService } from '../characters/characters.service'
+import { CharactersService } from './characters/characters.service'
 import { BattlesService } from './battles/battles.service'
 
 describe('GamesController', () => {
