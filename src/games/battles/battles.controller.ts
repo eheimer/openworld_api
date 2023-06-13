@@ -62,6 +62,7 @@ export class BattlesController {
     @Body() body: CreateMonsterInstanceDto
   ) {
     const instance = await this.monstersService.createInstance(+body.monsterId)
-    this.battlesService.addEnemyToBattle(+battleId, instance.id)
+    await this.battlesService.addEnemyToBattle(+battleId, instance.id)
+    return instance
   }
 }

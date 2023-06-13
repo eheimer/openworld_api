@@ -94,3 +94,8 @@ Authorization: Bearer {{bearerAuth}}
 GET {{baseUrl}}/players/{{player1Id}}
 Authorization: Bearer {{bearerAuth}}
 
+
+### Log out
+GET {{baseUrl}}/auth/logout
+Authorization: Bearer {{bearerAuth}}
+

@@ -21,7 +21,7 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) strength: number
   @Column({ nullable: false }) dexterity: number
   @Column({ nullable: false }) intelligence: number
-  @Column({ nullable: false }) baseDmg: string
+  @Column({ nullable: false }) baseDmg: number
   @Column({ nullable: false, default: false }) tamed: boolean
   @Column({ nullable: false }) hoverStats: string
   @Column({ nullable: false }) specials: string

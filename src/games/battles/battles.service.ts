@@ -27,7 +27,10 @@ export class BattlesService {
   }
 
   findOne(battleId: number) {
-    return this.repo.findOne({ where: { id: battleId }, relations: ['initiator', 'participants', 'enemies'] })
+    return this.repo.findOne({
+      where: { id: battleId },
+      relations: ['initiator', 'participants', 'enemies.nextAction.action']
+    })
   }
 
   async remove(id: number) {

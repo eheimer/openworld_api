@@ -4,6 +4,7 @@ import { Monster } from './entities/monster.entity'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { RandomService } from '../utils/random.service'
+import { MonsterAction } from './entities/monster-action.entity'
 
 @Injectable()
 export class MonstersService {
@@ -27,8 +28,6 @@ export class MonstersService {
       relations: ['actions', 'actions.action', 'damageType', 'breathDmgType']
     })
     const instance = this.initializeInstance(monster)
-
-    instance.nextAction = this.random.getOneRandomItem(instance.monster.actions)
 
     return await this.instRepo.save(instance)
   }
@@ -54,15 +53,23 @@ export class MonstersService {
       strength: this.random.getRandomInRange(monster.strength),
       dexterity: this.random.getRandomInRange(monster.dexterity),
       intelligence: this.random.getRandomInRange(monster.intelligence),
-      baseDmg: monster.baseDmg,
+      baseDmg: this.random.getRandomInRange(monster.baseDmg),
       tamed: false,
       hoverStats: monster.hoverStats,
       specials: monster.specials,
       appetite: this.random.getOneRandomItem([0.5, 1, 2]),
       stomach: this.random.getRandomInRange(4, 24),
       obedience: this.random.getRandomInRange(1, 6),
-      tracking: this.random.getRandomInRange(monster.tracking)
+      tracking: this.random.getRandomInRange(monster.tracking),
+      nextAction: this.getNextAction(monster.actions)
     }
+  }
+
+  getNextAction(actions: MonsterAction[]) {
+    //extract array of weights from instance.monster.actions
+    const weights = actions.map((ma) => ma.weight)
+    //get random action from instance.monster.actions using weights
+    return actions[this.random.weightedRandom(weights)]
   }
 
   findOneInstance(id: number) {
