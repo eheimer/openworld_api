@@ -54,7 +54,7 @@ export class CharactersService {
     // get all battles where participants contains the character id
     // there should only ever be one, but we'll allow for the possibility of multiple
     const battles = await this.battleRepo.find({
-      where: [{ participants: { id } }, { initiator: { id } }],
+      where: { participants: { id } },
       relations: ['initiator', 'participants']
     })
     /* for each battle, remove the character from participants
@@ -65,10 +65,10 @@ export class CharactersService {
       if (battle.participants.length === 1) {
         await this.battleRepo.remove(battle)
       } else {
+        battle.participants = battle.participants.filter((p) => p.id !== id)
         if (battle.initiator.id === id) {
           battle.initiator = battle.participants[0]
         }
-        battle.participants = battle.participants.filter((p) => p.id !== id)
         await this.battleRepo.save(battle)
       }
     }

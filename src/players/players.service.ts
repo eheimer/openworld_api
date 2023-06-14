@@ -1,15 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreatePlayerDto } from './dto/create-player.dto'
 import { UpdatePlayerDto } from './dto/update-player.dto'
 import { Player } from './entities/player.entity'
 import { Repository } from 'typeorm'
 import { CharactersService } from '../games/characters/characters.service'
+import { Game } from '../games/entities/game.entity'
 
 @Injectable()
 export class PlayersService {
   constructor(
     @InjectRepository(Player) private repo: Repository<Player>,
+    @InjectRepository(Game) private gameRepo: Repository<Game>,
     private charactersService: CharactersService
   ) {}
 
@@ -44,6 +46,27 @@ export class PlayersService {
     if (!player) {
       throw new NotFoundException('User not found')
     }
+    // get all games where players contains the player id
+    const games = await this.gameRepo.find({
+      where: { players: { id: player.id } }
+    })
+    /* for each game, remove the player from players
+     ** if there are no more players, remove the game
+     ** if there are more players and the player is the owner, assign a new owner
+     */
+    for (const gameId of games.map((g) => g.id)) {
+      const game = await this.gameRepo.findOne({ where: { id: gameId }, relations: ['players', 'owner'] })
+      if (game.players.length === 1) {
+        Logger.log(`shouldn't be in here`)
+        await this.gameRepo.remove(game)
+      } else {
+        game.players = game.players.filter((p) => p.id !== player.id)
+        if (game.owner.id === player.id) {
+          game.owner = game.players[0]
+        }
+        await this.gameRepo.save(game)
+      }
+    }
     return this.repo.remove(player)
   }
 
@@ -56,12 +79,4 @@ export class PlayersService {
     const player = await this.repo.findOneBy({ username })
     return player
   }
-
-  // /**
-  //  * @description - Find all games that a player is in
-  //  */
-  // async findAllGames(player: Player) {
-  //   return (await this.repo.findOne({ where: { id: player.id }, relations: ['games', 'games.owner', 'games.players'] }))
-  //     .games
-  // }
 }
