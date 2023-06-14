@@ -1,6 +1,5 @@
 @baseUrl = http://localhost:3000
 @rnd = {{$randomInt 1000 9999}}
-@rndStat = {{$randomInt 1 4}}
 @bearerAuth = {{login.response.body.token}}
 @playerName = {{register.response.body.username}}
 @playerId = {{register.response.body.id}}
@@ -62,9 +61,10 @@ Content-Type: application/json
 
 {
   "name": "test character {{rnd}}",
-  "strength": {{rndStat}},
-  "dexterity": {{rndStat}},
-  "intelligence": {{rndStat}} 
+  "strength": {{$randomInt 1 4}},
+  "dexterity": {{$randomInt 1 4}},
+  "intelligence": {{$randomInt 1 4}},
+  "raceId": 1
 }
 
 ### Add PLAYER 2 to game
@@ -89,9 +89,10 @@ Content-Type: application/json
 
 {
   "name": "test character {{rnd}}",
-  "strength": {{rndStat}},
-  "dexterity": {{rndStat}},
-  "intelligence": {{rndStat}} 
+  "strength": {{$randomInt 1 4}},
+  "dexterity": {{$randomInt 1 4}},
+  "intelligence": {{$randomInt 1 4}},
+  "raceId": 1
 }
 
 ### Get the character for player 1

@@ -19,6 +19,7 @@ export class CharactersService {
       ...createCharacterDto,
       game: { id: gameId },
       player: { id: playerId },
+      race: { id: createCharacterDto.raceId },
       inventory
     })
     await this.repo.save(character)
@@ -26,7 +27,7 @@ export class CharactersService {
   }
 
   findOne(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['game', 'player', 'inventory'] })
+    return this.repo.findOne({ where: { id }, relations: ['game', 'player', 'inventory', 'race'] })
   }
 
   async update(id: number, updateCharacterDto: UpdateCharacterDto) {

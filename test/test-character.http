@@ -1,0 +1,64 @@
+@baseUrl = http://localhost:3000
+@rnd = {{$randomInt 1000 9999}}
+@rndStat = {{$randomInt 1 4}}
+@bearerAuth = {{login.response.body.token}}
+@playerName = {{register.response.body.username}}
+@playerId = {{register.response.body.id}}
+@character1 = {{createCharacter.response.body.id}}
+@gameId = {{createGame.response.body.id}}
+@raceId = {{races.response.body.0.id}}
+
+### Register a player
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "password": "password",
+  "email": "player{{rnd}}@example.com"
+}
+
+### Login a player
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{playerName}}",
+  "password": "password"
+}
+
+### Create a game
+# @name createGame
+POST {{baseUrl}}/games
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test game {{rnd}}"
+}
+
+### Get list of races
+# @name races
+GET {{baseUrl}}/race
+Authorization: Bearer {{bearerAuth}}
+
+
+### Create a character in a game
+# @name createCharacter
+POST {{baseUrl}}/games/{{gameId}}/characters
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character {{rnd}}",
+  "strength": {{$randomInt 1 4}},
+  "dexterity": {{$randomInt 1 4}},
+  "intelligence": {{$randomInt 1 4}},
+  "raceId": {{raceId}}
+}
+
+### Get player's games list
+GET {{baseUrl}}/games
+Authorization: Bearer {{bearerAuth}}

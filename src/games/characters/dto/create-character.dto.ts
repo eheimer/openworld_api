@@ -22,4 +22,8 @@ export class CreateCharacterDto {
   @Max(4)
   @IsNotEmpty()
   intelligence: number
+
+  @IsNumber()
+  @IsNotEmpty()
+  raceId: number
 }

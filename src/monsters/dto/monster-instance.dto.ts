@@ -12,8 +12,7 @@ export class MonsterInstanceDto {
   hp: number
 
   @Transform(({ obj }) => {
-    obj.nextAction?.action.name
-    Logger.log(`action: ${JSON.stringify(obj.nextAction)}`)
+    return obj.nextAction?.action.name
   })
   @Expose()
   actionName: string
@@ -26,7 +25,6 @@ export class MonsterInstanceDto {
     if (obj.nextAction?.action.name.toLowerCase() === 'breath weapon') {
       tmp = Math.round(obj.hp / 5)
     }
-    // Logger.log(`actionValue: ${tmp}`)
     return tmp
   })
   @Expose()
@@ -40,7 +38,6 @@ export class MonsterInstanceDto {
     if (obj.nextAction?.action.name.toLowerCase() === 'breath weapon') {
       tmp = ''
     }
-    // Logger.log(`actionDescription: ${tmp}`)
     return tmp
   })
   @Expose()
@@ -57,11 +54,6 @@ export class MonsterInstanceDto {
     const strengthBonus = obj.strength * 0.3 + (obj.strength >= 100 ? 5 : 0)
     const tacticsBonus = obj.tactics / 1.6 + (obj.tactics >= 100 ? 6 : 0)
     const finalDamageBonus = (anatomyBonus + strengthBonus + tacticsBonus) / 100
-    Logger.log(`anatomyBonus: ${anatomyBonus}
-    strengthBonus: ${strengthBonus}
-    tacticsBonus: ${tacticsBonus}
-    finalDamageBonus: ${finalDamageBonus}
-    baseDmg: ${obj.baseDmg}`)
     return Math.round(obj.baseDmg + obj.baseDmg * finalDamageBonus)
   })
   @Expose()
@@ -75,8 +67,7 @@ export class MonsterInstanceDto {
     if (obj.nextAction?.action.name.toLowerCase() === 'breath weapon') {
       tmp = obj.monster.breathDmgType
     }
-    // Logger.log(`actionDamageType: ${JSON.stringify(tmp, null, 2)}`)
-    return tmp
+    return tmp?.name
   })
   @Expose()
   actionDamageType: DamageType

@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common'
-import { CreateRaceDto } from './dto/create-race.dto'
-import { UpdateRaceDto } from './dto/update-race.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Race } from './entities/race.entity'
+import { Repository } from 'typeorm'
 
 @Injectable()
 export class RaceService {
-  create(createRaceDto: CreateRaceDto) {
-    return 'This action adds a new race'
-  }
+  constructor(@InjectRepository(Race) private repo: Repository<Race>) {}
 
   findAll() {
-    return `This action returns all race`
+    return this.repo.find()
   }
 
   findOne(id: number) {
     return `This action returns a #${id} race`
-  }
-
-  update(id: number, updateRaceDto: UpdateRaceDto) {
-    return `This action updates a #${id} race`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} race`
   }
 }

@@ -505,37 +505,37 @@ paths:
   #         $ref: '#/components/responses/Fail'
   #       '500':
   #         $ref: '#/components/responses/Fail'
-  '/games/{gameId}/battles/{battleId}/enemies':
-    parameters:
-      - name: gameId
-        required: true
-        in: path
-        description: the gameId of the battle to modify
-        schema:
-          type: string
-      - name: battleId
-        required: true
-        in: path
-        description: the battle to modify
-        schema:
-          type: string
-    post:
-      summary: add enemy to battle
-      description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
-      tags:
-        - battle
-      security:
-        - playerBattleParticipant: []
-      operationId: createEnemy
-      requestBody:
-        $ref: '#/components/requestBodies/Monster'
-      responses:
-        '204':
-          $ref: '#/components/responses/DeleteOrUpdate'
-        '404':
-          $ref: '#/components/responses/Fail'
-        '500':
-          $ref: '#/components/responses/Fail'
+  # '/games/{gameId}/battles/{battleId}/enemies':
+  #   parameters:
+  #     - name: gameId
+  #       required: true
+  #       in: path
+  #       description: the gameId of the battle to modify
+  #       schema:
+  #         type: string
+  #     - name: battleId
+  #       required: true
+  #       in: path
+  #       description: the battle to modify
+  #       schema:
+  #         type: string
+  # post:
+  #   summary: add enemy to battle
+  #   description: creates a new creatureInstance from the specified monsterId and adds it to the battle as an enemy
+  #   tags:
+  #     - battle
+  #   security:
+  #     - playerBattleParticipant: []
+  #   operationId: createEnemy
+  #   requestBody:
+  #     $ref: '#/components/requestBodies/Monster'
+  #   responses:
+  #     '204':
+  #       $ref: '#/components/responses/DeleteOrUpdate'
+  #     '404':
+  #       $ref: '#/components/responses/Fail'
+  #     '500':
+  #       $ref: '#/components/responses/Fail'
   /skills:
     description: GET list of all skills
     get:
@@ -550,20 +550,20 @@ paths:
           $ref: '#/components/responses/Fail'
         '500':
           $ref: '#/components/responses/Fail'
-  /races:
-    description: GET list of all races
-    get:
-      summary: get all available races
-      tags:
-        - lists
-      operationId: getRaces
-      responses:
-        '200':
-          $ref: '#/components/responses/Races'
-        '404':
-          $ref: '#/components/responses/Fail'
-        '500':
-          $ref: '#/components/responses/Fail'
+  # /races:
+  #   description: GET list of all races
+  #   get:
+  #     summary: get all available races
+  #     tags:
+  #       - lists
+  #     operationId: getRaces
+  #     responses:
+  #       '200':
+  #         $ref: '#/components/responses/Races'
+  #       '404':
+  #         $ref: '#/components/responses/Fail'
+  #       '500':
+  #         $ref: '#/components/responses/Fail'
   '/characters/{characterId}/skills':
     description: add skills to a character
     parameters:
