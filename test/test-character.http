@@ -7,6 +7,7 @@
 @character1 = {{createCharacter.response.body.id}}
 @gameId = {{createGame.response.body.id}}
 @raceId = {{races.response.body.0.id}}
+@battleId = {{createBattle.response.body.id}}
 
 ### Register a player
 # @name register
@@ -59,6 +60,29 @@ Content-Type: application/json
   "raceId": {{raceId}}
 }
 
+### create a battle
+# @name createBattle
+POST {{baseUrl}}/games/{{gameId}}/battles
+Authorization: Bearer {{bearerAuth}}
+
 ### Get player's games list
 GET {{baseUrl}}/games
 Authorization: Bearer {{bearerAuth}}
+
+### test that deleting the character does not delete the battle
+DELETE {{baseUrl}}/characters/{{character1}}
+Authorization: Bearer {{bearerAuth}}
+
+### test that deleting the battle does not delete the character
+DELETE {{baseUrl}}/games/{{gameId}}/battles/2
+Authorization: Bearer {{bearerAuth}}
+
+### deleting the player should delete both the character and the battle
+DELETE {{baseUrl}}/players/{{playerId}}
+Authorization: Bearer {{bearerAuth}}
+
+### delete the game
+DELETE {{baseUrl}}/games/{{gameId}}
+Authorization: Bearer {{bearerAuth}}
+
+

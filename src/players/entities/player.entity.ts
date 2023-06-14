@@ -22,7 +22,8 @@ export class Player extends BaseEntity {
   currentGame: Game
 
   @OneToMany(() => Character, (character) => character.player, {
-    nullable: true
+    nullable: true,
+    cascade: ['remove']
   })
   characters: Character[]
 }

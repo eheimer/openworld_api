@@ -24,10 +24,10 @@ export class Character extends BaseEntity {
   @ManyToOne(() => Race)
   race: Race
 
-  @ManyToOne(() => Game, { nullable: false })
+  @ManyToOne(() => Game, { nullable: false, onDelete: 'CASCADE' })
   game: Game
 
-  @ManyToOne(() => Player, (player) => player.characters, { nullable: false })
+  @ManyToOne(() => Player, (player) => player.characters, { nullable: false, onDelete: 'CASCADE' })
   player: Player
 
   @ManyToMany(() => Battle, (battle) => battle.participants, { nullable: true })

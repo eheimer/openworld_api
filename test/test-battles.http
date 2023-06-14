@@ -142,3 +142,7 @@ Authorization: Bearer {{bearerAuth}}
 GET {{baseUrl}}/games/{{gameId}}/battles
 Authorization: Bearer {{bearerAuth}}
 
+### Delete a game
+DELETE {{baseUrl}}/games/{{gameId}}
+Authorization: Bearer {{bearerAuth}}
+
