@@ -18,6 +18,12 @@ export class BattlesService {
     if (!character) {
       throw new BadRequestException('You must have a character to create a battle')
     }
+    const existingBattle = await this.repo.findOne({
+      where: { participants: { id: character.id } }
+    })
+    if (existingBattle) {
+      throw new BadRequestException('You are already in a battle')
+    }
     const battle = await this.repo.create({
       game: { id: gameId },
       initiator: { id: character.id },
