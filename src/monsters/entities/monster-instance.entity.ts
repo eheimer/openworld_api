@@ -3,7 +3,6 @@ import { BaseEntity } from '../../common/BaseEntity'
 import { Character } from '../../games/characters/entities/character.entity'
 import { Monster } from './monster.entity'
 import { MonsterCondition } from '../../conditions/entities/monster-condition.entity'
-import { DamageType } from '../../damage-types/entities/damage-type.entity'
 import { MonsterAction } from './monster-action.entity'
 import { Battle } from '../../games/battles/entities/battle.entity'
 import { Inventory } from '../../items/entities/inventory.entity'
@@ -39,9 +38,10 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) resistF: number
   @Column({ nullable: false }) resistP: number
 
-  @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true })
+  @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true, onDelete: 'CASCADE' })
   battleAsEnemy: Battle
 
+  // we don't want friendlies to be deleted when a battle is deleted, or people will lose their pets
   @ManyToOne(() => Battle, (battle) => battle.friendlies, { nullable: true })
   battleAsFriendly: Battle
 
