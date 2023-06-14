@@ -1,15 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Character } from './entities/character.entity'
 import { Repository } from 'typeorm'
 import { InventoryService } from '../../items/inventory.service'
+import { Battle } from '../battles/entities/battle.entity'
+import { Inventory } from '../../items/entities/inventory.entity'
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(Character) private repo: Repository<Character>,
+    @InjectRepository(Battle) private battleRepo: Repository<Battle>,
+    @InjectRepository(Inventory) private inventoryRepo: Repository<Inventory>,
     private inventoryService: InventoryService
   ) {}
 
@@ -40,11 +44,38 @@ export class CharactersService {
   }
 
   async remove(id: number) {
-    const character = await this.repo.findOneBy({ id })
+    const character = await this.repo.findOne({
+      where: { id },
+      relations: ['inventory']
+    })
     if (!character) {
       throw new NotFoundException('Character not found')
     }
-    return await this.repo.remove(character)
+    // get all battles where participants contains the character id
+    // there should only ever be one, but we'll allow for the possibility of multiple
+    const battles = await this.battleRepo.find({
+      where: [{ participants: { id } }, { initiator: { id } }],
+      relations: ['initiator', 'participants']
+    })
+    /* for each battle, remove the character from participants
+     ** if there are no more participants, remove the battle
+     ** if there are more participants and character is initiator, set initiator to first participant
+     */
+    for (const battle of battles) {
+      if (battle.participants.length === 1) {
+        await this.battleRepo.remove(battle)
+      } else {
+        if (battle.initiator.id === id) {
+          battle.initiator = battle.participants[0]
+        }
+        battle.participants = battle.participants.filter((p) => p.id !== id)
+        await this.battleRepo.save(battle)
+      }
+    }
+    await this.repo.remove(character)
+    // remove the character's inventory
+    await this.inventoryRepo.remove(character.inventory)
+    return character
   }
 
   findByPlayerAndGame(playerId: number, gameId: number) {

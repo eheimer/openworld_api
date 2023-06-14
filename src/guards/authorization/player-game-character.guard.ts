@@ -1,4 +1,4 @@
-import { Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
+import { Injectable, ExecutionContext, BadRequestException, Logger } from '@nestjs/common'
 import { GamesService } from '../../games/games.service'
 import { CharactersService } from '../../games/characters/characters.service'
 import { GamePlayerGuard } from './game-player.guard'

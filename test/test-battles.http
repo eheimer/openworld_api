@@ -72,7 +72,7 @@ POST {{baseUrl}}/games/{{gameId}}/players/{{player2Id}}
 Authorization: Bearer {{bearerAuth}}
 
 ### Log in PLAYER 2
-# @name login2
+# @name login
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 

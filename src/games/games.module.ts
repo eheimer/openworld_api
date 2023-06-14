@@ -12,9 +12,10 @@ import { Character } from './characters/entities/character.entity'
 import { CharactersService } from './characters/characters.service'
 import { BattlesService } from './battles/battles.service'
 import { ItemsModule } from '../items/items.module'
+import { Inventory } from '../items/entities/inventory.entity'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Game, Battle, Character]), MonstersModule, UtilsModule, ItemsModule],
+  imports: [TypeOrmModule.forFeature([Game, Battle, Character, Inventory]), MonstersModule, UtilsModule, ItemsModule],
   controllers: [GamesController, BattlesController, CharactersController],
   providers: [GamesService, BattlesService, CharactersService],
   exports: [GamesService, BattlesService, CharactersService]
