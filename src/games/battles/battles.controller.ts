@@ -2,7 +2,7 @@ import { Controller, Get, Post, Param, Delete, UseGuards, Body } from '@nestjs/c
 import { BattlesService } from './battles.service'
 import { GamePlayerGuard } from '../../guards/authorization/game-player.guard'
 import { Serialize } from '../../interceptors/serialize.interceptor'
-import { BattleDto } from './dto/battle.dto'
+import { BattleDto } from '../dto/battle.dto'
 import { GamesService } from '../games.service'
 import { CurrentPlayer } from '../../decorators/current-player.decorator'
 import { Player } from '../../players/entities/player.entity'
@@ -50,6 +50,18 @@ export class BattlesController {
   @Serialize(BattleDto)
   async deleteBattle(@Param('gameId') gameId: string, @Param('battleId') battleId: string) {
     return this.battlesService.remove(+battleId)
+  }
+
+  //join a battle
+  @Post(':battleId/join')
+  @UseGuards(GamePlayerGuard, GameBattleGuard)
+  @Serialize(BattleDto)
+  async joinBattle(
+    @Param('gameId') gameId: string,
+    @Param('battleId') battleId: string,
+    @CurrentPlayer() player: Player
+  ) {
+    return this.battlesService.join(+battleId, player.id)
   }
 
   //add a monster to a battle

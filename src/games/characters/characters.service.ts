@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateCharacterDto } from './dto/create-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
@@ -84,5 +84,9 @@ export class CharactersService {
 
   findAllByGame(gameId: number) {
     return this.repo.find({ where: { game: { id: gameId } }, relations: ['game', 'player'] })
+  }
+
+  findOneWithBattle(id: number) {
+    return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle'] })
   }
 }

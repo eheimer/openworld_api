@@ -36,8 +36,8 @@ export class GamesController {
     )
     return games.map(({ game, character }) => {
       return {
-        game: { id: game.id, name: game.name },
-        character: { name: character?.name },
+        game,
+        character,
         owner: game.owner?.id === player.id
       }
     })

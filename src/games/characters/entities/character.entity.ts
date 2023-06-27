@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
 import { BaseEntity } from '../../../common/BaseEntity'
 import { Player } from '../../../players/entities/player.entity'
 import { Game } from '../../entities/game.entity'
@@ -30,8 +30,8 @@ export class Character extends BaseEntity {
   @ManyToOne(() => Player, (player) => player.characters, { nullable: false, onDelete: 'CASCADE' })
   player: Player
 
-  @ManyToMany(() => Battle, (battle) => battle.participants, { nullable: true })
-  battles: Battle[]
+  @ManyToOne(() => Battle, (battle) => battle.participants, { nullable: true })
+  battle: Battle
 
   @OneToOne(() => Inventory, { nullable: false, cascade: ['remove'] })
   @JoinColumn()

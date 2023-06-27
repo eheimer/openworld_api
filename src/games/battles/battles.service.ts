@@ -18,10 +18,7 @@ export class BattlesService {
     if (!character) {
       throw new BadRequestException('You must have a character to create a battle')
     }
-    const existingBattle = await this.repo.findOne({
-      where: { participants: { id: character.id } }
-    })
-    if (existingBattle) {
+    if (character.battle) {
       throw new BadRequestException('You are already in a battle')
     }
     const battle = await this.repo.create({
@@ -45,6 +42,22 @@ export class BattlesService {
       throw new NotFoundException('Battle not found')
     }
     return await this.repo.remove(battle)
+  }
+
+  async join(battleId: number, playerId: number) {
+    const battle = await this.repo.findOne({ where: { id: battleId }, relations: ['participants', 'game'] })
+    if (!battle) {
+      throw new NotFoundException('Battle not found')
+    }
+    const character = await this.charactersService.findByPlayerAndGame(playerId, battle.game.id)
+    if (!character) {
+      throw new BadRequestException('You must have a character to join a battle')
+    }
+    if (character.battle) {
+      throw new BadRequestException('You are already in a battle')
+    }
+    battle.participants.push(character)
+    return await this.repo.save(battle)
   }
 
   async addEnemyToBattle(battleId: number, enemyId: number) {

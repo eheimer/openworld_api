@@ -86,7 +86,7 @@ export class GamesService {
   findAllGamesForPlayerWithCharacters(playerId: number) {
     return this.repo.find({
       where: { players: { id: playerId } },
-      relations: ['characters', 'characters.player']
+      relations: ['characters', 'characters.player', 'characters.race', 'owner']
     })
   }
 

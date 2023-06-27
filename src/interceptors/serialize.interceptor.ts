@@ -18,11 +18,13 @@ class SerializeInterceptor implements NestInterceptor {
       map((result: SerializeResponse | object) => {
         const ctx = context.switchToHttp().getRequest()
         if (result instanceof SerializeResponse) {
-          // if result.data is not an array, convert it to an array
+          // if result.data is not an array, convert it to an array to simplify the logic below
+          let singleResult = false
           if (!Array.isArray(result.data)) {
+            singleResult = true
             result.data = [result.data]
           }
-          return result.data.map((item) => {
+          const remapped = result.data.map((item) => {
             const value = getPossiblyNestedPropertyValue(item, result.propertyName)
             if (!value) {
               Logger.warn(
@@ -35,6 +37,10 @@ class SerializeInterceptor implements NestInterceptor {
             const dto = result.propertyName && this.dtoDetail && value === result.value ? this.dtoDetail : this.dto
             return convertToDto(dto, item)
           })
+          if (singleResult) {
+            return remapped[0]
+          }
+          return remapped
         } else {
           //log a warning if dtoDetail is defined, but result is not a SerializeResponse object
           if (this.dtoDetail) {

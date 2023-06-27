@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreatePlayerDto } from './dto/create-player.dto'
 import { UpdatePlayerDto } from './dto/update-player.dto'
@@ -57,7 +57,6 @@ export class PlayersService {
     for (const gameId of games.map((g) => g.id)) {
       const game = await this.gameRepo.findOne({ where: { id: gameId }, relations: ['players', 'owner'] })
       if (game.players.length === 1) {
-        Logger.log(`shouldn't be in here`)
         await this.gameRepo.remove(game)
       } else {
         game.players = game.players.filter((p) => p.id !== player.id)
