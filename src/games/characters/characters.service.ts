@@ -56,7 +56,7 @@ export class CharactersService {
   }
 
   findByPlayerAndGame(playerId: number, gameId: number) {
-    return this.repo.findOneBy({ player: { id: playerId }, game: { id: gameId } })
+    return this.repo.findOne({ where: { player: { id: playerId }, game: { id: gameId } }, relations: ['battle'] })
   }
 
   findAllByGame(gameId: number) {
