@@ -1,8 +1,8 @@
 {
-  "name": "nestjs-learn",
+  "name": "openworld-api",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Backend API for Openworld",
+  "author": "Eric Heimerman",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

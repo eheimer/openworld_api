@@ -36,3 +36,7 @@ Authorization: Bearer {{bearerAuth}}
 ### Get all monsters
 GET {{baseUrl}}/monsters
 Authorization: Bearer {{bearerAuth}}
+
+### Get all skills
+GET {{baseUrl}}/skills
+Authorization: Bearer {{bearerAuth}}

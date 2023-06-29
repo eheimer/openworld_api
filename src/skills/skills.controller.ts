@@ -5,7 +5,7 @@ import { SkillsService } from './skills.service'
 export class SkillsController {
   constructor(private readonly skillsService: SkillsService) {}
 
-  @Post()
+  //@Post()
   // create(@Body() createSkillDto: CreateSkillDto) {
   //   return this.skillsService.create(createSkillDto)
   // }

@@ -41,7 +41,6 @@ async function bootstrap() {
     acc[path] = methodMap
     return acc
   }, {})
-  Logger.log(`Route map generated: ${JSON.stringify(routeMap)}`, 'Swagger')
 
   function fixPath(path) {
     // if any part of the path is a number, replace it with {}
