@@ -8,8 +8,6 @@ This project is now fully implemented in the Nestjs framework. Some of the old f
 are still hanging out in the nest_migration_reference directory, until the remainder of
 the previous functionality has been re-implemented.
 
-[Trello url](https://trello.com/b/XOHPkuwM/development-life-cycle)
-
 ## Database schema changes
 
 Database changes are driven by the Entities. After making changes to the entities that you wish to affect the schema, run the `migration:generate` script (see [package.json scripts](#packagejson-scripts) below), using the `migration/DDL` directory parameter. Verify the created file is doing what you expected it to.
@@ -61,6 +59,7 @@ To create a new module, run the `nest g resource {plural_name}` command. This wi
   - `/{module_name}` _Nestjs module directory_
     - `/dto` _json-serializable objects used by this module for api responses_
     - `/entities` _typeorm enitities for this module_
+    - `/subscribers` _typeorm entity event handlers_
     - `{module_name}.controller.ts` _main controller file for this module_
     - `{module_name}.module.ts` _main module file for this module_
     - `{module_name}.service.ts` _main service file for this module_
@@ -72,9 +71,8 @@ To create a new module, run the `nest g resource {plural_name}` command. This wi
   - `/interceptors` _interceptors used by module controllers_
   - `app.module.ts` _the core nestjs module_
   - `main.ts` _nestjs startup script_
-  - `requests.http` _api rest testing file_
 
-- `/test` _jest integration tests_
+- `/test` _jest integration tests and http test files_
 - `ormconfig.ts` _typeorm config file for the nest app_
 - `ormDataSource.ts` _a modified typeorm config for use by the typeorm cli_
 
@@ -99,6 +97,8 @@ Method call flow:
 - encapsulate the vast bulk of the game logic
 - responsible for all error logging
 - need to know nothing about the request or response
+- avoid injecting repositories from other modules. Instead, create
+  methods on the services that those repositories are associated with
 
 #### Factories
 
@@ -109,11 +109,14 @@ Method call flow:
 
 - should contain all database logic for retrieval of records,
   associations, etc.
+- should generally only be used by the service(s) in their own module
 
 #### Entities
 
 - should contain entity definitions only
 - no logic of any kind
+- database cascading should be avoided, logic should be placed in
+  subscribers instead
 
 ### Entities and DTO notes
 
@@ -121,6 +124,11 @@ Method call flow:
   the database.
 - DTO's are based on the Entities, but are customized to carry data as needed
   between client and server in requests/responses
+
+### Subscribers
+
+- Typeorm Entity event handlers contain the logic needed to manage entity
+  cascading logic
 
 ### Error handling
 
@@ -138,16 +146,8 @@ Service methods are generally the only ones that should be logging to the consol
 
 ## API Testing
 
-API testing for now is done manually via the `src/requests.http` file
+API testing for now is done manually via the `test/test-*.http` files
 
 ## Production Server
 
-**_Migration NOTE:_** _production server is not yet implemented_
-
-Server is running on spinach.heimerman.org as openworld-game.com
-Jenkins starts and stops the server as CI builds are run
-To manually start/stop the server:
-
-- ssh to spinach.heimerman.org
-- `sudo su - jenkins` and enter your password
-- `systemctl --user start/stop/status openworld-api`
+**_Migration NOTE:_** _production server is not currently implemented_

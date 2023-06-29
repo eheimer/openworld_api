@@ -5,13 +5,11 @@ import { UpdatePlayerDto } from './dto/update-player.dto'
 import { Player } from './entities/player.entity'
 import { Repository } from 'typeorm'
 import { CharactersService } from '../games/characters/characters.service'
-import { Game } from '../games/entities/game.entity'
 
 @Injectable()
 export class PlayersService {
   constructor(
     @InjectRepository(Player) private repo: Repository<Player>,
-    @InjectRepository(Game) private gameRepo: Repository<Game>,
     private charactersService: CharactersService
   ) {}
 
@@ -47,9 +45,6 @@ export class PlayersService {
       throw new NotFoundException('User not found')
     }
     return this.repo.remove(player)
-    // await this.repo.manager.transaction(async (manager) => {
-    //   await manager.remove(player)
-    // })
   }
 
   async findOneByEmail(email: string) {

@@ -5,15 +5,11 @@ import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Character } from './entities/character.entity'
 import { Repository } from 'typeorm'
 import { InventoryService } from '../../items/inventory.service'
-import { Battle } from '../battles/entities/battle.entity'
-import { Inventory } from '../../items/entities/inventory.entity'
 
 @Injectable()
 export class CharactersService {
   constructor(
     @InjectRepository(Character) private repo: Repository<Character>,
-    @InjectRepository(Battle) private battleRepo: Repository<Battle>,
-    @InjectRepository(Inventory) private inventoryRepo: Repository<Inventory>,
     private inventoryService: InventoryService
   ) {}
 
