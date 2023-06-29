@@ -14,7 +14,7 @@ export class BattleGameSubscriber implements EntitySubscriberInterface<Game> {
    *              and remove their Battle records
    */
   async beforeRemove(event: RemoveEvent<Game>) {
-    Logger.debug(`Battle-Game: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'BattleGameSubscriber')
     const entities: Game[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove Battle records associated with Game
@@ -23,10 +23,10 @@ export class BattleGameSubscriber implements EntitySubscriberInterface<Game> {
         const battle = await event.manager.find(Battle, { where: { game: { id: game.id } } })
         await event.manager.remove(battle)
       } catch (error) {
-        Logger.error(`Battle-Game: ${error}`)
+        Logger.error(`${error}`, 'BattleGameSubscriber')
         throw error
       }
     }
-    Logger.verbose('Battle-Game: done')
+    Logger.verbose('done', 'BattleGameSubscriber')
   }
 }

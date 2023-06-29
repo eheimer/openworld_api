@@ -15,7 +15,7 @@ export class ArmorInventorySubscriber implements EntitySubscriberInterface<Inven
    *              and remove their ArmorInstance and all associated records
    */
   async beforeRemove(event: RemoveEvent<Inventory>) {
-    Logger.debug(`Armor-Inventory: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'ArmorInventorySubscriber')
     const entities: Inventory[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove ArmorInstance records associated with Inventory
@@ -32,10 +32,10 @@ export class ArmorInventorySubscriber implements EntitySubscriberInterface<Inven
         if (attrib) await event.manager.remove(attrib)
         await event.manager.remove(inventory.armor)
       } catch (error) {
-        Logger.error(`Armor-Inventory: ${error}`)
+        Logger.error(`${error}`, 'ArmorInventorySubscriber')
         throw error
       }
     }
-    Logger.verbose('Armor-Inventory: done')
+    Logger.verbose('done', 'ArmorInventorySubscriber')
   }
 }

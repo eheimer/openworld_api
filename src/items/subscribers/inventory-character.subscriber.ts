@@ -12,7 +12,7 @@ export class InventoryCharacterSubscriber implements EntitySubscriberInterface<C
     // before the character is removed, we need to populate the inventory property on
     // the character entity so that the inventory can be removed in the afterRemove
     // method.
-    Logger.debug(`Inventory-Character: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'InventoryCharacterSubscriber')
     const entities: Character[] = Array.isArray(event.entity) ? event.entity : [event.entity]
     for (const character of entities) {
       try {
@@ -21,16 +21,16 @@ export class InventoryCharacterSubscriber implements EntitySubscriberInterface<C
           relations: ['inventory']
         })
         if (!charWithInventory) {
-          Logger.debug(`Inventory-Character (beforeRemove): Character with id ${character.id} does not exist`)
+          Logger.debug(`beforeRemove: Character with id ${character.id} does not exist`, 'InventoryCharacterSubscriber')
           continue
         }
         character.inventory = charWithInventory.inventory
       } catch (error) {
-        Logger.error(`Inventory-Character (beforeRemove): ${error}`)
+        Logger.error(`beforeRemove: ${error}`, 'InventoryCharacterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Inventory-Character (beforeRemove): done')
+    Logger.verbose('beforeRemove: done', 'InventoryCharacterSubscriber')
   }
 
   /**
@@ -38,7 +38,7 @@ export class InventoryCharacterSubscriber implements EntitySubscriberInterface<C
    *              and remove their Inventory records
    */
   async afterRemove(event: RemoveEvent<Character>) {
-    Logger.debug(`Inventory-Character: AFTER ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`AFTER ENTITY WITH ID ${event.entityId} REMOVED`, 'InventoryCharacterSubscriber')
     const entities: Character[] = Array.isArray(event.entity) ? event.entity : [event.entity]
     // Remove Inventory records associated with Character
     for (const character of entities) {
@@ -46,10 +46,10 @@ export class InventoryCharacterSubscriber implements EntitySubscriberInterface<C
         if (!character.inventory) continue
         await event.manager.remove(character.inventory)
       } catch (error) {
-        Logger.error(`Inventory-Character: ${error}`)
+        Logger.error(`${error}`, 'InventoryCharacterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Inventory-Character: done')
+    Logger.verbose('done', 'InventoryCharacterSubscriber')
   }
 }

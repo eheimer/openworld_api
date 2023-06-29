@@ -14,7 +14,7 @@ export class SpellbookInventorySubscriber implements EntitySubscriberInterface<I
    *              and remove their SpellbookInstance and all associated records
    */
   async beforeRemove(event: RemoveEvent<Inventory>) {
-    Logger.debug(`Spellbook-Inventory: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'SpellbookInventorySubscriber')
     const entities: Inventory[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove SpellbookInstance records associated with Inventory
@@ -27,10 +27,10 @@ export class SpellbookInventorySubscriber implements EntitySubscriberInterface<I
         if (attrib) await event.manager.remove([attrib, inventory.spellbooks])
         await event.manager.remove(inventory.spellbooks)
       } catch (error) {
-        Logger.error(`Spellbook-Inventory: ${error}`)
+        Logger.error(`${error}`, 'SpellbookInventorySubscriber')
         throw error
       }
     }
-    Logger.verbose('Spellbook-Inventory: done')
+    Logger.verbose('done', 'SpellbookInventorySubscriber')
   }
 }

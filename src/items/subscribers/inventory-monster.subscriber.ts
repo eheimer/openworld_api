@@ -12,7 +12,7 @@ export class InventoryMonsterSubscriber implements EntitySubscriberInterface<Mon
     // before the monster is removed, we need to populate the loot property on
     // the MonsterInstance entity so that the inventory can be removed in the afterRemove
     // method.
-    Logger.debug(`Inventory-MonsterInstance: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'InventoryMonsterSubscriber')
     const entities: MonsterInstance[] = Array.isArray(event.entity) ? event.entity : [event.entity]
     for (const monsterinstance of entities) {
       try {
@@ -22,17 +22,18 @@ export class InventoryMonsterSubscriber implements EntitySubscriberInterface<Mon
         })
         if (!monsterWithInventory) {
           Logger.debug(
-            `Inventory-MonsterInstance (beforeRemove): MonsterInstance with id ${monsterinstance.id} does not exist`
+            `beforeRemove: MonsterInstance with id ${monsterinstance.id} does not exist`,
+            'InventoryMonsterSubscriber'
           )
           continue
         }
         monsterinstance.loot = monsterWithInventory.loot
       } catch (error) {
-        Logger.error(`Inventory-MonsterInstance (beforeRemove): ${error}`)
+        Logger.error(`beforeRemove: ${error}`, 'InventoryMonsterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Inventory-MonsterInstance (beforeRemove): done')
+    Logger.verbose('beforeRemove: done', 'InventoryMonsterSubscriber')
   }
 
   /**
@@ -40,7 +41,7 @@ export class InventoryMonsterSubscriber implements EntitySubscriberInterface<Mon
    *              and remove their Inventory records
    */
   async afterRemove(event: RemoveEvent<MonsterInstance>) {
-    Logger.debug(`Inventory-MonsterInstance: AFTER ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`AFTER ENTITY WITH ID ${event.entityId} REMOVED`, 'InventoryMonsterSubscriber')
     const entities: MonsterInstance[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove Inventory records associated with MonsterInstance
@@ -49,10 +50,10 @@ export class InventoryMonsterSubscriber implements EntitySubscriberInterface<Mon
         if (!monsterinstance.loot) continue
         await event.manager.remove(monsterinstance.loot)
       } catch (error) {
-        Logger.error(`Inventory-MonsterInstance: ${error}`)
+        Logger.error(`${error}`, 'InventoryMonsterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Inventory-MonsterInstance: done')
+    Logger.verbose('done', 'InventoryMonsterSubscriber')
   }
 }

@@ -14,7 +14,7 @@ export class ConditionCharacterSubscriber implements EntitySubscriberInterface<C
    *           and remove their conditions
    */
   async beforeRemove(event: RemoveEvent<Character>) {
-    Logger.debug(`Condition-Character: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'ConditionCharacterSubscriber')
 
     const entities: Character[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
@@ -23,10 +23,10 @@ export class ConditionCharacterSubscriber implements EntitySubscriberInterface<C
         const conditions = await event.manager.find(CharacterCondition, { where: { character: { id: character.id } } })
         await event.manager.remove(conditions)
       } catch (error) {
-        Logger.error(`Condition-Character: ${error}`)
+        Logger.error(`${error}`, 'ConditionCharacterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Condition-Character: done')
+    Logger.verbose('done', 'ConditionCharacterSubscriber')
   }
 }

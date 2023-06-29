@@ -14,7 +14,7 @@ export class MonsterBattleSubscriber implements EntitySubscriberInterface<Battle
    *              and remove enemies and friendlies (not pets)
    */
   async beforeRemove(event: RemoveEvent<Battle>) {
-    Logger.debug(`Monster-Battle: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'MonsterBattleSubscriber')
     const entities: Battle[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove MonsterInstance records associated with Battle
@@ -42,10 +42,10 @@ export class MonsterBattleSubscriber implements EntitySubscriberInterface<Battle
           )
         }
       } catch (error) {
-        Logger.error(`Monster-Battle: ${error}`)
+        Logger.error(`${error}`, 'MonsterBattleSubscriber')
         throw error
       }
     }
-    Logger.verbose('Monster-Battle: done')
+    Logger.verbose('done', 'MonsterBattleSubscriber')
   }
 }

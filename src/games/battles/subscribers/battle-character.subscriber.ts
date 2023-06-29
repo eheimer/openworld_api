@@ -14,7 +14,7 @@ export class BattleCharacterSubscriber implements EntitySubscriberInterface<Char
    *              and remove their Battle records
    */
   async beforeRemove(event: RemoveEvent<Character>) {
-    Logger.debug(`Battle-Character: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'BattleCharacterSubscriber')
     const entities: Character[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     for (const character of entities) {
@@ -35,10 +35,10 @@ export class BattleCharacterSubscriber implements EntitySubscriberInterface<Char
           }
         }
       } catch (error) {
-        Logger.error(`Battle-Character: ${error}`)
+        Logger.error(`${error}`, 'BattleCharacterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Battle-Character: done')
+    Logger.verbose('done', 'BattleCharacterSubscriber')
   }
 }

@@ -13,7 +13,7 @@ export class CharacterSkillCharacterSubscriber implements EntitySubscriberInterf
    *              and remove their CharacterSkill records
    */
   async beforeRemove(event: RemoveEvent<Character>) {
-    Logger.debug(`Skill-Character: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'CharacterSkillCharacterSubscriber')
     const entities: Character[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove CharacterSkill records associated with Character
@@ -22,11 +22,11 @@ export class CharacterSkillCharacterSubscriber implements EntitySubscriberInterf
         try {
           await event.manager.remove(character.skills)
         } catch (error) {
-          Logger.error(`Skill-Character: ${error}`)
+          Logger.error(`${error}`, 'CharacterSkillCharacterSubscriber')
           throw error
         }
       }
     }
-    Logger.verbose('Skill-Character: done')
+    Logger.verbose('done', 'CharacterSkillCharacterSubscriber')
   }
 }

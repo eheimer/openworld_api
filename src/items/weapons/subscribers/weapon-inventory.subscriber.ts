@@ -14,7 +14,7 @@ export class WeaponInventorySubscriber implements EntitySubscriberInterface<Inve
    *              and remove their WeaponInstance and all associated records
    */
   async beforeRemove(event: RemoveEvent<Inventory>) {
-    Logger.debug(`Weapon-Inventory: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'WeaponInventorySubscriber')
     const entities: Inventory[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove WeaponInstance records associated with Inventory
@@ -25,10 +25,10 @@ export class WeaponInventorySubscriber implements EntitySubscriberInterface<Inve
         if (attrib) await event.manager.remove(attrib)
         await event.manager.remove(inventory.weapons)
       } catch (error) {
-        Logger.error(`Weapon-Inventory: ${error}`)
+        Logger.error(`${error}`, 'WeaponInventorySubscriber')
         throw error
       }
     }
-    Logger.verbose('Weapon-Inventory: done')
+    Logger.verbose('done', 'WeaponInventorySubscriber')
   }
 }

@@ -14,7 +14,7 @@ export class PetCharacterSubscriber implements EntitySubscriberInterface<Charact
    *              and remove any MonsterInstance (Pet) records
    */
   async beforeRemove(event: RemoveEvent<Character>) {
-    Logger.debug(`Pet-Character: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'PetCharacterSubscriber')
     const entities: Character[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove MonsterInstance records associated with Character
@@ -23,10 +23,10 @@ export class PetCharacterSubscriber implements EntitySubscriberInterface<Charact
         const monsterinstance = await event.manager.find(MonsterInstance, { where: { owner: character } })
         await event.manager.remove(monsterinstance)
       } catch (error) {
-        Logger.error(`Pet-Character: ${error}`)
+        Logger.error(`${error}`, 'PetCharacterSubscriber')
         throw error
       }
     }
-    Logger.verbose('Pet-Character: done')
+    Logger.verbose('done', 'PetCharacterSubscriber')
   }
 }

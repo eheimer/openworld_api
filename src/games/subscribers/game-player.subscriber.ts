@@ -14,7 +14,7 @@ export class GamePlayerSubscriber implements EntitySubscriberInterface<Player> {
    *              and remove their Game records
    */
   async beforeRemove(event: RemoveEvent<Player>) {
-    Logger.debug(`Game-Player: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, `GamePlayerSubscriber`)
     const entities: Player[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     for (const player of entities) {
@@ -36,10 +36,10 @@ export class GamePlayerSubscriber implements EntitySubscriberInterface<Player> {
           }
         }
       } catch (error) {
-        Logger.error(`Game-Player: ${error}`)
+        Logger.error(`${error}`, `GamePlayerSubscriber`)
         throw error
       }
     }
-    Logger.verbose('Game-Player: done')
+    Logger.verbose('done', `GamePlayerSubscriber`)
   }
 }

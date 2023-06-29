@@ -14,7 +14,7 @@ export class CharacterGameSubscriber implements EntitySubscriberInterface<Game> 
    *              and remove their Character records
    */
   async beforeRemove(event: RemoveEvent<Game>) {
-    Logger.debug(`Character-Game: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'CharacterGameSubscriber')
     const entities: Game[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove Character records associated with Game
@@ -23,10 +23,10 @@ export class CharacterGameSubscriber implements EntitySubscriberInterface<Game> 
         const character = await event.manager.find(Character, { where: { game: { id: game.id } } })
         await event.manager.remove(character)
       } catch (error) {
-        Logger.error(`Character-Game: ${error}`)
+        Logger.error(`${error}`, 'CharacterGameSubscriber')
         throw error
       }
     }
-    Logger.verbose('Character-Game: done')
+    Logger.verbose('done', 'CharacterGameSubscriber')
   }
 }

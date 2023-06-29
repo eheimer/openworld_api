@@ -14,7 +14,7 @@ export class JewelryInventorySubscriber implements EntitySubscriberInterface<Inv
    *              and remove their JewelryInstance and all associated records
    */
   async beforeRemove(event: RemoveEvent<Inventory>) {
-    Logger.debug(`Jewelry-Inventory: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+    Logger.debug(`BEFORE ENTITY WITH ID ${event.entityId} REMOVED`, 'JewelryInventorySubscriber')
     const entities: Inventory[] = Array.isArray(event.entity) ? event.entity : [event.entity]
 
     // Remove JewelryInstance records associated with Inventory
@@ -25,10 +25,10 @@ export class JewelryInventorySubscriber implements EntitySubscriberInterface<Inv
         if (attrib) await event.manager.remove(attrib)
         await event.manager.remove(inventory.jewelry)
       } catch (error) {
-        Logger.error(`Jewelry-Inventory: ${error}`)
+        Logger.error(`${error}`, 'JewelryInventorySubscriber')
         throw error
       }
     }
-    Logger.verbose('Jewelry-Inventory: done')
+    Logger.verbose('done', 'JewelryInventorySubscriber')
   }
 }
