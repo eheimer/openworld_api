@@ -35,7 +35,7 @@ export class PlayersController {
   @Delete(':playerId')
   @UseGuards(CurrentPlayerGuard)
   @Serialize(PlayerDetailDto)
-  remove(@Param('playerId') id: string) {
-    return this.playersService.remove(+id)
+  async remove(@Param('playerId') id: string) {
+    return await this.playersService.remove(+id)
   }
 }

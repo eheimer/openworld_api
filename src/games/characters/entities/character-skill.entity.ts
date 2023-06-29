@@ -7,7 +7,7 @@ import { Character } from './character.entity'
 export class CharacterSkill extends BaseEntity {
   @Column({ default: 1 }) level: number
 
-  @ManyToOne(() => Character, (character) => character.skills, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Character, (character) => character.skills, { nullable: false })
   character: Character
 
   @ManyToOne(() => Skill, { nullable: false })

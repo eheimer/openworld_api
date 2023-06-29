@@ -6,6 +6,6 @@ import { ActiveCondition } from '../../common/ActiveCondition'
 @Entity()
 export class MonsterCondition extends ActiveCondition {
   @IsNotEmpty()
-  @ManyToOne(() => MonsterInstance, (ci) => ci.conditions, { onDelete: 'CASCADE' })
+  @ManyToOne(() => MonsterInstance, (ci) => ci.conditions)
   creature: MonsterInstance
 }

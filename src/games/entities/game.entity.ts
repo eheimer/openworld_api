@@ -17,9 +17,9 @@ export class Game extends BaseEntity {
   @ManyToMany(() => Player, (player) => player.games, { nullable: false })
   players: Player[]
 
-  @OneToMany(() => Character, (character) => character.game, { nullable: true, cascade: ['remove'] })
+  @OneToMany(() => Character, (character) => character.game, { nullable: true })
   characters: Character[]
 
-  @OneToMany(() => Battle, (battle) => battle.game, { nullable: true, cascade: ['remove'] })
+  @OneToMany(() => Battle, (battle) => battle.game, { nullable: true })
   battles: Battle[]
 }

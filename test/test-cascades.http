@@ -1,0 +1,75 @@
+# Test cascading deletes
+#
+# Scenarios:
+# 1. Deleting a game deletes all battles
+# 2. Deleting a game deletes all characters
+# 3. Deleting a monster instance deletes the inventory
+# 4. Deleting a player deletes all games or updates owner
+# 5. Deleting a player deletes all characters
+# 6. Deleting a character deletes the inventory
+# 7. Deleting a character deletes the battle or updates initiator
+# 8. Deleting a battle deletes all monsters
+
+@baseUrl = http://localhost:3000
+@rnd = {{$randomInt 1000 9999}}
+@bearerAuth = {{login.response.body.token}}
+@playerName = {{register.response.body.username}}
+@playerId = {{register.response.body.id}}
+@character1 = {{createCharacter1.response.body.id}}
+@gameId = {{createGame.response.body.id}}
+@battleId = {{createBattle.response.body.id}}
+
+### Create PLAYER
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "player{{rnd}}",
+  "email": "player{{rnd}}@example.com",
+  "password": "password"
+}
+
+### Login PLAYER 1
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "{{playerName}}",
+  "password": "password"
+}
+
+### Create a game
+# @name createGame
+POST {{baseUrl}}/games
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test game {{rnd}}"
+}
+
+### Create a character
+# @name createCharacter1
+POST {{baseUrl}}/games/{{gameId}}/characters
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character {{rnd}}",
+  "strength": {{$randomInt 1 4}},
+  "dexterity": {{$randomInt 1 4}},
+  "intelligence": {{$randomInt 1 4}},
+  "raceId": 1
+}
+
+### Create a battle
+# @name createBattle
+POST {{baseUrl}}/games/{{gameId}}/battles
+Authorization: Bearer {{bearerAuth}}
+
+### delete player 1, verify that player 2 is still in the battle
+DELETE {{baseUrl}}/players/{{playerId}}
+Authorization: Bearer {{bearerAuth}}
+

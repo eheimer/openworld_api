@@ -38,14 +38,14 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) resistF: number
   @Column({ nullable: false }) resistP: number
 
-  @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true })
   battleAsEnemy: Battle
 
   // we don't want friendlies to be deleted when a battle is deleted, or people will lose their pets
   @ManyToOne(() => Battle, (battle) => battle.friendlies, { nullable: true })
   battleAsFriendly: Battle
 
-  @ManyToOne(() => Character, (character) => character.pets, { nullable: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => Character, (character) => character.pets, { nullable: true })
   owner: Character
 
   @ManyToOne(() => Monster, { nullable: false })

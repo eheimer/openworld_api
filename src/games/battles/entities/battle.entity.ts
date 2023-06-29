@@ -16,8 +16,7 @@ export class Battle extends BaseEntity {
   participants: Character[]
 
   @OneToMany(() => MonsterInstance, (ci) => ci.battleAsEnemy, {
-    nullable: true,
-    cascade: true
+    nullable: true
   })
   enemies: MonsterInstance[]
 
@@ -26,7 +25,7 @@ export class Battle extends BaseEntity {
   })
   friendlies: MonsterInstance[]
 
-  @ManyToOne(() => Game, (game) => game.battles, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Game, (game) => game.battles, { nullable: false })
   game: Game
 
   @ManyToOne(() => Character, { nullable: false })

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreatePlayerDto } from './dto/create-player.dto'
 import { UpdatePlayerDto } from './dto/update-player.dto'
@@ -46,27 +46,10 @@ export class PlayersService {
     if (!player) {
       throw new NotFoundException('User not found')
     }
-    // get all games where players contains the player id
-    const games = await this.gameRepo.find({
-      where: { players: { id: player.id } }
-    })
-    /* for each game, remove the player from players
-     ** if there are no more players, remove the game
-     ** if there are more players and the player is the owner, assign a new owner
-     */
-    for (const gameId of games.map((g) => g.id)) {
-      const game = await this.gameRepo.findOne({ where: { id: gameId }, relations: ['players', 'owner'] })
-      if (game.players.length === 1) {
-        await this.gameRepo.remove(game)
-      } else {
-        game.players = game.players.filter((p) => p.id !== player.id)
-        if (game.owner.id === player.id) {
-          game.owner = game.players[0]
-        }
-        await this.gameRepo.save(game)
-      }
-    }
     return this.repo.remove(player)
+    // await this.repo.manager.transaction(async (manager) => {
+    //   await manager.remove(player)
+    // })
   }
 
   async findOneByEmail(email: string) {

@@ -24,28 +24,28 @@ export class Character extends BaseEntity {
   @ManyToOne(() => Race)
   race: Race
 
-  @ManyToOne(() => Game, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Game, { nullable: false })
   game: Game
 
-  @ManyToOne(() => Player, (player) => player.characters, { nullable: false, onDelete: 'CASCADE' })
+  @ManyToOne(() => Player, (player) => player.characters, { nullable: false })
   player: Player
 
   @ManyToOne(() => Battle, (battle) => battle.participants, { nullable: true })
   battle: Battle
 
-  @OneToOne(() => Inventory, { nullable: false, cascade: ['remove'] })
+  @OneToOne(() => Inventory, { nullable: false, eager: false })
   @JoinColumn()
   inventory: Inventory
 
-  @OneToMany(() => CharacterCondition, (ac) => ac.character, { nullable: true, cascade: ['remove'] })
+  @OneToMany(() => CharacterCondition, (ac) => ac.character, { nullable: true })
   @JoinColumn()
   conditions: CharacterCondition[]
 
-  @OneToMany(() => MonsterInstance, (m) => m.owner, { nullable: true, cascade: ['remove'] })
+  @OneToMany(() => MonsterInstance, (m) => m.owner, { nullable: true })
   @JoinColumn()
   pets: MonsterInstance[]
 
-  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true, cascade: ['remove'] })
+  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true })
   @JoinColumn()
   skills: CharacterSkill[]
 }

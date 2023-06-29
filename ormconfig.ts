@@ -11,7 +11,8 @@ const configDefault = {
   password: 'entranced',
   synchronize: false,
   logging: 'warn',
-  entities: ['**/*.entity.js']
+  entities: ['**/*.entity.js'],
+  subscribers: ['**/*.subscriber.js']
 }
 
 // these env values override the defaults
@@ -19,7 +20,8 @@ const dbConfig = {
   test: {
     type: 'sqlite',
     database: 'test.sqlite',
-    entities: [`**/*.entity.ts`]
+    entities: [`**/*.entity.ts`],
+    subscribers: [`**/*.subscriber.ts`]
   },
   dev: {},
   prod: {

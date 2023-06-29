@@ -1,0 +1,32 @@
+import { Logger } from '@nestjs/common'
+import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
+import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
+import { MonsterCondition } from '../entities/monster-condition.entity'
+
+@EventSubscriber()
+export class ConditionCharacterSubscriber implements EntitySubscriberInterface<MonsterInstance> {
+  listenTo() {
+    return MonsterInstance
+  }
+
+  /**
+   * @description Listen for remove events on MonsterInstance entity
+   *           and remove their conditions
+   */
+  async beforeRemove(event: RemoveEvent<MonsterInstance>) {
+    Logger.debug(`Condition-Monster: BEFORE ENTITY WITH ID ${event.entityId} REMOVED`)
+
+    const entities: MonsterInstance[] = Array.isArray(event.entity) ? event.entity : [event.entity]
+
+    for (const monster of entities) {
+      try {
+        const conditions = await event.manager.find(MonsterCondition, { where: { creature: monster } })
+        await event.manager.remove(conditions)
+      } catch (error) {
+        Logger.error(`Condition-Monster: ${error}`)
+        throw error
+      }
+    }
+    Logger.verbose('Condition-Monster: done')
+  }
+}

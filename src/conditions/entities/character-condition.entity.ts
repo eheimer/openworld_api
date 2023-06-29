@@ -6,6 +6,6 @@ import { ActiveCondition } from '../../common/ActiveCondition'
 @Entity()
 export class CharacterCondition extends ActiveCondition {
   @IsNotEmpty()
-  @ManyToOne(() => Character, (character) => character.conditions, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Character, (character) => character.conditions)
   character: Character
 }

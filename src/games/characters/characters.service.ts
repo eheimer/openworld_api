@@ -51,30 +51,7 @@ export class CharactersService {
     if (!character) {
       throw new NotFoundException('Character not found')
     }
-    // get all battles where participants contains the character id
-    // there should only ever be one, but we'll allow for the possibility of multiple
-    const battles = await this.battleRepo.find({
-      where: { participants: { id } },
-      relations: ['initiator', 'participants']
-    })
-    /* for each battle, remove the character from participants
-     ** if there are no more participants, remove the battle
-     ** if there are more participants and character is initiator, set initiator to first participant
-     */
-    for (const battle of battles) {
-      if (battle.participants.length === 1) {
-        await this.battleRepo.remove(battle)
-      } else {
-        battle.participants = battle.participants.filter((p) => p.id !== id)
-        if (battle.initiator.id === id) {
-          battle.initiator = battle.participants[0]
-        }
-        await this.battleRepo.save(battle)
-      }
-    }
     await this.repo.remove(character)
-    // remove the character's inventory
-    await this.inventoryRepo.remove(character.inventory)
     return character
   }
 
