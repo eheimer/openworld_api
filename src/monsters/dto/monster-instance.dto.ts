@@ -12,7 +12,7 @@ export class MonsterInstanceDto {
   hp: number
 
   @Transform(({ obj }) => {
-    return obj.nextAction?.action.name
+    return obj.nextAction?.action?.name
   })
   @Expose()
   actionName: string
@@ -71,4 +71,8 @@ export class MonsterInstanceDto {
   })
   @Expose()
   actionDamageType: DamageType
+
+  @Transform(({ obj }) => obj.nextAction?.action?.initiative)
+  @Expose()
+  initiative: number
 }

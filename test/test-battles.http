@@ -138,6 +138,12 @@ Content-Type: application/json
   "monsterId": "{{monsterId}}"
 }
 
+### next round
+# do this a couple times and verify that the next action is different for each monster
+POST {{baseUrl}}/games/{{gameId}}/battles/{{battleId}}/nextround
+Authorization: Bearer {{bearerAuth}}
+
+
 ### Delete a battle
 DELETE {{baseUrl}}/games/{{gameId}}/battles/{{battleId}}
 Authorization: Bearer {{bearerAuth}}

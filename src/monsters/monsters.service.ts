@@ -25,7 +25,7 @@ export class MonstersService {
   async createInstance(monsterId: number): Promise<MonsterInstance> {
     const monster = await this.repo.findOne({
       where: { id: monsterId },
-      relations: ['actions', 'actions.action', 'damageType', 'breathDmgType']
+      relations: ['actions.action', 'damageType', 'breathDmgType']
     })
     const instance = this.initializeInstance(monster)
 

@@ -16,12 +16,14 @@ export class Battle extends BaseEntity {
   participants: Character[]
 
   @OneToMany(() => MonsterInstance, (ci) => ci.battleAsEnemy, {
-    nullable: true
+    nullable: true,
+    cascade: true
   })
   enemies: MonsterInstance[]
 
   @OneToMany(() => MonsterInstance, (ci) => ci.battleAsFriendly, {
-    nullable: true
+    nullable: true,
+    cascade: true
   })
   friendlies: MonsterInstance[]
 

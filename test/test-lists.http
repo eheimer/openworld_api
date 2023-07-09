@@ -40,3 +40,8 @@ Authorization: Bearer {{bearerAuth}}
 ### Get all skills
 GET {{baseUrl}}/skills
 Authorization: Bearer {{bearerAuth}}
+
+### Get list of races
+# @name races
+GET {{baseUrl}}/race
+Authorization: Bearer {{bearerAuth}}

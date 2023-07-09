@@ -29,10 +29,19 @@ export class BattlesService {
     return await this.repo.save(battle)
   }
 
-  findOne(battleId: number) {
-    return this.repo.findOne({
+  async findOne(battleId: number) {
+    return await this.repo.findOne({
       where: { id: battleId },
-      relations: ['initiator', 'participants', 'enemies.nextAction.action']
+      relations: [
+        'initiator.player',
+        'participants',
+        'enemies.nextAction.action',
+        'enemies.monster.actions.action',
+        'enemies.monster.damageType',
+        'enemies.monster.breathDmgType',
+        'friendlies.monster.damageType',
+        'friendlies.monster.breathDmgType'
+      ]
     })
   }
 
@@ -70,6 +79,21 @@ export class BattlesService {
       throw new NotFoundException('Monster instance not found')
     }
     battle.enemies.push(enemy)
+    return await this.repo.save(battle)
+  }
+
+  async nextRound(battleId: number) {
+    const battle = await this.findOne(battleId)
+    if (!battle) {
+      throw new NotFoundException('Battle not found')
+    }
+    // increment the round- there are only 8 rounds before it loops back to 1
+    battle.round = (battle.round % 8) + 1
+    // set the next action for each enemy
+    for (const enemy of battle.enemies) {
+      enemy.nextAction = await this.monstersService.getNextAction(enemy.monster.actions)
+    }
+    //TODO: when conditions are implemented, process them here
     return await this.repo.save(battle)
   }
 }

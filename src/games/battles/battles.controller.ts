@@ -11,8 +11,10 @@ import { MonstersService } from '../../monsters/monsters.service'
 import { MonsterInstanceDto } from '../../monsters/dto/monster-instance.dto'
 import { GameBattleGuard } from '../../guards/authorization/game-battle.guard'
 import { CreateMonsterInstanceDto } from '../../monsters/dto/create-monster-instance.dto'
+import { BattleInitiatorGuard } from 'src/guards/authorization/battle-initiator.guard'
 
 @Controller('games/:gameId/battles')
+@UseGuards(GamePlayerGuard)
 export class BattlesController {
   constructor(
     private readonly battlesService: BattlesService,
@@ -22,7 +24,6 @@ export class BattlesController {
 
   //get all battles for a game
   @Get('')
-  @UseGuards(GamePlayerGuard)
   @Serialize(BattleDto)
   async findAllBattles(@Param('gameId') gameId: string) {
     return (await this.gamesService.findWithBattles(+gameId)).battles
@@ -30,7 +31,6 @@ export class BattlesController {
 
   //create a new battle
   @Post('')
-  @UseGuards(GamePlayerGuard)
   @Serialize(BattleDto)
   async createBattle(@Param('gameId') gameId: string, @CurrentPlayer() player: Player) {
     return this.battlesService.create(+gameId, player.id)
@@ -38,7 +38,7 @@ export class BattlesController {
 
   //get a battle
   @Get(':battleId')
-  @UseGuards(GamePlayerGuard, GameBattleGuard)
+  @UseGuards(GameBattleGuard)
   @Serialize(BattleDto)
   async findBattle(@Param('gameId') gameId: string, @Param('battleId') battleId: string) {
     return this.battlesService.findOne(+battleId)
@@ -54,7 +54,7 @@ export class BattlesController {
 
   //join a battle
   @Post(':battleId/join')
-  @UseGuards(GamePlayerGuard, GameBattleGuard)
+  @UseGuards(GameBattleGuard)
   @Serialize(BattleDto)
   async joinBattle(
     @Param('gameId') gameId: string,
@@ -66,7 +66,7 @@ export class BattlesController {
 
   //add a monster to a battle
   @Post(':battleId/enemies')
-  @UseGuards(GamePlayerGuard, GameBattleGuard)
+  @UseGuards(GameBattleGuard)
   @Serialize(MonsterInstanceDto)
   async addEnemyToBattle(
     @Param('gameId') gameId: string,
@@ -76,5 +76,13 @@ export class BattlesController {
     const instance = await this.monstersService.createInstance(+body.monsterId)
     await this.battlesService.addEnemyToBattle(+battleId, instance.id)
     return instance
+  }
+
+  //battle next round
+  @Post(':battleId/nextround')
+  @UseGuards(GameBattleGuard, BattleInitiatorGuard)
+  @Serialize(BattleDto)
+  async nextRound(@Param('battleId') battleId: string) {
+    return this.battlesService.nextRound(+battleId)
   }
 }

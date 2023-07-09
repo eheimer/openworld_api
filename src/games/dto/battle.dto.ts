@@ -4,7 +4,6 @@ import { MonsterInstanceDto } from '../../monsters/dto/monster-instance.dto'
 import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
 import { Character } from '../characters/entities/character.entity'
 import { CharacterDto } from '../characters/dto/character.dto'
-import { Logger } from '@nestjs/common'
 
 export class BattleDto {
   @Expose() id: number
@@ -16,11 +15,15 @@ export class BattleDto {
   @Expose()
   round: number
 
-  // @Expose()
-  // @DTO(CharacterDto)
-  // participants: Character[]
+  @Transform(({ obj }) => obj.initiator?.id ?? obj.initiator)
+  @Expose()
+  initiator: number
 
-  // @Expose()
-  // @DTO(MonsterInstanceDto)
-  // enemies: MonsterInstance[]
+  @Expose()
+  @DTO(CharacterDto)
+  participants: Character[]
+
+  @Expose()
+  @DTO(MonsterInstanceDto)
+  enemies: MonsterInstance[]
 }
