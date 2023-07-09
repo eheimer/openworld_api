@@ -1,9 +1,10 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { Battle } from './entities/battle.entity'
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CharactersService } from '../characters/characters.service'
 import { MonstersService } from '../../monsters/monsters.service'
+import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
 
 @Injectable()
 export class BattlesService {
@@ -30,19 +31,22 @@ export class BattlesService {
   }
 
   async findOne(battleId: number) {
-    return await this.repo.findOne({
-      where: { id: battleId },
-      relations: [
-        'initiator.player',
-        'participants',
-        'enemies.nextAction.action',
-        'enemies.monster.actions.action',
-        'enemies.monster.damageType',
-        'enemies.monster.breathDmgType',
-        'friendlies.monster.damageType',
-        'friendlies.monster.breathDmgType'
-      ]
-    })
+    return this.resort(
+      await this.repo.findOne({
+        where: { id: battleId },
+        relations: [
+          'initiator.player',
+          'participants',
+          'game',
+          'enemies.nextAction.action',
+          'enemies.monster.actions.action',
+          'enemies.monster.damageType',
+          'enemies.monster.breathDmgType',
+          'friendlies.monster.damageType',
+          'friendlies.monster.breathDmgType'
+        ]
+      })
+    )
   }
 
   async remove(id: number) {
@@ -54,7 +58,7 @@ export class BattlesService {
   }
 
   async join(battleId: number, playerId: number) {
-    const battle = await this.repo.findOne({ where: { id: battleId }, relations: ['participants', 'game'] })
+    const battle = await this.findOne(battleId)
     if (!battle) {
       throw new NotFoundException('Battle not found')
     }
@@ -79,7 +83,7 @@ export class BattlesService {
       throw new NotFoundException('Monster instance not found')
     }
     battle.enemies.push(enemy)
-    return await this.repo.save(battle)
+    return this.resort(await this.repo.save(battle))
   }
 
   async nextRound(battleId: number) {
@@ -94,6 +98,25 @@ export class BattlesService {
       enemy.nextAction = await this.monstersService.getNextAction(enemy.monster.actions)
     }
     //TODO: when conditions are implemented, process them here
-    return await this.repo.save(battle)
+    return this.resort(await this.repo.save(battle))
+  }
+
+  /**
+   *
+   * @description Sorts the enemies and friendlies by initiative
+   *
+   * @param battle
+   * @returns
+   */
+  resort(battle: Battle): Battle {
+    battle.enemies = this.sortInitiative(battle.enemies)
+    battle.friendlies = this.sortInitiative(battle.friendlies)
+    return battle
+  }
+
+  sortInitiative(monsters: MonsterInstance[]) {
+    if (!monsters) return monsters
+    monsters.sort((a, b) => a.nextAction?.action?.initiative - b.nextAction?.action?.initiative)
+    return monsters
   }
 }
