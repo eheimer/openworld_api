@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PlayersModule } from './players/players.module'
 import { AuthModule } from './auth/auth.module'
@@ -17,6 +17,7 @@ import dbConfig from './config/database'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { UtilsModule } from './utils/utils.module'
+import { LoggerMiddleware } from './middleware/logger.middleware'
 
 @Module({
   imports: [
@@ -48,6 +49,13 @@ import { UtilsModule } from './utils/utils.module'
     UtilsModule
   ],
   controllers: [],
-  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }]
+  providers: [
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    { provide: 'LoggerMiddleware', useClass: LoggerMiddleware }
+  ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL })
+  }
+}

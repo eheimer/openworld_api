@@ -30,7 +30,9 @@ async function bootstrap() {
 
   // map the swaggerDocument into an object that can be used to look up
   // the controller name and operationId for a given path and method
-  const routeMap = Object.keys(swaggerDocument.paths).reduce((acc, path) => {
+  // attaching to the global namespace is not recommended, but it's the
+  // easiest way to make this data available to the logger middleware
+  global['routeMap'] = Object.keys(swaggerDocument.paths).reduce((acc, path) => {
     const pathItem = swaggerDocument.paths[path]
     const methods = Object.keys(pathItem)
     const methodMap = methods.reduce((acc, method) => {
@@ -41,33 +43,6 @@ async function bootstrap() {
     acc[path] = methodMap
     return acc
   }, {})
-
-  function fixPath(path) {
-    // if any part of the path is a number, replace it with {}
-    // this allows us to match paths like /players/1234 to /players/{id}
-    const parts = path.split('/')
-    const newPath = parts.map((part) => (isNaN(parseInt(part)) ? part : '{}')).join('/')
-    return newPath
-  }
-
-  // log all requests
-  app.use((req, res, next) => {
-    const { method, path: url } = req
-    const fixedPath = fixPath(url)
-    let operation = routeMap[url]?.[method.toLowerCase()]
-    if (fixedPath != url) {
-      //loop through the routeMap and find the first match that contains the method
-      const key = Object.keys(routeMap).find((route) => {
-        const fixedRoute = route.replace(/{\w+}/g, '{}')
-        return fixedRoute == fixedPath && routeMap[route]?.[method.toLowerCase()]
-      })
-      operation = routeMap[key]?.[method.toLowerCase()]
-    }
-    // const controller = operation?.operationId?.replace('_', '.') || 'Unknown Controller'
-    const controller = operation?.operationId?.split('_')[0] || 'Unknown Controller'
-    Logger.debug(`${method} ${url}`, `${controller}`)
-    next()
-  })
 
   await app.listen(3000)
 }
