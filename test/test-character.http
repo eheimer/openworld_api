@@ -69,6 +69,11 @@ Authorization: Bearer {{bearerAuth}}
 GET {{baseUrl}}/games
 Authorization: Bearer {{bearerAuth}}
 
+### Get player's character
+GET {{baseUrl}}/characters/{{character1}}
+Authorization: Bearer {{bearerAuth}}
+
+
 ### test that deleting the character does not delete the battle
 DELETE {{baseUrl}}/characters/{{character1}}
 Authorization: Bearer {{bearerAuth}}

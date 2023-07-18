@@ -12,9 +12,10 @@ export class GameCharacterDto {
 
   @Expose()
   @Transform(({ obj }) => {
-    return { name: obj?.character?.name, race: obj?.character?.race?.name }
+    return { name: obj?.character?.name, race: obj?.character?.race?.name, id: obj?.character?.id }
   })
   character: {
+    id: string
     name: string
     race: string
   }
