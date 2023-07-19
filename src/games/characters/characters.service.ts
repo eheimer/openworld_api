@@ -20,7 +20,12 @@ export class CharactersService {
       game: { id: gameId },
       player: { id: playerId },
       race: { id: createCharacterDto.raceId },
-      inventory
+      inventory,
+      sleep: 1,
+      hunger: 1,
+      hp: this.calcMaxHp(createCharacterDto.strength, 1),
+      mana: this.calcMaxMana(createCharacterDto.intelligence, 1),
+      stamina: this.calcMaxStamina(createCharacterDto.dexterity)
     })
     await this.repo.save(character)
     return this.findOne(character.id)
@@ -61,5 +66,53 @@ export class CharactersService {
 
   findOneWithBattle(id: number) {
     return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle'] })
+  }
+
+  calcMaxHp(strength: number, hunger: number): number {
+    const maxHp = (strength * 25 + 50) * Math.max(hunger, 0.25)
+    return maxHp
+  }
+
+  calcInventorySize(strength: number): number {
+    return strength * 5 + 10
+  }
+
+  calcMeleeDamage(strength: number): number {
+    const meleeDmg = [1, 3, 4, 6]
+    return meleeDmg[strength - 1]
+  }
+
+  calcMaxMana(intelligence: number, sleep: number): number {
+    const maxMana = intelligence * 25 * Math.max(sleep, 0.25)
+    return maxMana
+  }
+
+  calcSpellDamage(intelligence: number): number {
+    const spellDmg = [0, 2, 3, 5]
+    return spellDmg[intelligence - 1]
+  }
+
+  calcFocusBonus(intelligence: number): number {
+    return intelligence * 2
+  }
+
+  calcMedBonus(intelligence: number): number {
+    return this.calcFocusBonus(intelligence)
+  }
+
+  calcMaxStamina(dexterity: number): number {
+    return dexterity * 25
+  }
+
+  calcCastingSpeed(dexterity: number): number {
+    return dexterity * -1 + 1
+  }
+
+  calcSwingSpeed(dexterity: number): number {
+    return dexterity * -1 + 1
+  }
+
+  calcHealSpeed(dexterity: number): number {
+    return this.calcSwingSpeed(dexterity)
   }
 }

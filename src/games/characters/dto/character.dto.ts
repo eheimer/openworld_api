@@ -17,10 +17,8 @@ export class CharacterDto {
   player: PlayerDto
 
   @Expose()
-  @Transform(({ obj }) => {
-    return obj.race?.name
-  })
-  race: string
+  @Transform(({ obj }) => obj.race?.name)
+  raceName: string
 
   @Expose()
   @DTO(BattleDto)
