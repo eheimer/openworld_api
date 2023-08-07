@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CreateCharacterDto } from './dto/create-character.dto'
-import { UpdateCharacterDto } from './dto/update-character.dto'
-import { Character } from './entities/character.entity'
 import { Repository } from 'typeorm'
 import { InventoryService } from '../../items/inventory.service'
+import { FinalizeCharacterDto } from './dto/finalize-character.dto'
+import { UpdateCharacterDto } from './dto/update-character.dto'
+import { Character } from './entities/character.entity'
+import { CreateCharacterDto } from './dto/create-character.dto'
 
 @Injectable()
 export class CharactersService {
@@ -19,16 +20,31 @@ export class CharactersService {
       ...createCharacterDto,
       game: { id: gameId },
       player: { id: playerId },
-      race: { id: createCharacterDto.raceId },
       inventory,
       sleep: 1,
       hunger: 1,
-      hp: this.calcMaxHp(createCharacterDto.strength, 1),
-      mana: this.calcMaxMana(createCharacterDto.intelligence, 1),
-      stamina: this.calcMaxStamina(createCharacterDto.dexterity)
+      new: true
     })
     await this.repo.save(character)
     return this.findOne(character.id)
+  }
+
+  async finalize(id: number, finalizeCharacterDto: FinalizeCharacterDto) {
+    const character = await this.repo.findOne({ where: { id }, relations: ['inventory'] })
+    if (!character) {
+      throw new NotFoundException('Character not found')
+    }
+    if (!character.new) {
+      throw new BadRequestException('Character already finalized')
+    }
+    await this.repo.update(id, {
+      race: { id: finalizeCharacterDto.raceId },
+      hp: this.calcMaxHp(finalizeCharacterDto.strength, 1),
+      mana: this.calcMaxMana(finalizeCharacterDto.intelligence, 1),
+      stamina: this.calcMaxStamina(finalizeCharacterDto.dexterity),
+      new: false
+    })
+    return this.findOne(id)
   }
 
   findOne(id: number) {

@@ -61,29 +61,29 @@ export class CharacterDetailDto extends CharacterDto {
 
   //TODO: replenish values will also be affected by equipment and conditions
   @Expose()
-  @Transform(({ obj }) => obj.race.hpReplenish)
+  @Transform(({ obj }) => obj.race?.hpReplenish)
   hpReplenish: number
 
   @Expose()
-  @Transform(({ obj }) => obj.race.manaReplenish)
+  @Transform(({ obj }) => obj.race?.manaReplenish)
   manaReplenish: number
 
   @Expose()
-  @Transform(({ obj }) => obj.race.staminaReplenish)
+  @Transform(({ obj }) => obj.race?.staminaReplenish)
   staminaReplenish: number
 
   @Expose()
-  @Transform(({ obj }) => obj.race.movement)
+  @Transform(({ obj }) => obj.race?.movement)
   movement: number
 
   @Expose()
-  @Transform(({ obj }) => obj.race.description)
+  @Transform(({ obj }) => obj.race?.description)
   raceDescription: string
 
   @Expose()
   @Transform(({ obj }) => {
     return (
-      obj.race.skills?.map((raceSkill) => {
+      obj.race?.skills?.map((raceSkill) => {
         return {
           id: raceSkill.skill.id,
           name: raceSkill.skill.name,
@@ -127,4 +127,7 @@ export class CharacterDetailDto extends CharacterDto {
   @Expose()
   @Transform(({ obj }) => obj.dexterity * 25)
   maxStamina: number
+
+  @Expose()
+  new: boolean
 }

@@ -1,14 +1,14 @@
-import { Controller, Get, Body, Patch, Param, Delete, UseGuards, NotFoundException, Logger } from '@nestjs/common'
-import { CharactersService } from './characters.service'
-import { UpdateCharacterDto } from './dto/update-character.dto'
-import { Player } from '../../players/entities/player.entity'
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, UseGuards } from '@nestjs/common'
 import { CurrentPlayer } from '../../decorators/current-player.decorator'
-import { Serialize } from '../../interceptors/serialize.interceptor'
-import { CharacterDto } from './dto/character.dto'
-import { CharacterDetailDto } from './dto/character-detail.dto'
 import { CharacterOwnerGuard } from '../../guards/authorization/character-owner.guard'
-import { SerializeResponse } from '../../interceptors/serialize.interceptor'
+import { Serialize, SerializeResponse } from '../../interceptors/serialize.interceptor'
+import { Player } from '../../players/entities/player.entity'
 import { GamesService } from '../games.service'
+import { CharactersService } from './characters.service'
+import { CharacterDetailDto } from './dto/character-detail.dto'
+import { CharacterDto } from './dto/character.dto'
+import { FinalizeCharacterDto } from './dto/finalize-character.dto'
+import { UpdateCharacterDto } from './dto/update-character.dto'
 
 @Controller('characters')
 export class CharactersController {
@@ -30,7 +30,7 @@ export class CharactersController {
 
   @Patch(':characterId')
   @UseGuards(CharacterOwnerGuard)
-  @Serialize(CharacterDto)
+  @Serialize(CharacterDetailDto)
   update(@Param('characterId') id: string, @Body() updateCharacterDto: Partial<UpdateCharacterDto>) {
     return this.charactersService.update(+id, updateCharacterDto)
   }
@@ -39,5 +39,12 @@ export class CharactersController {
   @UseGuards(CharacterOwnerGuard)
   remove(@Param('characterId') id: string) {
     return this.charactersService.remove(+id)
+  }
+
+  @Patch(':characterId/finalize')
+  @UseGuards(CharacterOwnerGuard)
+  @Serialize(CharacterDetailDto)
+  finalize(@Param('characterId') id: string, @Body() finalizeCharacterDto: FinalizeCharacterDto) {
+    return this.charactersService.finalize(+id, finalizeCharacterDto)
   }
 }

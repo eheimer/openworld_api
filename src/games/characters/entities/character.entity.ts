@@ -14,12 +14,13 @@ export class Character extends BaseEntity {
   @Column({ nullable: false }) name: string
   @Column({ default: 1 }) hp: number
   @Column({ default: 0 }) mana: number
-  @Column() strength: number
-  @Column() dexterity: number
-  @Column() intelligence: number
+  @Column({ default: 1 }) strength: number
+  @Column({ default: 1 }) dexterity: number
+  @Column({ default: 1 }) intelligence: number
   @Column({ default: 1 }) sleep: number
   @Column({ default: 1 }) hunger: number
   @Column({ default: 1 }) stamina: number
+  @Column({ default: true }) new: boolean
 
   @ManyToOne(() => Race)
   race: Race

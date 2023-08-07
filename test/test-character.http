@@ -47,13 +47,22 @@ Authorization: Bearer {{bearerAuth}}
 
 
 ### Create a character in a game
+### verify new flag is set to true
 # @name createCharacter
 POST {{baseUrl}}/games/{{gameId}}/characters
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "test character {{rnd}}",
+  "name": "test character {{rnd}}"
+}
+
+### verify new flag is set to false
+PATCH {{baseUrl}}/characters/{{character1}}/finalize
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
   "strength": {{$randomInt 1 4}},
   "dexterity": {{$randomInt 1 4}},
   "intelligence": {{$randomInt 1 4}},
@@ -72,7 +81,6 @@ Authorization: Bearer {{bearerAuth}}
 ### Get player's character
 GET {{baseUrl}}/characters/{{character1}}
 Authorization: Bearer {{bearerAuth}}
-
 
 ### test that deleting the character does not delete the battle
 DELETE {{baseUrl}}/characters/{{character1}}
