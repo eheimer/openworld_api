@@ -46,7 +46,7 @@ export class Character extends BaseEntity {
   @JoinColumn()
   pets: MonsterInstance[]
 
-  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true })
+  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true, cascade: true })
   @JoinColumn()
   skills: CharacterSkill[]
 }

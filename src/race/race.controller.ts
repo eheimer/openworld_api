@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
-import { RaceService } from './race.service'
-import { RaceDto } from './dto/race.dto'
+import { Controller, Get, Param } from '@nestjs/common'
 import { Serialize } from '../interceptors/serialize.interceptor'
+import { RaceDto } from './dto/race.dto'
+import { RaceService } from './race.service'
 
 @Controller('race')
 export class RaceController {

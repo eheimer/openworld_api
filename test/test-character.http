@@ -54,7 +54,11 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "name": "test character {{rnd}}"
+  "name": "test character {{rnd}}",
+  "raceId": {{raceId}},
+  "skills": [
+    { "id": 1, "level": 1 },
+    { "id": 2, "level": 3 } ]
 }
 
 ### verify new flag is set to false

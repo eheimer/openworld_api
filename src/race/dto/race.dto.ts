@@ -1,10 +1,10 @@
 import { Expose } from 'class-transformer'
-import { SkillDto } from '../../skills/dto/skill.dto'
 import { DTO } from '../../decorators/dto-property.decorator'
+import { RaceSkillDto } from './raceskill.dto'
 
 export class RaceDto {
   @Expose() id: number
   @Expose() name: string
   @Expose() description: string
-  @Expose() @DTO(SkillDto) skills: SkillDto[]
+  @Expose() @DTO(RaceSkillDto) skills: RaceSkillDto[]
 }

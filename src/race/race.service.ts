@@ -8,7 +8,7 @@ export class RaceService {
   constructor(@InjectRepository(Race) private repo: Repository<Race>) {}
 
   findAll() {
-    return this.repo.find()
+    return this.repo.find({ relations: ['skills.skill'] })
   }
 
   findOne(id: number) {

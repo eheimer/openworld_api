@@ -1,8 +1,8 @@
 import { Expose, Transform } from 'class-transformer'
-import { CharacterDto } from './character.dto'
-import { InventoryDto } from '../../../items/dto/inventory.dto'
 import { DTO } from '../../../decorators/dto-property.decorator'
+import { InventoryDto } from '../../../items/dto/inventory.dto'
 import { CharacterSkillDto } from './character-skill.dto'
+import { CharacterDto } from './character.dto'
 
 export class CharacterDetailDto extends CharacterDto {
   //NOTE: for the calculations below, reference the CharactersService calc methods
@@ -82,21 +82,6 @@ export class CharacterDetailDto extends CharacterDto {
 
   @Expose()
   @Transform(({ obj }) => {
-    return (
-      obj.race?.skills?.map((raceSkill) => {
-        return {
-          id: raceSkill.skill.id,
-          name: raceSkill.skill.name,
-          description: raceSkill.skill.description,
-          level: raceSkill.level
-        }
-      }) || []
-    )
-  })
-  raceSkills: CharacterSkillDto[]
-
-  @Expose()
-  @Transform(({ obj }) => {
     const maxHp = (obj.strength * 25 + 50) * Math.max(obj.hunger, 0.25)
     return Math.min((obj.hp / maxHp) * 100, 100)
   })
@@ -130,4 +115,11 @@ export class CharacterDetailDto extends CharacterDto {
 
   @Expose()
   new: boolean
+
+  @Expose()
+  @DTO(CharacterSkillDto)
+  @Transform(({ obj }) =>
+    obj.skills?.map((s) => ({ id: s.skill.id, name: s.skill.name, description: s.skill.description, level: s.level }))
+  )
+  skills: CharacterSkillDto[]
 }

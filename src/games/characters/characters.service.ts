@@ -2,10 +2,10 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { InventoryService } from '../../items/inventory.service'
+import { CreateCharacterDto } from './dto/create-character.dto'
 import { FinalizeCharacterDto } from './dto/finalize-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Character } from './entities/character.entity'
-import { CreateCharacterDto } from './dto/create-character.dto'
 
 @Injectable()
 export class CharactersService {
@@ -23,7 +23,9 @@ export class CharactersService {
       inventory,
       sleep: 1,
       hunger: 1,
-      new: true
+      race: { id: createCharacterDto.raceId },
+      new: true,
+      skills: createCharacterDto.skills.map((skill) => ({ skill: { id: skill.id }, level: skill.level }))
     })
     await this.repo.save(character)
     return this.findOne(character.id)
@@ -48,7 +50,7 @@ export class CharactersService {
   }
 
   findOne(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['game', 'player', 'inventory', 'race'] })
+    return this.repo.findOne({ where: { id }, relations: ['game', 'player', 'inventory', 'race', 'skills.skill'] })
   }
 
   async update(id: number, updateCharacterDto: UpdateCharacterDto) {
@@ -81,7 +83,7 @@ export class CharactersService {
   }
 
   findOneWithBattle(id: number) {
-    return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle'] })
+    return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle', 'skills.skill'] })
   }
 
   calcMaxHp(strength: number, hunger: number): number {
