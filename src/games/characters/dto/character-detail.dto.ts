@@ -20,7 +20,7 @@ export class CharacterDetailDto extends CharacterDto {
   @Expose()
   @Transform(({ obj }) => {
     if (obj.race?.hunger) {
-      return Math.min((obj.hunger / obj.race.hunger) * 100, 100)
+      return Math.min(obj.hunger / obj.race.hunger, 1)
     } else {
       return obj.hunger
     }
@@ -30,7 +30,7 @@ export class CharacterDetailDto extends CharacterDto {
   @Expose()
   @Transform(({ obj }) => {
     if (obj.race?.sleep) {
-      return Math.min((obj.sleep / obj.race.sleep) * 100, 100)
+      return Math.min(obj.sleep / obj.race.sleep, 1)
     } else {
       return obj.sleep
     }
@@ -83,21 +83,21 @@ export class CharacterDetailDto extends CharacterDto {
   @Expose()
   @Transform(({ obj }) => {
     const maxHp = (obj.strength * 25 + 50) * Math.max(obj.hunger, 0.25)
-    return Math.min((obj.hp / maxHp) * 100, 100)
+    return Math.min(obj.hp / maxHp, 1)
   })
   hp: number
 
   @Expose()
   @Transform(({ obj }) => {
     const maxMana = obj.intelligence * 25 * Math.max(obj.sleep, 0.25)
-    return Math.min((obj.mana / maxMana) * 100, 100)
+    return Math.min(obj.mana / maxMana, 1)
   })
   mana: number
 
   @Expose()
   @Transform(({ obj }) => {
     const maxStamina = obj.dexterity * 25
-    return Math.min((obj.stamina / maxStamina) * 100, 100)
+    return Math.min(obj.stamina / maxStamina, 1)
   })
   stamina: number
 
