@@ -47,7 +47,6 @@ Authorization: Bearer {{bearerAuth}}
 
 
 ### Create a character in a game
-### verify new flag is set to true
 # @name createCharacter
 POST {{baseUrl}}/games/{{gameId}}/characters
 Authorization: Bearer {{bearerAuth}}
@@ -56,21 +55,12 @@ Content-Type: application/json
 {
   "name": "test character {{rnd}}",
   "raceId": {{raceId}},
-  "skills": [
-    { "id": 1, "level": 1 },
-    { "id": 2, "level": 3 } ]
-}
-
-### verify new flag is set to false
-PATCH {{baseUrl}}/characters/{{character1}}/finalize
-Authorization: Bearer {{bearerAuth}}
-Content-Type: application/json
-
-{
   "strength": {{$randomInt 1 4}},
   "dexterity": {{$randomInt 1 4}},
   "intelligence": {{$randomInt 1 4}},
-  "raceId": {{raceId}}
+  "skills": [
+    { "id": 1, "level": 1 },
+    { "id": 2, "level": 3 } ]
 }
 
 ### create a battle

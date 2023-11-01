@@ -1,9 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { InventoryService } from '../../items/inventory.service'
 import { CreateCharacterDto } from './dto/create-character.dto'
-import { FinalizeCharacterDto } from './dto/finalize-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 import { Character } from './entities/character.entity'
 
@@ -24,29 +23,13 @@ export class CharactersService {
       sleep: 1,
       hunger: 1,
       race: { id: createCharacterDto.raceId },
-      new: true,
-      skills: createCharacterDto.skills.map((skill) => ({ skill: { id: skill.id }, level: skill.level }))
+      hp: this.calcMaxHp(createCharacterDto.strength, 1),
+      mana: this.calcMaxMana(createCharacterDto.intelligence, 1),
+      stamina: this.calcMaxStamina(createCharacterDto.dexterity),
+      skills: createCharacterDto.skills?.map((skill) => ({ skill: { id: skill.id }, level: skill.level }))
     })
     await this.repo.save(character)
     return this.findOne(character.id)
-  }
-
-  async finalize(id: number, finalizeCharacterDto: FinalizeCharacterDto) {
-    const character = await this.repo.findOne({ where: { id }, relations: ['inventory'] })
-    if (!character) {
-      throw new NotFoundException('Character not found')
-    }
-    if (!character.new) {
-      throw new BadRequestException('Character already finalized')
-    }
-    await this.repo.update(id, {
-      race: { id: finalizeCharacterDto.raceId },
-      hp: this.calcMaxHp(finalizeCharacterDto.strength, 1),
-      mana: this.calcMaxMana(finalizeCharacterDto.intelligence, 1),
-      stamina: this.calcMaxStamina(finalizeCharacterDto.dexterity),
-      new: false
-    })
-    return this.findOne(id)
   }
 
   findOne(id: number) {

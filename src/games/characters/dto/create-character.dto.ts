@@ -13,4 +13,16 @@ export class CreateCharacterDto {
   @IsArray()
   @IsNotEmpty()
   skills: CharacterSkillDto[]
+
+  @IsNumber()
+  @IsNotEmpty()
+  strength: number
+
+  @IsNumber()
+  @IsNotEmpty()
+  intelligence: number
+
+  @IsNumber()
+  @IsNotEmpty()
+  dexterity: number
 }

@@ -7,7 +7,6 @@ import { GamesService } from '../games.service'
 import { CharactersService } from './characters.service'
 import { CharacterDetailDto } from './dto/character-detail.dto'
 import { CharacterDto } from './dto/character.dto'
-import { FinalizeCharacterDto } from './dto/finalize-character.dto'
 import { UpdateCharacterDto } from './dto/update-character.dto'
 
 @Controller('characters')
@@ -39,12 +38,5 @@ export class CharactersController {
   @UseGuards(CharacterOwnerGuard)
   remove(@Param('characterId') id: string) {
     return this.charactersService.remove(+id)
-  }
-
-  @Patch(':characterId/finalize')
-  @UseGuards(CharacterOwnerGuard)
-  @Serialize(CharacterDetailDto)
-  finalize(@Param('characterId') id: string, @Body() finalizeCharacterDto: FinalizeCharacterDto) {
-    return this.charactersService.finalize(+id, finalizeCharacterDto)
   }
 }
