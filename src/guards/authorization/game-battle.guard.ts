@@ -1,4 +1,4 @@
-import { CanActivate, Injectable, ExecutionContext, NotFoundException, BadRequestException } from '@nestjs/common'
+import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
 import { GamesService } from '../../games/games.service'
 
 /**
@@ -15,16 +15,7 @@ export class GameBattleGuard implements CanActivate {
     if (!request.params.battleId) {
       throw new BadRequestException('Battle id is required')
     }
-    const game = await this.gamesService.findOne(request.params.gameId)
-    if (!game) {
-      throw new NotFoundException('Game not found')
-    }
-    //throw an error if the battle is not in the game
-    if (!game.battles.some((battle) => battle.id.toString() === request.params.battleId)) {
-      // convert game.battles to an array of ids
-      const battleIds = game.battles.map((battle) => battle.id)
-      throw new BadRequestException(`Battle ${request.params.battleId} is not in the game: [${battleIds}]`)
-    }
-    return true
+    const game = await this.gamesService.findOneHavingBattle(request.params.gameId, request.params.battleId)
+    return !!game
   }
 }

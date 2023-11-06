@@ -64,7 +64,8 @@ Content-Type: application/json
   "strength": {{$randomInt 1 4}},
   "dexterity": {{$randomInt 1 4}},
   "intelligence": {{$randomInt 1 4}},
-  "raceId": 1
+  "raceId": 1,
+  "skills": []
 }
 
 ### get the games with characters
@@ -101,7 +102,8 @@ Content-Type: application/json
   "strength": {{$randomInt 1 4}},
   "dexterity": {{$randomInt 1 4}},
   "intelligence": {{$randomInt 1 4}},
-  "raceId": 1
+  "raceId": 1,
+  "skills": []
 }
 
 ### Get the character for player 1

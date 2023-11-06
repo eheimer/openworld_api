@@ -49,6 +49,10 @@ export class BattlesService {
     )
   }
 
+  findOneByInitiator(playerId: number, battleId: number): Promise<Battle> {
+    return this.repo.findOne({ where: { id: battleId, initiator: { player: { id: playerId } } } })
+  }
+
   async remove(id: number) {
     const battle = await this.repo.findOneBy({ id })
     if (!battle) {

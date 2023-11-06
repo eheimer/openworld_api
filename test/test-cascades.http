@@ -61,7 +61,13 @@ Content-Type: application/json
   "strength": {{$randomInt 1 4}},
   "dexterity": {{$randomInt 1 4}},
   "intelligence": {{$randomInt 1 4}},
-  "raceId": 1
+  "raceId": 1,
+  "skills": [
+    {
+      "id": 1,
+      "level": 1
+    }
+  ]
 }
 
 ### Create a battle

@@ -1,4 +1,4 @@
-import { CanActivate, Injectable, ExecutionContext, NotFoundException, BadRequestException } from '@nestjs/common'
+import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
 import { BattlesService } from '../../games/battles/battles.service'
 
 /**
@@ -12,11 +12,7 @@ export class BattleInitiatorGuard implements CanActivate {
     if (!request.params.battleId) {
       throw new BadRequestException('Battle id is required')
     }
-    const battle = await this.battleService.findOne(request.params.battleId)
-    if (!battle) {
-      throw new NotFoundException('Battle not found')
-    }
-    //return true if current player is the initiator of the battle
-    return battle.initiator?.player?.id === request.user.id
+    const battle = await this.battleService.findOneByInitiator(request.user.id, request.params.battleId)
+    return !!battle
   }
 }

@@ -13,7 +13,7 @@ export class CharactersService {
     private inventoryService: InventoryService
   ) {}
 
-  async create(gameId: number, playerId: number, createCharacterDto: CreateCharacterDto) {
+  async create(gameId: number, playerId: number, createCharacterDto: CreateCharacterDto): Promise<Character> {
     const inventory = await this.inventoryService.createInventory(true)
     const character = await this.repo.create({
       ...createCharacterDto,
@@ -29,14 +29,14 @@ export class CharactersService {
       skills: createCharacterDto.skills?.map((skill) => ({ skill: { id: skill.id }, level: skill.level }))
     })
     await this.repo.save(character)
-    return this.findOne(character.id)
+    return await this.findOne(character.id)
   }
 
-  findOne(id: number) {
+  findOne(id: number): Promise<Character> {
     return this.repo.findOne({ where: { id }, relations: ['game', 'player', 'inventory', 'race', 'skills.skill'] })
   }
 
-  async update(id: number, updateCharacterDto: UpdateCharacterDto) {
+  async update(id: number, updateCharacterDto: UpdateCharacterDto): Promise<Character> {
     const character = await this.repo.findOneBy({ id })
     if (!character) {
       throw new NotFoundException('Character not found')
@@ -57,15 +57,23 @@ export class CharactersService {
     return character
   }
 
-  findByPlayerAndGame(playerId: number, gameId: number) {
+  findOneByPlayerAndInventory(playerId: number, inventoryId: number): Promise<Character> {
+    return this.repo.findOne({ where: { player: { id: playerId }, inventory: { id: inventoryId } } })
+  }
+
+  findOneByPlayer(playerId: number, characterId: number): Promise<Character> {
+    return this.repo.findOne({ where: { player: { id: playerId }, id: characterId } })
+  }
+
+  findByPlayerAndGame(playerId: number, gameId: number): Promise<Character> {
     return this.repo.findOne({ where: { player: { id: playerId }, game: { id: gameId } }, relations: ['battle'] })
   }
 
-  findAllByGame(gameId: number) {
+  findAllByGame(gameId: number): Promise<Character[]> {
     return this.repo.find({ where: { game: { id: gameId } }, relations: ['game', 'player'] })
   }
 
-  findOneWithBattle(id: number) {
+  findOneWithBattle(id: number): Promise<Character> {
     return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle', 'skills.skill'] })
   }
 

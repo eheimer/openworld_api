@@ -27,6 +27,25 @@ export class GamesService {
     return game
   }
 
+  findOneWithHavingPlayerCharacter(id: number, playerId: number): Promise<Game> {
+    return this.repo.findOne({
+      where: { id, players: { id: playerId }, characters: { player: { id: playerId } } },
+      relations: ['players', 'characters', 'characters.player']
+    })
+  }
+
+  findOneByOwner(playerId: number, gameId: number): Promise<Game> {
+    return this.repo.findOne({ where: { id: gameId, owner: { id: playerId } } })
+  }
+
+  findOneHavingBattle(id: number, battleId: number): Promise<Game> {
+    return this.repo.findOne({ where: { id, battles: { id: battleId } } })
+  }
+
+  findOneHavingPlayer(id: number, playerId: number): Promise<Game> {
+    return this.repo.findOne({ where: { id, players: { id: playerId } } })
+  }
+
   async update(id: number, updateGameDto: UpdateGameDto) {
     const storedGame = await this.repo.findOneBy({ id })
     if (!storedGame) {
