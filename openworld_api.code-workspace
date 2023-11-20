@@ -11,6 +11,9 @@
     },
     {
       "path": "../../archive/openworld/api/services"
+    },
+    {
+      "path": "../../archive/openworld/api/models"
     }
   ],
   "settings": {}
