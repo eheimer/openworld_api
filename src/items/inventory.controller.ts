@@ -14,8 +14,10 @@ export class InventoryController {
     return this.inventoryService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(':inventoryId')
+  @Serialize(InventoryDto)
+  @UseGuards(InventoryOwnerGuard)
+  findOne(@Param('inventoryId') id: string) {
     return this.inventoryService.findOne(+id)
   }
 
@@ -24,10 +26,10 @@ export class InventoryController {
     return this.inventoryService.remove(+id)
   }
 
-  @Post(':id/random')
+  @Post(':inventoryId/random')
   @Serialize(InventoryDto)
   @UseGuards(InventoryOwnerGuard)
-  async randomItem(@Param('id') id: string, @Body() req: RandomItemRequestDto) {
+  async randomItem(@Param('inventoryId') id: string, @Body() req: RandomItemRequestDto) {
     return await this.inventoryService.addItemToInventory(
       parseInt(id),
       await this.inventoryService.randomItem(req.itemType, req.level)

@@ -77,11 +77,11 @@ export class InventoryService {
         'weapons.material',
         'weapons.attributes.attribute',
         'armor.armorClass',
-        'armor.location',
+        'armor.location.location',
         'armor.attributes.attribute',
         'armor.reductions.damageType',
         'jewelry.gem',
-        'jewelry.location',
+        'jewelry.location.location',
         'jewelry.attributes.attribute'
       ]
     })

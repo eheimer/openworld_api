@@ -55,6 +55,10 @@ Content-Type: application/json
     { "id": 2, "level": 3 } ]
 }
 
+### Get character's inventory
+GET {{baseUrl}}/inventory/{{inventoryId}}
+Authorization: Bearer {{bearerAuth}}
+
 ### Get a random item
 POST {{baseUrl}}/inventory/{{inventoryId}}/random
 Authorization: Bearer {{bearerAuth}}

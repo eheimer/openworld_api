@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
 import { BaseEntity } from '../../../common/BaseEntity'
 import { EquipLocation } from '../../entities/equip-location.entity'
 
@@ -6,6 +6,7 @@ import { EquipLocation } from '../../entities/equip-location.entity'
 export class JewelryLocation extends BaseEntity {
   @Column() name: string
 
-  @ManyToOne(() => EquipLocation)
+  @OneToOne(() => EquipLocation)
+  @JoinColumn()
   location: EquipLocation
 }

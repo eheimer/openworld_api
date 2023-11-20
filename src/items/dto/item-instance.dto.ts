@@ -82,7 +82,7 @@ export class ItemInstanceDto {
   reductions: { damageType: string; value: number }[]
 
   // armor and jewelry only
-  @Transform(({ obj }) => obj.location?.name || undefined)
+  @Transform(({ obj }) => obj.location?.location?.name || undefined)
   @Expose()
   location: string
 }
