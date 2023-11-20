@@ -24,7 +24,7 @@ const dbConfig = {
     subscribers: [`**/*.subscriber.ts`]
   },
   dev: {
-    logging: ['query', 'parameters']
+    //   logging: ['query', 'parameters']
   },
   prod: {
     type: 'mysql',

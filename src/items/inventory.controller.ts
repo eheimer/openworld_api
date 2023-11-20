@@ -56,4 +56,34 @@ export class InventoryController {
     }
     return inventory
   }
+
+  @Put(':inventoryId/equip/:itemType/:itemId')
+  @Serialize(InventoryDto)
+  @UseGuards(InventoryOwnerGuard)
+  async equipItem(
+    @Param('inventoryId') inventoryId: string,
+    @Param('itemType') itemType: string,
+    @Param('itemId') itemId: string
+  ) {
+    const inventory = await this.inventoryService.equipItem(parseInt(inventoryId), itemType, parseInt(itemId))
+    if (!inventory) {
+      throw new NotFoundException(`Item ${itemId} not found in Inventory ${inventoryId} or not equippable`)
+    }
+    return inventory
+  }
+
+  @Put(':inventoryId/unequip/:itemType/:itemId')
+  @Serialize(InventoryDto)
+  @UseGuards(InventoryOwnerGuard)
+  async unequipItem(
+    @Param('inventoryId') inventoryId: string,
+    @Param('itemType') itemType: string,
+    @Param('itemId') itemId: string
+  ) {
+    const inventory = await this.inventoryService.unequipItem(parseInt(inventoryId), itemType, parseInt(itemId))
+    if (!inventory) {
+      throw new NotFoundException(`Item ${itemId} not found in Inventory ${inventoryId} or not equippable`)
+    }
+    return inventory
+  }
 }

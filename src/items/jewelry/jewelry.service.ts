@@ -45,7 +45,7 @@ export class JewelryService {
     inst.gem = this.randomService.getOneRandomItem(
       await this.repo.find({ where: { rarity: { id: this.randomService.weightedRandom([0, 9, 1]) } } })
     )
-    inst.location = this.randomService.getOneRandomItem(await this.locationRepo.find())
+    inst.location = this.randomService.getOneRandomItem(await this.locationRepo.find({ relations: ['location'] }))
     const attPerLevel = [0, 1, 1, 2, 3]
     if (attPerLevel[level - 1] > 0) {
       inst.attributes = this.randomService

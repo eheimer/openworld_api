@@ -96,9 +96,47 @@ export class InventoryService {
     return this.repo.save(inventory)
   }
 
+  async equipItem(inventoryId: number, type: string, itemId: number): Promise<Inventory | undefined> {
+    const itemType = this.getItemType(type)
+    const inventory = await this.findOne(inventoryId)
+    const item = inventory[itemType.inventoryContainer].find((item) => item.id === itemId)
+    if (!item) {
+      return undefined
+    }
+    if (itemType.name === 'weapon') {
+      inventory.weapons.forEach((weapon) => (weapon.equipped = false))
+      // TODO: if the weapon is a two-handed weapon, unequip any shield (shields aren't implemented yet)
+    }
+    if (itemType.name === 'armor' || itemType.name === 'jewelry') {
+      inventory.armor.forEach((armor) => {
+        if (armor.location.location.id === item.location.location.id) {
+          armor.equipped = false
+        }
+      })
+      inventory.jewelry.forEach((jewelry) => {
+        if (jewelry.location.location.id === item.location.location.id) {
+          jewelry.equipped = false
+        }
+      })
+    }
+    // TODO: if the item is a shield, unequip any two-handed weapon
+    item.equipped = true
+    return this.repo.save(inventory)
+  }
+
+  async unequipItem(inventoryId: number, type: string, itemId: number): Promise<Inventory | undefined> {
+    const itemType = this.getItemType(type)
+    const inventory = await this.findOne(inventoryId)
+    const item = inventory[itemType.inventoryContainer].find((item) => item.id === itemId)
+    if (!item) {
+      return undefined
+    }
+    item.equipped = false
+    return this.repo.save(inventory)
+  }
+
   async dropItemFromInventory(inventoryId: number, type: string, itemId: number): Promise<Inventory | undefined> {
     const itemType = this.getItemType(type)
-    // verify that the item is in the inventory
     const inventory = await this.findOne(inventoryId)
     const item = inventory[itemType.inventoryContainer].find((item) => item.id === itemId)
     if (!item) {
@@ -111,7 +149,6 @@ export class InventoryService {
 
   //persists an item to the database and adds it to the inventory
   async addItemToInventory(inventoryId: number, item: ItemInstance) {
-    // get item type from the ItemInstance
     const itemType = this.getItemType(item.constructor.name.replace('Instance', '').toLowerCase())
     Logger.log({ item })
 

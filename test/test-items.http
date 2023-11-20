@@ -65,10 +65,19 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "itemType": "jewelry",
-  "level": 5
+  "itemType": "armor",
+  "level": 1
 }
 
 ### Drop an item
 PUT {{baseUrl}}/inventory/4/drop/jewelry/12
 Authorization: Bearer {{bearerAuth}}
+
+### Equip an item
+PUT {{baseUrl}}/inventory/1/equip/armor/1
+Authorization: Bearer {{bearerAuth}}
+
+### Unequip an item
+PUT {{baseUrl}}/inventory/1/unequip/weapon/2
+Authorization: Bearer {{bearerAuth}}
+

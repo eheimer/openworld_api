@@ -57,7 +57,7 @@ export class ArmorService {
     inst.armorClass = this.randomService.getOneRandomItem(
       await this.repo.find({ relations: ['reductions', 'reductions.damageType'] })
     )
-    inst.location = this.randomService.getOneRandomItem(await this.locationRepo.find())
+    inst.location = this.randomService.getOneRandomItem(await this.locationRepo.find({ relations: ['location'] }))
     inst.reductions = inst.armorClass.reductions
       .filter((reduc) => reduc.level === level - 1)
       .map((reduc) => {
