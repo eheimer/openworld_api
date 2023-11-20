@@ -33,6 +33,18 @@ Authorization: Bearer {{bearerAuth}}
 GET {{baseUrl}}/inventory
 Authorization: Bearer {{bearerAuth}}
 
+### Get all weapons
+GET {{baseUrl}}/weapons
+Authorization: Bearer {{bearerAuth}}
+
+### Get all armors
+GET {{baseUrl}}/armor
+Authorization: Bearer {{bearerAuth}}
+
+### Get all jewelry
+GET {{baseUrl}}/jewelry
+Authorization: Bearer {{bearerAuth}}
+
 ### Get all monsters
 GET {{baseUrl}}/monsters
 Authorization: Bearer {{bearerAuth}}

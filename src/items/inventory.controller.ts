@@ -1,14 +1,12 @@
-import { Controller, Get, Param, Delete } from '@nestjs/common'
+import { Controller, Get, Param, Delete, Body, Logger } from '@nestjs/common'
 import { InventoryService } from './inventory.service'
+import { RandomItemRequestDto } from './dto/random-item-request.dto'
+import { Serialize } from 'src/interceptors/serialize.interceptor'
+import { ItemInstanceDto } from './dto/item-instance.dto'
 
 @Controller('inventory')
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
-
-  // @Post()
-  // create(@Body() createInventoryDto: CreateInventoryDto) {
-  //   return this.inventoryService.create(createInventoryDto)
-  // }
 
   @Get()
   findAll() {
@@ -20,13 +18,15 @@ export class InventoryController {
     return this.inventoryService.findOne(+id)
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateInventoryDto: UpdateInventoryDto) {
-  //   return this.inventoryService.update(+id, updateInventoryDto)
-  // }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.inventoryService.remove(+id)
+  }
+
+  @Get(':id/random')
+  @Serialize(ItemInstanceDto)
+  async randomItem(@Param('id') id: string, @Body() req: RandomItemRequestDto) {
+    const ret = await this.inventoryService.randomItem(req.itemType, req.level)
+    return ret
   }
 }

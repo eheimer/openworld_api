@@ -68,11 +68,14 @@ export class RandomService {
 
   /**
    * Returns the specified number of unique elements from the array,
-   * chosen at random, with weights, if provided
+   * chosen at random, with weights, if provided. Note that if dispose is false and count > 1,
+   * then the returned array could contain duplicates.  If you do not want duplicates, you
+   * should pass in an copy of your array that you don't mind if it gets modified,
+   * so that you can specify true for dispose
    * @param {*} arr
    * @param {*} count
    * @param {*} weights
-   * @param {*} dispose specify false to prevent the chosen item from being removed from the provided array
+   * @param {*} dispose specify false to prevent the chosen item from being removed from the provided array, or true to prevent duplicates from being returned
    */
   getRandomItems(arr: any[], count: number, weights: number[], dispose = true): any[] {
     const items: any[] = []

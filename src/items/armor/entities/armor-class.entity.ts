@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm'
+import { Column, Entity, OneToMany } from 'typeorm'
 import { BaseEntity } from '../../../common/BaseEntity'
 import { ArmorClassDamageReduction } from './armor-class-damage-reduction.entity'
 
@@ -7,6 +7,6 @@ export class ArmorClass extends BaseEntity {
   @Column() name: string
   @Column() durability: number
 
-  @ManyToOne(() => ArmorClassDamageReduction, (cdr) => cdr.armorClass)
+  @OneToMany(() => ArmorClassDamageReduction, (cdr) => cdr.armorClass)
   reductions: ArmorClassDamageReduction[]
 }
