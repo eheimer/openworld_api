@@ -14,7 +14,9 @@ export class JewelryService {
     @InjectRepository(Gem) private repo: Repository<Gem>,
     private randomService: RandomService,
     @InjectRepository(JewelryLocation) private locationRepo: Repository<JewelryLocation>,
-    @InjectRepository(JewelryAttribute) private attRepo: Repository<JewelryAttribute>
+    @InjectRepository(JewelryAttribute) private attRepo: Repository<JewelryAttribute>,
+    @InjectRepository(JewelryInstance) private instanceRepo: Repository<JewelryInstance>,
+    @InjectRepository(JewelryInstanceAttribute) private instanceAttRepo: Repository<JewelryInstanceAttribute>
   ) {}
   findAll() {
     return `This action returns all jewelry`
@@ -26,6 +28,14 @@ export class JewelryService {
 
   remove(id: number) {
     return `This action removes a #${id} jewelry`
+  }
+
+  async removeInstance(id: number) {
+    const inst = await this.instanceRepo.findOne({ where: { id }, relations: ['attributes'] })
+    inst.attributes.forEach((att) => {
+      this.instanceAttRepo.remove(att)
+    })
+    return this.instanceRepo.remove(inst)
   }
 
   async randomItem(level: number) {

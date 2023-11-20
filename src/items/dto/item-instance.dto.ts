@@ -11,6 +11,8 @@ export class ItemInstanceDto {
   @Expose()
   itemType: string
 
+  @Expose() id: number
+
   @Transform(({ obj }) => {
     if (obj.weapon) {
       return `${obj.material?.name} ${obj.weapon?.name}`

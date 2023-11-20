@@ -23,7 +23,9 @@ const dbConfig = {
     entities: [`**/*.entity.ts`],
     subscribers: [`**/*.subscriber.ts`]
   },
-  dev: {},
+  dev: {
+    logging: ['query', 'parameters']
+  },
   prod: {
     type: 'mysql',
     host: 'localhost',

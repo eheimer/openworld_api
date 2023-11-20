@@ -61,6 +61,10 @@ Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
-  "itemType": "armor",
-  "level": 1
+  "itemType": "jewelry",
+  "level": 5
 }
+
+### Drop an item
+PUT {{baseUrl}}/inventory/4/drop/jewelry/12
+Authorization: Bearer {{bearerAuth}}

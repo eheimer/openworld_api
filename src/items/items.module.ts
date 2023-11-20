@@ -21,24 +21,49 @@ import { Material } from './weapons/entities/material.entity'
 import { WeaponAttribute } from './weapons/entities/weapon-attribute.entity'
 import { Weapon } from './weapons/entities/weapon.entity'
 import { ArmorClass } from './armor/entities/armor-class.entity'
+import { CharactersService } from '../games/characters/characters.service'
+import { Character } from '../games/characters/entities/character.entity'
+import { ArmorInstance } from './armor/entities/armor-instance.entity'
+import { JewelryInstance } from './jewelry/entities/jewelry-instance.entity'
+import { WeaponInstance } from './weapons/entities/weapon-instance.entity'
+import { ArmorInstanceAttribute } from './armor/entities/armor-instance-attribute.entity'
+import { ArmorInstanceDamageReduction } from './armor/entities/armor-instance-damage-reduction.entity'
+import { JewelryInstanceAttribute } from './jewelry/entities/jewelry-instance-attribute.entity'
+import { WeaponInstanceAttribute } from './weapons/entities/weapon-instance-attribute.entity'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Inventory,
+      ArmorInstance,
+      ArmorInstanceAttribute,
+      ArmorInstanceDamageReduction,
       ArmorClass,
       ArmorAttribute,
       ArmorLocation,
+      JewelryInstance,
+      JewelryInstanceAttribute,
       Gem,
       JewelryLocation,
       JewelryAttribute,
+      WeaponInstance,
+      WeaponInstanceAttribute,
       Weapon,
       Material,
-      WeaponAttribute
+      WeaponAttribute,
+      Character
     ])
   ],
   controllers: [ArmorController, InventoryController, JewelryController, SpellbooksController, WeaponsController],
-  providers: [RandomService, ArmorService, InventoryService, JewelryService, SpellbooksService, WeaponsService],
+  providers: [
+    CharactersService,
+    RandomService,
+    ArmorService,
+    InventoryService,
+    JewelryService,
+    SpellbooksService,
+    WeaponsService
+  ],
   exports: [ArmorService, InventoryService, JewelryService, SpellbooksService, WeaponsService]
 })
 export class ItemsModule {}

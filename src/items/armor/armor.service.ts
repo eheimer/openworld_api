@@ -18,7 +18,13 @@ export class ArmorService {
     @InjectRepository(ArmorAttribute)
     private attRepo: Repository<ArmorAttribute>,
     @InjectRepository(ArmorLocation)
-    private locationRepo: Repository<ArmorLocation>
+    private locationRepo: Repository<ArmorLocation>,
+    @InjectRepository(ArmorInstance)
+    private instanceRepo: Repository<ArmorInstance>,
+    @InjectRepository(ArmorInstanceAttribute)
+    private instanceAttRepo: Repository<ArmorInstanceAttribute>,
+    @InjectRepository(ArmorInstanceDamageReduction)
+    private instanceReductionRepo: Repository<ArmorInstanceDamageReduction>
   ) {}
 
   findAll() {
@@ -31,6 +37,17 @@ export class ArmorService {
 
   remove(id: number) {
     return `This action removes a #${id} armor`
+  }
+
+  async removeInstance(id: number) {
+    const inst = await this.instanceRepo.findOne({ where: { id }, relations: ['attributes', 'reductions'] })
+    inst.attributes.forEach((att) => {
+      this.instanceAttRepo.remove(att)
+    })
+    inst.reductions.forEach((reduc) => {
+      this.instanceReductionRepo.remove(reduc)
+    })
+    return this.instanceRepo.remove(inst)
   }
 
   async randomItem(level: number) {

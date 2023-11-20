@@ -67,27 +67,9 @@ export class InventoryService {
     return this.repo.find()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} inventory`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} inventory`
-  }
-
-  createInventory(limit: boolean) {
-    const inventory = this.repo.create({ limit })
-    return this.repo.save(inventory)
-  }
-
-  //persists an item to the database and adds it to the inventory
-  async addItemToInventory(inventoryId: number, item: ItemInstance) {
-    // get item type from the ItemInstance
-    const itemType = this.getItemType(item.constructor.name.replace('Instance', '').toLowerCase())
-    Logger.log({ item })
-
-    const inventory = await this.repo.findOne({
-      where: { id: inventoryId },
+  async findOne(id: number) {
+    return await this.repo.findOne({
+      where: { id },
       relations: [
         'weapons.weapon.skill',
         'weapons.weapon.primaryMove',
@@ -103,6 +85,37 @@ export class InventoryService {
         'jewelry.attributes.attribute'
       ]
     })
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} inventory`
+  }
+
+  createInventory(limit: boolean) {
+    const inventory = this.repo.create({ limit })
+    return this.repo.save(inventory)
+  }
+
+  async dropItemFromInventory(inventoryId: number, type: string, itemId: number): Promise<Inventory | undefined> {
+    const itemType = this.getItemType(type)
+    // verify that the item is in the inventory
+    const inventory = await this.findOne(inventoryId)
+    const item = inventory[itemType.inventoryContainer].find((item) => item.id === itemId)
+    if (!item) {
+      return undefined
+    }
+    inventory[itemType.inventoryContainer] = inventory[itemType.inventoryContainer].filter((item) => item.id !== itemId)
+    await itemType.service.removeInstance(item.id)
+    return inventory
+  }
+
+  //persists an item to the database and adds it to the inventory
+  async addItemToInventory(inventoryId: number, item: ItemInstance) {
+    // get item type from the ItemInstance
+    const itemType = this.getItemType(item.constructor.name.replace('Instance', '').toLowerCase())
+    Logger.log({ item })
+
+    const inventory = await this.findOne(inventoryId)
     inventory[itemType.inventoryContainer].push(item)
     return this.repo.save(inventory)
   }

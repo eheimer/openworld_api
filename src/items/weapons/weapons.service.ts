@@ -14,11 +14,15 @@ export class WeaponsService {
   constructor(
     @InjectRepository(Weapon)
     private repo: Repository<Weapon>,
+    @InjectRepository(WeaponInstance)
+    private instanceRepo: Repository<WeaponInstance>,
     @InjectRepository(Material)
     private materialRepo: Repository<Material>,
     private randomService: RandomService,
     @InjectRepository(WeaponAttribute)
-    private attRepo: Repository<WeaponAttribute>
+    private attRepo: Repository<WeaponAttribute>,
+    @InjectRepository(WeaponInstanceAttribute)
+    private attInstanceRepo: Repository<WeaponInstanceAttribute>
   ) {}
 
   findAll() {
@@ -31,6 +35,14 @@ export class WeaponsService {
 
   remove(id: number) {
     return `This action removes a #${id} weapon`
+  }
+
+  async removeInstance(id: number) {
+    const inst = await this.instanceRepo.findOne({ where: { id }, relations: ['attributes'] })
+    inst.attributes.forEach((att) => {
+      this.attInstanceRepo.remove(att)
+    })
+    return this.instanceRepo.remove(inst)
   }
 
   async randomItem(level: number) {
