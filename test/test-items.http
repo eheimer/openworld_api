@@ -3,7 +3,9 @@
 @bearerAuth = {{login.response.body.token}}
 @player1Name = {{register1.response.body.username}}
 @player1Id = {{register1.response.body.id}}
-@inventoryId = {{login.response.body.inventoryId}}
+@gameId = {{createGame.response.body.id}}
+
+@inventoryId = {{createCharacter.response.body.inventory.id}}
 
 ### Create PLAYER 1
 # @name register1
@@ -26,11 +28,39 @@ Content-Type: application/json
   "password": "password"
 }
 
-### Get a random item
-GET {{baseUrl}}/inventory/{{inventoryId}}/random
+### Create a game
+# @name createGame
+POST {{baseUrl}}/games
 Authorization: Bearer {{bearerAuth}}
 Content-Type: application/json
 
 {
+  "name": "test game {{rnd}}"
+}
+
+### Create a character in a game
+# @name createCharacter
+POST {{baseUrl}}/games/{{gameId}}/characters
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "name": "test character {{rnd}}",
+  "raceId": 1,
+  "strength": {{$randomInt 1 4}},
+  "dexterity": {{$randomInt 1 4}},
+  "intelligence": {{$randomInt 1 4}},
+  "skills": [
+    { "id": 1, "level": 1 },
+    { "id": 2, "level": 3 } ]
+}
+
+### Get a random item
+POST {{baseUrl}}/inventory/{{inventoryId}}/random
+Authorization: Bearer {{bearerAuth}}
+Content-Type: application/json
+
+{
+  "itemType": "armor",
   "level": 1
 }

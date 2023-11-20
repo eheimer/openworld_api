@@ -17,6 +17,7 @@ interface ItemTypeMap {
     name: string
     type: new () => ItemInstance
     service: WeaponsService | ArmorService | JewelryService
+    inventoryContainer: string
   }
 }
 
@@ -34,17 +35,20 @@ export class InventoryService {
     1: {
       name: 'weapon',
       type: WeaponInstance,
-      service: this.weaponsService
+      service: this.weaponsService,
+      inventoryContainer: 'weapons'
     },
     2: {
       name: 'armor',
       type: ArmorInstance,
-      service: this.armorService
+      service: this.armorService,
+      inventoryContainer: 'armor'
     },
     3: {
       name: 'jewelry',
       type: JewelryInstance,
-      service: this.jewelryService
+      service: this.jewelryService,
+      inventoryContainer: 'jewelry'
     }
   }
 
@@ -76,6 +80,34 @@ export class InventoryService {
     return this.repo.save(inventory)
   }
 
+  //persists an item to the database and adds it to the inventory
+  async addItemToInventory(inventoryId: number, item: ItemInstance) {
+    // get item type from the ItemInstance
+    const itemType = this.getItemType(item.constructor.name.replace('Instance', '').toLowerCase())
+    Logger.log({ item })
+
+    const inventory = await this.repo.findOne({
+      where: { id: inventoryId },
+      relations: [
+        'weapons.weapon.skill',
+        'weapons.weapon.primaryMove',
+        'weapons.weapon.secondaryMove',
+        'weapons.material',
+        'weapons.attributes.attribute',
+        'armor.armorClass',
+        'armor.location',
+        'armor.attributes.attribute',
+        'armor.reductions.damageType',
+        'jewelry.gem',
+        'jewelry.location',
+        'jewelry.attributes.attribute'
+      ]
+    })
+    inventory[itemType.inventoryContainer].push(item)
+    return this.repo.save(inventory)
+  }
+
+  //generates a non-persisted item
   async randomItem(type: number | string, level: number) {
     if (!type) {
       type = this.randomService.getOneRandomItem(Object.keys(this.itemTypes))

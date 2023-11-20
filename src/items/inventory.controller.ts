@@ -1,8 +1,8 @@
-import { Controller, Get, Param, Delete, Body, Logger } from '@nestjs/common'
+import { Controller, Get, Param, Delete, Body, Logger, Post } from '@nestjs/common'
 import { InventoryService } from './inventory.service'
 import { RandomItemRequestDto } from './dto/random-item-request.dto'
 import { Serialize } from 'src/interceptors/serialize.interceptor'
-import { ItemInstanceDto } from './dto/item-instance.dto'
+import { InventoryDto } from './dto/inventory.dto'
 
 @Controller('inventory')
 export class InventoryController {
@@ -23,10 +23,12 @@ export class InventoryController {
     return this.inventoryService.remove(+id)
   }
 
-  @Get(':id/random')
-  @Serialize(ItemInstanceDto)
+  @Post(':id/random')
+  @Serialize(InventoryDto)
   async randomItem(@Param('id') id: string, @Body() req: RandomItemRequestDto) {
-    const ret = await this.inventoryService.randomItem(req.itemType, req.level)
-    return ret
+    return await this.inventoryService.addItemToInventory(
+      parseInt(id),
+      await this.inventoryService.randomItem(req.itemType, req.level)
+    )
   }
 }

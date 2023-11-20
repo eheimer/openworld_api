@@ -14,7 +14,8 @@ export class WeaponInstance extends BaseEntity {
   weapon: Weapon
 
   @OneToMany(() => WeaponInstanceAttribute, (wia) => wia.weapon, {
-    nullable: true
+    nullable: true,
+    cascade: ['insert']
   })
   attributes: WeaponInstanceAttribute[]
 

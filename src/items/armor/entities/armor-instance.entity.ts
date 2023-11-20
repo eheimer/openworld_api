@@ -26,7 +26,8 @@ export class ArmorInstance extends BaseEntity {
   location: ArmorLocation
 
   @OneToMany(() => ArmorInstanceAttribute, (aia) => aia.armor, {
-    nullable: true
+    nullable: true,
+    cascade: ['insert']
   })
   attributes: ArmorInstanceAttribute[]
 
@@ -34,7 +35,8 @@ export class ArmorInstance extends BaseEntity {
   inventory: Inventory
 
   @OneToMany(() => ArmorInstanceDamageReduction, (aidr) => aidr.armor, {
-    nullable: true
+    nullable: true,
+    cascade: ['insert']
   })
   reductions: ArmorInstanceDamageReduction[]
 }

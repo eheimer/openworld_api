@@ -17,7 +17,8 @@ export class JewelryInstance extends BaseEntity {
   location: JewelryLocation
 
   @OneToMany(() => JewelryInstanceAttribute, (jia) => jia.jewelry, {
-    nullable: true
+    nullable: true,
+    cascade: ['insert']
   })
   attributes: JewelryInstanceAttribute[]
 

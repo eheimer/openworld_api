@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { ArmorInstance } from './entities/armor-instance.entity'
 import { ArmorAttribute } from './entities/armor-attribute.entity'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -29,10 +29,6 @@ export class ArmorService {
     return `This action returns a #${id} armor`
   }
 
-  // update(id: number, updateArmorDto: UpdateArmorDto) {
-  //   return `This action updates a #${id} armor`
-  // }
-
   remove(id: number) {
     return `This action removes a #${id} armor`
   }
@@ -50,6 +46,7 @@ export class ArmorService {
       .map((reduc) => {
         const item = new ArmorInstanceDamageReduction()
         item.damageType = reduc.damageType
+        item.name = reduc.damageType.name
         item.value = this.randomService.getRandomInRange(reduc.reduction)
         return item
       })

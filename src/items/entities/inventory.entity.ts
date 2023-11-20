@@ -10,13 +10,13 @@ export class Inventory extends BaseEntity {
   @Column({ default: false }) limit: boolean
   @Column({ default: 0 }) gold: number
 
-  @OneToMany(() => WeaponInstance, (wi) => wi.inventory, { nullable: true })
+  @OneToMany(() => WeaponInstance, (wi) => wi.inventory, { nullable: true, cascade: ['insert'] })
   weapons: WeaponInstance[]
 
-  @OneToMany(() => ArmorInstance, (ai) => ai.inventory, { nullable: true })
+  @OneToMany(() => ArmorInstance, (ai) => ai.inventory, { nullable: true, cascade: ['insert'] })
   armor: ArmorInstance[]
 
-  @OneToMany(() => JewelryInstance, (ji) => ji.inventory, { nullable: true })
+  @OneToMany(() => JewelryInstance, (ji) => ji.inventory, { nullable: true, cascade: ['insert'] })
   jewelry: JewelryInstance[]
 
   @OneToMany(() => SpellbookInstance, (si) => si.inventory, { nullable: true })
