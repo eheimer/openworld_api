@@ -11,6 +11,10 @@
 @battleId = {{createBattle.response.body.id}}
 @characterBattle = {{getCharacter1.response.body.battle.id}}
 
+### This file verifies character/battle interaction
+### TODO: retrieving a character returns an empty battle object
+### this should be fixed to return the battleId
+
 ### Create PLAYER
 # @name register
 POST {{baseUrl}}/auth/register
@@ -112,7 +116,7 @@ GET {{baseUrl}}/characters/{{character1}}
 Authorization: Bearer {{bearerAuth}}
 
 ### Join the battle
-POST {{baseUrl}}/games/{{gameId}}/battles/{{characterBattle}}/join
+POST {{baseUrl}}/games/{{gameId}}/battles/{{battleId}}/join
 Authorization: Bearer {{bearerAuth}}
 
 ### Get the character for player 2

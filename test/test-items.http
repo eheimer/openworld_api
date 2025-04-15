@@ -7,6 +7,9 @@
 
 @inventoryId = {{createCharacter.response.body.inventory.id}}
 
+### This file tests inventory/equipment functionality
+### TODO: there are permissions issues for equipping/unequipping endpoints
+
 ### Create PLAYER 1
 # @name register1
 POST {{baseUrl}}/auth/register

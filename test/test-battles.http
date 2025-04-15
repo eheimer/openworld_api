@@ -11,6 +11,9 @@
 @battleId = {{createBattle.response.body.id}}
 @monsterId = {{monsters.response.body.0.id}}
 
+### This file tests various battle functionality
+### TODO: we currently have cascading delete/update failures
+
 ### Create PLAYER
 # @name register
 POST {{baseUrl}}/auth/register

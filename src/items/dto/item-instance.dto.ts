@@ -85,4 +85,20 @@ export class ItemInstanceDto {
   @Transform(({ obj }) => obj.location?.location?.name || undefined)
   @Expose()
   location: string
+
+  @Transform(({ obj }) => {
+    // return resource string in the form of <type>-<location>-<material>
+    // example: armor-head-leather
+    if (obj.weapon) {
+      return `weapon-${obj.weapon?.name}-${obj.material?.name}`
+    }
+    if (obj.armorClass) {
+      return `armor-${obj.location?.name}-${obj.armorClass?.name}`
+    }
+    if (obj.gem) {
+      return `jewelry-${obj.location?.name}-${obj.gem?.name}`
+    }
+  })
+  @Expose()
+  image: string
 }

@@ -4,6 +4,8 @@
 @player1Name = {{register1.response.body.username}}
 @player1Id = {{register1.response.body.id}}
 
+### This file tests basic map functionality
+
 ### Create PLAYER 1
 # @name register1
 POST {{baseUrl}}/auth/register

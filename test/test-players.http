@@ -6,6 +6,11 @@
 @player2Name = {{register2.response.body.username}}
 @player2Id = {{register2.response.body.id}}
 
+### This file tests that players can be registered and logged in,
+### and that the player can update their own email address
+### and delete their own account.
+### It also tests that the player cannot update or delete another player's account
+
 ### Create PLAYER 1
 # @name register1
 POST {{baseUrl}}/auth/register

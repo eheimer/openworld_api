@@ -9,6 +9,9 @@
 @raceId = {{races.response.body.0.id}}
 @battleId = {{createBattle.response.body.id}}
 
+### This file should test various character-related functionality
+### it is currently failing and needs to be addressed
+
 ### Register a player
 # @name register
 POST {{baseUrl}}/auth/register

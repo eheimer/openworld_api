@@ -7,6 +7,10 @@
 @player2Id = {{register2.response.body.id}}
 @gameId = {{createGame.response.body.id}}
 
+### This file tests that players can create games, add and remove players from games,
+### and delete games.  It also tests that players cannot delete games they do not own.
+### TODO: It should also test that players cannot add or remove players from games they do not own.
+
 ### Create PLAYER 1
 # @name register1
 POST {{baseUrl}}/auth/register

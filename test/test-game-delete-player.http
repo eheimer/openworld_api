@@ -7,6 +7,9 @@
 @player2Id = {{register2.response.body.id}}
 @gameId = {{createGame.response.body.id}}
 
+### This file tests that if the owner of a game deletes his account,
+### the game is not deleted, but the ownership is transferred to another player.
+
 ### Create PLAYER 1
 # @name register1
 POST {{baseUrl}}/auth/register

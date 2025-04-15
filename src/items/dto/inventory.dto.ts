@@ -15,22 +15,28 @@ export class InventoryDto {
 
   @Transform(({ obj }) => {
     const equipped = []
-    obj.weapons.forEach((weapon) => {
-      Logger.log(`weapon ${weapon.id} equipped: ${weapon.equipped}`)
-      if (weapon.equipped) {
-        equipped.push({ itemType: 'weapon', location: undefined, id: weapon.id })
-      }
-    })
-    obj.armor.forEach((armor) => {
-      if (armor.equipped) {
-        equipped.push({ itemType: 'armor', location: armor.location.location.id, id: armor.id })
-      }
-    })
-    obj.jewelry.forEach((jewelry) => {
-      if (jewelry.equipped) {
-        equipped.push({ itemType: 'jewelry', location: jewelry.location.location.id, id: jewelry.id })
-      }
-    })
+    if (obj.weapons) {
+      obj.weapons.forEach((weapon) => {
+        Logger.log(`weapon ${weapon.id} equipped: ${weapon.equipped}`)
+        if (weapon.equipped) {
+          equipped.push({ itemType: 'weapon', location: undefined, id: weapon.id })
+        }
+      })
+    }
+    if (obj.armor) {
+      obj.armor.forEach((armor) => {
+        if (armor.equipped) {
+          equipped.push({ itemType: 'armor', location: armor.location.location.id, id: armor.id })
+        }
+      })
+    }
+    if (obj.jewelry) {
+      obj.jewelry.forEach((jewelry) => {
+        if (jewelry.equipped) {
+          equipped.push({ itemType: 'jewelry', location: jewelry.location.location.id, id: jewelry.id })
+        }
+      })
+    }
     Logger.log({ equipped })
     return equipped
   })
