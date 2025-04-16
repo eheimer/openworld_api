@@ -18,8 +18,7 @@ const configDefault = {
 // these env values override the defaults
 const dbConfig = {
   test: {
-    type: 'sqlite',
-    database: 'test.sqlite',
+    database: 'openworld-test',
     entities: [`**/*.entity.ts`],
     subscribers: [`**/*.subscriber.ts`]
   },

@@ -20,14 +20,17 @@
     "test:cov": "npm run test -- --coverage",
     "test:debug": "cross-env NODE_ENV=test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1",
+    "test:e2e:reseed": "cross-env NODE_ENV=test npm run reseed:test && cross-env NODE_ENV=test jest --config ./test/jest-e2e.json --maxWorkers=1",
     "**** DATA ****": "",
-    "typeorm": "cross-env NODE_ENV=dev TYPEORM_CLI=1 typeorm-ts-node-esm -d ormDataSource.ts",
-    "typeorm-no-d": "cross-env NODE_ENV=dev TYPEORM_CLI=1 typeorm-ts-node-esm",
-    "migration:generate": "npm run build && npm run typeorm -- 'migration:generate'",
-    "migration:create": "npm run typeorm-no-d -- 'migration:create'",
+    "typeorm": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm -d ormDataSource.ts",
+    "typeorm-no-d": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm",
     "migration:run": "npm run typeorm -- 'migration:run'",
     "schema:drop": "npm run typeorm -- 'schema:drop'",
-    "reseed:dev": "npm run schema:drop && npm run migration:run"
+    "reseed:dev": "cross-env NODE_ENV=dev npm run schema:drop && cross-env NODE_ENV=dev npm run migration:run",
+    "reseed:test": "cross-env NODE_ENV=test npm run schema:drop && cross-env NODE_ENV=test npm run migration:run",
+    "**** DATA MAINTENANCE ****": "",
+    "migration:generate": "cross-env NODE_ENV=dev npm run build && npm run typeorm -- 'migration:generate'",
+    "migration:create": "cross-env NODE_ENV=dev npm run typeorm-no-d -- 'migration:create'"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.4",
