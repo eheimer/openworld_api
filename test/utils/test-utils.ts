@@ -42,14 +42,19 @@ export class TestUtils {
     return { playerId, username, token }
   }
 
-  static async createGameAsPlayer(app: INestApplication, playerToken: string) {
+  static async createGameAsPlayer(app: INestApplication, playerToken: string): Promise<number> {
     const gameResponse = await this.buildAuthorizedRequest(app, 'post', '/games', playerToken, {
       name: `test game ${uuidv4()}`
     })
     if (gameResponse.status !== 201) {
       throw new Error('Failed to create game')
     }
-    return gameResponse.body
+    return gameResponse.body.id
+  }
+
+  static async getRandomRace(app: INestApplication, token: string): Promise<number> {
+    const raceResponse = await TestUtils.buildAuthorizedRequest(app, 'get', '/race', token)
+    return raceResponse.body[Math.floor(Math.random() * raceResponse.body.length)].id
   }
 
   static authorizeRequest(requestBuilder: request.Test, token: string): request.Test {
