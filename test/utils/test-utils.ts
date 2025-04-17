@@ -44,7 +44,7 @@ export class TestUtils {
 
   static async createGameAsPlayer(app: INestApplication, playerToken: string): Promise<number> {
     const gameResponse = await this.buildAuthorizedRequest(app, 'post', '/games', playerToken, {
-      name: `test game ${uuidv4()}`
+      name: `game ${uuidv4()}`
     })
     if (gameResponse.status !== 201) {
       throw new Error('Failed to create game')
@@ -52,9 +52,51 @@ export class TestUtils {
     return gameResponse.body.id
   }
 
+  static async addPlayerToGame(app: INestApplication, gameId: number, playerId: number, playerToken: string) {
+    const addPlayerResponse = await this.buildAuthorizedRequest(
+      app,
+      'post',
+      `/games/${gameId}/players/${playerId}`,
+      playerToken
+    )
+    if (addPlayerResponse.status !== 201) {
+      throw new Error('Failed to add player to game')
+    }
+    return addPlayerResponse.body.id
+  }
+
+  static async createCharacterAsPlayer(app: INestApplication, gameId: number, playerToken: string) {
+    let raceId = await this.getRandomRace(app, playerToken)
+    let characterName = `character ${uuidv4()}`
+    let payload = {
+      name: characterName,
+      strength: 3,
+      dexterity: 3,
+      intelligence: 3,
+      raceId: raceId,
+      skills: []
+    }
+    const characterResponse = await this.buildAuthorizedRequest(
+      app,
+      'post',
+      `/games/${gameId}/characters`,
+      playerToken,
+      payload
+    )
+    if (characterResponse.status !== 201) {
+      throw new Error('Failed to create character')
+    }
+    return characterResponse.body.id
+  }
+
   static async getRandomRace(app: INestApplication, token: string): Promise<number> {
     const raceResponse = await TestUtils.buildAuthorizedRequest(app, 'get', '/race', token)
     return raceResponse.body[Math.floor(Math.random() * raceResponse.body.length)].id
+  }
+
+  static async getRandomMonster(app: INestApplication, token: string): Promise<number> {
+    const monsterResponse = await TestUtils.buildAuthorizedRequest(app, 'get', '/monsters', token)
+    return monsterResponse.body[Math.floor(Math.random() * monsterResponse.body.length)].id
   }
 
   static authorizeRequest(requestBuilder: request.Test, token: string): request.Test {
