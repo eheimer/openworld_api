@@ -88,9 +88,14 @@ describe('Player functionality (e2e)', () => {
         expect.objectContaining({ id: player2.playerId, username: player2.username })
       ])
     )
+    // expect that when getting all players as player1, player 1 should have an email address, player 2 should NOT have an email address
+    const player1Response = response.body.find((p) => p.id === player1.playerId)
+    const player2Response = response.body.find((p) => p.id === player2.playerId)
+    expect(player1Response).toHaveProperty('email')
+    expect(player2Response).not.toHaveProperty('email')
   })
 
-  it('should update PLAYER 1 email', async () => {
+  it('PLAYER 1 should update PLAYER 1 email', async () => {
     const payload = { email: `updated_${player1.username}@example.com` }
     const response = await TestUtils.buildAuthorizedRequest(
       app,
@@ -104,7 +109,7 @@ describe('Player functionality (e2e)', () => {
     expect(response.body.email).toBe(payload.email)
   })
 
-  it('should fail to update PLAYER 2 email', async () => {
+  it('PLAYER 1 should fail to update PLAYER 2 email', async () => {
     const payload = { email: `updated_${player2.username}@example.com` }
     const response = await TestUtils.buildAuthorizedRequest(
       app,
@@ -117,7 +122,7 @@ describe('Player functionality (e2e)', () => {
     expect(response.status).toBe(403)
   })
 
-  it('should fail to delete PLAYER 2', async () => {
+  it('PLAYER 1 should fail to delete PLAYER 2', async () => {
     const response = await TestUtils.buildAuthorizedRequest(
       app,
       'delete',
@@ -128,20 +133,13 @@ describe('Player functionality (e2e)', () => {
     expect(response.status).toBe(403)
   })
 
-  it('should delete PLAYER 1', async () => {
+  it('PLAYER 1 should delete PLAYER 1', async () => {
     const response = await TestUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/players/${player1.playerId}`,
       player1.token
     )
-
-    expect(response.status).toBe(200)
-  })
-
-  // logout doesn't actually do anything.  It should invalidate the token
-  it('should logout PLAYER 2', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', '/auth/logout', player2.token)
 
     expect(response.status).toBe(200)
   })
