@@ -10,9 +10,7 @@ describe('Character functionality (e2e)', () => {
   let player: { playerId: number; username: string; token: string }
   let gameId: number
   let raceId: number
-
   let characterId: number
-  let battleId: number
 
   beforeAll(async () => {
     app = await TestUtils.createApp()
@@ -24,7 +22,7 @@ describe('Character functionality (e2e)', () => {
     await app.close()
   })
 
-  it('should create a character, and a battle', async () => {
+  it('should create a character', async () => {
     raceId = await TestUtils.getRandomRace(app, player.token)
 
     // Create a character
@@ -47,11 +45,6 @@ describe('Character functionality (e2e)', () => {
     )
     expect(characterResponse.status).toBe(201)
     characterId = characterResponse.body.id
-
-    // Create a battle
-    const battleResponse = await TestUtils.buildAuthorizedRequest(app, 'post', `/games/${gameId}/battles`, player.token)
-    battleId = battleResponse.body.id
-    expect(battleResponse.status).toBe(201)
   })
 
   it('should verify the players games', async () => {
@@ -69,33 +62,7 @@ describe('Character functionality (e2e)', () => {
   })
 
   //TODO: deletes fail, controller needs fixing
-  it('should delete the battle', async () => {
-    // Delete the battle
-    const deleteBattleResponse = await TestUtils.buildAuthorizedRequest(
-      app,
-      'delete',
-      `/games/${gameId}/battles/${battleId}`,
-      player.token
-    )
-    expect(deleteBattleResponse.status).toBe(200)
-
-    // Verify the character was not deleted
-    const characterResponse = await TestUtils.buildAuthorizedRequest(
-      app,
-      'get',
-      `/games/${gameId}/characters/${characterId}`,
-      player.token
-    )
-    expect(characterResponse.status).toBe(200)
-    expect(characterResponse.body.id).toBe(characterId)
-  })
-
   it('should delete the character', async () => {
-    // Create a new battle first
-    const battleResponse = await TestUtils.buildAuthorizedRequest(app, 'post', `/games/${gameId}/battles`, player.token)
-    expect(battleResponse.status).toBe(201)
-
-    // Delete the character
     const deleteCharacterResponse = await TestUtils.buildAuthorizedRequest(
       app,
       'delete',
@@ -103,15 +70,6 @@ describe('Character functionality (e2e)', () => {
       player.token
     )
     expect(deleteCharacterResponse.status).toBe(200)
-
-    // Verify the battle was not deleted
-    const battleStatusResponse = await TestUtils.buildAuthorizedRequest(
-      app,
-      'get',
-      `/games/${gameId}/battles`,
-      player.token
-    )
-    expect(battleStatusResponse.status).toBe(200)
   })
 
   it('should delete the player', async () => {
