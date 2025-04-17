@@ -71,7 +71,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should create a new game and add PLAYER 2 to the game', async () => {
-    game = await TestUtils.createGameAsPlayer(app, player1.token)
+    game.id = await TestUtils.createGameAsPlayer(app, player1.token)
     const response = await TestUtils.buildAuthorizedRequest(
       app,
       'post',
