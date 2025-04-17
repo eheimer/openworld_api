@@ -1,8 +1,6 @@
-import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
-import * as request from 'supertest'
-import { AppModule } from './../src/app.module'
 import { v4 as uuidv4 } from 'uuid'
+import { TestUtils } from './utils/test-utils'
 
 /*
  This file tests that players can be registered and logged in,
@@ -11,112 +9,139 @@ import { v4 as uuidv4 } from 'uuid'
  It also tests that the player cannot update or delete another player's account
 */
 
-describe('PlayersController (e2e)', () => {
+describe('Player functionality (e2e)', () => {
   let app: INestApplication
-  let player1Token: string
-  let player1Id: number
-  let player1Username: string
-  let player2Id: number
-  let player2Username: string
+  let player1: { playerId: number; username: string; token: string }
+  let player2: { playerId: number; username: string; token: string }
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule]
-    }).compile()
-
-    app = moduleFixture.createNestApplication()
-    await app.init()
+    app = await TestUtils.createApp()
   })
 
   afterAll(async () => {
     await app.close()
   })
 
-  it('should register PLAYER 1', async () => {
-    player1Username = `player_${uuidv4()}`
-    const response = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send({
-        username: `${player1Username}`,
-        email: `${player1Username}@example.com`,
-        password: 'password'
-      })
-    expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('id')
-    player1Id = response.body.id
+  it('should register and login PLAYER 1', async () => {
+    const username = `player1_${uuidv4()}`
+    const email = `player1_${uuidv4()}@example.com`
+
+    const registerResponse = await TestUtils.buildRequest(app, 'post', '/auth/register', {
+      username,
+      email,
+      password: 'password'
+    })
+    expect(registerResponse.status).toBe(201)
+    expect(registerResponse.body).toHaveProperty('username', username)
+    expect(registerResponse.body).toHaveProperty('email', email)
+
+    player1 = {
+      playerId: registerResponse.body.id,
+      username: registerResponse.body.username,
+      token: ''
+    }
+
+    const loginResponse = await TestUtils.buildRequest(app, 'post', '/auth/login', {
+      username: player1.username,
+      password: 'password'
+    })
+    expect(loginResponse.status).toBe(201)
+    player1.token = loginResponse.body.token
   })
 
-  it('should register PLAYER 2', async () => {
-    player2Username = `player_${uuidv4()}`
-    const response = await request(app.getHttpServer())
-      .post('/auth/register')
-      .send({
-        username: `${player2Username}`,
-        email: `${player2Username}@example.com`,
-        password: 'password'
-      })
-    expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('id')
-    player2Id = response.body.id
-  })
+  it('should register and login PLAYER 2', async () => {
+    const username = `player2_${uuidv4()}`
+    const email = `player2_${uuidv4()}@example.com`
 
-  it('should login PLAYER 1', async () => {
-    const response = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({
-        username: `${player1Username}`,
-        password: 'password'
-      })
-    expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('token')
-    player1Token = response.body.token
+    const registerResponse = await TestUtils.buildRequest(app, 'post', '/auth/register', {
+      username,
+      email,
+      password: 'password'
+    })
+    expect(registerResponse.status).toBe(201)
+    expect(registerResponse.body).toHaveProperty('username', username)
+    expect(registerResponse.body).toHaveProperty('email', email)
+
+    player2 = {
+      playerId: registerResponse.body.id,
+      username: registerResponse.body.username,
+      token: ''
+    }
+
+    const loginResponse = await TestUtils.buildRequest(app, 'post', '/auth/login', {
+      username: player2.username,
+      password: 'password'
+    })
+    expect(loginResponse.status).toBe(201)
+    player2.token = loginResponse.body.token
   })
 
   it('should get all players', async () => {
-    const response = await request(app.getHttpServer()).get('/players').set('Authorization', `Bearer ${player1Token}`)
+    const response = await TestUtils.buildAuthorizedRequest(app, 'get', '/players', player1.token)
 
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(1)
     expect(response.body).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ id: player1Id, username: player1Username }),
-        expect.objectContaining({ id: player2Id, username: player2Username })
+        expect.objectContaining({ id: player1.playerId, username: player1.username }),
+        expect.objectContaining({ id: player2.playerId, username: player2.username })
       ])
     )
   })
 
   it('should update PLAYER 1 email', async () => {
-    const response = await request(app.getHttpServer())
-      .patch(`/players/${player1Id}`)
-      .set('Authorization', `Bearer ${player1Token}`)
-      .send({ email: `updated_${player1Username}@example.com` })
+    const payload = { email: `updated_${player1.username}@example.com` }
+    const response = await TestUtils.buildAuthorizedRequest(
+      app,
+      'patch',
+      `/players/${player1.playerId}`,
+      player1.token,
+      payload
+    )
 
     expect(response.status).toBe(200)
-    expect(response.body.email).toBe(`updated_${player1Username}@example.com`)
+    expect(response.body.email).toBe(payload.email)
   })
 
   it('should fail to update PLAYER 2 email', async () => {
-    const response = await request(app.getHttpServer())
-      .patch(`/players/${player2Id}`)
-      .set('Authorization', `Bearer ${player1Token}`)
-      .send({ email: `updated_${player2Username}@example.com` })
+    const payload = { email: `updated_${player2.username}@example.com` }
+    const response = await TestUtils.buildAuthorizedRequest(
+      app,
+      'patch',
+      `/players/${player2.playerId}`,
+      player1.token,
+      payload
+    )
 
     expect(response.status).toBe(403)
   })
 
   it('should fail to delete PLAYER 2', async () => {
-    const response = await request(app.getHttpServer())
-      .delete(`/players/${player2Id}`)
-      .set('Authorization', `Bearer ${player1Token}`)
+    const response = await TestUtils.buildAuthorizedRequest(
+      app,
+      'delete',
+      `/players/${player2.playerId}`,
+      player1.token
+    )
 
     expect(response.status).toBe(403)
   })
 
-  it('should logout PLAYER 1', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/auth/logout')
-      .set('Authorization', `Bearer ${player1Token}`)
+  it('should delete PLAYER 1', async () => {
+    const response = await TestUtils.buildAuthorizedRequest(
+      app,
+      'delete',
+      `/players/${player1.playerId}`,
+      player1.token
+    )
+
+    expect(response.status).toBe(200)
+  })
+
+  // logout doesn't actually do anything.  It should invalidate the token
+  it('should logout PLAYER 2', async () => {
+    const response = await TestUtils.buildAuthorizedRequest(app, 'get', '/auth/logout', player2.token)
 
     expect(response.status).toBe(200)
   })
