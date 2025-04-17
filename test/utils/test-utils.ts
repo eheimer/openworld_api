@@ -42,6 +42,16 @@ export class TestUtils {
     return { playerId, username, token }
   }
 
+  static async createGameAsPlayer(app: INestApplication, playerToken: string) {
+    const gameResponse = await this.buildAuthorizedRequest(app, 'post', '/games', playerToken, {
+      name: `test game ${uuidv4()}`
+    })
+    if (gameResponse.status !== 201) {
+      throw new Error('Failed to create game')
+    }
+    return gameResponse.body
+  }
+
   static authorizeRequest(requestBuilder: request.Test, token: string): request.Test {
     return requestBuilder.set('Authorization', `Bearer ${token}`)
   }

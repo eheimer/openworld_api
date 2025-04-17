@@ -2,13 +2,6 @@ import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
 import { TestUtils } from './utils/test-utils'
 
-/*
- This file tests that players can be registered and logged in,
- and that the player can update their own email address
- and delete their own account.
- It also tests that the player cannot update or delete another player's account
-*/
-
 describe('Player functionality (e2e)', () => {
   let app: INestApplication
   let player1: { playerId: number; username: string; token: string }
