@@ -7,8 +7,6 @@ describe('GamesController (e2e)', () => {
   let player1: { playerId: number; username: string; token: string }
   let player2: { playerId: number; username: string; token: string }
   let game: { id: number; name: string }
-  // let game.id: number
-  // let gameName: string
 
   beforeAll(async () => {
     app = await TestUtils.createApp()
