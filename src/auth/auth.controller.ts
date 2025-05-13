@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Get, Header, Post, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { PlayersService } from '../players/players.service'
 import { Public } from '../decorators/public-auth.decorator'
@@ -16,6 +16,7 @@ export class AuthController {
   constructor(private authService: AuthService, private playersService: PlayersService) {}
 
   @Post('login')
+  @Header('Content-Type', 'application/json')
   @UseGuards(LocalAuthGuard)
   @Public()
   async login(@CurrentPlayer() player: Player) {
@@ -23,11 +24,13 @@ export class AuthController {
   }
 
   @Get('logout')
+  @Header('Content-Type', 'application/json')
   async logout(@CurrentPlayer() player: Player) {
     //do whatever stuff is needed when the player logs out
   }
 
   @Post('register')
+  @Header('Content-Type', 'application/json')
   @Public()
   @ApiResponse({ status: 201, type: PlayerDetailDto })
   @Serialize(PlayerDetailDto)

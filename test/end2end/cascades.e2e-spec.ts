@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
-import { AppModule } from './../src/app.module'
+import { AppModule } from '../../src/app.module'
 import { v4 as uuidv4 } from 'uuid'
 
 // issue the following command to run this test:

@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
-import { AppModule } from './../src/app.module'
+import { AppModule } from '../../src/app.module'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from './utils/test-utils'
+import { TestUtils } from '../utils/test-utils'
 
 // issue the following command to run this test:
 // npx jest --config ./test/jest-e2e.json test/items.e2e-spec.ts
@@ -14,14 +14,14 @@ describe('ItemsController (e2e)', () => {
   let app: INestApplication
   let player: { playerId: number; username: string; token: string }
   let gameId: number
-  let characterId: number
+  let character: number
   let inventoryId: number
 
   beforeAll(async () => {
     app = await TestUtils.createApp()
     player = await TestUtils.registerAndLoginPlayer(app)
     gameId = await TestUtils.createGameAsPlayer(app, player.token)
-    characterId = await TestUtils.createCharacterAsPlayer(app, gameId, player.token)
+    character = await TestUtils.createCharacterAsPlayer(app, gameId, player.token)
   })
 
   afterAll(async () => {
@@ -33,7 +33,7 @@ describe('ItemsController (e2e)', () => {
     const characterResponse = await TestUtils.buildAuthorizedRequest(
       app,
       'get',
-      `/characters/${characterId}`,
+      `/characters/${character}`,
       player.token
     )
     expect(characterResponse.status).toBe(200)

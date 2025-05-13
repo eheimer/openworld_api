@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from './utils/test-utils'
+import { TestUtils } from '../utils/test-utils'
 
 describe('GamesController (e2e)', () => {
   let app: INestApplication

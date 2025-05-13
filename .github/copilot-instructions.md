@@ -1,0 +1,2 @@
+when generating ts code, do not include the trailing semi-colon
+when searching for files, make sure to always go back to the root of the project. For example, searching for controllers in the src folder, make sure to search for /src/**/\*.controller.ts, likewise when searching for tests, search for /test/**/\*.spec.ts. The leading '/' character refers to the root project folder, which is /home/eric/work/openworld/openworld_api

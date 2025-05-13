@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { CharactersService } from '../characters/characters.service'
 import { MonstersService } from '../../monsters/monsters.service'
 import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
+import { Character } from '../characters/entities/character.entity'
 
 @Injectable()
 export class BattlesService {
@@ -37,6 +38,7 @@ export class BattlesService {
         relations: [
           'initiator.player',
           'participants',
+          'participants.player',
           'game',
           'enemies.nextAction.action',
           'enemies.monster.actions.action',
@@ -54,9 +56,16 @@ export class BattlesService {
   }
 
   async remove(id: number) {
-    const battle = await this.repo.findOneBy({ id })
+    const battle = await this.findOne(id)
     if (!battle) {
       throw new NotFoundException('Battle not found')
+    }
+    if (!battle.participants || !Array.isArray(battle.participants)) {
+      throw new Error('Participants are not properly loaded or are invalid: ' + battle.participants)
+    }
+    //remove all participants from the battle
+    for (const participant of battle.participants as Array<Character>) {
+      await this.leave(battle.id, participant.player.id)
     }
     return await this.repo.remove(battle)
   }
@@ -74,6 +83,19 @@ export class BattlesService {
       throw new BadRequestException('You are already in a battle')
     }
     battle.participants.push(character)
+    return await this.repo.save(battle)
+  }
+
+  async leave(battleId: number, playerId: number) {
+    const battle = await this.findOne(battleId)
+    if (!battle) {
+      throw new NotFoundException('Battle not found')
+    }
+    const character = await this.charactersService.findByPlayerAndGame(playerId, battle.game.id)
+    if (!character) {
+      throw new BadRequestException('You must have a character to leave a battle')
+    }
+    battle.participants = battle.participants.filter((p) => p.id !== character.id)
     return await this.repo.save(battle)
   }
 

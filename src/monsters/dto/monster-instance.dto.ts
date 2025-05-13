@@ -75,4 +75,8 @@ export class MonsterInstanceDto {
   @Transform(({ obj }) => obj.nextAction?.action?.initiative)
   @Expose()
   initiative: number
+
+  @Transform(({ obj }) => obj.monster?.id)
+  @Expose()
+  monsterId: number
 }

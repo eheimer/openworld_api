@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from './utils/test-utils'
+import { TestUtils } from '../utils/test-utils'
 
 describe('Player functionality (e2e)', () => {
   let app: INestApplication
@@ -24,7 +24,9 @@ describe('Player functionality (e2e)', () => {
       email,
       password: 'password'
     })
+
     expect(registerResponse.status).toBe(201)
+
     expect(registerResponse.body).toHaveProperty('username', username)
     expect(registerResponse.body).toHaveProperty('email', email)
 
