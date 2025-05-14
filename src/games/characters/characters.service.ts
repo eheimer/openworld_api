@@ -74,7 +74,7 @@ export class CharactersService {
   }
 
   findOneWithBattle(id: number): Promise<Character> {
-    return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle', 'skills.skill'] })
+    return this.repo.findOne({ where: { id }, relations: ['player', 'race', 'battle', 'skills.skill', 'inventory'] })
   }
 
   calcMaxHp(strength: number, hunger: number): number {
