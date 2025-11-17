@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../../common/BaseEntity'
-import { MaterialType } from './material-type.entity'
+import { BaseEntity } from "../../../common/BaseEntity.js"
+import { MaterialType } from "./material-type.entity.js"
 
 @Entity()
 export class Material extends BaseEntity {
@@ -11,3 +11,5 @@ export class Material extends BaseEntity {
   @ManyToOne(() => MaterialType)
   baseMaterial: MaterialType
 }
+
+(globalThis as any).Material = Material

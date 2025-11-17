@@ -4,3 +4,5 @@ export class MonsterDto {
   @Expose() id: number
   @Expose() name: string
 }
+
+(globalThis as any).MonsterDto = MonsterDto

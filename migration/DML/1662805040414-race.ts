@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { RaceSeed } from '../../src/race/seed/Race.seed'
-import { RaceSkillSeed } from '../../src/race/seed/RaceSkill.seed'
+import { RaceSeed } from '../../src/race/seed/Race.seed.ts'
+import { RaceSkillSeed } from '../../src/race/seed/RaceSkill.seed.ts'
 
 export class race1662805040414 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

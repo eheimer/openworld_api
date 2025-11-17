@@ -5,3 +5,5 @@ export class PlayerDto {
   @Expose() username: string
   @Expose() lastSeenAt: Date
 }
+
+(globalThis as any).PlayerDto = PlayerDto

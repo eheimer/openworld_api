@@ -1,5 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
-import { CharactersService } from '../../games/characters/characters.service'
+import { CharactersService } from "../../games/characters/characters.service.js"
 
 /**
  * @description - This guard verifies that the current player is the owner of the requested character
@@ -14,3 +14,5 @@ export class CharacterOwnerGuard implements CanActivate {
     return !!character
   }
 }
+
+(globalThis as any).CharacterOwnerGuard = CharacterOwnerGuard

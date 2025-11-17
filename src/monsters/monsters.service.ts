@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { MonsterInstance } from './entities/monster-instance.entity'
-import { Monster } from './entities/monster.entity'
+import { MonsterInstance } from "./entities/monster-instance.entity.js"
+import { Monster } from "./entities/monster.entity.js"
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { RandomService } from '../utils/random.service'
-import { MonsterAction } from './entities/monster-action.entity'
+import { RandomService } from "../utils/random.service.js"
+import { MonsterAction } from "./entities/monster-action.entity.js"
 
 @Injectable()
 export class MonstersService {
@@ -80,3 +80,5 @@ export class MonstersService {
     return this.instRepo.delete({ id })
   }
 }
+
+(globalThis as any).MonstersService = MonstersService

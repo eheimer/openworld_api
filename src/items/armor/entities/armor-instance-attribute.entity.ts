@@ -1,14 +1,14 @@
-import { DamageType } from '../../../damage-types/entities/damage-type.entity'
+import { DamageType } from "../../../damage-types/entities/damage-type.entity.js"
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../../common/BaseEntity'
-import { ArmorAttribute } from './armor-attribute.entity'
-import { ArmorInstance } from './armor-instance.entity'
+import { BaseEntity } from "../../../common/BaseEntity.js"
+import { ArmorAttribute } from "./armor-attribute.entity.js"
+import type { ArmorInstance } from "./armor-instance.entity.js"
 
 @Entity()
 export class ArmorInstanceAttribute extends BaseEntity {
   @Column() value: number
-  @ManyToOne(() => ArmorInstance, { nullable: true })
-  armor: ArmorInstance
+  @ManyToOne(() => (globalThis as any).ArmorInstance, (a: any) => (a as any).attributes, { nullable: true })
+  armor: any
 
   @ManyToOne(() => ArmorAttribute, { nullable: false })
   attribute: ArmorAttribute
@@ -16,3 +16,5 @@ export class ArmorInstanceAttribute extends BaseEntity {
   @ManyToOne(() => DamageType, { nullable: true })
   damageType: DamageType
 }
+
+(globalThis as any).ArmorInstanceAttribute = ArmorInstanceAttribute

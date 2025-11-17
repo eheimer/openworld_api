@@ -5,3 +5,5 @@ export class CreateGameDto {
   @IsNotEmpty()
   name: string
 }
+
+(globalThis as any).CreateGameDto = CreateGameDto

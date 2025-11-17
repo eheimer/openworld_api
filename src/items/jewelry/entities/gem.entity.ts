@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../../common/BaseEntity'
-import { GemRarity } from './gem-rarity.entity'
-import { ItemCategory } from '../../entities/item-category.entity'
+import { BaseEntity } from "../../../common/BaseEntity.js"
+import { GemRarity } from "./gem-rarity.entity.js"
+import { ItemCategory } from "../../entities/item-category.entity.js"
 
 @Entity()
 export class Gem extends BaseEntity {
@@ -16,3 +16,5 @@ export class Gem extends BaseEntity {
   @ManyToOne(() => ItemCategory)
   category: ItemCategory
 }
+
+(globalThis as any).Gem = Gem

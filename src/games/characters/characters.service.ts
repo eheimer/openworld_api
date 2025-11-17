@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { InventoryService } from '../../items/inventory.service'
-import { CreateCharacterDto } from './dto/create-character.dto'
-import { UpdateCharacterDto } from './dto/update-character.dto'
-import { Character } from './entities/character.entity'
+import { InventoryService } from "../../items/inventory.service.js"
+import { CreateCharacterDto } from "./dto/create-character.dto.js"
+import { UpdateCharacterDto } from "./dto/update-character.dto.js"
+import { Character } from "./entities/character.entity.js"
 
 @Injectable()
 export class CharactersService {
@@ -41,7 +41,7 @@ export class CharactersService {
     if (!character) {
       throw new NotFoundException('Character not found')
     }
-    await this.repo.update(id, updateCharacterDto)
+  await this.repo.update(id, updateCharacterDto as any)
     return await this.findOne(id)
   }
 
@@ -125,3 +125,5 @@ export class CharactersService {
     return this.calcSwingSpeed(dexterity)
   }
 }
+
+(globalThis as any).CharactersService = CharactersService

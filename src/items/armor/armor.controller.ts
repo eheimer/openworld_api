@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { ArmorService } from './armor.service'
+import { ArmorService } from "./armor.service.js"
 
 @Controller('armor')
 export class ArmorController {
@@ -30,3 +30,5 @@ export class ArmorController {
     return this.armorService.remove(+id)
   }
 }
+
+(globalThis as any).ArmorController = ArmorController

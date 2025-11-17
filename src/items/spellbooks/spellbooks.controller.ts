@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { SpellbooksService } from './spellbooks.service'
+import { SpellbooksService } from "./spellbooks.service.js"
 
 @Controller('spellbooks')
 export class SpellbooksController {
@@ -30,3 +30,5 @@ export class SpellbooksController {
     return this.spellbooksService.remove(+id)
   }
 }
+
+(globalThis as any).SpellbooksController = SpellbooksController

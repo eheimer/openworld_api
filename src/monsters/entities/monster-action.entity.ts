@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
-import { Monster } from './monster.entity'
-import { Action } from './action.entity'
+import { BaseEntity } from "../../common/BaseEntity.js"
+import { Monster } from "./monster.entity.js"
+import { Action } from "./action.entity.js"
 
 @Entity()
 export class MonsterAction extends BaseEntity {
@@ -15,3 +15,5 @@ export class MonsterAction extends BaseEntity {
   @ManyToOne(() => Action)
   action: Action
 }
+
+(globalThis as any).MonsterAction = MonsterAction

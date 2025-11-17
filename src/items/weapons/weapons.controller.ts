@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { WeaponsService } from './weapons.service'
+import { WeaponsService } from "./weapons.service.js"
 
 @Controller('weapons')
 export class WeaponsController {
@@ -30,3 +30,5 @@ export class WeaponsController {
     return this.weaponsService.remove(+id)
   }
 }
+
+(globalThis as any).WeaponsController = WeaponsController

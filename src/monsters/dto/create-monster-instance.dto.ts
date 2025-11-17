@@ -5,3 +5,5 @@ export class CreateMonsterInstanceDto {
   @IsNotEmpty()
   monsterId: string
 }
+
+(globalThis as any).CreateMonsterInstanceDto = CreateMonsterInstanceDto

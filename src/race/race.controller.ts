@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common'
-import { Serialize } from '../interceptors/serialize.interceptor'
-import { RaceDto } from './dto/race.dto'
-import { RaceService } from './race.service'
+import { Serialize } from "../interceptors/serialize.interceptor.js"
+import { RaceDto } from "./dto/race.dto.js"
+import { RaceService } from "./race.service.js"
 
 @Controller('race')
 export class RaceController {
@@ -18,3 +18,5 @@ export class RaceController {
     return this.raceService.findOne(+id)
   }
 }
+
+(globalThis as any).RaceController = RaceController

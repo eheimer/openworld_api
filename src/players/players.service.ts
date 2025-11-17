@@ -1,10 +1,10 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CreatePlayerDto } from './dto/create-player.dto'
-import { UpdatePlayerDto } from './dto/update-player.dto'
-import { Player } from './entities/player.entity'
+import { CreatePlayerDto } from "./dto/create-player.dto.js"
+import { UpdatePlayerDto } from "./dto/update-player.dto.js"
+import { Player } from "./entities/player.entity.js"
 import { Repository } from 'typeorm'
-import { CharactersService } from '../games/characters/characters.service'
+import { CharactersService } from "../games/characters/characters.service.js"
 
 @Injectable()
 export class PlayersService {
@@ -57,3 +57,5 @@ export class PlayersService {
     return player
   }
 }
+
+(globalThis as any).PlayersService = PlayersService

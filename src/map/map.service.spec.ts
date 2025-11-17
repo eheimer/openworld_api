@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { MapService } from './map.service'
+import { MapService } from "./map.service.js"
 
 describe('MapService', () => {
   let service: MapService

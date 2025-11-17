@@ -113,3 +113,5 @@ export class RandomService {
     return this.getRandomItems(arr, 1, weights, dispose)[0]
   }
 }
+
+(globalThis as any).RandomService = RandomService

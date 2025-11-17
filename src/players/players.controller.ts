@@ -1,13 +1,13 @@
 import { Controller, Get, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
-import { PlayersService } from './players.service'
-import { UpdatePlayerDto } from './dto/update-player.dto'
-import { Serialize } from '../interceptors/serialize.interceptor'
-import { PlayerDto } from '../players/dto/player.dto'
-import { PlayerDetailDto } from '../players/dto/player-detail.dto'
-import { SerializeResponse } from '../interceptors/serialize.interceptor'
-import { CurrentPlayer } from '../decorators/current-player.decorator'
-import { Player } from './entities/player.entity'
-import { CurrentPlayerGuard } from '../guards/authorization/player-current-player.guard'
+import { PlayersService } from "./players.service.js"
+import { UpdatePlayerDto } from "./dto/update-player.dto.js"
+import { Serialize } from "../interceptors/serialize.interceptor.js"
+import { PlayerDto } from "../players/dto/player.dto.js"
+import { PlayerDetailDto } from "../players/dto/player-detail.dto.js"
+import { SerializeResponse } from "../interceptors/serialize.interceptor.js"
+import { CurrentPlayer } from "../decorators/current-player.decorator.js"
+import { Player } from "./entities/player.entity.js"
+import { CurrentPlayerGuard } from "../guards/authorization/player-current-player.guard.js"
 
 @Controller('players')
 export class PlayersController {
@@ -39,3 +39,5 @@ export class PlayersController {
     return await this.playersService.remove(+id)
   }
 }
+
+(globalThis as any).PlayersController = PlayersController

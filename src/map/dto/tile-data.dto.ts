@@ -12,3 +12,5 @@ export class TileDataDto {
   @Expose()
   terrain: number
 }
+
+(globalThis as any).TileDataDto = TileDataDto

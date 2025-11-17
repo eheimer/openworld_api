@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
-import { Battle } from './entities/battle.entity'
+import { Battle } from "./entities/battle.entity.js"
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CharactersService } from '../characters/characters.service'
-import { MonstersService } from '../../monsters/monsters.service'
-import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
-import { Character } from '../characters/entities/character.entity'
+import { CharactersService } from "../characters/characters.service.js"
+import { MonstersService } from "../../monsters/monsters.service.js"
+import { MonsterInstance } from "../../monsters/entities/monster-instance.entity.js"
+import { Character } from "../characters/entities/character.entity.js"
 
 @Injectable()
 export class BattlesService {
@@ -146,3 +146,5 @@ export class BattlesService {
     return monsters
   }
 }
+
+(globalThis as any).BattlesService = BattlesService

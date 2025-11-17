@@ -11,3 +11,5 @@ export class RandomItemRequestDto {
   @Max(5)
   level?: number
 }
+
+(globalThis as any).RandomItemRequestDto = RandomItemRequestDto

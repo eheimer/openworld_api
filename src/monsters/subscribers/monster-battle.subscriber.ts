@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Battle } from '../../games/battles/entities/battle.entity'
-import { MonsterInstance } from '../entities/monster-instance.entity'
+import { Battle } from "../../games/battles/entities/battle.entity.js"
+import { MonsterInstance } from "../entities/monster-instance.entity.js"
 
 @EventSubscriber()
 export class MonsterBattleSubscriber implements EntitySubscriberInterface<Battle> {
@@ -49,3 +49,5 @@ export class MonsterBattleSubscriber implements EntitySubscriberInterface<Battle
     Logger.verbose('done', 'MonsterBattleSubscriber')
   }
 }
+
+(globalThis as any).MonsterBattleSubscriber = MonsterBattleSubscriber

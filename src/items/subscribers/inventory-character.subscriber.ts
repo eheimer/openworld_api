@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Character } from '../../games/characters/entities/character.entity'
+import { Character } from "../../games/characters/entities/character.entity.js"
 
 @EventSubscriber()
 export class InventoryCharacterSubscriber implements EntitySubscriberInterface<Character> {
@@ -53,3 +53,5 @@ export class InventoryCharacterSubscriber implements EntitySubscriberInterface<C
     Logger.verbose('done', 'InventoryCharacterSubscriber')
   }
 }
+
+(globalThis as any).InventoryCharacterSubscriber = InventoryCharacterSubscriber

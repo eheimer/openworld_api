@@ -102,3 +102,5 @@ export class ItemInstanceDto {
   @Expose()
   image: string
 }
+
+(globalThis as any).ItemInstanceDto = ItemInstanceDto

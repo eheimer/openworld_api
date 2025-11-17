@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { TileDataDto } from './dto/tile-data.dto'
-import { TileData } from './entities/tileData.entity'
+import { TileDataDto } from "./dto/tile-data.dto.js"
+import { TileData } from "./entities/tileData.entity.js"
 
 @Injectable()
 export class MapService {
@@ -20,3 +20,5 @@ export class MapService {
     return this.repo.find()
   }
 }
+
+(globalThis as any).MapService = MapService

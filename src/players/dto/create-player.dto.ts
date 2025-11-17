@@ -7,3 +7,5 @@ export class CreatePlayerDto {
   @IsEmail()
   email: string
 }
+
+(globalThis as any).CreatePlayerDto = CreatePlayerDto

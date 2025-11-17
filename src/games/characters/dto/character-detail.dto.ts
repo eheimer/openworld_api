@@ -1,8 +1,8 @@
 import { Expose, Transform } from 'class-transformer'
-import { DTO } from '../../../decorators/dto-property.decorator'
-import { InventoryDto } from '../../../items/dto/inventory.dto'
-import { CharacterSkillDto } from './character-skill.dto'
-import { CharacterDto } from './character.dto'
+import { DTO } from "../../../decorators/dto-property.decorator.js"
+import { InventoryDto } from "../../../items/dto/inventory.dto.js"
+import { CharacterSkillDto } from "./character-skill.dto.js"
+import { CharacterDto } from "./character.dto.js"
 
 export class CharacterDetailDto extends CharacterDto {
   //NOTE: for the calculations below, reference the CharactersService calc methods
@@ -123,3 +123,5 @@ export class CharacterDetailDto extends CharacterDto {
   )
   skills: CharacterSkillDto[]
 }
+
+(globalThis as any).CharacterDetailDto = CharacterDetailDto

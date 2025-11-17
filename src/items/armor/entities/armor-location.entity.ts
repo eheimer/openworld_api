@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
-import { EquipLocation } from '../../entities/equip-location.entity'
-import { BaseEntity } from '../../../common/BaseEntity'
+import { EquipLocation } from "../../entities/equip-location.entity.js"
+import { BaseEntity } from "../../../common/BaseEntity.js"
 
 @Entity()
 export class ArmorLocation extends BaseEntity {
@@ -10,3 +10,5 @@ export class ArmorLocation extends BaseEntity {
   @JoinColumn()
   location: EquipLocation
 }
+
+(globalThis as any).ArmorLocation = ArmorLocation

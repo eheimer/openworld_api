@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Race } from './entities/race.entity'
+import { Race } from "./entities/race.entity.js"
 import { Repository } from 'typeorm'
 
 @Injectable()
@@ -15,3 +15,5 @@ export class RaceService {
     return `This action returns a #${id} race`
   }
 }
+
+(globalThis as any).RaceService = RaceService

@@ -23,24 +23,23 @@ const dbConfig = {
     subscribers: [`**/*.subscriber.ts`]
   },
   dev: {
+    type: 'sqlite',
+    database: 'dev.sqlite',
+    synchronize: true,
+    logging: 'warn',
+    entities: [`**/*.entity.js`],
+    subscribers: [`**/*.subscriber.js`]
     //   logging: ['query', 'parameters']
   },
   prod: {
     type: 'mysql',
     host: 'localhost',
     port: '3306',
+    synchronize: false,
     username: 'openworld',
     password: 'entranced',
     database: 'openworld'
   }
-}
-
-/* it's important that these properties are not set for the dev environment 
-      because the TypeOrmModule pukes on the .ts files when the nestjs app starts up. */
-const cliOptions = {
-  migrations: [`migration/DDL/*.ts`, `migration/DML/*.ts`],
-  migrationsDir: 'migration',
-  migrationsTableName: 'migration_history'
 }
 
 // again, default to 'dev' if an environment is not specified
@@ -48,8 +47,22 @@ const cliOptions = {
 const env: string = process.env.NODE_ENV || 'dev'
 const config = dbConfig[env]
 
+const cliOptions = {
+  migrationsDir: 'migration',
+  migrationsTableName: 'migration_history'
+}
 if (process.env['TYPEORM_CLI'] === '1') {
-  Object.assign(config, cliOptions)
+  let migrationsForCli: string[]
+  if (env === 'dev') {
+    migrationsForCli = ['migration/DML/*.ts']
+  } else if (env === 'test') {
+    migrationsForCli = ['migration/DML/test/*.ts', 'migration/DML/*.ts']
+  } else {
+    migrationsForCli = ['migration/DDL/*.ts', 'migration/DML/*.ts']
+  }
+
+  const cliOptionsForEnv = Object.assign({}, cliOptions, { migrations: migrationsForCli })
+  Object.assign(config, cliOptionsForEnv)
 }
 
 if (!config) {
@@ -57,3 +70,4 @@ if (!config) {
 }
 
 export const dbconfig = Object.assign(configDefault, config)
+export default dbconfig

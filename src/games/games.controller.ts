@@ -1,22 +1,22 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
-import { GamesService } from './games.service'
-import { CreateGameDto } from './dto/create-game.dto'
-import { UpdateGameDto } from './dto/update-game.dto'
-import { CharactersService } from './characters/characters.service'
-import { Serialize } from '../interceptors/serialize.interceptor'
-import { GameDto } from '../games/dto/game.dto'
-import { CurrentPlayer } from '../decorators/current-player.decorator'
-import { Player } from '../players/entities/player.entity'
-import { GameOwnerGuard } from '../guards/authorization/game-owner.guard'
-import { GameCharacterDto } from './characters/dto/game-character.dto'
-import { PlayerGameCharacterGuard } from '../guards/authorization/player-game-character.guard'
-import { CharacterDetailDto } from './characters/dto/character-detail.dto'
-import { CreateCharacterDto } from './characters/dto/create-character.dto'
-import { CharacterDto } from './characters/dto/character.dto'
-import { SerializeResponse } from '../interceptors/serialize.interceptor'
-import { GamePlayerGuard } from '../guards/authorization/game-player.guard'
-import { Character } from './characters/entities/character.entity'
-import { Game } from './entities/game.entity'
+import { GamesService } from "./games.service.js"
+import { CreateGameDto } from "./dto/create-game.dto.js"
+import { UpdateGameDto } from "./dto/update-game.dto.js"
+import { CharactersService } from "./characters/characters.service.js"
+import { Serialize } from "../interceptors/serialize.interceptor.js"
+import { GameDto } from "../games/dto/game.dto.js"
+import { CurrentPlayer } from "../decorators/current-player.decorator.js"
+import { Player } from "../players/entities/player.entity.js"
+import { GameOwnerGuard } from "../guards/authorization/game-owner.guard.js"
+import { GameCharacterDto } from "./characters/dto/game-character.dto.js"
+import { PlayerGameCharacterGuard } from "../guards/authorization/player-game-character.guard.js"
+import { CharacterDetailDto } from "./characters/dto/character-detail.dto.js"
+import { CreateCharacterDto } from "./characters/dto/create-character.dto.js"
+import { CharacterDto } from "./characters/dto/character.dto.js"
+import { SerializeResponse } from "../interceptors/serialize.interceptor.js"
+import { GamePlayerGuard } from "../guards/authorization/game-player.guard.js"
+import { Character } from "./characters/entities/character.entity.js"
+import { Game } from "./entities/game.entity.js"
 
 @Controller('games')
 export class GamesController {
@@ -95,3 +95,5 @@ export class GamesController {
     return new SerializeResponse(await this.charactersService.findAllByGame(parseInt(gameId)), 'player.id', player.id)
   }
 }
+
+(globalThis as any).GamesController = GamesController

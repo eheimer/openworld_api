@@ -1,15 +1,17 @@
-import { Skill } from '../../skills/entities/skill.entity'
+import { Skill } from "../../skills/entities/skill.entity.js"
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
-import { Race } from './race.entity'
+import { BaseEntity } from "../../common/BaseEntity.js"
+import type { Race } from "./race.entity.js"
 
 @Entity()
 export class RaceSkill extends BaseEntity {
   @Column() level: number
 
-  @ManyToOne(() => Race)
-  race: Race
+  @ManyToOne(() => (globalThis as any).Race)
+  race: any
 
   @ManyToOne(() => Skill)
   skill: Skill
 }
+
+(globalThis as any).RaceSkill = RaceSkill

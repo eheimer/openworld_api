@@ -16,3 +16,5 @@ export class RaceSkillDto {
   @Expose()
   level: number
 }
+
+(globalThis as any).RaceSkillDto = RaceSkillDto

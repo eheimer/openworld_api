@@ -1,6 +1,6 @@
-import { DamageType } from '../../damage-types/entities/damage-type.entity'
+import { DamageType } from "../../damage-types/entities/damage-type.entity.js"
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from "../../common/BaseEntity.js"
 
 @Entity()
 export class Condition extends BaseEntity {
@@ -25,3 +25,5 @@ export class Condition extends BaseEntity {
   @ManyToOne(() => DamageType)
   damageType: DamageType
 }
+
+(globalThis as any).Condition = Condition

@@ -22,3 +22,5 @@ export class SpellbooksService {
     return `This action removes a #${id} spellbook`
   }
 }
+
+(globalThis as any).SpellbooksService = SpellbooksService

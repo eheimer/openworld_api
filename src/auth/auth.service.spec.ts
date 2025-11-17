@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { AuthService } from './auth.service'
-import { PlayersService } from '../players/players.service'
+import { AuthService } from "./auth.service.js"
+import { PlayersService } from "../players/players.service.js"
 import { JwtService } from '@nestjs/jwt'
-import { Player } from '../players/entities/player.entity'
+import { Player } from "../players/entities/player.entity.js"
 import { Not } from 'typeorm'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
-import { CreateBattleDto } from '../games/battles/dto/create-battle.dto'
-import { CreatePlayerDto } from '../players/dto/create-player.dto'
+import { CreateBattleDto } from "../games/battles/dto/create-battle.dto.js"
+import { CreatePlayerDto } from "../players/dto/create-player.dto.js"
 
 describe('AuthService', () => {
   let service: AuthService
@@ -58,19 +58,19 @@ describe('AuthService', () => {
   it('should throw an error if email is in use', async () => {
     fakePlayersService.findOneByEmail = (email) =>
       Promise.resolve({ id: 1, username: 'eric', email, password: 'asdf' } as Player)
-    await expect(service.register({ username: 'eric', email: 'eric@asdf.com', password: 'asdf' })).rejects.toThrowError(
+    await (expect(service.register({ username: 'eric', email: 'eric@asdf.com', password: 'asdf' })).rejects as any).toThrowError(
       'Email already in use'
     )
   })
 
   it('should throw if authenticate is called with invalid username', async () => {
-    await expect(service.authenticate('eric', 'asdf')).rejects.toThrowError('User not found')
+  await (expect(service.authenticate('eric', 'asdf')).rejects as any).toThrowError('User not found')
   })
 
   it('throws if an invalid password is provided', async () => {
     fakePlayersService.findOneByUsername = (username) =>
       Promise.resolve({ id: 1, username, email: 'asdf@asdf.com', password: 'asdf' } as Player)
-    await expect(service.authenticate('eric', 'asdf')).rejects.toThrowError('Invalid password')
+  await (expect(service.authenticate('eric', 'asdf')).rejects as any).toThrowError('Invalid password')
   })
 
   it('returns a user if correct password is provided', async () => {

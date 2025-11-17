@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { JewelryInstance } from './entities/jewelry-instance.entity'
+import { JewelryInstance } from "./entities/jewelry-instance.entity.js"
 import { InjectRepository } from '@nestjs/typeorm'
-import { Gem } from './entities/gem.entity'
+import { Gem } from "./entities/gem.entity.js"
 import { Repository } from 'typeorm'
-import { RandomService } from '../../utils/random.service'
-import { JewelryLocation } from './entities/jewelry-location.entity'
-import { JewelryAttribute } from './entities/jewelry-attribute.entity'
-import { JewelryInstanceAttribute } from './entities/jewelry-instance-attribute.entity'
+import { RandomService } from "../../utils/random.service.js"
+import { JewelryLocation } from "./entities/jewelry-location.entity.js"
+import { JewelryAttribute } from "./entities/jewelry-attribute.entity.js"
+import { JewelryInstanceAttribute } from "./entities/jewelry-instance-attribute.entity.js"
 
 @Injectable()
 export class JewelryService {
@@ -60,3 +60,5 @@ export class JewelryService {
     return inst
   }
 }
+
+(globalThis as any).JewelryService = JewelryService

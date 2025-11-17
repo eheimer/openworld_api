@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
-import { PlayersService } from '../players/players.service'
+import { PlayersService } from "../players/players.service.js"
 import { randomBytes, scrypt as _scrypt } from 'crypto'
 import { promisify } from 'util'
 import { JwtService } from '@nestjs/jwt'
-import { CreatePlayerDto } from '../players/dto/create-player.dto'
+import { CreatePlayerDto } from "../players/dto/create-player.dto.js"
 
 const scrypt = promisify(_scrypt)
 
@@ -62,3 +62,5 @@ export class AuthService {
     }
   }
 }
+
+(globalThis as any).AuthService = AuthService

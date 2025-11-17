@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { CreateDamageTypeDto } from './dto/create-damage-type.dto'
-import { UpdateDamageTypeDto } from './dto/update-damage-type.dto'
+import { CreateDamageTypeDto } from "./dto/create-damage-type.dto.js"
+import { UpdateDamageTypeDto } from "./dto/update-damage-type.dto.js"
 
 @Injectable()
 export class DamageTypesService {
@@ -24,3 +24,5 @@ export class DamageTypesService {
     return `This action removes a #${id} damageType`
   }
 }
+
+(globalThis as any).DamageTypesService = DamageTypesService

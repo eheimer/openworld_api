@@ -1,8 +1,8 @@
 import { ExtractJwt, Strategy } from 'passport-jwt'
 import { PassportStrategy } from '@nestjs/passport'
 import { Injectable } from '@nestjs/common'
-import { jwtConstants } from '../../constants'
-import { PlayersService } from '../../players/players.service'
+import { jwtConstants } from "../../constants.js"
+import { PlayersService } from "../../players/players.service.js"
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,3 +19,5 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return await this.playersService.findOne(payload.sub)
   }
 }
+
+(globalThis as any).JwtStrategy = JwtStrategy

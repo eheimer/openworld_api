@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Delete, Body, Post, Put, UseGuards, NotFoundException } from '@nestjs/common'
-import { InventoryService } from './inventory.service'
-import { RandomItemRequestDto } from './dto/random-item-request.dto'
-import { Serialize } from '../interceptors/serialize.interceptor'
-import { InventoryDto } from './dto/inventory.dto'
-import { InventoryOwnerGuard } from '../guards/authorization/inventory-owner.guard'
+import { InventoryService } from "./inventory.service.js"
+import { RandomItemRequestDto } from "./dto/random-item-request.dto.js"
+import { Serialize } from "../interceptors/serialize.interceptor.js"
+import { InventoryDto } from "./dto/inventory.dto.js"
+import { InventoryOwnerGuard } from "../guards/authorization/inventory-owner.guard.js"
 
 @Controller('inventory')
 export class InventoryController {
@@ -87,3 +87,5 @@ export class InventoryController {
     return inventory
   }
 }
+
+(globalThis as any).InventoryController = InventoryController

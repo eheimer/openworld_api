@@ -1,9 +1,9 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common'
-import { CreateGameDto } from './dto/create-game.dto'
-import { UpdateGameDto } from './dto/update-game.dto'
-import { Player } from '../players/entities/player.entity'
+import { CreateGameDto } from "./dto/create-game.dto.js"
+import { UpdateGameDto } from "./dto/update-game.dto.js"
+import { Player } from "../players/entities/player.entity.js"
 import { InjectRepository } from '@nestjs/typeorm'
-import { Game } from './entities/game.entity'
+import { Game } from "./entities/game.entity.js"
 import { Repository } from 'typeorm'
 
 @Injectable()
@@ -117,3 +117,5 @@ export class GamesService {
     })
   }
 }
+
+(globalThis as any).GamesService = GamesService

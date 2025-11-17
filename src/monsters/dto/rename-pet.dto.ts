@@ -5,3 +5,5 @@ export class RenamePetDto {
   @IsNotEmpty()
   name: string
 }
+
+(globalThis as any).RenamePetDto = RenamePetDto

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Skill } from './entities/skill.entity'
+import { Skill } from "./entities/skill.entity.js"
 import { Repository } from 'typeorm'
-import { Race } from '../race/entities/race.entity'
+import { Race } from "../race/entities/race.entity.js"
 
 @Injectable()
 export class SkillsService {
@@ -16,3 +16,5 @@ export class SkillsService {
     return this.repo.findOneBy({ id })
   }
 }
+
+(globalThis as any).SkillsService = SkillsService

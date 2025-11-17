@@ -1,13 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { BaseEntity } from '../../../common/BaseEntity'
-import { Player } from '../../../players/entities/player.entity'
-import { Game } from '../../entities/game.entity'
-import { MonsterInstance } from '../../../monsters/entities/monster-instance.entity'
-import { CharacterCondition } from '../../../conditions/entities/character-condition.entity'
-import { Battle } from '../../battles/entities/battle.entity'
-import { Race } from '../../../race/entities/race.entity'
-import { Inventory } from '../../../items/entities/inventory.entity'
-import { CharacterSkill } from './character-skill.entity'
+import { BaseEntity } from "../../../common/BaseEntity.js"
+// avoid importing Player/Game/MonsterInstance at module-load time; use globalThis in decorators
+import type { CharacterCondition } from "../../../conditions/entities/character-condition.entity.js"
+// avoid importing Battle at module-load time; use globalThis in decorators
+import { Race } from "../../../race/entities/race.entity.js"
+import { Inventory } from "../../../items/entities/inventory.entity.js"
+import type { CharacterSkill } from "./character-skill.entity.js"
 
 @Entity()
 export class Character extends BaseEntity {
@@ -25,28 +23,30 @@ export class Character extends BaseEntity {
   @ManyToOne(() => Race)
   race: Race
 
-  @ManyToOne(() => Game, { nullable: false })
-  game: Game
+  @ManyToOne(() => (globalThis as any).Game, { nullable: false })
+  game: any
 
-  @ManyToOne(() => Player, (player) => player.characters, { nullable: false })
-  player: Player
+  @ManyToOne(() => (globalThis as any).Player, (player: any) => player.characters, { nullable: false })
+  player: any
 
-  @ManyToOne(() => Battle, (battle) => battle.participants, { nullable: true })
-  battle: Battle
+  @ManyToOne(() => (globalThis as any).Battle, (battle: any) => battle.participants, { nullable: true })
+  battle: any
 
   @OneToOne(() => Inventory, { nullable: false, eager: false })
   @JoinColumn()
   inventory: Inventory
 
-  @OneToMany(() => CharacterCondition, (ac) => ac.character, { nullable: true })
+  @OneToMany(() => (globalThis as any).CharacterCondition, (ac: any) => ac.character, { nullable: true })
   @JoinColumn()
-  conditions: CharacterCondition[]
+  conditions: any[]
 
-  @OneToMany(() => MonsterInstance, (m) => m.owner, { nullable: true })
+  @OneToMany(() => (globalThis as any).MonsterInstance, (m: any) => m.owner, { nullable: true })
   @JoinColumn()
-  pets: MonsterInstance[]
+  pets: any[]
 
-  @OneToMany(() => CharacterSkill, (cs) => cs.character, { nullable: true, cascade: true })
+  @OneToMany(() => (globalThis as any).CharacterSkill, (cs: any) => cs.character, { nullable: true, cascade: true })
   @JoinColumn()
-  skills: CharacterSkill[]
+  skills: any[]
 }
+
+(globalThis as any).Character = Character

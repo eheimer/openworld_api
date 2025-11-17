@@ -88,3 +88,5 @@ export class SerializeResponse {
 export function Serialize(dto: object, detailDto: object = undefined) {
   return UseInterceptors(new SerializeInterceptor(dto, detailDto))
 }
+
+(globalThis as any).SerializeResponse = SerializeResponse

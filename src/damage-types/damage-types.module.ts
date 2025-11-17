@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common'
-import { DamageTypesService } from './damage-types.service'
-import { DamageTypesController } from './damage-types.controller'
+import { DamageTypesService } from "./damage-types.service.js"
+import { DamageTypesController } from "./damage-types.controller.js"
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { DamageType } from './entities/damage-type.entity'
+import { DamageType } from "./entities/damage-type.entity.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([DamageType])],
@@ -10,3 +10,5 @@ import { DamageType } from './entities/damage-type.entity'
   providers: [DamageTypesService]
 })
 export class DamageTypesModule {}
+
+(globalThis as any).DamageTypesModule = DamageTypesModule

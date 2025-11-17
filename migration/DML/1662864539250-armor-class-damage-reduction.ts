@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { ArmorClassDamageReductionSeed } from '../../src/items/armor/seed/ArmorClassDamageReduction.seed'
+import { ArmorClassDamageReductionSeed } from '../../src/items/armor/seed/ArmorClassDamageReduction.seed.ts'
 
 export class armorClassDamageReduction1662864539250 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

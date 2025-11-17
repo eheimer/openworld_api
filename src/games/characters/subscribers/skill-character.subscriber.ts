@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Character } from '../entities/character.entity'
+import { Character } from "../entities/character.entity.js"
 
 @EventSubscriber()
 export class CharacterSkillCharacterSubscriber implements EntitySubscriberInterface<Character> {
@@ -30,3 +30,5 @@ export class CharacterSkillCharacterSubscriber implements EntitySubscriberInterf
     Logger.verbose('done', 'CharacterSkillCharacterSubscriber')
   }
 }
+
+(globalThis as any).CharacterSkillCharacterSubscriber = CharacterSkillCharacterSubscriber

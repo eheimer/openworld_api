@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { MaterialSeed } from '../../src/items/weapons/seed/Material.seed'
-import { MaterialTypeSeed } from '../../src/items/weapons/seed/MaterialType.seed'
-import { SpecialMoveSeed } from '../../src/items/weapons/seed/SpecialMove.seed'
-import { WeaponSkillSeed } from '../../src/items/weapons/seed/WeaponSkill.seed'
-import { WeaponSeed } from '../../src/items/weapons/seed/Weapon.seed'
-import { WeaponAttributeSeed } from '../../src/items/weapons/seed/WeaponAttribute.seed'
+import { MaterialSeed } from '../../src/items/weapons/seed/Material.seed.ts'
+import { MaterialTypeSeed } from '../../src/items/weapons/seed/MaterialType.seed.ts'
+import { SpecialMoveSeed } from '../../src/items/weapons/seed/SpecialMove.seed.ts'
+import { WeaponSkillSeed } from '../../src/items/weapons/seed/WeaponSkill.seed.ts'
+import { WeaponSeed } from '../../src/items/weapons/seed/Weapon.seed.ts'
+import { WeaponAttributeSeed } from '../../src/items/weapons/seed/WeaponAttribute.seed.ts'
 
 export class weapons1662919951618 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

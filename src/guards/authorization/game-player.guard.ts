@@ -1,5 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
-import { GamesService } from '../../games/games.service'
+import { GamesService } from "../../games/games.service.js"
 
 /**
  * @description - This guard verifies that the current player is in the requested game
@@ -16,3 +16,5 @@ export class GamePlayerGuard implements CanActivate {
     return !!game
   }
 }
+
+(globalThis as any).GamePlayerGuard = GamePlayerGuard

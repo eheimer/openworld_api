@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Inventory } from '../../entities/inventory.entity'
-import { SpellbookInstanceAttribute } from '../entities/spellbook-instance-attribute.entity'
+import { Inventory } from "../../entities/inventory.entity.js"
+import { SpellbookInstanceAttribute } from "../entities/spellbook-instance-attribute.entity.js"
 
 @EventSubscriber()
 export class SpellbookInventorySubscriber implements EntitySubscriberInterface<Inventory> {
@@ -34,3 +34,5 @@ export class SpellbookInventorySubscriber implements EntitySubscriberInterface<I
     Logger.verbose('done', 'SpellbookInventorySubscriber')
   }
 }
+
+(globalThis as any).SpellbookInventorySubscriber = SpellbookInventorySubscriber
