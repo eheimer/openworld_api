@@ -8,6 +8,7 @@ import { SerializeResponse } from "../interceptors/serialize.interceptor.js"
 import { CurrentPlayer } from "../decorators/current-player.decorator.js"
 import { Player } from "./entities/player.entity.js"
 import { CurrentPlayerGuard } from "../guards/authorization/player-current-player.guard.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('players')
 export class PlayersController {
@@ -40,4 +41,4 @@ export class PlayersController {
   }
 }
 
-(globalThis as any).PlayersController = PlayersController
+registerEntity('PlayersController', PlayersController)

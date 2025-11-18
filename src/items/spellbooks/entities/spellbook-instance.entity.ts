@@ -1,11 +1,12 @@
 import { Inventory } from "../../entities/inventory.entity.js"
 import { Entity, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 // runtime references resolved via globalThis; avoid type imports to reduce static cycles
 
 @Entity()
 export class SpellbookInstance extends BaseEntity {
-  @OneToMany(() => (globalThis as any).SpellbookInstanceAttribute, (sia: any) => sia.spellbook, {
+  @OneToMany(() => getEntity('SpellbookInstanceAttribute') as any, (sia: any) => sia.spellbook, {
     nullable: true
   })
   attributes: any[]
@@ -14,4 +15,4 @@ export class SpellbookInstance extends BaseEntity {
   inventory: Inventory
 }
 
-(globalThis as any).SpellbookInstance = SpellbookInstance
+registerEntity('SpellbookInstance', SpellbookInstance)

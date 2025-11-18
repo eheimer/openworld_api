@@ -7,6 +7,7 @@ import { RandomService } from "../../utils/random.service.js"
 import { Material } from "./entities/material.entity.js"
 import { WeaponAttribute } from "./entities/weapon-attribute.entity.js"
 import { WeaponInstanceAttribute } from "./entities/weapon-instance-attribute.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class WeaponsService {
@@ -81,4 +82,4 @@ export class WeaponsService {
   }
 }
 
-(globalThis as any).WeaponsService = WeaponsService
+registerEntity('WeaponsService', WeaponsService)

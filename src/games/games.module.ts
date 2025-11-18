@@ -13,6 +13,7 @@ import { CharactersService } from "./characters/characters.service.js"
 import { BattlesService } from "./battles/battles.service.js"
 import { ItemsModule } from "../items/items.module.js"
 import { Inventory } from "../items/entities/inventory.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Battle, Character, Inventory]), MonstersModule, UtilsModule, ItemsModule],
@@ -22,4 +23,4 @@ import { Inventory } from "../items/entities/inventory.entity.js"
 })
 export class GamesModule {}
 
-(globalThis as any).GamesModule = GamesModule
+registerEntity('GamesModule', GamesModule)

@@ -1,5 +1,6 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
 import { GamesService } from "../../games/games.service.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description - This guard verifies that the current player is the owner of the requested game
@@ -17,4 +18,4 @@ export class GameOwnerGuard implements CanActivate {
   }
 }
 
-(globalThis as any).GameOwnerGuard = GameOwnerGuard
+registerEntity('GameOwnerGuard', GameOwnerGuard)

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { DamageTypesService } from "./damage-types.service.js"
 import { CreateDamageTypeDto } from "./dto/create-damage-type.dto.js"
 import { UpdateDamageTypeDto } from "./dto/update-damage-type.dto.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('damage-types')
 export class DamageTypesController {
@@ -33,4 +34,4 @@ export class DamageTypesController {
   }
 }
 
-(globalThis as any).DamageTypesController = DamageTypesController
+registerEntity('DamageTypesController', DamageTypesController)

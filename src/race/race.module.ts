@@ -3,6 +3,7 @@ import { RaceService } from "./race.service.js"
 import { RaceController } from "./race.controller.js"
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Race } from "./entities/race.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Race])],
@@ -11,4 +12,4 @@ import { Race } from "./entities/race.entity.js"
 })
 export class RaceModule {}
 
-(globalThis as any).RaceModule = RaceModule
+registerEntity('RaceModule', RaceModule)

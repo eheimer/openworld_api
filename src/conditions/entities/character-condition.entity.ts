@@ -1,12 +1,13 @@
 import { Entity, ManyToOne } from 'typeorm'
 import { IsNotEmpty } from 'class-validator'
 import { ActiveCondition } from "../../common/ActiveCondition.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Entity()
 export class CharacterCondition extends ActiveCondition {
   @IsNotEmpty()
-  @ManyToOne(() => (globalThis as any).Character, (character) => (character as any).conditions)
+  @ManyToOne(() => getEntity('Character') as any, (character) => (character as any).conditions)
   character: any
 }
 
-(globalThis as any).CharacterCondition = CharacterCondition
+registerEntity('CharacterCondition', CharacterCondition)

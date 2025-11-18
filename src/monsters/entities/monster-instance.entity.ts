@@ -6,6 +6,7 @@ import type { MonsterCondition } from "../../conditions/entities/monster-conditi
 import { MonsterAction } from "./monster-action.entity.js"
 import type { Battle } from "../../games/battles/entities/battle.entity.js"
 import { Inventory } from "../../items/entities/inventory.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Entity()
 export class MonsterInstance extends BaseEntity {
@@ -38,14 +39,14 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) resistF: number
   @Column({ nullable: false }) resistP: number
 
-  @ManyToOne(() => (globalThis as any).Battle, (battle: any) => battle.enemies, { nullable: true })
+  @ManyToOne(() => getEntity('Battle') as any, (battle: any) => battle.enemies, { nullable: true })
   battleAsEnemy: any
 
   // we don't want friendlies to be deleted when a battle is deleted, or people will lose their pets
-  @ManyToOne(() => (globalThis as any).Battle, (battle: any) => battle.friendlies, { nullable: true })
+  @ManyToOne(() => getEntity('Battle') as any, (battle: any) => battle.friendlies, { nullable: true })
   battleAsFriendly: any
 
-  @ManyToOne(() => (globalThis as any).Character, (character: any) => character.pets, { nullable: true })
+  @ManyToOne(() => getEntity('Character') as any, (character: any) => character.pets, { nullable: true })
   owner: any
 
   @ManyToOne(() => Monster, { nullable: false })
@@ -54,7 +55,7 @@ export class MonsterInstance extends BaseEntity {
   @ManyToOne(() => MonsterAction, { nullable: true })
   nextAction: MonsterAction
 
-  @OneToMany(() => (globalThis as any).MonsterCondition, (ac: any) => ac.creature, { nullable: true })
+  @OneToMany(() => getEntity('MonsterCondition') as any, (ac: any) => ac.creature, { nullable: true })
   conditions: any[]
 
   @OneToOne(() => Inventory, { nullable: true })
@@ -62,4 +63,4 @@ export class MonsterInstance extends BaseEntity {
   loot: Inventory
 }
 
-(globalThis as any).MonsterInstance = MonsterInstance
+registerEntity('MonsterInstance', MonsterInstance)

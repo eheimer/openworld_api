@@ -4,6 +4,7 @@ import { Gem } from "./gem.entity.js"
 import { Inventory } from "../../entities/inventory.entity.js"
 // runtime references resolved via globalThis; avoid type imports to reduce static cycles
 import { JewelryLocation } from "./jewelry-location.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class JewelryInstance extends BaseEntity {
@@ -16,7 +17,7 @@ export class JewelryInstance extends BaseEntity {
   @ManyToOne(() => JewelryLocation, { nullable: false })
   location: JewelryLocation
 
-  @OneToMany(() => (globalThis as any).JewelryInstanceAttribute, (jia: any) => jia.jewelry, {
+  @OneToMany(() => getEntity('JewelryInstanceAttribute') as any, (jia: any) => jia.jewelry, {
     nullable: true,
     cascade: ['insert']
   })
@@ -26,4 +27,4 @@ export class JewelryInstance extends BaseEntity {
   inventory: Inventory
 }
 
-(globalThis as any).JewelryInstance = JewelryInstance
+registerEntity('JewelryInstance', JewelryInstance)

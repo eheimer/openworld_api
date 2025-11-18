@@ -30,6 +30,7 @@ import { ArmorInstanceAttribute } from "./armor/entities/armor-instance-attribut
 import { ArmorInstanceDamageReduction } from "./armor/entities/armor-instance-damage-reduction.entity.js"
 import { JewelryInstanceAttribute } from "./jewelry/entities/jewelry-instance-attribute.entity.js"
 import { WeaponInstanceAttribute } from "./weapons/entities/weapon-instance-attribute.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [
@@ -68,4 +69,4 @@ import { WeaponInstanceAttribute } from "./weapons/entities/weapon-instance-attr
 })
 export class ItemsModule {}
 
-(globalThis as any).ItemsModule = ItemsModule
+registerEntity('ItemsModule', ItemsModule)

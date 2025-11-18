@@ -2,6 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common'
 import { Serialize } from "../interceptors/serialize.interceptor.js"
 import { RaceDto } from "./dto/race.dto.js"
 import { RaceService } from "./race.service.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('race')
 export class RaceController {
@@ -19,4 +20,4 @@ export class RaceController {
   }
 }
 
-(globalThis as any).RaceController = RaceController
+registerEntity('RaceController', RaceController)

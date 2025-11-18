@@ -7,6 +7,7 @@ import { RandomService } from "../../utils/random.service.js"
 import { JewelryLocation } from "./entities/jewelry-location.entity.js"
 import { JewelryAttribute } from "./entities/jewelry-attribute.entity.js"
 import { JewelryInstanceAttribute } from "./entities/jewelry-instance-attribute.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class JewelryService {
@@ -61,4 +62,4 @@ export class JewelryService {
   }
 }
 
-(globalThis as any).JewelryService = JewelryService
+registerEntity('JewelryService', JewelryService)

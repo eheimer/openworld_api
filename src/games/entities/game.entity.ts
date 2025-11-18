@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 // runtime references are resolved via globalThis to avoid static import cycles
 
 /**
@@ -9,17 +10,17 @@ import { BaseEntity } from "../../common/BaseEntity.js"
 export class Game extends BaseEntity {
   @Column({ nullable: false, unique: true }) name: string
 
-  @ManyToOne(() => (globalThis as any).Player, { nullable: false })
+  @ManyToOne(() => getEntity('Player') as any, { nullable: false })
   owner: any
 
-  @ManyToMany(() => (globalThis as any).Player, (player) => (player as any).games, { nullable: false })
+  @ManyToMany(() => getEntity('Player') as any, (player) => (player as any).games, { nullable: false })
   players: any[]
 
-  @OneToMany(() => (globalThis as any).Character, (character: any) => character.game, { nullable: true })
+  @OneToMany(() => getEntity('Character') as any, (character: any) => character.game, { nullable: true })
   characters: any[]
 
-  @OneToMany(() => (globalThis as any).Battle, (battle) => (battle as any).game, { nullable: true })
+  @OneToMany(() => getEntity('Battle') as any, (battle) => (battle as any).game, { nullable: true })
   battles: any[]
 }
 
-(globalThis as any).Game = Game
+registerEntity('Game', Game)

@@ -2,6 +2,7 @@ import { Column, ManyToOne } from 'typeorm'
 import { BaseEntity } from "./BaseEntity.js"
 import type { MonsterInstance } from "../monsters/entities/monster-instance.entity.js"
 import { Condition } from "../conditions/entities/condition.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 export abstract class ActiveCondition extends BaseEntity {
   /**
@@ -20,6 +21,6 @@ export abstract class ActiveCondition extends BaseEntity {
   @ManyToOne(() => Condition, { nullable: false })
   condition: Condition
 
-  @ManyToOne(() => (globalThis as any).MonsterInstance)
+  @ManyToOne(() => getEntity('MonsterInstance') as any)
   target: MonsterInstance
 }

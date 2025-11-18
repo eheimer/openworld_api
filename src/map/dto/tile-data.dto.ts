@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer'
 import { IsNotEmpty, IsNumber } from 'class-validator'
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 export class TileDataDto {
   @IsNumber()
@@ -13,4 +14,4 @@ export class TileDataDto {
   terrain: number
 }
 
-(globalThis as any).TileDataDto = TileDataDto
+registerEntity('TileDataDto', TileDataDto)

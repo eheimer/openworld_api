@@ -2,6 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typ
 import { BaseEntity } from "../../common/BaseEntity.js"
 import { Game } from "../../games/entities/game.entity.js"
 import type { Character } from "../../games/characters/entities/character.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description Represents a real person with login credentials for the game
@@ -21,10 +22,10 @@ export class Player extends BaseEntity {
   @ManyToOne(() => Game, { nullable: true })
   currentGame: Game
 
-  @OneToMany(() => (globalThis as any).Character, (character: any) => character.player, {
+  @OneToMany(() => getEntity('Character') as any, (character: any) => character.player, {
     nullable: true
   })
   characters: any[]
 }
 
-(globalThis as any).Player = Player
+registerEntity('Player', Player)

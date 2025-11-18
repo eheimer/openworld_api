@@ -5,6 +5,7 @@ import { UpdatePlayerDto } from "./dto/update-player.dto.js"
 import { Player } from "./entities/player.entity.js"
 import { Repository } from 'typeorm'
 import { CharactersService } from "../games/characters/characters.service.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class PlayersService {
@@ -58,4 +59,4 @@ export class PlayersService {
   }
 }
 
-(globalThis as any).PlayersService = PlayersService
+registerEntity('PlayersService', PlayersService)

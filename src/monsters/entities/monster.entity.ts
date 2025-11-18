@@ -1,8 +1,9 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity.js"
 import { DamageType } from "../../damage-types/entities/damage-type.entity.js"
-// avoid importing MonsterAction at module-load time; use globalThis in decorators
+// avoid importing MonsterAction at module-load time; use entityRegistry in decorators
 import { SlayerType } from "../../damage-types/entities/slayer-type.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Entity()
 export class Monster extends BaseEntity {
@@ -36,7 +37,7 @@ export class Monster extends BaseEntity {
   @Column({ nullable: false }) packInstinct: string
   @Column({ nullable: false, default: '' }) tracking: string
 
-  @OneToMany(() => (globalThis as any).MonsterAction, (ma) => (ma as any).monster)
+  @OneToMany(() => getEntity('MonsterAction') as any, (ma) => (ma as any).monster)
   actions: any[]
 
   @ManyToOne(() => DamageType)
@@ -53,4 +54,4 @@ export class Monster extends BaseEntity {
   // clues: MonsterClue[]
 }
 
-(globalThis as any).Monster = Monster
+registerEntity('Monster', Monster)

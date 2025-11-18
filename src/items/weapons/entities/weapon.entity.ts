@@ -3,6 +3,7 @@ import { BaseEntity } from "../../../common/BaseEntity.js"
 import { MaterialType } from "./material-type.entity.js"
 import { SpecialMove } from "./special-move.entity.js"
 import { WeaponSkill } from "./weapon-skill.entity.js"
+import { registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class Weapon extends BaseEntity {
@@ -26,4 +27,4 @@ export class Weapon extends BaseEntity {
   material: MaterialType
 }
 
-(globalThis as any).Weapon = Weapon
+registerEntity('Weapon', Weapon)

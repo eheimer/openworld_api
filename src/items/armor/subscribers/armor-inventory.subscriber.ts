@@ -3,6 +3,7 @@ import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm
 import { Inventory } from "../../entities/inventory.entity.js"
 import { ArmorInstanceAttribute } from "../entities/armor-instance-attribute.entity.js"
 import { ArmorInstanceDamageReduction } from "../entities/armor-instance-damage-reduction.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @EventSubscriber()
 export class ArmorInventorySubscriber implements EntitySubscriberInterface<Inventory> {
@@ -40,4 +41,4 @@ export class ArmorInventorySubscriber implements EntitySubscriberInterface<Inven
   }
 }
 
-(globalThis as any).ArmorInventorySubscriber = ArmorInventorySubscriber
+registerEntity('ArmorInventorySubscriber', ArmorInventorySubscriber)

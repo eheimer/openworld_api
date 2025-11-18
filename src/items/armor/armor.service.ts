@@ -8,6 +8,7 @@ import { RandomService } from "../../utils/random.service.js"
 import { ArmorLocation } from "./entities/armor-location.entity.js"
 import { ArmorInstanceDamageReduction } from "./entities/armor-instance-damage-reduction.entity.js"
 import { ArmorInstanceAttribute } from "./entities/armor-instance-attribute.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class ArmorService {
@@ -81,4 +82,4 @@ export class ArmorService {
   }
 }
 
-(globalThis as any).ArmorService = ArmorService
+registerEntity('ArmorService', ArmorService)

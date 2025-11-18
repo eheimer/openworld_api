@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Entity('map')
 export class TileData extends BaseEntity {
@@ -10,4 +11,4 @@ export class TileData extends BaseEntity {
   terrain: number
 }
 
-(globalThis as any).TileData = TileData
+registerEntity('TileData', TileData)

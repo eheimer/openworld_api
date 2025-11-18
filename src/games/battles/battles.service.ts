@@ -6,6 +6,7 @@ import { CharactersService } from "../characters/characters.service.js"
 import { MonstersService } from "../../monsters/monsters.service.js"
 import { MonsterInstance } from "../../monsters/entities/monster-instance.entity.js"
 import { Character } from "../characters/entities/character.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class BattlesService {
@@ -147,4 +148,4 @@ export class BattlesService {
   }
 }
 
-(globalThis as any).BattlesService = BattlesService
+registerEntity('BattlesService', BattlesService)

@@ -5,6 +5,7 @@ import { Player } from "../players/entities/player.entity.js"
 import { InjectRepository } from '@nestjs/typeorm'
 import { Game } from "./entities/game.entity.js"
 import { Repository } from 'typeorm'
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class GamesService {
@@ -118,4 +119,4 @@ export class GamesService {
   }
 }
 
-(globalThis as any).GamesService = GamesService
+registerEntity('GamesService', GamesService)

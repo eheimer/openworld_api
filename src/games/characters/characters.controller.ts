@@ -8,6 +8,7 @@ import { CharactersService } from "./characters.service.js"
 import { CharacterDetailDto } from "./dto/character-detail.dto.js"
 import { CharacterDto } from "./dto/character.dto.js"
 import { UpdateCharacterDto } from "./dto/update-character.dto.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Controller('characters')
 export class CharactersController {
@@ -41,4 +42,4 @@ export class CharactersController {
   }
 }
 
-(globalThis as any).CharactersController = CharactersController
+registerEntity('CharactersController', CharactersController)

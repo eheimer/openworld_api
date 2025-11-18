@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
 import { Battle } from "../../games/battles/entities/battle.entity.js"
 import { MonsterInstance } from "../entities/monster-instance.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @EventSubscriber()
 export class MonsterBattleSubscriber implements EntitySubscriberInterface<Battle> {
@@ -50,4 +51,4 @@ export class MonsterBattleSubscriber implements EntitySubscriberInterface<Battle
   }
 }
 
-(globalThis as any).MonsterBattleSubscriber = MonsterBattleSubscriber
+registerEntity('MonsterBattleSubscriber', MonsterBattleSubscriber)

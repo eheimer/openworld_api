@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class SpellbooksService {
@@ -23,4 +24,4 @@ export class SpellbooksService {
   }
 }
 
-(globalThis as any).SpellbooksService = SpellbooksService
+registerEntity('SpellbooksService', SpellbooksService)

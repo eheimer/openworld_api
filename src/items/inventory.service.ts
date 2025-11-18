@@ -9,6 +9,7 @@ import { WeaponsService } from "./weapons/weapons.service.js"
 import { JewelryService } from "./jewelry/jewelry.service.js"
 import { ArmorService } from "./armor/armor.service.js"
 import { RandomService } from "../utils/random.service.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 type ItemInstance = WeaponInstance | ArmorInstance | JewelryInstance
 
@@ -170,4 +171,4 @@ export class InventoryService {
   }
 }
 
-(globalThis as any).InventoryService = InventoryService
+registerEntity('InventoryService', InventoryService)

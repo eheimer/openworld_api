@@ -29,6 +29,7 @@
     "test:integration": "cross-env NODE_ENV=test jest --rootDir=test/integration --testRegex='.*\\.spec\\.ts$'",
     "test:api:reseed": "npm run reseed:test && cross-env NODE_ENV=test jest --rootDir=test/api --testRegex='.*\\.spec\\.ts$'",
     "test:api": "cross-env NODE_ENV=test jest --rootDir=test/api --testRegex='.*\\.spec\\.ts$'",
+    "codemod:entity-registry": "node -r ts-node/register scripts/tsm-fix-entity-registry.ts",
     "**** DATA ****": "",
     "typeorm": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm -d ormDataSource.ts",
     "typeorm-no-d": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm",
@@ -88,6 +89,7 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
+    "ts-morph": "^17.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.9.3"

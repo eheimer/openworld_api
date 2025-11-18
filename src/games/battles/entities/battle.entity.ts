@@ -3,6 +3,7 @@ import { IsNotEmpty } from 'class-validator'
 import { Game } from "../../entities/game.entity.js"
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 // avoid importing MonsterInstance at module-load time; use globalThis in decorators
 
 @Entity()
@@ -10,18 +11,18 @@ export class Battle extends BaseEntity {
   @Column({ default: 1, nullable: false }) round: number
 
   @IsNotEmpty()
-  @OneToMany(() => (globalThis as any).Character, (character) => (character as any).battle, {
+  @OneToMany(() => getEntity('Character') as any, (character) => (character as any).battle, {
     nullable: false
   })
   participants: any[]
 
-  @OneToMany(() => (globalThis as any).MonsterInstance, (ci: any) => ci.battleAsEnemy, {
+  @OneToMany(() => getEntity('MonsterInstance') as any, (ci: any) => ci.battleAsEnemy, {
     nullable: true,
     cascade: true
   })
   enemies: any[]
 
-  @OneToMany(() => (globalThis as any).MonsterInstance, (ci: any) => ci.battleAsFriendly, {
+  @OneToMany(() => getEntity('MonsterInstance') as any, (ci: any) => ci.battleAsFriendly, {
     nullable: true,
     cascade: true
   })
@@ -30,8 +31,8 @@ export class Battle extends BaseEntity {
   @ManyToOne(() => Game, (game) => game.battles, { nullable: false })
   game: Game
 
-  @ManyToOne(() => (globalThis as any).Character, { nullable: false })
+  @ManyToOne(() => getEntity('Character') as any, { nullable: false })
   initiator: any
 }
 
-(globalThis as any).Battle = Battle
+registerEntity('Battle', Battle)

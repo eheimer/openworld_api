@@ -1,7 +1,8 @@
 import { Entity } from 'typeorm'
 import { MagicalItemAttribute } from "../../../common/MagicalItemAttribute.js"
+import { registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class ArmorAttribute extends MagicalItemAttribute {}
 
-(globalThis as any).ArmorAttribute = ArmorAttribute
+registerEntity('ArmorAttribute', ArmorAttribute)

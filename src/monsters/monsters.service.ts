@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { RandomService } from "../utils/random.service.js"
 import { MonsterAction } from "./entities/monster-action.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class MonstersService {
@@ -81,4 +82,4 @@ export class MonstersService {
   }
 }
 
-(globalThis as any).MonstersService = MonstersService
+registerEntity('MonstersService', MonstersService)

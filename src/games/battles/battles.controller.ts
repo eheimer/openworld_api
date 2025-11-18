@@ -12,6 +12,7 @@ import { BattleDto } from "../dto/battle.dto.js"
 import { GamesService } from "../games.service.js"
 import { BattlesService } from "./battles.service.js"
 import { BattleInitiatorGuard } from "../../guards/authorization/battle-initiator.guard.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Controller('games/:gameId/battles')
 @UseGuards(GamePlayerGuard)
@@ -87,4 +88,4 @@ export class BattlesController {
   }
 }
 
-(globalThis as any).BattlesController = BattlesController
+registerEntity('BattlesController', BattlesController)

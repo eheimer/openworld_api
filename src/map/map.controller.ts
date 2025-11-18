@@ -3,6 +3,7 @@ import { MapService } from "./map.service.js"
 import { Serialize } from "../interceptors/serialize.interceptor.js"
 import { TileDataDto } from "./dto/tile-data.dto.js"
 import { Public } from "../decorators/public-auth.decorator.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('map')
 export class MapController {
@@ -22,4 +23,4 @@ export class MapController {
   }
 }
 
-(globalThis as any).MapController = MapController
+registerEntity('MapController', MapController)

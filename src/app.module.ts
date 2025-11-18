@@ -19,6 +19,7 @@ import path, { join } from 'path'
 import { UtilsModule } from "./utils/utils.module.js"
 import { LoggerMiddleware } from "./middleware/logger.middleware.js"
 import { fileURLToPath } from 'url'
+import { getEntity, registerEntity } from "./entityRegistry.js"
 
 
 @Module({
@@ -64,4 +65,4 @@ export class AppModule implements NestModule {
   }
 }
 
-(globalThis as any).AppModule = AppModule
+registerEntity('AppModule', AppModule)

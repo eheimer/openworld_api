@@ -5,6 +5,7 @@ import { InventoryService } from "../../items/inventory.service.js"
 import { CreateCharacterDto } from "./dto/create-character.dto.js"
 import { UpdateCharacterDto } from "./dto/update-character.dto.js"
 import { Character } from "./entities/character.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class CharactersService {
@@ -126,4 +127,4 @@ export class CharactersService {
   }
 }
 
-(globalThis as any).CharactersService = CharactersService
+registerEntity('CharactersService', CharactersService)

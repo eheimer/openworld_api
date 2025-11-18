@@ -1,5 +1,6 @@
 import { CanActivate, Injectable, ExecutionContext } from '@nestjs/common'
 import { PlayersService } from "../../players/players.service.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description - This guard verifies that the current player is the requested player
@@ -13,4 +14,4 @@ export class CurrentPlayerGuard implements CanActivate {
   }
 }
 
-(globalThis as any).CurrentPlayerGuard = CurrentPlayerGuard
+registerEntity('CurrentPlayerGuard', CurrentPlayerGuard)

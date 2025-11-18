@@ -17,6 +17,7 @@ import { SerializeResponse } from "../interceptors/serialize.interceptor.js"
 import { GamePlayerGuard } from "../guards/authorization/game-player.guard.js"
 import { Character } from "./characters/entities/character.entity.js"
 import { Game } from "./entities/game.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('games')
 export class GamesController {
@@ -96,4 +97,4 @@ export class GamesController {
   }
 }
 
-(globalThis as any).GamesController = GamesController
+registerEntity('GamesController', GamesController)

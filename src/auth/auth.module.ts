@@ -7,6 +7,7 @@ import { jwtConstants } from "../constants.js"
 import { JwtModule } from '@nestjs/jwt'
 import { JwtStrategy } from "../guards/authentication/jwt-strategy.js"
 import { AuthController } from "./auth.controller.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [
@@ -23,4 +24,4 @@ import { AuthController } from "./auth.controller.js"
 })
 export class AuthModule {}
 
-(globalThis as any).AuthModule = AuthModule
+registerEntity('AuthModule', AuthModule)

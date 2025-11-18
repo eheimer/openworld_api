@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Player } from "./entities/player.entity.js"
 import { GamesModule } from "../games/games.module.js"
 import { Game } from "../games/entities/game.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Player, Game]), GamesModule],
@@ -14,4 +15,4 @@ import { Game } from "../games/entities/game.entity.js"
 })
 export class PlayersModule {}
 
-(globalThis as any).PlayersModule = PlayersModule
+registerEntity('PlayersModule', PlayersModule)

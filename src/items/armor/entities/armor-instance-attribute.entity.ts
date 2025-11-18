@@ -3,12 +3,13 @@ import { Column, Entity, ManyToOne } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
 import { ArmorAttribute } from "./armor-attribute.entity.js"
 import type { ArmorInstance } from "./armor-instance.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class ArmorInstanceAttribute extends BaseEntity {
   @Column() value: number
-  @ManyToOne(() => (globalThis as any).ArmorInstance, (a: any) => (a as any).attributes, { nullable: true })
-  armor: any
+  @ManyToOne(() => getEntity('ArmorInstance') as any, (a: any) => (a as any).attributes, { nullable: true })
+  armor: ArmorInstance
 
   @ManyToOne(() => ArmorAttribute, { nullable: false })
   attribute: ArmorAttribute
@@ -17,4 +18,4 @@ export class ArmorInstanceAttribute extends BaseEntity {
   damageType: DamageType
 }
 
-(globalThis as any).ArmorInstanceAttribute = ArmorInstanceAttribute
+registerEntity('ArmorInstanceAttribute', ArmorInstanceAttribute)

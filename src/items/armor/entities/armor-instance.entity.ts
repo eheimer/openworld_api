@@ -1,9 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
 import { ArmorClass } from "./armor-class.entity.js"
-// runtime references resolved via globalThis; avoid type imports to reduce static cycles
+// runtime references resolved via entityRegistry to avoid scattered globalThis
 import { ArmorLocation } from "./armor-location.entity.js"
 import { Inventory } from "../../entities/inventory.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class ArmorInstance extends BaseEntity {
@@ -24,7 +25,7 @@ export class ArmorInstance extends BaseEntity {
   @ManyToOne(() => ArmorLocation, { nullable: false })
   location: ArmorLocation
 
-  @OneToMany(() => (globalThis as any).ArmorInstanceAttribute, (aia) => (aia as any).armor, {
+  @OneToMany(() => getEntity('ArmorInstanceAttribute') as any, (aia) => (aia as any).armor, {
     nullable: true,
     cascade: ['insert']
   })
@@ -34,11 +35,10 @@ export class ArmorInstance extends BaseEntity {
   @ManyToOne(() => Inventory, (i) => i.armor, { nullable: false })
   inventory: Inventory
 
-  @OneToMany(() => (globalThis as any).ArmorInstanceDamageReduction, (aidr) => (aidr as any).armor, {
+  @OneToMany(() => getEntity('ArmorInstanceDamageReduction') as any, (aidr) => (aidr as any).armor, {
     nullable: true,
     cascade: ['insert']
   })
   reductions: any[]
 }
-
-(globalThis as any).ArmorInstance = ArmorInstance
+registerEntity('ArmorInstance', ArmorInstance)

@@ -9,6 +9,7 @@ import { CurrentPlayer } from "../decorators/current-player.decorator.js"
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Serialize } from "../interceptors/serialize.interceptor.js"
 import { PlayerDetailDto } from "../players/dto/player-detail.dto.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('auth')
 @ApiTags('auth')
@@ -39,4 +40,4 @@ export class AuthController {
   }
 }
 
-(globalThis as any).AuthController = AuthController
+registerEntity('AuthController', AuthController)

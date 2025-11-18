@@ -2,6 +2,7 @@ import { Injectable, ExecutionContext, BadRequestException, Logger } from '@nest
 import { GamesService } from "../../games/games.service.js"
 import { CharactersService } from "../../games/characters/characters.service.js"
 import { GamePlayerGuard } from "./game-player.guard.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description - This guard verifies that the current player is in the requested game
@@ -23,4 +24,4 @@ export class PlayerGameCharacterGuard extends GamePlayerGuard {
   }
 }
 
-(globalThis as any).PlayerGameCharacterGuard = PlayerGameCharacterGuard
+registerEntity('PlayerGameCharacterGuard', PlayerGameCharacterGuard)

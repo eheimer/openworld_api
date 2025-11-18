@@ -2,8 +2,9 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
 import { Inventory } from "../../entities/inventory.entity.js"
 import { Material } from "./material.entity.js"
-// runtime references resolved via globalThis; avoid type imports to reduce static cycles
+// runtime references resolved via entityRegistry to avoid scattered globalThis
 import { Weapon } from "./weapon.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class WeaponInstance extends BaseEntity {
@@ -13,7 +14,7 @@ export class WeaponInstance extends BaseEntity {
   @ManyToOne(() => Weapon, { nullable: false })
   weapon: Weapon
 
-  @OneToMany(() => (globalThis as any).WeaponInstanceAttribute, (wia: any) => wia.weapon, {
+  @OneToMany(() => getEntity('WeaponInstanceAttribute') as any, (wia: any) => wia.weapon, {
     nullable: true,
     cascade: ['insert']
   })
@@ -26,4 +27,4 @@ export class WeaponInstance extends BaseEntity {
   inventory: Inventory
 }
 
-(globalThis as any).WeaponInstance = WeaponInstance
+registerEntity('WeaponInstance', WeaponInstance)

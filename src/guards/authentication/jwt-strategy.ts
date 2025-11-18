@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport'
 import { Injectable } from '@nestjs/common'
 import { jwtConstants } from "../../constants.js"
 import { PlayersService } from "../../players/players.service.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -20,4 +21,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 }
 
-(globalThis as any).JwtStrategy = JwtStrategy
+registerEntity('JwtStrategy', JwtStrategy)

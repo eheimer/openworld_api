@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { CreateDamageTypeDto } from "./dto/create-damage-type.dto.js"
 import { UpdateDamageTypeDto } from "./dto/update-damage-type.dto.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class DamageTypesService {
@@ -25,4 +26,4 @@ export class DamageTypesService {
   }
 }
 
-(globalThis as any).DamageTypesService = DamageTypesService
+registerEntity('DamageTypesService', DamageTypesService)

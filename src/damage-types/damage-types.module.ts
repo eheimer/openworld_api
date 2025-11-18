@@ -3,6 +3,7 @@ import { DamageTypesService } from "./damage-types.service.js"
 import { DamageTypesController } from "./damage-types.controller.js"
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { DamageType } from "./entities/damage-type.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([DamageType])],
@@ -11,4 +12,4 @@ import { DamageType } from "./entities/damage-type.entity.js"
 })
 export class DamageTypesModule {}
 
-(globalThis as any).DamageTypesModule = DamageTypesModule
+registerEntity('DamageTypesModule', DamageTypesModule)

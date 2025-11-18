@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
 import { SpellbooksService } from "./spellbooks.service.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Controller('spellbooks')
 export class SpellbooksController {
@@ -31,4 +32,4 @@ export class SpellbooksController {
   }
 }
 
-(globalThis as any).SpellbooksController = SpellbooksController
+registerEntity('SpellbooksController', SpellbooksController)

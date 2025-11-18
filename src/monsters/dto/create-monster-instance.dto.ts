@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsNumberString } from 'class-validator'
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 export class CreateMonsterInstanceDto {
   @IsNumberString()
@@ -6,4 +7,4 @@ export class CreateMonsterInstanceDto {
   monsterId: string
 }
 
-(globalThis as any).CreateMonsterInstanceDto = CreateMonsterInstanceDto
+registerEntity('CreateMonsterInstanceDto', CreateMonsterInstanceDto)

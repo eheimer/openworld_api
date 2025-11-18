@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator'
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 export class RenamePetDto {
   @IsString()
@@ -6,4 +7,4 @@ export class RenamePetDto {
   name: string
 }
 
-(globalThis as any).RenamePetDto = RenamePetDto
+registerEntity('RenamePetDto', RenamePetDto)

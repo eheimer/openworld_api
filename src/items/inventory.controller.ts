@@ -4,6 +4,7 @@ import { RandomItemRequestDto } from "./dto/random-item-request.dto.js"
 import { Serialize } from "../interceptors/serialize.interceptor.js"
 import { InventoryDto } from "./dto/inventory.dto.js"
 import { InventoryOwnerGuard } from "../guards/authorization/inventory-owner.guard.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('inventory')
 export class InventoryController {
@@ -88,4 +89,4 @@ export class InventoryController {
   }
 }
 
-(globalThis as any).InventoryController = InventoryController
+registerEntity('InventoryController', InventoryController)

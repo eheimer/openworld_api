@@ -4,6 +4,7 @@ import { randomBytes, scrypt as _scrypt } from 'crypto'
 import { promisify } from 'util'
 import { JwtService } from '@nestjs/jwt'
 import { CreatePlayerDto } from "../players/dto/create-player.dto.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 const scrypt = promisify(_scrypt)
 
@@ -63,4 +64,4 @@ export class AuthService {
   }
 }
 
-(globalThis as any).AuthService = AuthService
+registerEntity('AuthService', AuthService)

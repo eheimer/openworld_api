@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Entity()
 export class DamageType extends BaseEntity {
@@ -11,4 +12,4 @@ export class DamageType extends BaseEntity {
   @Column() imgurl: string
 }
 
-(globalThis as any).DamageType = DamageType
+registerEntity('DamageType', DamageType)

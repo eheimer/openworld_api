@@ -1,9 +1,10 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
+import { registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class MaterialType extends BaseEntity {
   @Column() name: string
 }
 
-(globalThis as any).MaterialType = MaterialType
+registerEntity('MaterialType', MaterialType)

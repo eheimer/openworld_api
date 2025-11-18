@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity.js"
+import { registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class SpecialMove extends BaseEntity {
@@ -7,4 +8,4 @@ export class SpecialMove extends BaseEntity {
   @Column() stamina: number
 }
 
-(globalThis as any).SpecialMove = SpecialMove
+registerEntity('SpecialMove', SpecialMove)
