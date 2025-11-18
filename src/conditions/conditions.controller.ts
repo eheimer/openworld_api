@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
-import { ConditionsService } from './conditions.service'
-import { CreateConditionDto } from './dto/create-condition.dto'
-import { UpdateConditionDto } from './dto/update-condition.dto'
+import { ConditionsService } from "./conditions.service.js"
+import { CreateConditionDto } from "./dto/create-condition.dto.js"
+import { UpdateConditionDto } from "./dto/update-condition.dto.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Controller('conditions')
 export class ConditionsController {
@@ -40,3 +41,5 @@ export class ConditionsController {
     return this.conditionsService.remove(+id)
   }
 }
+
+registerEntity('ConditionsController', ConditionsController)

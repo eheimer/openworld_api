@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator'
-import { CharacterSkillDto } from './character-skill.dto'
+import { CharacterSkillDto } from "./character-skill.dto.js"
 
 export class CreateCharacterDto {
   @IsString()
@@ -26,3 +26,5 @@ export class CreateCharacterDto {
   @IsNotEmpty()
   dexterity: number
 }
+
+(globalThis as any).CreateCharacterDto = CreateCharacterDto

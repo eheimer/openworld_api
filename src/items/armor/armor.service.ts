@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common'
-import { ArmorInstance } from './entities/armor-instance.entity'
-import { ArmorAttribute } from './entities/armor-attribute.entity'
+import { ArmorInstance } from "./entities/armor-instance.entity.js"
+import { ArmorAttribute } from "./entities/armor-attribute.entity.js"
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { ArmorClass } from './entities/armor-class.entity'
-import { RandomService } from '../../utils/random.service'
-import { ArmorLocation } from './entities/armor-location.entity'
-import { ArmorInstanceDamageReduction } from './entities/armor-instance-damage-reduction.entity'
-import { ArmorInstanceAttribute } from './entities/armor-instance-attribute.entity'
+import { ArmorClass } from "./entities/armor-class.entity.js"
+import { RandomService } from "../../utils/random.service.js"
+import { ArmorLocation } from "./entities/armor-location.entity.js"
+import { ArmorInstanceDamageReduction } from "./entities/armor-instance-damage-reduction.entity.js"
+import { ArmorInstanceAttribute } from "./entities/armor-instance-attribute.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class ArmorService {
@@ -80,3 +81,5 @@ export class ArmorService {
     return inst
   }
 }
+
+registerEntity('ArmorService', ArmorService)

@@ -1,7 +1,8 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
-import { Game } from '../../games/entities/game.entity'
-import { Character } from '../../games/characters/entities/character.entity'
+import { BaseEntity } from "../../common/BaseEntity.js"
+import { Game } from "../../games/entities/game.entity.js"
+import type { Character } from "../../games/characters/entities/character.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description Represents a real person with login credentials for the game
@@ -21,8 +22,10 @@ export class Player extends BaseEntity {
   @ManyToOne(() => Game, { nullable: true })
   currentGame: Game
 
-  @OneToMany(() => Character, (character) => character.player, {
+  @OneToMany(() => getEntity('Character') as any, (character: any) => character.player, {
     nullable: true
   })
-  characters: Character[]
+  characters: any[]
 }
+
+registerEntity('Player', Player)

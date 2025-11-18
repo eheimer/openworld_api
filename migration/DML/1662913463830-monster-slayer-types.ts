@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { Monster } from '../../src/monsters/entities/monster.entity'
-import { SlayerType } from '../../src/damage-types/entities/slayer-type.entity'
+import { Monster } from '../../src/monsters/entities/monster.entity.ts'
+import { SlayerType } from '../../src/damage-types/entities/slayer-type.entity.ts'
 
 export class monsterSlayerTypes1662913463830 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
+import { MonsterInstance } from "../../monsters/entities/monster-instance.entity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @EventSubscriber()
 export class InventoryMonsterSubscriber implements EntitySubscriberInterface<MonsterInstance> {
@@ -57,3 +58,5 @@ export class InventoryMonsterSubscriber implements EntitySubscriberInterface<Mon
     Logger.verbose('done', 'InventoryMonsterSubscriber')
   }
 }
+
+registerEntity('InventoryMonsterSubscriber', InventoryMonsterSubscriber)

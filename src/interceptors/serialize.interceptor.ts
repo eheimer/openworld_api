@@ -68,8 +68,44 @@ function getPossiblyNestedPropertyValue(item: any, propertyName: string): any {
   return value
 }
 
-export function convertToDto(dto: ClassConstructor<unknown>, plain: unknown) {
-  return plainToInstance(dto, plain, { excludeExtraneousValues: true })
+/**
+ * Resolve a DTO "type" into a runtime constructor and run
+ * `plainToInstance` on the provided plain value. The dtoArg can be:
+ * - a ClassConstructor (normal case)
+ * - a zero-arg supplier function that returns the constructor (defers
+ *   resolution until transform time and helps avoid TDZs)
+ *
+ * Note: we intentionally do not support string tokens here; those require
+ * a runtime registry and reintroduce the global registration pattern.
+ */
+export function convertToDto(dtoArg: ClassConstructor<unknown> | (() => ClassConstructor<unknown>) | any, plain: unknown) {
+  let ctor: ClassConstructor<unknown>
+
+  if (dtoArg == null) {
+    return plain
+  }
+
+  if (typeof dtoArg === 'function') {
+    // Distinguish between a class constructor and a supplier function.
+    const fnText = Function.prototype.toString.call(dtoArg)
+    if (fnText.startsWith('class')) {
+      ctor = dtoArg as ClassConstructor<unknown>
+    } else {
+      // supplier — call it now (at transform time)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ctor = (dtoArg as () => any)()
+    }
+  } else {
+    // fallback — assume it's already a constructor-like value
+    ctor = dtoArg as ClassConstructor<unknown>
+  }
+
+  if (!ctor) {
+    // if we couldn't resolve a constructor, return the plain value unchanged
+    return plain
+  }
+
+  return plainToInstance(ctor, plain, { excludeExtraneousValues: true })
 }
 
 /**
@@ -85,6 +121,6 @@ export class SerializeResponse {
  * @param dto - The public DTO to use if the requestor is not the same as the requested player.
  * @param detailDto - The detail DTO to use if the requestor is the same as the requested player.
  */
-export function Serialize(dto: object, detailDto: object = undefined) {
+export function Serialize(dto: any, detailDto: any = undefined) {
   return UseInterceptors(new SerializeInterceptor(dto, detailDto))
 }

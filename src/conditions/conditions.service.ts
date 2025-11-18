@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { CreateConditionDto } from './dto/create-condition.dto'
-import { UpdateConditionDto } from './dto/update-condition.dto'
-import { Condition } from './entities/condition.entity'
+import { CreateConditionDto } from "./dto/create-condition.dto.js"
+import { UpdateConditionDto } from "./dto/update-condition.dto.js"
+import { Condition } from "./entities/condition.entity.js"
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class ConditionsService {
@@ -29,3 +30,5 @@ export class ConditionsService {
     return `This action removes a #${id} condition`
   }
 }
+
+registerEntity('ConditionsService', ConditionsService)

@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../../common/BaseEntity'
-import { ArmorClass } from './armor-class.entity'
-import { ArmorInstanceAttribute } from './armor-instance-attribute.entity'
-import { ArmorInstanceDamageReduction } from './armor-instance-damage-reduction.entity'
-import { ArmorLocation } from './armor-location.entity'
-import { Inventory } from '../../entities/inventory.entity'
+import { BaseEntity } from "../../../common/BaseEntity.js"
+import { ArmorClass } from "./armor-class.entity.js"
+// runtime references resolved via entityRegistry to avoid scattered globalThis
+import { ArmorLocation } from "./armor-location.entity.js"
+import { Inventory } from "../../entities/inventory.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @Entity()
 export class ArmorInstance extends BaseEntity {
@@ -25,18 +25,20 @@ export class ArmorInstance extends BaseEntity {
   @ManyToOne(() => ArmorLocation, { nullable: false })
   location: ArmorLocation
 
-  @OneToMany(() => ArmorInstanceAttribute, (aia) => aia.armor, {
+  @OneToMany(() => getEntity('ArmorInstanceAttribute') as any, (aia) => (aia as any).armor, {
     nullable: true,
     cascade: ['insert']
   })
-  attributes: ArmorInstanceAttribute[]
+  // avoid runtime metadata to prevent ESM TDZ from circular imports
+  attributes: any[]
 
   @ManyToOne(() => Inventory, (i) => i.armor, { nullable: false })
   inventory: Inventory
 
-  @OneToMany(() => ArmorInstanceDamageReduction, (aidr) => aidr.armor, {
+  @OneToMany(() => getEntity('ArmorInstanceDamageReduction') as any, (aidr) => (aidr as any).armor, {
     nullable: true,
     cascade: ['insert']
   })
-  reductions: ArmorInstanceDamageReduction[]
+  reductions: any[]
 }
+registerEntity('ArmorInstance', ArmorInstance)

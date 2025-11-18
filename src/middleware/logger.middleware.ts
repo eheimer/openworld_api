@@ -2,7 +2,7 @@ import { Injectable, NestMiddleware, RequestMethod } from '@nestjs/common'
 import { Request, Response, NextFunction } from 'express'
 import { Logger } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
-import { RouteInfo } from '@nestjs/common/interfaces'
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
@@ -40,3 +40,5 @@ export class LoggerMiddleware implements NestMiddleware {
     return newPath
   }
 }
+
+registerEntity('LoggerMiddleware', LoggerMiddleware)

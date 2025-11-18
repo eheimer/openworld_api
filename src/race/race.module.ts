@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
-import { RaceService } from './race.service'
-import { RaceController } from './race.controller'
+import { RaceService } from "./race.service.js"
+import { RaceController } from "./race.controller.js"
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Race } from './entities/race.entity'
+import { Race } from "./entities/race.entity.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Race])],
@@ -10,3 +11,5 @@ import { Race } from './entities/race.entity'
   providers: [RaceService]
 })
 export class RaceModule {}
+
+registerEntity('RaceModule', RaceModule)

@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { SkillSeed } from '../../src/skills/seed/Skill.seed'
+import { SkillSeed } from '../../src/skills/seed/Skill.seed.ts'
 
 export class skills1662641826112 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

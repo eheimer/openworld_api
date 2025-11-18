@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Race } from './entities/race.entity'
+import { Race } from "./entities/race.entity.js"
 import { Repository } from 'typeorm'
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class RaceService {
@@ -15,3 +16,5 @@ export class RaceService {
     return `This action returns a #${id} race`
   }
 }
+
+registerEntity('RaceService', RaceService)

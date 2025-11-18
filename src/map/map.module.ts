@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common'
-import { MapService } from './map.service'
-import { MapController } from './map.controller'
-import { TileData } from './entities/tileData.entity'
+import { MapService } from "./map.service.js"
+import { MapController } from "./map.controller.js"
+import { TileData } from "./entities/tileData.entity.js"
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Module({
   imports: [TypeOrmModule.forFeature([TileData])],
@@ -10,3 +11,5 @@ import { TypeOrmModule } from '@nestjs/typeorm'
   providers: [MapService]
 })
 export class MapModule {}
+
+registerEntity('MapModule', MapModule)

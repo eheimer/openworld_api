@@ -3,7 +3,9 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { json, urlencoded } from 'express'
 import * as fs from 'fs'
-import { AppModule } from './app.module'
+// Ensure DTOs are registered early (centralized registration)
+import "./bootstrap/register-dtos.js"
+import { AppModule } from "./app.module.js"
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

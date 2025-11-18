@@ -12,3 +12,5 @@ export class BattleDamageDto {
   @IsNumber()
   damageAmt: number
 }
+
+(globalThis as any).BattleDamageDto = BattleDamageDto

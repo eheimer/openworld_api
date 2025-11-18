@@ -5,3 +5,5 @@ export class InvitePlayerDto {
   @IsEmail()
   email: string
 }
+
+(globalThis as any).InvitePlayerDto = InvitePlayerDto

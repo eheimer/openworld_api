@@ -5,3 +5,5 @@ export class AddMonsterDto {
   @IsNumber()
   monsterId: number
 }
+
+(globalThis as any).AddMonsterDto = AddMonsterDto

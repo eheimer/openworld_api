@@ -1,8 +1,7 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
-import { Player } from '../../players/entities/player.entity'
-import { Character } from '../characters/entities/character.entity'
-import { Battle } from '../battles/entities/battle.entity'
+import { BaseEntity } from "../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
+// runtime references are resolved via globalThis to avoid static import cycles
 
 /**
  * @description Represents a real person with login credentials for the game
@@ -11,15 +10,17 @@ import { Battle } from '../battles/entities/battle.entity'
 export class Game extends BaseEntity {
   @Column({ nullable: false, unique: true }) name: string
 
-  @ManyToOne(() => Player, { nullable: false })
-  owner: Player
+  @ManyToOne(() => getEntity('Player') as any, { nullable: false })
+  owner: any
 
-  @ManyToMany(() => Player, (player) => player.games, { nullable: false })
-  players: Player[]
+  @ManyToMany(() => getEntity('Player') as any, (player) => (player as any).games, { nullable: false })
+  players: any[]
 
-  @OneToMany(() => Character, (character) => character.game, { nullable: true })
-  characters: Character[]
+  @OneToMany(() => getEntity('Character') as any, (character: any) => character.game, { nullable: true })
+  characters: any[]
 
-  @OneToMany(() => Battle, (battle) => battle.game, { nullable: true })
-  battles: Battle[]
+  @OneToMany(() => getEntity('Battle') as any, (battle) => (battle as any).game, { nullable: true })
+  battles: any[]
 }
+
+registerEntity('Game', Game)

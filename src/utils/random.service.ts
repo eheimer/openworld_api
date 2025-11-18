@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 @Injectable()
 export class RandomService {
@@ -113,3 +114,5 @@ export class RandomService {
     return this.getRandomItems(arr, 1, weights, dispose)[0]
   }
 }
+
+registerEntity('RandomService', RandomService)

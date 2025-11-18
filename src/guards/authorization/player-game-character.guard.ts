@@ -1,7 +1,8 @@
 import { Injectable, ExecutionContext, BadRequestException, Logger } from '@nestjs/common'
-import { GamesService } from '../../games/games.service'
-import { CharactersService } from '../../games/characters/characters.service'
-import { GamePlayerGuard } from './game-player.guard'
+import { GamesService } from "../../games/games.service.js"
+import { CharactersService } from "../../games/characters/characters.service.js"
+import { GamePlayerGuard } from "./game-player.guard.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description - This guard verifies that the current player is in the requested game
@@ -22,3 +23,5 @@ export class PlayerGameCharacterGuard extends GamePlayerGuard {
     return (await super.canActivate(context)) && !game
   }
 }
+
+registerEntity('PlayerGameCharacterGuard', PlayerGameCharacterGuard)

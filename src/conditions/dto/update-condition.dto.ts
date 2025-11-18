@@ -1,4 +1,6 @@
 import { PartialType } from '@nestjs/swagger'
-import { CreateConditionDto } from './create-condition.dto'
+import { CreateConditionDto } from "./create-condition.dto.js"
 
 export class UpdateConditionDto extends PartialType(CreateConditionDto) {}
+
+(globalThis as any).UpdateConditionDto = UpdateConditionDto

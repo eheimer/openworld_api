@@ -1,8 +1,9 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Inventory } from '../../entities/inventory.entity'
-import { ArmorInstanceAttribute } from '../entities/armor-instance-attribute.entity'
-import { ArmorInstanceDamageReduction } from '../entities/armor-instance-damage-reduction.entity'
+import { Inventory } from "../../entities/inventory.entity.js"
+import { ArmorInstanceAttribute } from "../entities/armor-instance-attribute.entity.js"
+import { ArmorInstanceDamageReduction } from "../entities/armor-instance-damage-reduction.entity.js"
+import { getEntity, registerEntity } from "../../../entityRegistry.js"
 
 @EventSubscriber()
 export class ArmorInventorySubscriber implements EntitySubscriberInterface<Inventory> {
@@ -39,3 +40,5 @@ export class ArmorInventorySubscriber implements EntitySubscriberInterface<Inven
     Logger.verbose('done', 'ArmorInventorySubscriber')
   }
 }
+
+registerEntity('ArmorInventorySubscriber', ArmorInventorySubscriber)

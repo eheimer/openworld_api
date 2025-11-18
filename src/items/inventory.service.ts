@@ -1,14 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Inventory } from './entities/inventory.entity'
+import { Inventory } from "./entities/inventory.entity.js"
 import { Repository } from 'typeorm'
-import { WeaponInstance } from './weapons/entities/weapon-instance.entity'
-import { ArmorInstance } from './armor/entities/armor-instance.entity'
-import { JewelryInstance } from './jewelry/entities/jewelry-instance.entity'
-import { WeaponsService } from './weapons/weapons.service'
-import { JewelryService } from './jewelry/jewelry.service'
-import { ArmorService } from './armor/armor.service'
-import { RandomService } from '../utils/random.service'
+import { WeaponInstance } from "./weapons/entities/weapon-instance.entity.js"
+import { ArmorInstance } from "./armor/entities/armor-instance.entity.js"
+import { JewelryInstance } from "./jewelry/entities/jewelry-instance.entity.js"
+import { WeaponsService } from "./weapons/weapons.service.js"
+import { JewelryService } from "./jewelry/jewelry.service.js"
+import { ArmorService } from "./armor/armor.service.js"
+import { RandomService } from "../utils/random.service.js"
+import { getEntity, registerEntity } from "../entityRegistry.js"
 
 type ItemInstance = WeaponInstance | ArmorInstance | JewelryInstance
 
@@ -169,3 +170,5 @@ export class InventoryService {
     return await itemType.service.randomItem(level)
   }
 }
+
+registerEntity('InventoryService', InventoryService)

@@ -5,6 +5,7 @@
   "author": "Eric Heimerman",
   "private": true,
   "license": "UNLICENSED",
+  "type": "module",
   "overrides": {
     "js-yaml": "4.1.1"
   },
@@ -12,10 +13,10 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-  "start": "cross-env NODE_ENV=dev NODE_OPTIONS=\"-r ts-node/register -r tsconfig-paths/register\" nest start",
-  "start:dev": "npm run start -- --watch",
+    "start": "cross-env NODE_ENV=dev NODE_OPTIONS=\"-r ts-node/register -r tsconfig-paths/register\" nest start",
+    "start:dev": "npm run start -- --watch",
     "start:dev:reseed": "npm run reseed:dev && npm run start:dev",
-  "start:debug": "npm run start -- --debug --watch",
+    "start:debug": "npm run start -- --debug --watch",
     "start:prod": "cross-env NODE_ENV=prod node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "cross-env NODE_ENV=test jest",
@@ -28,13 +29,14 @@
     "test:integration": "cross-env NODE_ENV=test jest --rootDir=test/integration --testRegex='.*\\.spec\\.ts$'",
     "test:api:reseed": "npm run reseed:test && cross-env NODE_ENV=test jest --rootDir=test/api --testRegex='.*\\.spec\\.ts$'",
     "test:api": "cross-env NODE_ENV=test jest --rootDir=test/api --testRegex='.*\\.spec\\.ts$'",
+    "codemod:entity-registry": "node -r ts-node/register scripts/tsm-fix-entity-registry.ts",
     "**** DATA ****": "",
-  "typeorm": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm -d ormDataSource.cli.ts",
+    "typeorm": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm -d ormDataSource.ts",
     "typeorm-no-d": "cross-env TYPEORM_CLI=1 typeorm-ts-node-esm",
-  "migration:run": "node scripts/migration-run.js",
-  "schema:drop": "node scripts/schema-drop.js",
-    "reseed:dev": "cross-env NODE_ENV=dev npm run schema:drop && cross-env NODE_ENV=dev npm run migration:run",
-    "reseed:test": "cross-env NODE_ENV=test npm run schema:drop && cross-env NODE_ENV=test npm run migration:run",
+    "migration:run": "npm run typeorm -- migration:run",
+    "schema:drop": "npm run typeorm -- schema:drop",
+    "reseed:dev": "cross-env NODE_ENV=dev npm run schema:drop && cross-env NODE_ENV=dev npm run typeorm -- schema:sync && cross-env NODE_ENV=dev npm run migration:run",
+    "reseed:test": "cross-env NODE_ENV=test npm run schema:drop && cross-env NODE_ENV=test npm run typeorm -- schema:sync && cross-env NODE_ENV=test npm run migration:run",
     "**** DATA MAINTENANCE ****": "",
     "migration:generate": "cross-env NODE_ENV=dev npm run build && npm run typeorm -- 'migration:generate'",
     "migration:create": "cross-env NODE_ENV=dev npm run typeorm-no-d -- 'migration:create'"
@@ -87,9 +89,15 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "ts-loader": "^9.5.4",
+    "ts-morph": "^17.0.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.9.3"
+  },
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "swc": false,
+    "preferTsExts": true
   },
   "jest": {
     "moduleFileExtensions": [

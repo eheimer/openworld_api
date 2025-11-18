@@ -1,17 +1,18 @@
 import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common'
-import { CurrentPlayer } from '../../decorators/current-player.decorator'
-import { GameBattleGuard } from '../../guards/authorization/game-battle.guard'
-import { GameOwnerGuard } from '../../guards/authorization/game-owner.guard'
-import { GamePlayerGuard } from '../../guards/authorization/game-player.guard'
-import { Serialize } from '../../interceptors/serialize.interceptor'
-import { CreateMonsterInstanceDto } from '../../monsters/dto/create-monster-instance.dto'
-import { MonsterInstanceDto } from '../../monsters/dto/monster-instance.dto'
-import { MonstersService } from '../../monsters/monsters.service'
-import { Player } from '../../players/entities/player.entity'
-import { BattleDto } from '../dto/battle.dto'
-import { GamesService } from '../games.service'
-import { BattlesService } from './battles.service'
-import { BattleInitiatorGuard } from '../../guards/authorization/battle-initiator.guard'
+import { CurrentPlayer } from "../../decorators/current-player.decorator.js"
+import { GameBattleGuard } from "../../guards/authorization/game-battle.guard.js"
+import { GameOwnerGuard } from "../../guards/authorization/game-owner.guard.js"
+import { GamePlayerGuard } from "../../guards/authorization/game-player.guard.js"
+import { Serialize } from "../../interceptors/serialize.interceptor.js"
+import { CreateMonsterInstanceDto } from "../../monsters/dto/create-monster-instance.dto.js"
+import { MonsterInstanceDto } from "../../monsters/dto/monster-instance.dto.js"
+import { MonstersService } from "../../monsters/monsters.service.js"
+import { Player } from "../../players/entities/player.entity.js"
+import { BattleDto } from "../dto/battle.dto.js"
+import { GamesService } from "../games.service.js"
+import { BattlesService } from "./battles.service.js"
+import { BattleInitiatorGuard } from "../../guards/authorization/battle-initiator.guard.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Controller('games/:gameId/battles')
 @UseGuards(GamePlayerGuard)
@@ -86,3 +87,5 @@ export class BattlesController {
     return this.battlesService.nextRound(+battleId)
   }
 }
+
+registerEntity('BattlesController', BattlesController)

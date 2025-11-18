@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { WeaponsService } from './weapons.service'
+import { WeaponsService } from "./weapons.service.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Controller('weapons')
 export class WeaponsController {
@@ -30,3 +31,5 @@ export class WeaponsController {
     return this.weaponsService.remove(+id)
   }
 }
+
+registerEntity('WeaponsController', WeaponsController)

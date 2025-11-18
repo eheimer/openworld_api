@@ -1,5 +1,6 @@
 import { Column, Entity } from 'typeorm'
-import { BaseEntity } from '../../common/BaseEntity'
+import { BaseEntity } from "../../common/BaseEntity.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Entity()
 export class Skill extends BaseEntity {
@@ -7,3 +8,5 @@ export class Skill extends BaseEntity {
   @Column({ nullable: true, type: 'text' }) description: string
   @Column() spellbook: boolean
 }
+
+registerEntity('Skill', Skill)

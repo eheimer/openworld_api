@@ -1,5 +1,6 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
-import { BattlesService } from '../../games/battles/battles.service'
+import { BattlesService } from "../../games/battles/battles.service.js"
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 /**
  * @description - This guard verifies that the current player is the initiator of the requested battle
@@ -16,3 +17,5 @@ export class BattleInitiatorGuard implements CanActivate {
     return !!battle
   }
 }
+
+registerEntity('BattleInitiatorGuard', BattleInitiatorGuard)

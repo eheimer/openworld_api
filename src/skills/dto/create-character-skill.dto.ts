@@ -9,3 +9,5 @@ export class CreateCharacterSkillDto {
   @IsNumber()
   skillId: number
 }
+
+(globalThis as any).CreateCharacterSkillDto = CreateCharacterSkillDto

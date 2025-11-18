@@ -1,6 +1,6 @@
 import { Expose, Transform } from 'class-transformer'
-import { DTO } from '../../../decorators/dto-property.decorator'
-import { GameDto } from '../../dto/game.dto'
+import { DTO } from "../../../decorators/dto-property.decorator.js"
+import { GameDto } from "../../dto/game.dto.js"
 
 export class GameCharacterDto {
   @Expose()
@@ -23,3 +23,5 @@ export class GameCharacterDto {
   @Expose()
   owner: boolean
 }
+
+(globalThis as any).GameCharacterDto = GameCharacterDto

@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { MonsterSeed } from '../../src/monsters/seed/Monster.seed'
-import { ActionSeed } from '../../src/monsters/seed/Action.seed'
-import { MonsterActionSeed } from '../../src/monsters/seed/MonsterAction.seed'
+import { MonsterSeed } from '../../src/monsters/seed/Monster.seed.ts'
+import { ActionSeed } from '../../src/monsters/seed/Action.seed.ts'
+import { MonsterActionSeed } from '../../src/monsters/seed/MonsterAction.seed.ts'
 
 export class monstersAndActions1662604175939 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

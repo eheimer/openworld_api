@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { getEntity, registerEntity } from "../../entityRegistry.js"
 
 @Injectable()
 export class SpellbooksService {
@@ -22,3 +23,5 @@ export class SpellbooksService {
     return `This action removes a #${id} spellbook`
   }
 }
+
+registerEntity('SpellbooksService', SpellbooksService)

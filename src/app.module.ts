@@ -1,33 +1,36 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { PlayersModule } from './players/players.module'
-import { AuthModule } from './auth/auth.module'
+import { PlayersModule } from "./players/players.module.js"
+import { AuthModule } from "./auth/auth.module.js"
 import { APP_GUARD } from '@nestjs/core'
-import { JwtAuthGuard } from './guards/authentication/jwt-auth.guard'
+import { JwtAuthGuard } from "./guards/authentication/jwt-auth.guard.js"
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { GamesModule } from './games/games.module'
-import { MonstersModule } from './monsters/monsters.module'
-import { ConditionsModule } from './conditions/conditions.module'
-import { DamageTypesModule } from './damage-types/damage-types.module'
-import { SkillsModule } from './skills/skills.module'
-import { RaceModule } from './race/race.module'
-import { ItemsModule } from './items/items.module'
-import { MapModule } from './map/map.module'
-import dbConfig from './config/database'
+import { GamesModule } from "./games/games.module.js"
+import { MonstersModule } from "./monsters/monsters.module.js"
+import { ConditionsModule } from "./conditions/conditions.module.js"
+import { DamageTypesModule } from "./damage-types/damage-types.module.js"
+import { SkillsModule } from "./skills/skills.module.js"
+import { RaceModule } from "./race/race.module.js"
+import { ItemsModule } from "./items/items.module.js"
+import { MapModule } from "./map/map.module.js"
+import dbConfig from "./config/database.js"
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { join } from 'path'
-import { UtilsModule } from './utils/utils.module'
-import { LoggerMiddleware } from './middleware/logger.middleware'
+import path, { join } from 'path'
+import { UtilsModule } from "./utils/utils.module.js"
+import { LoggerMiddleware } from "./middleware/logger.middleware.js"
+import { fileURLToPath } from 'url'
+import { getEntity, registerEntity } from "./entityRegistry.js"
+
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '_static', 'client'),
+      rootPath: join(path.dirname(fileURLToPath(new URL(import.meta.url))), '_static', 'client'),
       serveRoot: '/mapeditor'
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `./config/.env.${process.env.NODE_ENV}`,
+      envFilePath: `./config/.env.${process.env.NODE_ENV}.js`,
       load: [dbConfig]
     }),
     TypeOrmModule.forRootAsync({
@@ -61,3 +64,5 @@ export class AppModule implements NestModule {
     }
   }
 }
+
+registerEntity('AppModule', AppModule)
