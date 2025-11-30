@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
 import { EquipLocation } from "../../entities/equip-location.entity"
 import { BaseEntity } from "../../../common/BaseEntity"
-import { registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class ArmorLocation extends BaseEntity {
@@ -12,4 +11,3 @@ export class ArmorLocation extends BaseEntity {
   location: EquipLocation
 }
 
-registerEntity('ArmorLocation', ArmorLocation)

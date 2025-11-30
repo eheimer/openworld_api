@@ -1,6 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
 import { GamesService } from "../../games/games.service"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 /**
  * @description - This guard verifies that the current player is in the requested game
@@ -18,4 +17,3 @@ export class GamePlayerGuard implements CanActivate {
   }
 }
 
-registerEntity('GamePlayerGuard', GamePlayerGuard)

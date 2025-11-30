@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ConditionsService } from "./conditions.service"
 import { CreateConditionDto } from "./dto/create-condition.dto"
 import { UpdateConditionDto } from "./dto/update-condition.dto"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('conditions')
 export class ConditionsController {
@@ -42,4 +41,3 @@ export class ConditionsController {
   }
 }
 
-registerEntity('ConditionsController', ConditionsController)

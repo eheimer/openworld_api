@@ -1,18 +1,15 @@
-import { Inventory } from "../../entities/inventory.entity"
+import { Inventory } from '../../entities/inventory.entity'
 import { Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../../entityRegistry"
-// runtime references resolved via globalThis; avoid type imports to reduce static cycles
+import { BaseEntity } from '../../../common/BaseEntity'
+import { SpellbookInstanceAttribute } from './spellbook-instance-attribute.entity'
 
 @Entity()
 export class SpellbookInstance extends BaseEntity {
-  @OneToMany(() => getEntity('SpellbookInstanceAttribute') as any, (sia: any) => sia.spellbook, {
+  @OneToMany(() => SpellbookInstanceAttribute, (sia) => sia.spellbook, {
     nullable: true
   })
-  attributes: any[]
+  attributes: SpellbookInstanceAttribute[]
 
   @ManyToOne(() => Inventory, (i) => i.spellbooks, { nullable: false })
   inventory: Inventory
 }
-
-registerEntity('SpellbookInstance', SpellbookInstance)

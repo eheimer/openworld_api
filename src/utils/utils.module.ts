@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { RandomService } from "./random.service"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   controllers: [],
@@ -9,4 +8,3 @@ import { getEntity, registerEntity } from "../entityRegistry"
 })
 export class UtilsModule {}
 
-registerEntity('UtilsModule', UtilsModule)

@@ -2,7 +2,6 @@ import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
 import { Player } from "../../players/entities/player.entity"
 import { Game } from "../entities/game.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @EventSubscriber()
 export class GamePlayerSubscriber implements EntitySubscriberInterface<Player> {
@@ -45,4 +44,3 @@ export class GamePlayerSubscriber implements EntitySubscriberInterface<Player> {
   }
 }
 
-registerEntity('GamePlayerSubscriber', GamePlayerSubscriber)

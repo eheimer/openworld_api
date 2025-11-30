@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { RandomService } from "../utils/random.service"
 import { MonsterAction } from "./entities/monster-action.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class MonstersService {
@@ -82,4 +81,3 @@ export class MonstersService {
   }
 }
 
-registerEntity('MonstersService', MonstersService)

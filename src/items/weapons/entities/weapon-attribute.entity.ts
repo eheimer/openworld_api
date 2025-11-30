@@ -1,7 +1,6 @@
 import { MagicalItemAttribute } from "../../../common/MagicalItemAttribute"
 import { Column, Entity, ManyToOne } from 'typeorm'
 import { WeaponSkill } from "./weapon-skill.entity"
-import { registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class WeaponAttribute extends MagicalItemAttribute {
@@ -11,4 +10,3 @@ export class WeaponAttribute extends MagicalItemAttribute {
   skill: WeaponSkill
 }
 
-registerEntity('WeaponAttribute', WeaponAttribute)

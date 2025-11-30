@@ -2,7 +2,6 @@ import { Controller, Get, Param } from '@nestjs/common'
 import { Serialize } from "../interceptors/serialize.interceptor"
 import { RaceDto } from "./dto/race.dto"
 import { RaceService } from "./race.service"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('race')
 export class RaceController {
@@ -20,4 +19,3 @@ export class RaceController {
   }
 }
 
-registerEntity('RaceController', RaceController)

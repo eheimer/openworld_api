@@ -1,8 +1,9 @@
 import { Expose, Transform } from 'class-transformer'
-import { DTO } from "../../decorators/dto-property.decorator"
-import { MonsterInstanceDto } from "../../monsters/dto/monster-instance.dto"
-import { MonsterInstance } from "../../monsters/entities/monster-instance.entity"
-import { Character } from "../characters/entities/character.entity"
+import { DTO } from '../../decorators/dto-property.decorator'
+import { MonsterInstanceDto } from '../../monsters/dto/monster-instance.dto'
+import { MonsterInstance } from '../../monsters/entities/monster-instance.entity'
+import { Character } from '../characters/entities/character.entity'
+import { CharacterDto } from '../characters/dto/character.dto'
 
 export class BattleDto {
   @Expose() id: number
@@ -19,12 +20,10 @@ export class BattleDto {
   initiator: number
 
   @Expose()
-  @DTO((globalThis as any).CharacterDto)
-  participants: any[]
+  @DTO(() => CharacterDto)
+  participants: Character[]
 
   @Expose()
   @DTO(MonsterInstanceDto)
   enemies: MonsterInstance[]
 }
-
-(globalThis as any).BattleDto = BattleDto

@@ -3,7 +3,6 @@ import { BaseEntity } from "../../../common/BaseEntity"
 import { MaterialType } from "./material-type.entity"
 import { SpecialMove } from "./special-move.entity"
 import { WeaponSkill } from "./weapon-skill.entity"
-import { registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class Weapon extends BaseEntity {
@@ -27,4 +26,3 @@ export class Weapon extends BaseEntity {
   material: MaterialType
 }
 
-registerEntity('Weapon', Weapon)

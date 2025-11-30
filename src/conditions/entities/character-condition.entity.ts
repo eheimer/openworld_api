@@ -1,13 +1,11 @@
 import { Entity, ManyToOne } from 'typeorm'
 import { IsNotEmpty } from 'class-validator'
-import { ActiveCondition } from "../../common/ActiveCondition"
-import { getEntity, registerEntity } from "../../entityRegistry"
+import { ActiveCondition } from '../../common/ActiveCondition'
+import { Character } from '../../games/characters/entities/character.entity'
 
 @Entity()
 export class CharacterCondition extends ActiveCondition {
   @IsNotEmpty()
-  @ManyToOne(() => getEntity('Character') as any, (character) => (character as any).conditions)
-  character: any
+  @ManyToOne(() => Character, (character) => character.conditions)
+  character: Character
 }
-
-registerEntity('CharacterCondition', CharacterCondition)

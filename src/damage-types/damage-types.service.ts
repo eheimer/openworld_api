@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { CreateDamageTypeDto } from "./dto/create-damage-type.dto"
 import { UpdateDamageTypeDto } from "./dto/update-damage-type.dto"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class DamageTypesService {
@@ -26,4 +25,3 @@ export class DamageTypesService {
   }
 }
 
-registerEntity('DamageTypesService', DamageTypesService)

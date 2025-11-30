@@ -1,7 +1,8 @@
 import { Expose } from 'class-transformer'
-import { DTO } from "../../decorators/dto-property.decorator"
-import { PlayerDto } from "../../players/dto/player.dto"
-
+import { DTO } from '../../decorators/dto-property.decorator'
+import { PlayerDto } from '../../players/dto/player.dto'
+import { CharacterDto } from '../characters/dto/character.dto'
+import { BattleDto } from './battle.dto'
 
 export class GameDto {
   @Expose() id: number
@@ -16,12 +17,10 @@ export class GameDto {
   players: PlayerDto[]
 
   @Expose()
-  @DTO((globalThis as any).CharacterDto)
-  characters: any[]
+  @DTO(() => CharacterDto)
+  characters: CharacterDto[]
 
   @Expose()
-  @DTO((globalThis as any).BattleDto)
-  battles: any[]
+  @DTO(() => BattleDto)
+  battles: BattleDto[]
 }
-
-(globalThis as any).GameDto = GameDto

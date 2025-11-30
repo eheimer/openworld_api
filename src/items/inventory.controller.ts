@@ -4,7 +4,6 @@ import { RandomItemRequestDto } from "./dto/random-item-request.dto"
 import { Serialize } from "../interceptors/serialize.interceptor"
 import { InventoryDto } from "./dto/inventory.dto"
 import { InventoryOwnerGuard } from "../guards/authorization/inventory-owner.guard"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('inventory')
 export class InventoryController {
@@ -89,4 +88,3 @@ export class InventoryController {
   }
 }
 
-registerEntity('InventoryController', InventoryController)

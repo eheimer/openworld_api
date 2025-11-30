@@ -1,7 +1,6 @@
 import { DamageType } from "../../damage-types/entities/damage-type.entity"
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class Condition extends BaseEntity {
@@ -27,4 +26,3 @@ export class Condition extends BaseEntity {
   damageType: DamageType
 }
 
-registerEntity('Condition', Condition)

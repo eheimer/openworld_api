@@ -12,7 +12,6 @@ import { BattleDto } from "../dto/battle.dto"
 import { GamesService } from "../games.service"
 import { BattlesService } from "./battles.service"
 import { BattleInitiatorGuard } from "../../guards/authorization/battle-initiator.guard"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('games/:gameId/battles')
 @UseGuards(GamePlayerGuard)
@@ -88,4 +87,3 @@ export class BattlesController {
   }
 }
 
-registerEntity('BattlesController', BattlesController)

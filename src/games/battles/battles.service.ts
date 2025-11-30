@@ -6,7 +6,6 @@ import { CharactersService } from "../characters/characters.service"
 import { MonstersService } from "../../monsters/monsters.service"
 import { MonsterInstance } from "../../monsters/entities/monster-instance.entity"
 import { Character } from "../characters/entities/character.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class BattlesService {
@@ -148,4 +147,3 @@ export class BattlesService {
   }
 }
 
-registerEntity('BattlesService', BattlesService)

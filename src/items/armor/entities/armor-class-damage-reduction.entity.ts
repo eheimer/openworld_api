@@ -1,19 +1,16 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity"
-// avoid type-only imports here; runtime references use entityRegistry
-import { getEntity, registerEntity } from "../../../entityRegistry"
+import { BaseEntity } from '../../../common/BaseEntity'
+import { ArmorClass } from './armor-class.entity'
+import { DamageType } from '../../../damage-types/entities/damage-type.entity'
 
 @Entity()
 export class ArmorClassDamageReduction extends BaseEntity {
   @Column() level: number
   @Column() reduction: string
 
-  @ManyToOne(() => getEntity('ArmorClass') as any)
-  // use any for the property type to avoid ESM circular/TDZ at module initialization
-  armorClass: any
+  @ManyToOne(() => ArmorClass)
+  armorClass: ArmorClass
 
-  @ManyToOne(() => getEntity('DamageType') as any)
-  damageType: any
+  @ManyToOne(() => DamageType)
+  damageType: DamageType
 }
-
-registerEntity('ArmorClassDamageReduction', ArmorClassDamageReduction)

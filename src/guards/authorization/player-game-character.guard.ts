@@ -2,7 +2,6 @@ import { Injectable, ExecutionContext, BadRequestException, Logger } from '@nest
 import { GamesService } from "../../games/games.service"
 import { CharactersService } from "../../games/characters/characters.service"
 import { GamePlayerGuard } from "./game-player.guard"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 /**
  * @description - This guard verifies that the current player is in the requested game
@@ -24,4 +23,3 @@ export class PlayerGameCharacterGuard extends GamePlayerGuard {
   }
 }
 
-registerEntity('PlayerGameCharacterGuard', PlayerGameCharacterGuard)

@@ -1,6 +1,5 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class DamageType extends BaseEntity {
@@ -12,4 +11,3 @@ export class DamageType extends BaseEntity {
   @Column() imgurl: string
 }
 
-registerEntity('DamageType', DamageType)

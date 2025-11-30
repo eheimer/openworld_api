@@ -2,7 +2,6 @@ import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
 import { Inventory } from "../../entities/inventory.entity"
 import { JewelryInstanceAttribute } from "../entities/jewelry-instance-attribute.entity"
-import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @EventSubscriber()
 export class JewelryInventorySubscriber implements EntitySubscriberInterface<Inventory> {
@@ -34,4 +33,3 @@ export class JewelryInventorySubscriber implements EntitySubscriberInterface<Inv
   }
 }
 
-registerEntity('JewelryInventorySubscriber', JewelryInventorySubscriber)

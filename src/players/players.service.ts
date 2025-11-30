@@ -5,7 +5,6 @@ import { UpdatePlayerDto } from "./dto/update-player.dto"
 import { Player } from "./entities/player.entity"
 import { Repository } from 'typeorm'
 import { CharactersService } from "../games/characters/characters.service"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class PlayersService {
@@ -59,4 +58,3 @@ export class PlayersService {
   }
 }
 
-registerEntity('PlayersService', PlayersService)

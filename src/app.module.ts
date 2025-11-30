@@ -18,7 +18,6 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 import { UtilsModule } from "./utils/utils.module"
 import { LoggerMiddleware } from "./middleware/logger.middleware"
-import { getEntity, registerEntity } from "./entityRegistry"
 
 
 @Module({
@@ -64,4 +63,3 @@ export class AppModule implements NestModule {
   }
 }
 
-registerEntity('AppModule', AppModule)

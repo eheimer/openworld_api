@@ -9,7 +9,6 @@ import { CurrentPlayer } from "../decorators/current-player.decorator"
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
 import { Serialize } from "../interceptors/serialize.interceptor"
 import { PlayerDetailDto } from "../players/dto/player-detail.dto"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('auth')
 @ApiTags('auth')
@@ -40,4 +39,3 @@ export class AuthController {
   }
 }
 
-registerEntity('AuthController', AuthController)

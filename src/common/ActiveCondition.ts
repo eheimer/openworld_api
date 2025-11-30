@@ -1,8 +1,7 @@
 import { Column, ManyToOne } from 'typeorm'
-import { BaseEntity } from "./BaseEntity"
-import type { MonsterInstance } from "../monsters/entities/monster-instance.entity"
-import { Condition } from "../conditions/entities/condition.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
+import { BaseEntity } from './BaseEntity'
+import { MonsterInstance } from '../monsters/entities/monster-instance.entity'
+import { Condition } from '../conditions/entities/condition.entity'
 
 export abstract class ActiveCondition extends BaseEntity {
   /**
@@ -21,6 +20,6 @@ export abstract class ActiveCondition extends BaseEntity {
   @ManyToOne(() => Condition, { nullable: false })
   condition: Condition
 
-  @ManyToOne(() => getEntity('MonsterInstance') as any)
+  @ManyToOne(() => MonsterInstance)
   target: MonsterInstance
 }

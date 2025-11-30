@@ -5,7 +5,6 @@ import { InventoryService } from "../../items/inventory.service"
 import { CreateCharacterDto } from "./dto/create-character.dto"
 import { UpdateCharacterDto } from "./dto/update-character.dto"
 import { Character } from "./entities/character.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class CharactersService {
@@ -127,4 +126,3 @@ export class CharactersService {
   }
 }
 
-registerEntity('CharactersService', CharactersService)

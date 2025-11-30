@@ -8,7 +8,6 @@ import { RandomService } from "../../utils/random.service"
 import { ArmorLocation } from "./entities/armor-location.entity"
 import { ArmorInstanceDamageReduction } from "./entities/armor-instance-damage-reduction.entity"
 import { ArmorInstanceAttribute } from "./entities/armor-instance-attribute.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class ArmorService {
@@ -82,4 +81,3 @@ export class ArmorService {
   }
 }
 
-registerEntity('ArmorService', ArmorService)

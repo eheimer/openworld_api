@@ -1,14 +1,16 @@
 import { Expose, Transform } from 'class-transformer'
-import { DTO } from "../../../decorators/dto-property.decorator"
-import { PlayerDto } from "../../../players/dto/player.dto"
+import { DTO } from '../../../decorators/dto-property.decorator'
+import { GameDto } from '../../dto/game.dto'
+import { BattleDto } from '../../dto/battle.dto'
+import { PlayerDto } from '../../../players/dto/player.dto'
 
 export class CharacterDto {
   @Expose() id: number
   @Expose() name: string
 
   @Expose()
-  @DTO((globalThis as any).GameDto)
-  game: any
+  @DTO(GameDto)
+  game: GameDto
 
   @Expose()
   @DTO(PlayerDto)
@@ -19,8 +21,6 @@ export class CharacterDto {
   raceName: string
 
   @Expose()
-  @DTO((globalThis as any).BattleDto)
-  battle: any
+  @DTO(BattleDto)
+  battle: BattleDto
 }
-
-(globalThis as any).CharacterDto = CharacterDto

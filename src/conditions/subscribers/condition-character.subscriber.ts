@@ -2,7 +2,6 @@ import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
 import { Character } from "../../games/characters/entities/character.entity"
 import { CharacterCondition } from "../entities/character-condition.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @EventSubscriber()
 export class ConditionCharacterSubscriber implements EntitySubscriberInterface<Character> {
@@ -32,4 +31,3 @@ export class ConditionCharacterSubscriber implements EntitySubscriberInterface<C
   }
 }
 
-registerEntity('ConditionCharacterSubscriber', ConditionCharacterSubscriber)

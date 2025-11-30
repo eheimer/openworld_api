@@ -19,11 +19,11 @@ const configDefault = {
 const dbConfig = {
   test: {
     type: 'sqlite',
-    database: ':memory:',
+    database: 'test.sqlite',
     synchronize: true,
     logging: false,
-    entities: ['dist/src/**/*.entity.js'],
-    subscribers: ['dist/src/**/*.subscriber.js']
+    entities: ['src/**/*.entity.ts'],
+    subscribers: ['src/**/*.subscriber.ts']
   },
   dev: {
     type: 'sqlite',

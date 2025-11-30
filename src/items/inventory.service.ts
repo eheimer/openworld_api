@@ -9,7 +9,6 @@ import { WeaponsService } from "./weapons/weapons.service"
 import { JewelryService } from "./jewelry/jewelry.service"
 import { ArmorService } from "./armor/armor.service"
 import { RandomService } from "../utils/random.service"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 type ItemInstance = WeaponInstance | ArmorInstance | JewelryInstance
 
@@ -171,4 +170,3 @@ export class InventoryService {
   }
 }
 
-registerEntity('InventoryService', InventoryService)

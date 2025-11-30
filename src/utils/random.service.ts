@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class RandomService {
@@ -115,4 +114,3 @@ export class RandomService {
   }
 }
 
-registerEntity('RandomService', RandomService)

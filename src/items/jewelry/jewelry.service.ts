@@ -7,7 +7,6 @@ import { RandomService } from "../../utils/random.service"
 import { JewelryLocation } from "./entities/jewelry-location.entity"
 import { JewelryAttribute } from "./entities/jewelry-attribute.entity"
 import { JewelryInstanceAttribute } from "./entities/jewelry-instance-attribute.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class JewelryService {
@@ -62,4 +61,3 @@ export class JewelryService {
   }
 }
 
-registerEntity('JewelryService', JewelryService)

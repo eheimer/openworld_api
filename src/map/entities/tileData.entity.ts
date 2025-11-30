@@ -1,6 +1,5 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity('map')
 export class TileData extends BaseEntity {
@@ -11,4 +10,3 @@ export class TileData extends BaseEntity {
   terrain: number
 }
 
-registerEntity('TileData', TileData)

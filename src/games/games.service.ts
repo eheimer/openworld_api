@@ -5,7 +5,6 @@ import { Player } from "../players/entities/player.entity"
 import { InjectRepository } from '@nestjs/typeorm'
 import { Game } from "./entities/game.entity"
 import { Repository } from 'typeorm'
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class GamesService {
@@ -119,4 +118,3 @@ export class GamesService {
   }
 }
 
-registerEntity('GamesService', GamesService)

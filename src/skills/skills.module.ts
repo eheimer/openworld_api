@@ -3,7 +3,6 @@ import { SkillsService } from "./skills.service"
 import { SkillsController } from "./skills.controller"
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Skill } from "./entities/skill.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Skill])],
@@ -12,4 +11,3 @@ import { getEntity, registerEntity } from "../entityRegistry"
 })
 export class SkillsModule {}
 
-registerEntity('SkillsModule', SkillsModule)

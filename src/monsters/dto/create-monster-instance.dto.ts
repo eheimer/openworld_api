@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsNumberString } from 'class-validator'
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 export class CreateMonsterInstanceDto {
   @IsNumberString()
@@ -7,4 +6,3 @@ export class CreateMonsterInstanceDto {
   monsterId: string
 }
 
-registerEntity('CreateMonsterInstanceDto', CreateMonsterInstanceDto)

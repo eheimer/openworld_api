@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
 import { ArmorService } from "./armor.service"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('armor')
 export class ArmorController {
@@ -32,4 +31,3 @@ export class ArmorController {
   }
 }
 
-registerEntity('ArmorController', ArmorController)

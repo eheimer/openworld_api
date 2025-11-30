@@ -1,10 +1,9 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { SpellbookAttribute } from "./spellbook-attribute.entity"
-import { BaseEntity } from "../../../common/BaseEntity"
-import { Skill } from "../../../skills/entities/skill.entity"
-import { SlayerType } from "../../../damage-types/entities/slayer-type.entity"
-import type { SpellbookInstance } from "./spellbook-instance.entity"
-import { getEntity, registerEntity } from "../../../entityRegistry"
+import { SpellbookAttribute } from './spellbook-attribute.entity'
+import { BaseEntity } from '../../../common/BaseEntity'
+import { Skill } from '../../../skills/entities/skill.entity'
+import { SlayerType } from '../../../damage-types/entities/slayer-type.entity'
+import { SpellbookInstance } from './spellbook-instance.entity'
 
 @Entity()
 export class SpellbookInstanceAttribute extends BaseEntity {
@@ -19,8 +18,6 @@ export class SpellbookInstanceAttribute extends BaseEntity {
   @ManyToOne(() => SlayerType, { nullable: true })
   slayer: SlayerType
 
-  @ManyToOne(() => getEntity('SpellbookInstance') as any, (s: any) => (s as any).attributes, { nullable: true })
-  spellbook: any
+  @ManyToOne(() => SpellbookInstance, (s) => s.attributes, { nullable: true })
+  spellbook: SpellbookInstance
 }
-
-registerEntity('SpellbookInstanceAttribute', SpellbookInstanceAttribute)

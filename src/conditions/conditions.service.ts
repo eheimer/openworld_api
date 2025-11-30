@@ -4,7 +4,6 @@ import { UpdateConditionDto } from "./dto/update-condition.dto"
 import { Condition } from "./entities/condition.entity"
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class ConditionsService {
@@ -31,4 +30,3 @@ export class ConditionsService {
   }
 }
 
-registerEntity('ConditionsService', ConditionsService)

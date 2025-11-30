@@ -30,7 +30,6 @@ import { ArmorInstanceAttribute } from "./armor/entities/armor-instance-attribut
 import { ArmorInstanceDamageReduction } from "./armor/entities/armor-instance-damage-reduction.entity"
 import { JewelryInstanceAttribute } from "./jewelry/entities/jewelry-instance-attribute.entity"
 import { WeaponInstanceAttribute } from "./weapons/entities/weapon-instance-attribute.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [
@@ -69,4 +68,3 @@ import { getEntity, registerEntity } from "../entityRegistry"
 })
 export class ItemsModule {}
 
-registerEntity('ItemsModule', ItemsModule)

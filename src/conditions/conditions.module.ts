@@ -3,7 +3,6 @@ import { ConditionsService } from "./conditions.service"
 import { ConditionsController } from "./conditions.controller"
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { Condition } from "./entities/condition.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Condition])],
@@ -12,4 +11,3 @@ import { getEntity, registerEntity } from "../entityRegistry"
 })
 export class ConditionsModule {}
 
-registerEntity('ConditionsModule', ConditionsModule)

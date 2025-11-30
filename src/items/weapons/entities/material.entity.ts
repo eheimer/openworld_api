@@ -1,7 +1,6 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
 import { BaseEntity } from "../../../common/BaseEntity"
 import { MaterialType } from "./material-type.entity"
-import { registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class Material extends BaseEntity {
@@ -13,4 +12,3 @@ export class Material extends BaseEntity {
   baseMaterial: MaterialType
 }
 
-registerEntity('Material', Material)

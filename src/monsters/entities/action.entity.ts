@@ -1,6 +1,5 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity"
-import { registerEntity } from "../../entityRegistry"
 
 /**
  * @description a unique action available to a monster on its turn
@@ -14,4 +13,3 @@ export class Action extends BaseEntity {
   @Column() spellDmgRange: string //base damage min/max for spells
 }
 
-registerEntity('Action', Action)

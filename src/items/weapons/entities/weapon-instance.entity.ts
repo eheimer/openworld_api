@@ -1,10 +1,9 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity"
-import { Inventory } from "../../entities/inventory.entity"
-import { Material } from "./material.entity"
-// runtime references resolved via entityRegistry to avoid scattered globalThis
-import { Weapon } from "./weapon.entity"
-import { getEntity, registerEntity } from "../../../entityRegistry"
+import { BaseEntity } from '../../../common/BaseEntity'
+import { Inventory } from '../../entities/inventory.entity'
+import { Material } from './material.entity'
+import { Weapon } from './weapon.entity'
+import { WeaponInstanceAttribute } from './weapon-instance-attribute.entity'
 
 @Entity()
 export class WeaponInstance extends BaseEntity {
@@ -14,11 +13,11 @@ export class WeaponInstance extends BaseEntity {
   @ManyToOne(() => Weapon, { nullable: false })
   weapon: Weapon
 
-  @OneToMany(() => getEntity('WeaponInstanceAttribute') as any, (wia: any) => wia.weapon, {
+  @OneToMany(() => WeaponInstanceAttribute, (wia) => wia.weapon, {
     nullable: true,
     cascade: ['insert']
   })
-  attributes: any[]
+  attributes: WeaponInstanceAttribute[]
 
   @ManyToOne(() => Material, { nullable: false })
   material: Material
@@ -26,5 +25,3 @@ export class WeaponInstance extends BaseEntity {
   @ManyToOne(() => Inventory, (i) => i.weapons, { nullable: false })
   inventory: Inventory
 }
-
-registerEntity('WeaponInstance', WeaponInstance)

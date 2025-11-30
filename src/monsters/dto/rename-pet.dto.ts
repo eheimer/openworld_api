@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString } from 'class-validator'
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 export class RenamePetDto {
   @IsString()
@@ -7,4 +6,3 @@ export class RenamePetDto {
   name: string
 }
 
-registerEntity('RenamePetDto', RenamePetDto)

@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Player } from "./entities/player.entity"
 import { GamesModule } from "../games/games.module"
 import { Game } from "../games/entities/game.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Player, Game]), GamesModule],
@@ -15,4 +14,3 @@ import { getEntity, registerEntity } from "../entityRegistry"
 })
 export class PlayersModule {}
 
-registerEntity('PlayersModule', PlayersModule)

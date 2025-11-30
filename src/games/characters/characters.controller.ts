@@ -8,7 +8,6 @@ import { CharactersService } from "./characters.service"
 import { CharacterDetailDto } from "./dto/character-detail.dto"
 import { CharacterDto } from "./dto/character.dto"
 import { UpdateCharacterDto } from "./dto/update-character.dto"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('characters')
 export class CharactersController {
@@ -42,4 +41,3 @@ export class CharactersController {
   }
 }
 
-registerEntity('CharactersController', CharactersController)

@@ -2,7 +2,6 @@ import { Controller, Get } from '@nestjs/common'
 import { MonstersService } from "./monsters.service"
 import { Serialize } from "../interceptors/serialize.interceptor"
 import { MonsterDto } from "./dto/monster.dto"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('monsters')
 export class MonstersController {
@@ -15,4 +14,3 @@ export class MonstersController {
   }
 }
 
-registerEntity('MonstersController', MonstersController)

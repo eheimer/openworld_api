@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { TileDataDto } from "./dto/tile-data.dto"
 import { TileData } from "./entities/tileData.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class MapService {
@@ -22,4 +21,3 @@ export class MapService {
   }
 }
 
-registerEntity('MapService', MapService)

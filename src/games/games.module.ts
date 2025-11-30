@@ -13,7 +13,6 @@ import { CharactersService } from "./characters/characters.service"
 import { BattlesService } from "./battles/battles.service"
 import { ItemsModule } from "../items/items.module"
 import { Inventory } from "../items/entities/inventory.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Battle, Character, Inventory]), MonstersModule, UtilsModule, ItemsModule],
@@ -23,4 +22,3 @@ import { getEntity, registerEntity } from "../entityRegistry"
 })
 export class GamesModule {}
 
-registerEntity('GamesModule', GamesModule)

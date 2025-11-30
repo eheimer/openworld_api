@@ -69,7 +69,6 @@ Each feature module follows this pattern:
 
 - `main.ts` - Application bootstrap
 - `app.module.ts` - Root NestJS module
-- `entityRegistry.ts` - Entity registration system (handles circular dependencies)
 
 ## Architecture Patterns
 
@@ -120,12 +119,6 @@ Request → Controller → Service → Repository → Entity
 - TypeORM entity event handlers
 - Manage cascading logic
 - Named pattern: `{entity}-{related-entity}.subscriber.ts`
-
-### Circular Dependency Handling
-
-- Uses `entityRegistry.ts` with `registerEntity()` and `getEntity()`
-- Entities reference related entities via `getEntity('EntityName')`
-- DTOs use `globalThis` for circular references
 
 ## Database Migrations
 

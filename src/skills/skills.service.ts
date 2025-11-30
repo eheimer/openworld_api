@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Skill } from "./entities/skill.entity"
 import { Repository } from 'typeorm'
 import { Race } from "../race/entities/race.entity"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class SkillsService {
@@ -18,4 +17,3 @@ export class SkillsService {
   }
 }
 
-registerEntity('SkillsService', SkillsService)

@@ -1,6 +1,5 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
 import { GamesService } from "../../games/games.service"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 /**
  * @description - This guard verifies that the requested battle is in the requested game
@@ -21,4 +20,3 @@ export class GameBattleGuard implements CanActivate {
   }
 }
 
-registerEntity('GameBattleGuard', GameBattleGuard)

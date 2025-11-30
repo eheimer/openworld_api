@@ -1,6 +1,5 @@
 import { Column, Entity } from 'typeorm'
 import { BaseEntity } from "../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class Skill extends BaseEntity {
@@ -9,4 +8,3 @@ export class Skill extends BaseEntity {
   @Column() spellbook: boolean
 }
 
-registerEntity('Skill', Skill)

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Race } from "./entities/race.entity"
 import { Repository } from 'typeorm'
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class RaceService {
@@ -17,4 +16,3 @@ export class RaceService {
   }
 }
 
-registerEntity('RaceService', RaceService)

@@ -1,38 +1,35 @@
 import { IsNotEmpty } from 'class-validator'
-// avoid importing Character at module-load time; use globalThis in decorators
-import { Game } from "../../entities/game.entity"
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../../entityRegistry"
-// avoid importing MonsterInstance at module-load time; use globalThis in decorators
+import { BaseEntity } from '../../../common/BaseEntity'
+import { Game } from '../../entities/game.entity'
+import { Character } from '../../characters/entities/character.entity'
+import { MonsterInstance } from '../../../monsters/entities/monster-instance.entity'
 
 @Entity()
 export class Battle extends BaseEntity {
   @Column({ default: 1, nullable: false }) round: number
 
   @IsNotEmpty()
-  @OneToMany(() => getEntity('Character') as any, (character) => (character as any).battle, {
+  @OneToMany(() => Character, (character) => character.battle, {
     nullable: false
   })
-  participants: any[]
+  participants: Character[]
 
-  @OneToMany(() => getEntity('MonsterInstance') as any, (ci: any) => ci.battleAsEnemy, {
+  @OneToMany(() => MonsterInstance, (ci) => ci.battleAsEnemy, {
     nullable: true,
     cascade: true
   })
-  enemies: any[]
+  enemies: MonsterInstance[]
 
-  @OneToMany(() => getEntity('MonsterInstance') as any, (ci: any) => ci.battleAsFriendly, {
+  @OneToMany(() => MonsterInstance, (ci) => ci.battleAsFriendly, {
     nullable: true,
     cascade: true
   })
-  friendlies: any[]
+  friendlies: MonsterInstance[]
 
   @ManyToOne(() => Game, (game) => game.battles, { nullable: false })
   game: Game
 
-  @ManyToOne(() => getEntity('Character') as any, { nullable: false })
-  initiator: any
+  @ManyToOne(() => Character, { nullable: false })
+  initiator: Character
 }
-
-registerEntity('Battle', Battle)

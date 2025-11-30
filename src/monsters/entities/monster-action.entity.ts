@@ -1,8 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity"
-import { Monster } from "./monster.entity"
-import { Action } from "./action.entity"
-import { registerEntity } from "../../entityRegistry"
+import { BaseEntity } from '../../common/BaseEntity'
+import { Monster } from './monster.entity'
+import { Action } from './action.entity'
 
 @Entity()
 export class MonsterAction extends BaseEntity {
@@ -16,5 +15,3 @@ export class MonsterAction extends BaseEntity {
   @ManyToOne(() => Action)
   action: Action
 }
-
-registerEntity('MonsterAction', MonsterAction)

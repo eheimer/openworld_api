@@ -8,7 +8,6 @@ import { SerializeResponse } from "../interceptors/serialize.interceptor"
 import { CurrentPlayer } from "../decorators/current-player.decorator"
 import { Player } from "./entities/player.entity"
 import { CurrentPlayerGuard } from "../guards/authorization/player-current-player.guard"
-import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('players')
 export class PlayersController {
@@ -41,4 +40,3 @@ export class PlayersController {
   }
 }
 
-registerEntity('PlayersController', PlayersController)

@@ -1,10 +1,9 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity"
-import { Gem } from "./gem.entity"
-import { Inventory } from "../../entities/inventory.entity"
-// runtime references resolved via globalThis; avoid type imports to reduce static cycles
-import { JewelryLocation } from "./jewelry-location.entity"
-import { getEntity, registerEntity } from "../../../entityRegistry"
+import { BaseEntity } from '../../../common/BaseEntity'
+import { Gem } from './gem.entity'
+import { Inventory } from '../../entities/inventory.entity'
+import { JewelryLocation } from './jewelry-location.entity'
+import { JewelryInstanceAttribute } from './jewelry-instance-attribute.entity'
 
 @Entity()
 export class JewelryInstance extends BaseEntity {
@@ -17,14 +16,12 @@ export class JewelryInstance extends BaseEntity {
   @ManyToOne(() => JewelryLocation, { nullable: false })
   location: JewelryLocation
 
-  @OneToMany(() => getEntity('JewelryInstanceAttribute') as any, (jia: any) => jia.jewelry, {
+  @OneToMany(() => JewelryInstanceAttribute, (jia) => jia.jewelry, {
     nullable: true,
     cascade: ['insert']
   })
-  attributes: any[]
+  attributes: JewelryInstanceAttribute[]
 
   @ManyToOne(() => Inventory, (i) => i.jewelry, { nullable: false })
   inventory: Inventory
 }
-
-registerEntity('JewelryInstance', JewelryInstance)

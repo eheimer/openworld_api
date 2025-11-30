@@ -1,7 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity"
-import { getEntity, registerEntity } from "../../entityRegistry"
-// avoid importing RaceSkill at module-load time; use globalThis in decorators
+import { BaseEntity } from '../../common/BaseEntity'
+import { RaceSkill } from './race-skill.entity'
 
 @Entity()
 export class Race extends BaseEntity {
@@ -14,8 +13,6 @@ export class Race extends BaseEntity {
   @Column({ nullable: true }) hunger: number
   @Column({ nullable: true }) sleep: number
 
-  @OneToMany(() => getEntity('RaceSkill') as any, (rs) => (rs as any).race)
-  skills: any[]
+  @OneToMany(() => RaceSkill, (rs) => rs.race)
+  skills: RaceSkill[]
 }
-
-registerEntity('Race', Race)

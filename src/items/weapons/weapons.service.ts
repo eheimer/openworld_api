@@ -7,7 +7,6 @@ import { RandomService } from "../../utils/random.service"
 import { Material } from "./entities/material.entity"
 import { WeaponAttribute } from "./entities/weapon-attribute.entity"
 import { WeaponInstanceAttribute } from "./entities/weapon-instance-attribute.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class WeaponsService {
@@ -82,4 +81,3 @@ export class WeaponsService {
   }
 }
 
-registerEntity('WeaponsService', WeaponsService)

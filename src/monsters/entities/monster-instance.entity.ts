@@ -1,12 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity"
-import type { Character } from "../../games/characters/entities/character.entity"
-import { Monster } from "./monster.entity"
-import type { MonsterCondition } from "../../conditions/entities/monster-condition.entity"
-import { MonsterAction } from "./monster-action.entity"
-import type { Battle } from "../../games/battles/entities/battle.entity"
-import { Inventory } from "../../items/entities/inventory.entity"
-import { getEntity, registerEntity } from "../../entityRegistry"
+import { BaseEntity } from '../../common/BaseEntity'
+import { Character } from '../../games/characters/entities/character.entity'
+import { Monster } from './monster.entity'
+import { MonsterCondition } from '../../conditions/entities/monster-condition.entity'
+import { MonsterAction } from './monster-action.entity'
+import { Battle } from '../../games/battles/entities/battle.entity'
+import { Inventory } from '../../items/entities/inventory.entity'
 
 @Entity()
 export class MonsterInstance extends BaseEntity {
@@ -39,15 +38,15 @@ export class MonsterInstance extends BaseEntity {
   @Column({ nullable: false }) resistF: number
   @Column({ nullable: false }) resistP: number
 
-  @ManyToOne(() => getEntity('Battle') as any, (battle: any) => battle.enemies, { nullable: true })
-  battleAsEnemy: any
+  @ManyToOne(() => Battle, (battle) => battle.enemies, { nullable: true })
+  battleAsEnemy: Battle
 
   // we don't want friendlies to be deleted when a battle is deleted, or people will lose their pets
-  @ManyToOne(() => getEntity('Battle') as any, (battle: any) => battle.friendlies, { nullable: true })
-  battleAsFriendly: any
+  @ManyToOne(() => Battle, (battle) => battle.friendlies, { nullable: true })
+  battleAsFriendly: Battle
 
-  @ManyToOne(() => getEntity('Character') as any, (character: any) => character.pets, { nullable: true })
-  owner: any
+  @ManyToOne(() => Character, (character) => character.pets, { nullable: true })
+  owner: Character
 
   @ManyToOne(() => Monster, { nullable: false })
   monster: Monster
@@ -55,12 +54,10 @@ export class MonsterInstance extends BaseEntity {
   @ManyToOne(() => MonsterAction, { nullable: true })
   nextAction: MonsterAction
 
-  @OneToMany(() => getEntity('MonsterCondition') as any, (ac: any) => ac.creature, { nullable: true })
-  conditions: any[]
+  @OneToMany(() => MonsterCondition, (ac) => ac.creature, { nullable: true })
+  conditions: MonsterCondition[]
 
   @OneToOne(() => Inventory, { nullable: true })
   @JoinColumn()
   loot: Inventory
 }
-
-registerEntity('MonsterInstance', MonsterInstance)
