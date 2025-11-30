@@ -1,5 +1,5 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator'
-import { CharacterSkillDto } from "./character-skill.dto.js"
+import { CharacterSkillDto } from "./character-skill.dto"
 
 export class CreateCharacterDto {
   @IsString()

@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { registerEntity } from "../../entityRegistry"
 
 /**
  * @description a unique action available to a monster on its turn

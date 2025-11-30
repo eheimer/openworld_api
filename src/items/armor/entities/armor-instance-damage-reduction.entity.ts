@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import type { ArmorInstance } from "./armor-instance.entity.js"
-import { DamageType } from "../../../damage-types/entities/damage-type.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import type { ArmorInstance } from "./armor-instance.entity"
+import { DamageType } from "../../../damage-types/entities/damage-type.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class ArmorInstanceDamageReduction extends BaseEntity {

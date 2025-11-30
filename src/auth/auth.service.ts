@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common'
-import { PlayersService } from "../players/players.service.js"
+import { PlayersService } from "../players/players.service"
 import { randomBytes, scrypt as _scrypt } from 'crypto'
 import { promisify } from 'util'
 import { JwtService } from '@nestjs/jwt'
-import { CreatePlayerDto } from "../players/dto/create-player.dto.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { CreatePlayerDto } from "../players/dto/create-player.dto"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 const scrypt = promisify(_scrypt)
 

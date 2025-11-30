@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { ArmorClass } from "./armor-class.entity.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { ArmorClass } from "./armor-class.entity"
 // runtime references resolved via entityRegistry to avoid scattered globalThis
-import { ArmorLocation } from "./armor-location.entity.js"
-import { Inventory } from "../../entities/inventory.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { ArmorLocation } from "./armor-location.entity"
+import { Inventory } from "../../entities/inventory.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class ArmorInstance extends BaseEntity {

@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Character } from "../../games/characters/entities/character.entity.js"
-import { CharacterCondition } from "../entities/character-condition.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { Character } from "../../games/characters/entities/character.entity"
+import { CharacterCondition } from "../entities/character-condition.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @EventSubscriber()
 export class ConditionCharacterSubscriber implements EntitySubscriberInterface<Character> {

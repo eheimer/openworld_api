@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { SpellbookAttributeSeed } from '../../src/items/spellbooks/seed/SpellbookAttribute.seed.ts'
+import { SpellbookAttributeSeed } from '../../src/items/spellbooks/seed/SpellbookAttribute.seed'
 
 export class spellbookAttributes1662912666791 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

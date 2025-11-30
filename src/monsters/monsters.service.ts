@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
-import { MonsterInstance } from "./entities/monster-instance.entity.js"
-import { Monster } from "./entities/monster.entity.js"
+import { MonsterInstance } from "./entities/monster-instance.entity"
+import { Monster } from "./entities/monster.entity"
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { RandomService } from "../utils/random.service.js"
-import { MonsterAction } from "./entities/monster-action.entity.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { RandomService } from "../utils/random.service"
+import { MonsterAction } from "./entities/monster-action.entity"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class MonstersService {

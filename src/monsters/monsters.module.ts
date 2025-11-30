@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
-import { MonstersService } from "./monsters.service.js"
-import { MonstersController } from "./monsters.controller.js"
-import { Monster } from "./entities/monster.entity.js"
+import { MonstersService } from "./monsters.service"
+import { MonstersController } from "./monsters.controller"
+import { Monster } from "./entities/monster.entity"
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { MonsterInstance } from "./entities/monster-instance.entity.js"
-import { UtilsModule } from "../utils/utils.module.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { MonsterInstance } from "./entities/monster-instance.entity"
+import { UtilsModule } from "../utils/utils.module"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Monster, MonsterInstance]), UtilsModule],

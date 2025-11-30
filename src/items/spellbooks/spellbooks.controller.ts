@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { SpellbooksService } from "./spellbooks.service.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { SpellbooksService } from "./spellbooks.service"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('spellbooks')
 export class SpellbooksController {

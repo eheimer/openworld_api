@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { BattlesController } from "./battles.controller.js"
-import { BattlesService } from "./battles.service.js"
-import { GamesService } from "../games.service.js"
-import { MonstersService } from "../../monsters/monsters.service.js"
+import { BattlesController } from "./battles.controller"
+import { BattlesService } from "./battles.service"
+import { GamesService } from "../games.service"
+import { MonstersService } from "../../monsters/monsters.service"
 
 describe('BattlesController', () => {
   let controller: BattlesController

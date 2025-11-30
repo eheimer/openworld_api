@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { SlayerTypeSeed } from '../../src/damage-types/seed/SlayerType.seed.ts'
+import { SlayerTypeSeed } from '../../src/damage-types/seed/SlayerType.seed'
 
 export class slayerTypes1662912373209 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { TileDataDto } from "./dto/tile-data.dto.js"
-import { TileData } from "./entities/tileData.entity.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { TileDataDto } from "./dto/tile-data.dto"
+import { TileData } from "./entities/tileData.entity"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class MapService {

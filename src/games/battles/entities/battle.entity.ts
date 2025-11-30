@@ -1,9 +1,9 @@
 import { IsNotEmpty } from 'class-validator'
 // avoid importing Character at module-load time; use globalThis in decorators
-import { Game } from "../../entities/game.entity.js"
+import { Game } from "../../entities/game.entity"
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 // avoid importing MonsterInstance at module-load time; use globalThis in decorators
 
 @Entity()

@@ -1,5 +1,5 @@
 import { Expose, Transform } from 'class-transformer'
-import { DamageType } from "../../damage-types/entities/damage-type.entity.js"
+import { DamageType } from "../../damage-types/entities/damage-type.entity"
 import { Logger } from '@nestjs/common'
 
 export class MonsterInstanceDto {

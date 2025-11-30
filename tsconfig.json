@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-  "target": "es2020",
-  "module": "nodenext",
-  "moduleResolution": "nodenext",
-  "allowImportingTsExtensions": true,
-  "esModuleInterop": true,
+    "target": "es2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
     "lib": ["es2019", "es5", "es6"],
     "declaration": true,
     "removeComments": true,
@@ -14,15 +13,15 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-  "incremental": true,
-  "noEmit": true,
+    "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "resolveJsonModule": true
   },
-  /* remove this line once we clean up old pre-migration code */
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "migration/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

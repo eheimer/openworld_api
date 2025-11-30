@@ -1,7 +1,7 @@
-import { DamageType } from "../../damage-types/entities/damage-type.entity.js"
+import { DamageType } from "../../damage-types/entities/damage-type.entity"
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class Condition extends BaseEntity {

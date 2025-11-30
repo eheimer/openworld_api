@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common'
-import { WeaponInstance } from "./entities/weapon-instance.entity.js"
+import { WeaponInstance } from "./entities/weapon-instance.entity"
 import { InjectRepository } from '@nestjs/typeorm'
 import { IsNull, Repository } from 'typeorm'
-import { Weapon } from "./entities/weapon.entity.js"
-import { RandomService } from "../../utils/random.service.js"
-import { Material } from "./entities/material.entity.js"
-import { WeaponAttribute } from "./entities/weapon-attribute.entity.js"
-import { WeaponInstanceAttribute } from "./entities/weapon-instance-attribute.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { Weapon } from "./entities/weapon.entity"
+import { RandomService } from "../../utils/random.service"
+import { Material } from "./entities/material.entity"
+import { WeaponAttribute } from "./entities/weapon-attribute.entity"
+import { WeaponInstanceAttribute } from "./entities/weapon-instance-attribute.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class WeaponsService {

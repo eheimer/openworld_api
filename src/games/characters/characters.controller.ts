@@ -1,14 +1,14 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, UseGuards } from '@nestjs/common'
-import { CurrentPlayer } from "../../decorators/current-player.decorator.js"
-import { CharacterOwnerGuard } from "../../guards/authorization/character-owner.guard.js"
-import { Serialize, SerializeResponse } from "../../interceptors/serialize.interceptor.js"
-import { Player } from "../../players/entities/player.entity.js"
-import { GamesService } from "../games.service.js"
-import { CharactersService } from "./characters.service.js"
-import { CharacterDetailDto } from "./dto/character-detail.dto.js"
-import { CharacterDto } from "./dto/character.dto.js"
-import { UpdateCharacterDto } from "./dto/update-character.dto.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { CurrentPlayer } from "../../decorators/current-player.decorator"
+import { CharacterOwnerGuard } from "../../guards/authorization/character-owner.guard"
+import { Serialize, SerializeResponse } from "../../interceptors/serialize.interceptor"
+import { Player } from "../../players/entities/player.entity"
+import { GamesService } from "../games.service"
+import { CharactersService } from "./characters.service"
+import { CharacterDetailDto } from "./dto/character-detail.dto"
+import { CharacterDto } from "./dto/character.dto"
+import { UpdateCharacterDto } from "./dto/update-character.dto"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('characters')
 export class CharactersController {

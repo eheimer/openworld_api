@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { MonstersService } from "./monsters.service.js"
-import { Monster } from "./entities/monster.entity.js"
-import { RandomService } from "../utils/random.service.js"
+import { MonstersService } from "./monsters.service"
+import { Monster } from "./entities/monster.entity"
+import { RandomService } from "../utils/random.service"
 
 describe('MonstersService', () => {
   let service: MonstersService

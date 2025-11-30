@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { AuthService } from "./auth.service.js"
-import { PlayersService } from "../players/players.service.js"
+import { AuthService } from "./auth.service"
+import { PlayersService } from "../players/players.service"
 import { JwtService } from '@nestjs/jwt'
-import { Player } from "../players/entities/player.entity.js"
+import { Player } from "../players/entities/player.entity"
 import { Not } from 'typeorm'
 import { BadRequestException, NotFoundException } from '@nestjs/common'
-import { CreateBattleDto } from "../games/battles/dto/create-battle.dto.js"
-import { CreatePlayerDto } from "../players/dto/create-player.dto.js"
+import { CreateBattleDto } from "../games/battles/dto/create-battle.dto"
+import { CreatePlayerDto } from "../players/dto/create-player.dto"
 
 describe('AuthService', () => {
   let service: AuthService

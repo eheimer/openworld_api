@@ -1,9 +1,9 @@
-import { Skill } from "../../../skills/entities/skill.entity.js"
+import { Skill } from "../../../skills/entities/skill.entity"
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { JewelryAttribute } from "./jewelry-attribute.entity.js"
-import type { JewelryInstance } from "./jewelry-instance.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { JewelryAttribute } from "./jewelry-attribute.entity"
+import type { JewelryInstance } from "./jewelry-instance.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class JewelryInstanceAttribute extends BaseEntity {

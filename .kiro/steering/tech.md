@@ -4,7 +4,7 @@
 
 - **NestJS** - Primary application framework
 - **Node.js** - Runtime environment (ES2020 target)
-- **TypeScript** - Language (ES modules with nodenext resolution)
+- **TypeScript** - Language (CommonJS modules)
 - **Express** - HTTP server (via NestJS platform)
 
 ## Database & ORM
@@ -86,6 +86,12 @@ npm run reseed:test            # Drop, sync, and migrate test database
 
 ## Module System
 
-- Uses ES modules (`"type": "module"` in package.json)
-- All imports must include `.js` extension
-- Module resolution: `nodenext`
+- **Uses CommonJS** - Standard for NestJS/TypeORM projects
+- Module resolution: `node` (not `nodenext`)
+- TypeScript compiles to CommonJS (`module: "commonjs"`)
+- Import statements use TypeScript extensions (`.ts`), not runtime extensions (`.js`)
+- **DO NOT migrate to ES modules** - CommonJS is the correct choice for this stack:
+  - NestJS decorators and DI work best with CommonJS
+  - TypeORM entity loading is more reliable with CommonJS
+  - Jest testing has better CommonJS support
+  - Avoids complex async import issues with dynamic entity loading

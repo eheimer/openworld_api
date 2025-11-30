@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
+import { BaseEntity } from "../../../common/BaseEntity"
 // inverse-side imports kept as type-only where possible
-import type { CharacterCondition } from "../../../conditions/entities/character-condition.entity.js"
-import { Race } from "../../../race/entities/race.entity.js"
-import { Inventory } from "../../../items/entities/inventory.entity.js"
-import type { CharacterSkill } from "./character-skill.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import type { CharacterCondition } from "../../../conditions/entities/character-condition.entity"
+import { Race } from "../../../race/entities/race.entity"
+import { Inventory } from "../../../items/entities/inventory.entity"
+import type { CharacterSkill } from "./character-skill.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class Character extends BaseEntity {

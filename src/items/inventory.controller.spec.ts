@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { InventoryController } from "./inventory.controller.js"
-import { InventoryService } from "./inventory.service.js"
-import { CharactersService } from "../games/characters/characters.service.js"
+import { InventoryController } from "./inventory.controller"
+import { InventoryService } from "./inventory.service"
+import { CharactersService } from "../games/characters/characters.service"
 
 describe('InventoryController', () => {
   let controller: InventoryController

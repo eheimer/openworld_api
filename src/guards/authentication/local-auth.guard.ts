@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {}

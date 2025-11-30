@@ -1,6 +1,6 @@
-import { MagicalItemAttribute } from "../../../common/MagicalItemAttribute.js"
+import { MagicalItemAttribute } from "../../../common/MagicalItemAttribute"
 import { Entity } from 'typeorm'
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class SpellbookAttribute extends MagicalItemAttribute {}

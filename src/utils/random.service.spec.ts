@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { RandomService } from "./random.service.js";
+import { RandomService } from "./random.service";
 
 describe('RandomService', () => {
   let service: RandomService;

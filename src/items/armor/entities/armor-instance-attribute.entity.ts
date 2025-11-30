@@ -1,9 +1,9 @@
-import { DamageType } from "../../../damage-types/entities/damage-type.entity.js"
+import { DamageType } from "../../../damage-types/entities/damage-type.entity"
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { ArmorAttribute } from "./armor-attribute.entity.js"
-import type { ArmorInstance } from "./armor-instance.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { ArmorAttribute } from "./armor-attribute.entity"
+import type { ArmorInstance } from "./armor-instance.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class ArmorInstanceAttribute extends BaseEntity {

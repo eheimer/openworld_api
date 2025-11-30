@@ -1,12 +1,12 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import type { Character } from "../../games/characters/entities/character.entity.js"
-import { Monster } from "./monster.entity.js"
-import type { MonsterCondition } from "../../conditions/entities/monster-condition.entity.js"
-import { MonsterAction } from "./monster-action.entity.js"
-import type { Battle } from "../../games/battles/entities/battle.entity.js"
-import { Inventory } from "../../items/entities/inventory.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import type { Character } from "../../games/characters/entities/character.entity"
+import { Monster } from "./monster.entity"
+import type { MonsterCondition } from "../../conditions/entities/monster-condition.entity"
+import { MonsterAction } from "./monster-action.entity"
+import type { Battle } from "../../games/battles/entities/battle.entity"
+import { Inventory } from "../../items/entities/inventory.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class MonsterInstance extends BaseEntity {

@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Logger, Request } from '@nestjs/common'
-import { MapService } from "./map.service.js"
-import { Serialize } from "../interceptors/serialize.interceptor.js"
-import { TileDataDto } from "./dto/tile-data.dto.js"
-import { Public } from "../decorators/public-auth.decorator.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { MapService } from "./map.service"
+import { Serialize } from "../interceptors/serialize.interceptor"
+import { TileDataDto } from "./dto/tile-data.dto"
+import { Public } from "../decorators/public-auth.decorator"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('map')
 export class MapController {

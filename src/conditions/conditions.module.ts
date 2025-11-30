@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common'
-import { ConditionsService } from "./conditions.service.js"
-import { ConditionsController } from "./conditions.controller.js"
+import { ConditionsService } from "./conditions.service"
+import { ConditionsController } from "./conditions.controller"
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { Condition } from "./entities/condition.entity.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { Condition } from "./entities/condition.entity"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Module({
   imports: [TypeOrmModule.forFeature([Condition])],

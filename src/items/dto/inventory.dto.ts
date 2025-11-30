@@ -1,7 +1,7 @@
 import { Expose, Transform } from 'class-transformer'
-import { SpellbookInstanceDto } from "../spellbooks/dto/spellbook-instance.dto.js"
-import { DTO } from "../../decorators/dto-property.decorator.js"
-import { ItemInstanceDto } from "./item-instance.dto.js"
+import { SpellbookInstanceDto } from "../spellbooks/dto/spellbook-instance.dto"
+import { DTO } from "../../decorators/dto-property.decorator"
+import { ItemInstanceDto } from "./item-instance.dto"
 import { Logger } from '@nestjs/common'
 
 export class InventoryDto {

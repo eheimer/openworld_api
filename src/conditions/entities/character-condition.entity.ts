@@ -1,7 +1,7 @@
 import { Entity, ManyToOne } from 'typeorm'
 import { IsNotEmpty } from 'class-validator'
-import { ActiveCondition } from "../../common/ActiveCondition.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { ActiveCondition } from "../../common/ActiveCondition"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class CharacterCondition extends ActiveCondition {

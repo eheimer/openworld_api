@@ -1,9 +1,9 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { DamageType } from "../../damage-types/entities/damage-type.entity.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { DamageType } from "../../damage-types/entities/damage-type.entity"
 // avoid importing MonsterAction at module-load time; use entityRegistry in decorators
-import { SlayerType } from "../../damage-types/entities/slayer-type.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { SlayerType } from "../../damage-types/entities/slayer-type.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class Monster extends BaseEntity {

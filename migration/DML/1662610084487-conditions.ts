@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { ConditionSeed } from '../../src/conditions/seed/Condition.seed.ts'
+import { ConditionSeed } from '../../src/conditions/seed/Condition.seed'
 
 export class conditions1662610084487 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

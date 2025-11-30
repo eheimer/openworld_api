@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { ArmorService } from "./armor.service.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { ArmorService } from "./armor.service"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('armor')
 export class ArmorController {

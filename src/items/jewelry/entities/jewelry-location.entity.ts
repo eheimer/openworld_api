@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { EquipLocation } from "../../entities/equip-location.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { EquipLocation } from "../../entities/equip-location.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class JewelryLocation extends BaseEntity {

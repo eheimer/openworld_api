@@ -1,3 +1,3 @@
-import { dbconfig } from "../../ormconfig.js"
+import { dbconfig } from "../../ormconfig"
 
 export default () => ({ db: dbconfig })

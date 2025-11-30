@@ -1,15 +1,15 @@
 import { Body, Controller, Get, Header, Post, UseGuards } from '@nestjs/common'
-import { AuthService } from "./auth.service.js"
-import { PlayersService } from "../players/players.service.js"
-import { Public } from "../decorators/public-auth.decorator.js"
-import { LocalAuthGuard } from "../guards/authentication/local-auth.guard.js"
-import { Player } from "../players/entities/player.entity.js"
-import { CreatePlayerDto } from "../players/dto/create-player.dto.js"
-import { CurrentPlayer } from "../decorators/current-player.decorator.js"
+import { AuthService } from "./auth.service"
+import { PlayersService } from "../players/players.service"
+import { Public } from "../decorators/public-auth.decorator"
+import { LocalAuthGuard } from "../guards/authentication/local-auth.guard"
+import { Player } from "../players/entities/player.entity"
+import { CreatePlayerDto } from "../players/dto/create-player.dto"
+import { CurrentPlayer } from "../decorators/current-player.decorator"
 import { ApiResponse, ApiTags } from '@nestjs/swagger'
-import { Serialize } from "../interceptors/serialize.interceptor.js"
-import { PlayerDetailDto } from "../players/dto/player-detail.dto.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { Serialize } from "../interceptors/serialize.interceptor"
+import { PlayerDetailDto } from "../players/dto/player-detail.dto"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('auth')
 @ApiTags('auth')

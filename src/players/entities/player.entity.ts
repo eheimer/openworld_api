@@ -1,8 +1,8 @@
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { Game } from "../../games/entities/game.entity.js"
-import type { Character } from "../../games/characters/entities/character.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { Game } from "../../games/entities/game.entity"
+import type { Character } from "../../games/characters/entities/character.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 /**
  * @description Represents a real person with login credentials for the game

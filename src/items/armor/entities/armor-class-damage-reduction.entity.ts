@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
+import { BaseEntity } from "../../../common/BaseEntity"
 // avoid type-only imports here; runtime references use entityRegistry
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class ArmorClassDamageReduction extends BaseEntity {

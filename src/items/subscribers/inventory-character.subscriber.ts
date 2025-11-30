@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { Character } from "../../games/characters/entities/character.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { Character } from "../../games/characters/entities/character.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @EventSubscriber()
 export class InventoryCharacterSubscriber implements EntitySubscriberInterface<Character> {

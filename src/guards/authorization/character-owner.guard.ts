@@ -1,6 +1,6 @@
 import { CanActivate, Injectable, ExecutionContext, BadRequestException } from '@nestjs/common'
-import { CharactersService } from "../../games/characters/characters.service.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { CharactersService } from "../../games/characters/characters.service"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 /**
  * @description - This guard verifies that the current player is the owner of the requested character

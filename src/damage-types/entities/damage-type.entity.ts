@@ -1,6 +1,6 @@
 import { Column, Entity } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Entity()
 export class DamageType extends BaseEntity {

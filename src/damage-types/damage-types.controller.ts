@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
-import { DamageTypesService } from "./damage-types.service.js"
-import { CreateDamageTypeDto } from "./dto/create-damage-type.dto.js"
-import { UpdateDamageTypeDto } from "./dto/update-damage-type.dto.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { DamageTypesService } from "./damage-types.service"
+import { CreateDamageTypeDto } from "./dto/create-damage-type.dto"
+import { UpdateDamageTypeDto } from "./dto/update-damage-type.dto"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('damage-types')
 export class DamageTypesController {

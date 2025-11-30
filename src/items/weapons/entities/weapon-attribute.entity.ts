@@ -1,7 +1,7 @@
-import { MagicalItemAttribute } from "../../../common/MagicalItemAttribute.js"
+import { MagicalItemAttribute } from "../../../common/MagicalItemAttribute"
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { WeaponSkill } from "./weapon-skill.entity.js"
-import { registerEntity } from "../../../entityRegistry.js"
+import { WeaponSkill } from "./weapon-skill.entity"
+import { registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class WeaponAttribute extends MagicalItemAttribute {

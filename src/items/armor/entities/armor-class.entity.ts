@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
+import { BaseEntity } from "../../../common/BaseEntity"
 // runtime references resolved via entityRegistry to avoid scattered globalThis
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 @Entity()
 export class ArmorClass extends BaseEntity {
   @Column() name: string

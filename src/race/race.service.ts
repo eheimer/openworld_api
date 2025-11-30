@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Race } from "./entities/race.entity.js"
+import { Race } from "./entities/race.entity"
 import { Repository } from 'typeorm'
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Injectable()
 export class RaceService {

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { WeaponsController } from "./weapons.controller.js"
-import { WeaponsService } from "./weapons.service.js"
+import { WeaponsController } from "./weapons.controller"
+import { WeaponsService } from "./weapons.service"
 
 describe('WeaponsController', () => {
   let controller: WeaponsController

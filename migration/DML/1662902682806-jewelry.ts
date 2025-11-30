@@ -1,9 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
-import { GemRaritySeed } from '../../src/items/jewelry/seed/GemRarity.seed.ts'
-import { GemSeed } from '../../src/items/jewelry/seed/Gem.seed.ts'
-import { ItemCategorySeed } from '../../src/items/seed/ItemCategory.seed.ts'
-import { JewelryAttributeSeed } from '../../src/items/jewelry/seed/JewelryAttribute.seed.ts'
-import { JewelryLocationSeed } from '../../src/items/jewelry/seed/JewelryLocation.seed.ts'
+import { GemRaritySeed } from '../../src/items/jewelry/seed/GemRarity.seed'
+import { GemSeed } from '../../src/items/jewelry/seed/Gem.seed'
+import { ItemCategorySeed } from '../../src/items/seed/ItemCategory.seed'
+import { JewelryAttributeSeed } from '../../src/items/jewelry/seed/JewelryAttribute.seed'
+import { JewelryLocationSeed } from '../../src/items/jewelry/seed/JewelryLocation.seed'
 
 export class jewelry1662902682806 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

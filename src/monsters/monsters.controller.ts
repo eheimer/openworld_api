@@ -1,8 +1,8 @@
 import { Controller, Get } from '@nestjs/common'
-import { MonstersService } from "./monsters.service.js"
-import { Serialize } from "../interceptors/serialize.interceptor.js"
-import { MonsterDto } from "./dto/monster.dto.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { MonstersService } from "./monsters.service"
+import { Serialize } from "../interceptors/serialize.interceptor"
+import { MonsterDto } from "./dto/monster.dto"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('monsters')
 export class MonstersController {

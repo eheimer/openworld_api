@@ -1,7 +1,7 @@
-import { Skill } from "../../../skills/entities/skill.entity.js"
+import { Skill } from "../../../skills/entities/skill.entity"
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class CharacterSkill extends BaseEntity {

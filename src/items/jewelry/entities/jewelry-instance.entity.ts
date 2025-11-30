@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { Gem } from "./gem.entity.js"
-import { Inventory } from "../../entities/inventory.entity.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { Gem } from "./gem.entity"
+import { Inventory } from "../../entities/inventory.entity"
 // runtime references resolved via globalThis; avoid type imports to reduce static cycles
-import { JewelryLocation } from "./jewelry-location.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { JewelryLocation } from "./jewelry-location.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class JewelryInstance extends BaseEntity {

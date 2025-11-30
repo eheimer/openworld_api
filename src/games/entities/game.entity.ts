@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 // runtime references are resolved via globalThis to avoid static import cycles
 
 /**

@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer'
-import { DTO } from "../../decorators/dto-property.decorator.js"
-import { RaceSkillDto } from "./raceskill.dto.js"
+import { DTO } from "../../decorators/dto-property.decorator"
+import { RaceSkillDto } from "./raceskill.dto"
 
 export class RaceDto {
   @Expose() id: number

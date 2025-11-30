@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ConditionsController } from "./conditions.controller.js"
-import { ConditionsService } from "./conditions.service.js"
+import { ConditionsController } from "./conditions.controller"
+import { ConditionsService } from "./conditions.service"
 
 describe('ConditionsController', () => {
   let controller: ConditionsController

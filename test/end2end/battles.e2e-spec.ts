@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from '../api/helpers/test-utils'
+import { TestUtils } from '../api/helpers/util'
 
 // issue the following command to run this test:
 // npx jest --config ./test/jest-e2e.json test/battles.e2e-spec.ts

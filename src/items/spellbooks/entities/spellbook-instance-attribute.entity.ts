@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { SpellbookAttribute } from "./spellbook-attribute.entity.js"
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { Skill } from "../../../skills/entities/skill.entity.js"
-import { SlayerType } from "../../../damage-types/entities/slayer-type.entity.js"
-import type { SpellbookInstance } from "./spellbook-instance.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { SpellbookAttribute } from "./spellbook-attribute.entity"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { Skill } from "../../../skills/entities/skill.entity"
+import { SlayerType } from "../../../damage-types/entities/slayer-type.entity"
+import type { SpellbookInstance } from "./spellbook-instance.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class SpellbookInstanceAttribute extends BaseEntity {

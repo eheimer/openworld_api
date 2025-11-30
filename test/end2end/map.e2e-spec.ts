@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common'
-import { TestUtils } from '../utils/test-utils'
+import { TestUtils } from '../api/helpers/util'
 
 describe('Map functionality (e2e)', () => {
   let app: INestApplication

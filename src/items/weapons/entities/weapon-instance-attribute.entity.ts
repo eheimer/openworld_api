@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { SlayerType } from "../../../damage-types/entities/slayer-type.entity.js"
-import { WeaponAttribute } from "./weapon-attribute.entity.js"
-import type { WeaponInstance } from "./weapon-instance.entity.js"
-import { getEntity, registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { SlayerType } from "../../../damage-types/entities/slayer-type.entity"
+import { WeaponAttribute } from "./weapon-attribute.entity"
+import type { WeaponInstance } from "./weapon-instance.entity"
+import { getEntity, registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class WeaponInstanceAttribute extends BaseEntity {

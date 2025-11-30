@@ -1,8 +1,8 @@
 import { Expose, Transform } from 'class-transformer'
-import { DTO } from "../../decorators/dto-property.decorator.js"
-import { MonsterInstanceDto } from "../../monsters/dto/monster-instance.dto.js"
-import { MonsterInstance } from "../../monsters/entities/monster-instance.entity.js"
-import { Character } from "../characters/entities/character.entity.js"
+import { DTO } from "../../decorators/dto-property.decorator"
+import { MonsterInstanceDto } from "../../monsters/dto/monster-instance.dto"
+import { MonsterInstance } from "../../monsters/entities/monster-instance.entity"
+import { Character } from "../characters/entities/character.entity"
 
 export class BattleDto {
   @Expose() id: number

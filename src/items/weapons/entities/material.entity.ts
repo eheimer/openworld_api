@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm'
-import { BaseEntity } from "../../../common/BaseEntity.js"
-import { MaterialType } from "./material-type.entity.js"
-import { registerEntity } from "../../../entityRegistry.js"
+import { BaseEntity } from "../../../common/BaseEntity"
+import { MaterialType } from "./material-type.entity"
+import { registerEntity } from "../../../entityRegistry"
 
 @Entity()
 export class Material extends BaseEntity {

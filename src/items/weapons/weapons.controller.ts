@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Delete } from '@nestjs/common'
-import { WeaponsService } from "./weapons.service.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { WeaponsService } from "./weapons.service"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Controller('weapons')
 export class WeaponsController {

@@ -1,5 +1,5 @@
 import { ClassConstructor, Transform } from 'class-transformer'
-import { convertToDto } from "../interceptors/serialize.interceptor.js"
+import { convertToDto } from "../interceptors/serialize.interceptor"
 
 // Allows us to mark a property as a DTO type.
 //

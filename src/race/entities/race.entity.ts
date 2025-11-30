@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm'
-import { BaseEntity } from "../../common/BaseEntity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { BaseEntity } from "../../common/BaseEntity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 // avoid importing RaceSkill at module-load time; use globalThis in decorators
 
 @Entity()

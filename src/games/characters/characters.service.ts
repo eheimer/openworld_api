@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { InventoryService } from "../../items/inventory.service.js"
-import { CreateCharacterDto } from "./dto/create-character.dto.js"
-import { UpdateCharacterDto } from "./dto/update-character.dto.js"
-import { Character } from "./entities/character.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { InventoryService } from "../../items/inventory.service"
+import { CreateCharacterDto } from "./dto/create-character.dto"
+import { UpdateCharacterDto } from "./dto/update-character.dto"
+import { Character } from "./entities/character.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @Injectable()
 export class CharactersService {

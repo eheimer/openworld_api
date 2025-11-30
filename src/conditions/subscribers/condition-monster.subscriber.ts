@@ -1,8 +1,8 @@
 import { Logger } from '@nestjs/common'
 import { EntitySubscriberInterface, EventSubscriber, RemoveEvent } from 'typeorm'
-import { MonsterInstance } from "../../monsters/entities/monster-instance.entity.js"
-import { MonsterCondition } from "../entities/monster-condition.entity.js"
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { MonsterInstance } from "../../monsters/entities/monster-instance.entity"
+import { MonsterCondition } from "../entities/monster-condition.entity"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 @EventSubscriber()
 export class ConditionCharacterSubscriber implements EntitySubscriberInterface<MonsterInstance> {

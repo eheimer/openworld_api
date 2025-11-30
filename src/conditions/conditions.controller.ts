@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common'
-import { ConditionsService } from "./conditions.service.js"
-import { CreateConditionDto } from "./dto/create-condition.dto.js"
-import { UpdateConditionDto } from "./dto/update-condition.dto.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { ConditionsService } from "./conditions.service"
+import { CreateConditionDto } from "./dto/create-condition.dto"
+import { UpdateConditionDto } from "./dto/update-condition.dto"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 @Controller('conditions')
 export class ConditionsController {

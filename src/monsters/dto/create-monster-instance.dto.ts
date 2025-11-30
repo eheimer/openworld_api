@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumberString } from 'class-validator'
-import { getEntity, registerEntity } from "../../entityRegistry.js"
+import { getEntity, registerEntity } from "../../entityRegistry"
 
 export class CreateMonsterInstanceDto {
   @IsNumberString()

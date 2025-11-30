@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { MonstersController } from "./monsters.controller.js"
-import { MonstersService } from "./monsters.service.js"
-import { Monster } from "./entities/monster.entity.js"
-import { RandomService } from "../utils/random.service.js"
+import { MonstersController } from "./monsters.controller"
+import { MonstersService } from "./monsters.service"
+import { Monster } from "./entities/monster.entity"
+import { RandomService } from "../utils/random.service"
 
 describe('MonstersController', () => {
   let controller: MonstersController

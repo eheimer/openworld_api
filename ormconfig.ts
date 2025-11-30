@@ -11,24 +11,27 @@ const configDefault = {
   password: 'entranced',
   synchronize: false,
   logging: 'warn',
-  entities: ['**/*.entity.js'],
-  subscribers: ['**/*.subscriber.js']
+  entities: ['dist/src/**/*.entity.js'],
+  subscribers: ['dist/src/**/*.subscriber.js']
 }
 
 // these env values override the defaults
 const dbConfig = {
   test: {
-    database: 'openworld-test',
-    entities: [`**/*.entity.ts`],
-    subscribers: [`**/*.subscriber.ts`]
+    type: 'sqlite',
+    database: ':memory:',
+    synchronize: true,
+    logging: false,
+    entities: ['dist/src/**/*.entity.js'],
+    subscribers: ['dist/src/**/*.subscriber.js']
   },
   dev: {
     type: 'sqlite',
     database: 'dev.sqlite',
     synchronize: true,
     logging: 'warn',
-    entities: [`**/*.entity.js`],
-    subscribers: [`**/*.subscriber.js`]
+    entities: ['dist/src/**/*.entity.js'],
+    subscribers: ['dist/src/**/*.subscriber.js']
     //   logging: ['query', 'parameters']
   },
   prod: {

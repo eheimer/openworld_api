@@ -1,8 +1,8 @@
 import { Column, ManyToOne } from 'typeorm'
-import { BaseEntity } from "./BaseEntity.js"
-import type { MonsterInstance } from "../monsters/entities/monster-instance.entity.js"
-import { Condition } from "../conditions/entities/condition.entity.js"
-import { getEntity, registerEntity } from "../entityRegistry.js"
+import { BaseEntity } from "./BaseEntity"
+import type { MonsterInstance } from "../monsters/entities/monster-instance.entity"
+import { Condition } from "../conditions/entities/condition.entity"
+import { getEntity, registerEntity } from "../entityRegistry"
 
 export abstract class ActiveCondition extends BaseEntity {
   /**
