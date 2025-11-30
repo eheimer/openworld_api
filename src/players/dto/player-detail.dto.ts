@@ -5,4 +5,3 @@ export class PlayerDetailDto extends PlayerDto {
   @Expose() email: string
 }
 
-(globalThis as any).PlayerDetailDto = PlayerDetailDto

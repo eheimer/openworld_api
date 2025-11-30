@@ -10,4 +10,3 @@ export class CreateCharacterSkillDto {
   skillId: number
 }
 
-(globalThis as any).CreateCharacterSkillDto = CreateCharacterSkillDto

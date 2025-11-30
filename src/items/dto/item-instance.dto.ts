@@ -103,4 +103,3 @@ export class ItemInstanceDto {
   image: string
 }
 
-(globalThis as any).ItemInstanceDto = ItemInstanceDto

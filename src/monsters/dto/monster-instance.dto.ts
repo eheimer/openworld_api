@@ -81,4 +81,3 @@ export class MonsterInstanceDto {
   monsterId: number
 }
 
-(globalThis as any).MonsterInstanceDto = MonsterInstanceDto

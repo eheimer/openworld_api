@@ -6,4 +6,3 @@ export class PlayerDto {
   @Expose() lastSeenAt: Date
 }
 
-(globalThis as any).PlayerDto = PlayerDto

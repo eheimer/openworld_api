@@ -124,4 +124,3 @@ export class CharacterDetailDto extends CharacterDto {
   skills: CharacterSkillDto[]
 }
 
-(globalThis as any).CharacterDetailDto = CharacterDetailDto

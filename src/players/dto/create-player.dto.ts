@@ -8,4 +8,3 @@ export class CreatePlayerDto {
   email: string
 }
 
-(globalThis as any).CreatePlayerDto = CreatePlayerDto

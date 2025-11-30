@@ -17,4 +17,3 @@ export class RaceSkillDto {
   level: number
 }
 
-(globalThis as any).RaceSkillDto = RaceSkillDto

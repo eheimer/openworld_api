@@ -3,4 +3,3 @@ import { CreateGameDto } from "./create-game.dto"
 
 export class UpdateGameDto extends PartialType(CreateGameDto) {}
 
-(globalThis as any).UpdateGameDto = UpdateGameDto

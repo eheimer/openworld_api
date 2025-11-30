@@ -27,4 +27,3 @@ export class CreateCharacterDto {
   dexterity: number
 }
 
-(globalThis as any).CreateCharacterDto = CreateCharacterDto

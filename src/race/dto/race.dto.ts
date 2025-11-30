@@ -9,4 +9,3 @@ export class RaceDto {
   @Expose() @DTO(RaceSkillDto) skills: RaceSkillDto[]
 }
 
-(globalThis as any).RaceDto = RaceDto

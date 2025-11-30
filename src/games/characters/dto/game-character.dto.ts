@@ -24,4 +24,3 @@ export class GameCharacterDto {
   owner: boolean
 }
 
-(globalThis as any).GameCharacterDto = GameCharacterDto

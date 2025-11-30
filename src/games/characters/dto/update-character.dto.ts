@@ -3,4 +3,3 @@ import { CreateCharacterDto } from "./create-character.dto"
 
 export class UpdateCharacterDto extends PartialType(CreateCharacterDto) {}
 
-(globalThis as any).UpdateCharacterDto = UpdateCharacterDto

@@ -44,4 +44,3 @@ export class InventoryDto {
   equipped: { itemType: string; location: number; id: number }[]
 }
 
-(globalThis as any).InventoryDto = InventoryDto

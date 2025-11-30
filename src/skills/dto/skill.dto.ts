@@ -6,4 +6,3 @@ export class SkillDto {
   @Expose() description: string
 }
 
-(globalThis as any).SkillDto = SkillDto

@@ -3,4 +3,3 @@ import { CreateDamageTypeDto } from "./create-damage-type.dto"
 
 export class UpdateDamageTypeDto extends PartialType(CreateDamageTypeDto) {}
 
-(globalThis as any).UpdateDamageTypeDto = UpdateDamageTypeDto

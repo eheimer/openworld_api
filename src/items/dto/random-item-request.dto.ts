@@ -12,4 +12,3 @@ export class RandomItemRequestDto {
   level?: number
 }
 
-(globalThis as any).RandomItemRequestDto = RandomItemRequestDto

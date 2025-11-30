@@ -6,4 +6,3 @@ export class CreateGameDto {
   name: string
 }
 
-(globalThis as any).CreateGameDto = CreateGameDto

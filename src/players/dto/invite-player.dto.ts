@@ -6,4 +6,3 @@ export class InvitePlayerDto {
   email: string
 }
 
-(globalThis as any).InvitePlayerDto = InvitePlayerDto

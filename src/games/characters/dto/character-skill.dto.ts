@@ -5,4 +5,3 @@ export class CharacterSkillDto extends SkillDto {
   @Expose() level: number
 }
 
-(globalThis as any).CharacterSkillDto = CharacterSkillDto

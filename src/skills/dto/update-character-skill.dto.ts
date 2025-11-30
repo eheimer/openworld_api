@@ -7,4 +7,3 @@ export class UpdateCharacterSkillDto extends CreateCharacterSkillDto {
   level: number
 }
 
-(globalThis as any).UpdateCharacterSkillDto = UpdateCharacterSkillDto
