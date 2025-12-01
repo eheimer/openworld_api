@@ -16,7 +16,7 @@
     "start:dev": "npm run start -- --watch",
     "start:dev:reseed": "npm run reseed:dev && npm run start:dev",
     "start:debug": "npm run start -- --debug --watch",
-    "start:prod": "cross-env NODE_ENV=prod node dist/main",
+    "start:prod": "cross-env NODE_ENV=prod node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "cross-env NODE_ENV=test NODE_OPTIONS='--no-warnings --localstorage-file=/tmp/jest-localstorage' jest",
     "test:watch": "npm run test -- --watch --maxWorkers=1",

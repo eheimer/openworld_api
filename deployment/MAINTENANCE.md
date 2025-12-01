@@ -28,20 +28,14 @@ pm2 monit
 ## Deploying Updates
 
 ### Quick Deploy (using script)
+
+The deployment script builds in `~/work/openworld-api` and deploys to `/var/www/openworld-api`:
+
 ```bash
-cd /var/www/openworld-api
-./deployment/deploy.sh
+~/work/openworld-api/deployment/deploy.sh
 ```
 
-### Manual Deploy
-```bash
-cd /var/www/openworld-api
-git pull
-npm ci --production
-npm run build
-NODE_ENV=prod npm run migration:run
-pm2 restart openworld-api
-```
+**Note**: This keeps build dependencies separate from production. The production directory (`/var/www/openworld-api`) only contains `dist/`, `package.json`, and runtime dependencies.
 
 ## Database Operations
 
@@ -188,7 +182,7 @@ sudo kill -9 <PID>
 
 1. Check if `.env.prod` file exists:
 ```bash
-ls -la /opt/openworld-api/.env.prod
+ls -la /var/www/openworld-api/.env.prod
 ```
 
 2. If missing, see `deployment/DEPLOYMENT_GUIDE.md` Step 5 for creating the file
@@ -209,7 +203,7 @@ pm2 restart openworld-api
 |--------------|----------|
 | "Missing required environment variable: JWT_SECRET" | Add JWT_SECRET to .env.prod |
 | "Missing required environment variable: DB_PASSWORD" | Add DB_PASSWORD to .env.prod |
-| "ENOENT: no such file or directory" | Create /opt/openworld-api/.env.prod (see DEPLOYMENT_GUIDE.md) |
+| "ENOENT: no such file or directory" | Create /var/www/openworld-api/.env.prod (see DEPLOYMENT_GUIDE.md) |
 | "ER_ACCESS_DENIED_ERROR" | Update DB_PASSWORD in .env.prod |
 | "connect ECONNREFUSED" | Verify DB_HOST and DB_PORT values |
 
@@ -219,7 +213,7 @@ pm2 restart openworld-api
 
 1. Verify file exists and has correct syntax (no spaces around `=`):
 ```bash
-cat /opt/openworld-api/.env.prod
+cat /var/www/openworld-api/.env.prod
 ```
 
 2. Restart PM2 completely:
@@ -236,7 +230,7 @@ pm2 logs openworld-api --lines 50
 
 ### Quick Reference
 
-Production environment variables are stored in `/opt/openworld-api/.env.prod` (NOT committed to git).
+Production environment variables are stored in `/var/www/openworld-api/.env.prod` (NOT committed to git).
 
 For complete list of required variables, see `deployment/DEPLOYMENT_GUIDE.md` Step 5.
 
@@ -244,7 +238,7 @@ For complete list of required variables, see `deployment/DEPLOYMENT_GUIDE.md` St
 
 ```bash
 # Edit the environment file
-sudo nano /opt/openworld-api/.env.prod
+sudo nano /var/www/openworld-api/.env.prod
 
 # Restart after changes
 pm2 restart openworld-api
@@ -260,7 +254,7 @@ For credential rotation procedures (JWT secret, database password), see the "Cre
 ## File Locations
 
 - **Application**: `/var/www/openworld-api`
-- **Environment Config**: `/opt/openworld-api/.env.prod` (sensitive - not in git)
+- **Environment Config**: `/var/www/openworld-api/.env.prod` (sensitive - not in git)
 - **Logs**: `/var/log/openworld-api/`
 - **Apache Config**: `/etc/apache2/sites-available/openworld.conf`
 - **SSL Certs**: `/etc/letsencrypt/live/openworld.heimerman.org/`
@@ -269,7 +263,7 @@ For credential rotation procedures (JWT secret, database password), see the "Cre
 ## Important Files to Backup
 
 1. Database (use backup script)
-2. `/var/www/openworld-api/ormconfig.ts` (contains DB password)
+2. `/var/www/openworld-api/.env.prod` (contains production credentials)
 3. `/etc/apache2/sites-available/openworld.conf` (Apache config)
 4. SSL certificates (auto-backed up by certbot)
 

@@ -28,7 +28,7 @@ export interface EnvironmentConfig {
  * Loads environment variables from .env files based on NODE_ENV:
  * - dev: config/.env.dev
  * - test: config/.env.test
- * - prod: /opt/openworld-api/.env.prod (production server only)
+ * - prod: /var/www/openworld-api/.env.prod (production server only)
  * 
  * @returns {EnvironmentConfig} Validated environment configuration
  * @throws {Error} If required environment variables are missing or invalid
@@ -39,8 +39,8 @@ export function loadEnvironmentConfig(): EnvironmentConfig {
   // Determine which .env file to load based on NODE_ENV
   let envPath: string
   if (nodeEnv === 'prod') {
-    // Production: load from /opt/openworld-api/.env.prod (not committed to git)
-    envPath = '/opt/openworld-api/.env.prod'
+    // Production: load from /var/www/openworld-api/.env.prod (not committed to git)
+    envPath = '/var/www/openworld-api/.env.prod'
   } else {
     // Development/Test: load from config directory (committed to git with defaults)
     envPath = path.join(process.cwd(), 'config', `.env.${nodeEnv}`)

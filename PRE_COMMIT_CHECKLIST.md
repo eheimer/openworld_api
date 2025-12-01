@@ -8,7 +8,7 @@ Quick verification before committing environment variable changes.
 - [ ] `.env.prod.example` contains only PLACEHOLDER values
 - [ ] `config/.env.dev` and `config/.env.test` contain only non-production defaults
 - [ ] Source files (`src/constants.ts`, `ormconfig.ts`) use environment variables
-- [ ] `.gitignore` includes `*.env.prod`, `config/.env.prod`, `/opt/openworld-api/.env.prod`
+- [ ] `.gitignore` includes `*.env.prod`, `config/.env.prod`, `/var/www/openworld-api/.env.prod`
 
 ## Verification Commands
 

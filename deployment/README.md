@@ -29,7 +29,7 @@
 ### Configuration Files
 
 4. **`.env.prod.example`** - Production environment template
-   - Template for creating `/opt/openworld-api/.env.prod`
+   - Template for creating `/var/www/openworld-api/.env.prod`
    - Contains placeholder values (NOT actual credentials)
    - Includes instructions for generating secure secrets
 
@@ -75,7 +75,7 @@ Ongoing Operations:
 
 ## Important Notes
 
-- **Never commit** `/opt/openworld-api/.env.prod` to version control
+- **Never commit** `/var/www/openworld-api/.env.prod` to version control
 - **Always use** `.env.prod.example` as a template, never as actual configuration
 - **Rotate credentials** if they're ever exposed or suspected compromised
 - **Keep backups** of your production `.env.prod` file in a secure location

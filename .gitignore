@@ -41,7 +41,6 @@ lerna-debug.log*
 .env
 *.env.prod
 config/.env.prod
-/opt/openworld-api/.env.prod
 !config/.env.dev
 !config/.env.test
 

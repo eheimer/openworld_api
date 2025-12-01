@@ -6,7 +6,7 @@ This guide walks you through deploying the Openworld API to your VPS at openworl
 
 ### Required Environment Variables
 
-All production deployments require a `.env.prod` file at `/opt/openworld-api/.env.prod` with these variables:
+All production deployments require a `.env.prod` file at `/var/www/openworld-api/.env.prod` with these variables:
 
 | Variable | Purpose | Generate With |
 |----------|---------|---------------|
@@ -23,11 +23,11 @@ All production deployments require a `.env.prod` file at `/opt/openworld-api/.en
 
 ### Key File Locations
 
-- Application: `/opt/openworld-api/`
-- Environment config: `/opt/openworld-api/.env.prod`
+- Application: `/var/www/openworld-api/`
+- Environment config: `/var/www/openworld-api/.env.prod`
 - Application logs: `/var/log/openworld-api/`
 - Apache config: `/etc/apache2/sites-available/openworld.conf`
-- PM2 config: `/opt/openworld-api/deployment/ecosystem.config.js`
+- PM2 config: `/var/www/openworld-api/deployment/ecosystem.config.js`
 
 ## Prerequisites
 
@@ -83,49 +83,47 @@ EXIT;
 
 **Important:** Save the database password you generated - you'll need it when creating the `.env.prod` file in Step 5.
 
-## Step 3: Create Application Directory
+## Step 3: Create Application Directories
 
 ```bash
-# Create application directory
-sudo mkdir -p /opt/openworld-api
-sudo chown $USER:$USER /opt/openworld-api
+# Create build directory (where we compile the app)
+mkdir -p ~/work/openworld-api
+
+# Create production directory (where the app runs)
+sudo mkdir -p /var/www/openworld-api
+sudo chown $USER:$USER /var/www/openworld-api
 
 # Create log directory
 sudo mkdir -p /var/log/openworld-api
 sudo chown $USER:$USER /var/log/openworld-api
 ```
 
-**Note:** The application is deployed to `/opt/openworld-api` (not `/var/www/openworld-api`) to follow standard Linux filesystem conventions for optional application software.
+**Note:** We build in `~/work/openworld-api` (with dev dependencies) and deploy only compiled output to `/var/www/openworld-api` (production-only).
 
 ## Step 4: Deploy Application Code
 
-### Option A: Using Git (Recommended)
+Clone the repository to the build directory:
 
 ```bash
-cd /opt/openworld-api
-
-# Clone your repository
+cd ~/work/openworld-api
 git clone YOUR_REPO_URL .
-
-# Install dependencies
-npm ci --production
-
-# Build the application
-npm run build
 ```
+
+For initial deployment, use the deployment script or follow the manual steps in `deployment/MAINTENANCE.md`.
 
 ### Option B: Using rsync from local machine
 
 ```bash
 # Run this from your LOCAL machine (not VPS)
 rsync -avz --exclude 'node_modules' --exclude '.git' --exclude 'dev.sqlite' --exclude 'test.sqlite' \
-  ./ user@openworld.heimerman.org:/opt/openworld-api/
+  ./ user@openworld.heimerman.org:/var/www/openworld-api/
 
 # Then SSH to VPS and install
 ssh user@openworld.heimerman.org
-cd /opt/openworld-api
-npm ci --production
+cd /var/www/openworld-api
+npm ci
 npm run build
+npm prune --production  # Optional: remove dev dependencies after build
 ```
 
 ## Step 5: Configure Environment Variables
@@ -135,7 +133,7 @@ The application uses environment variables for all sensitive configuration. You 
 ### Create Production Environment File
 
 ```bash
-cd /opt/openworld-api
+cd /var/www/openworld-api
 
 # Create the production environment file
 sudo nano .env.prod
@@ -143,7 +141,7 @@ sudo nano .env.prod
 
 ### Required Environment Variables
 
-Add the following content to `/opt/openworld-api/.env.prod`:
+Add the following content to `/var/www/openworld-api/.env.prod`:
 
 ```bash
 # Node Environment
@@ -194,20 +192,20 @@ The environment file contains sensitive credentials and must be protected:
 
 ```bash
 # Set restrictive permissions (readable only by owner)
-sudo chmod 600 /opt/openworld-api/.env.prod
+sudo chmod 600 /var/www/openworld-api/.env.prod
 
 # Ensure the file is owned by the user running the application
-sudo chown $USER:$USER /opt/openworld-api/.env.prod
+sudo chown $USER:$USER /var/www/openworld-api/.env.prod
 ```
 
 ### Verify Configuration
 
 ```bash
 # Verify file permissions (should show -rw-------)
-ls -la /opt/openworld-api/.env.prod
+ls -la /var/www/openworld-api/.env.prod
 
 # Verify file ownership
-stat /opt/openworld-api/.env.prod
+stat /var/www/openworld-api/.env.prod
 ```
 
 **Security Note:** The `.env.prod` file should NEVER be committed to version control. Verify that `*.env.prod` is in your `.gitignore` file.
@@ -254,18 +252,18 @@ JWT_SECRET=REPLACE_WITH_GENERATED_JWT_SECRET
 # =============================================================================
 ```
 
-Copy this template to `/opt/openworld-api/.env.prod` and replace the placeholder values with your generated credentials.
+Copy this template to `/var/www/openworld-api/.env.prod` and replace the placeholder values with your generated credentials.
 
 ## Step 6: Run Database Migrations
 
 ```bash
-cd /opt/openworld-api
+cd /var/www/openworld-api
 
 # Run migrations to set up database schema
 NODE_ENV=prod npm run migration:run
 ```
 
-The application will automatically load database credentials from `/opt/openworld-api/.env.prod` when `NODE_ENV=prod`.
+The application will automatically load database credentials from `/var/www/openworld-api/.env.prod` when `NODE_ENV=prod`.
 
 ## Step 7: Configure Apache
 
@@ -312,7 +310,7 @@ sudo certbot renew --dry-run
 ## Step 9: Start the Application with PM2
 
 ```bash
-cd /opt/openworld-api
+cd /var/www/openworld-api
 
 # Start the application
 pm2 start deployment/ecosystem.config.js
@@ -329,11 +327,11 @@ pm2 logs openworld-api
 
 The application uses `dotenv-extended` to automatically load environment variables based on `NODE_ENV`:
 
-- **Production** (`NODE_ENV=prod`): Loads from `/opt/openworld-api/.env.prod`
+- **Production** (`NODE_ENV=prod`): Loads from `/var/www/openworld-api/.env.prod`
 - **Development** (`NODE_ENV=dev`): Loads from `config/.env.dev`
 - **Test** (`NODE_ENV=test`): Loads from `config/.env.test`
 
-The PM2 ecosystem configuration (`deployment/ecosystem.config.js`) sets `NODE_ENV=prod`, which tells the application to load `/opt/openworld-api/.env.prod`. The ecosystem config only contains non-sensitive values like `NODE_ENV` and `PORT` - all sensitive credentials are loaded from the `.env.prod` file.
+The PM2 ecosystem configuration (`deployment/ecosystem.config.js`) sets `NODE_ENV=prod`, which tells the application to load `/var/www/openworld-api/.env.prod`. The ecosystem config only contains non-sensitive values like `NODE_ENV` and `PORT` - all sensitive credentials are loaded from the `.env.prod` file.
 
 **Note:** PM2 does not need to be configured with environment variables directly. The application handles loading them from the appropriate `.env` file based on `NODE_ENV`.
 
@@ -373,16 +371,19 @@ pm2 monit
 ### Deployment Updates
 
 ```bash
-cd /opt/openworld-api
+cd /var/www/openworld-api
 
 # Pull latest code
 git pull
 
 # Install any new dependencies
-npm ci --production
+npm ci
 
 # Rebuild
 npm run build
+
+# Optional: Remove dev dependencies after build
+npm prune --production
 
 # Run any new migrations
 NODE_ENV=prod npm run migration:run
@@ -430,10 +431,10 @@ pm2 logs openworld-api --lines 100
 sudo netstat -tlnp | grep 3000
 
 # Verify environment file exists and has correct permissions
-ls -la /opt/openworld-api/.env.prod
+ls -la /var/www/openworld-api/.env.prod
 
 # Check environment variables are loaded (without exposing values)
-cd /opt/openworld-api
+cd /var/www/openworld-api
 grep -v "PASSWORD\|SECRET" .env.prod
 ```
 
@@ -441,10 +442,10 @@ grep -v "PASSWORD\|SECRET" .env.prod
 
 ```bash
 # Verify .env.prod file exists
-ls -la /opt/openworld-api/.env.prod
+ls -la /var/www/openworld-api/.env.prod
 
 # Check file permissions (should be -rw-------)
-stat /opt/openworld-api/.env.prod
+stat /var/www/openworld-api/.env.prod
 
 # Verify NODE_ENV is set correctly
 pm2 show openworld-api | grep NODE_ENV
@@ -453,7 +454,7 @@ pm2 show openworld-api | grep NODE_ENV
 pm2 logs openworld-api --lines 50 | grep -i "missing\|required\|environment"
 
 # Verify environment variables are being loaded (without exposing secrets)
-cd /opt/openworld-api
+cd /var/www/openworld-api
 grep "^[A-Z]" .env.prod | grep -v "PASSWORD\|SECRET"
 ```
 
@@ -525,7 +526,7 @@ Rotate credentials periodically or immediately if compromised:
 openssl rand -base64 64 | tr -d '\n' && echo
 
 # Update the .env.prod file
-sudo nano /opt/openworld-api/.env.prod
+sudo nano /var/www/openworld-api/.env.prod
 # Replace the JWT_SECRET value with the new secret
 
 # Restart the application
@@ -547,7 +548,7 @@ FLUSH PRIVILEGES;
 EXIT;
 
 # Update the .env.prod file
-sudo nano /opt/openworld-api/.env.prod
+sudo nano /var/www/openworld-api/.env.prod
 # Replace the DB_PASSWORD value with the new password
 
 # Restart the application
@@ -598,10 +599,10 @@ sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 3. **Environment File Security**
 ```bash
 # Verify .env.prod has restrictive permissions
-ls -la /opt/openworld-api/.env.prod  # Should show -rw-------
+ls -la /var/www/openworld-api/.env.prod  # Should show -rw-------
 
 # Verify .env.prod is not in git
-cd /opt/openworld-api
+cd /var/www/openworld-api
 git status  # Should not show .env.prod
 
 # Verify .gitignore includes production env files

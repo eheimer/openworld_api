@@ -52,7 +52,7 @@ mysql -u openworld -p openworld
 
 ```bash
 # Create the production environment file
-sudo nano /opt/openworld-api/.env.prod
+sudo nano /var/www/openworld-api/.env.prod
 ```
 
 Copy the template from `deployment/.env.prod.example` and replace ALL placeholder values:
@@ -74,22 +74,21 @@ Save and exit (Ctrl+X, Y, Enter).
 
 ```bash
 # Set restrictive permissions (readable only by owner)
-sudo chmod 600 /opt/openworld-api/.env.prod
+sudo chmod 600 /var/www/openworld-api/.env.prod
 
 # Set ownership to the application user
-sudo chown $USER:$USER /opt/openworld-api/.env.prod
+sudo chown $USER:$USER /var/www/openworld-api/.env.prod
 
 # Verify permissions (should show -rw-------)
-ls -la /opt/openworld-api/.env.prod
+ls -la /var/www/openworld-api/.env.prod
 ```
 
 ### 5. Deploy the New Code
 
+Use the deployment script (builds in `~/work/openworld-api`, deploys to `/var/www/openworld-api`):
+
 ```bash
-cd /opt/openworld-api
-git pull origin main
-npm ci --production
-npm run build
+~/work/openworld-api/deployment/deploy.sh
 ```
 
 ### 6. Restart the Application
@@ -130,17 +129,17 @@ curl -X POST https://openworld.heimerman.org/auth/login \
 
 ```bash
 # Verify .env.prod has correct permissions
-ls -la /opt/openworld-api/.env.prod
+ls -la /var/www/openworld-api/.env.prod
 # Should show: -rw------- 1 <user> <group>
 
 # Verify .env.prod is not in git
-cd /opt/openworld-api
+cd /var/www/openworld-api
 git ls-files | grep .env.prod
 # Should return nothing
 
 # Verify .gitignore protects production env files
 grep "\.env\.prod" .gitignore
-# Should show: *.env.prod, config/.env.prod, /opt/openworld-api/.env.prod
+# Should show: *.env.prod, config/.env.prod, /var/www/openworld-api/.env.prod
 ```
 
 ---
@@ -156,8 +155,8 @@ pm2 logs openworld-api --lines 100
 
 Common issues:
 - **"Missing required environment variable"**: Check that all variables are in `.env.prod`
-- **"ENOENT: no such file"**: Verify `.env.prod` file exists at `/opt/openworld-api/.env.prod`
-- **"EACCES: permission denied"**: Check file permissions with `ls -la /opt/openworld-api/.env.prod`
+- **"ENOENT: no such file"**: Verify `.env.prod` file exists at `/var/www/openworld-api/.env.prod`
+- **"EACCES: permission denied"**: Check file permissions with `ls -la /var/www/openworld-api/.env.prod`
 
 ### Database Connection Fails
 
@@ -179,7 +178,7 @@ mysql -u openworld -p -h localhost openworld
 pm2 logs openworld-api | grep -i "jwt\|secret"
 
 # Verify JWT_SECRET in .env.prod is at least 32 characters
-cat /opt/openworld-api/.env.prod | grep JWT_SECRET
+cat /var/www/openworld-api/.env.prod | grep JWT_SECRET
 ```
 
 ---
