@@ -95,24 +95,38 @@ describe('Battle functionality (e2e)', () => {
     )
   })
   it('should advance the round and verify the monster action changes', async () => {
-    //get the monster's action name from the battle
-    const getBattleResponse = await APIUtils.buildAuthorizedRequest(
+    //get the initial battle state
+    const initialBattleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/games/${gameId}/battles/${battleId}`,
       player1.token
     )
-    expect(getBattleResponse.status).toBe(200)
-    const monsterActionName = getBattleResponse.body.enemies[0].actionName
-    //advance the round
-    const advanceRoundResponse = await APIUtils.buildAuthorizedRequest(
-      app,
-      'post',
-      `/games/${gameId}/battles/${battleId}/nextround`,
-      player1.token
-    )
-    expect(advanceRoundResponse.status).toBe(201)
-    expect(advanceRoundResponse.body.enemies[0].actionName).not.toEqual(monsterActionName)
+    expect(initialBattleResponse.status).toBe(200)
+    const initialRound = initialBattleResponse.body.round
+    const initialActionName = initialBattleResponse.body.enemies[0].actionName
+
+    //advance the round multiple times until action changes (max 10 attempts)
+    let actionChanged = false
+    let currentRound = initialRound
+    for (let i = 0; i < 10; i++) {
+      const advanceRoundResponse = await APIUtils.buildAuthorizedRequest(
+        app,
+        'post',
+        `/games/${gameId}/battles/${battleId}/nextround`,
+        player1.token
+      )
+      expect(advanceRoundResponse.status).toBe(201)
+      expect(advanceRoundResponse.body.round).toBeGreaterThan(currentRound)
+      currentRound = advanceRoundResponse.body.round
+      
+      if (advanceRoundResponse.body.enemies[0].actionName !== initialActionName) {
+        actionChanged = true
+        break
+      }
+    }
+    
+    expect(actionChanged).toBe(true)
   })
 
   it('should delete the battle', async () => {

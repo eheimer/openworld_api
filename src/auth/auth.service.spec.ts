@@ -58,19 +58,19 @@ describe('AuthService', () => {
   it('should throw an error if email is in use', async () => {
     fakePlayersService.findOneByEmail = (email) =>
       Promise.resolve({ id: 1, username: 'eric', email, password: 'asdf' } as Player)
-    await (expect(service.register({ username: 'eric', email: 'eric@asdf.com', password: 'asdf' })).rejects as any).toThrowError(
+    await expect(service.register({ username: 'eric', email: 'eric@asdf.com', password: 'asdf' })).rejects.toThrow(
       'Email already in use'
     )
   })
 
   it('should throw if authenticate is called with invalid username', async () => {
-  await (expect(service.authenticate('eric', 'asdf')).rejects as any).toThrowError('User not found')
+    await expect(service.authenticate('eric', 'asdf')).rejects.toThrow('User not found')
   })
 
   it('throws if an invalid password is provided', async () => {
     fakePlayersService.findOneByUsername = (username) =>
       Promise.resolve({ id: 1, username, email: 'asdf@asdf.com', password: 'asdf' } as Player)
-  await (expect(service.authenticate('eric', 'asdf')).rejects as any).toThrowError('Invalid password')
+    await expect(service.authenticate('eric', 'asdf')).rejects.toThrow('Invalid password')
   })
 
   it('returns a user if correct password is provided', async () => {
