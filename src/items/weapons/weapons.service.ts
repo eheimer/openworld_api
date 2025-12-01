@@ -39,9 +39,12 @@ export class WeaponsService {
 
   async removeInstance(id: number) {
     const inst = await this.instanceRepo.findOne({ where: { id }, relations: ['attributes'] })
-    inst.attributes.forEach((att) => {
-      this.attInstanceRepo.remove(att)
-    })
+    
+    // Remove related entities first
+    if (inst.attributes && inst.attributes.length > 0) {
+      await this.attInstanceRepo.remove(inst.attributes)
+    }
+    
     return this.instanceRepo.remove(inst)
   }
 

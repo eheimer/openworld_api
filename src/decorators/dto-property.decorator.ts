@@ -18,6 +18,12 @@ import { convertToDto } from "../interceptors/serialize.interceptor"
 export function DTO(dto?: ClassConstructor<unknown> | (() => ClassConstructor<unknown>)): PropertyDecorator {
   return function (target: any, propertyKey: string) {
     return Transform(({ obj }) => {
+      // Handle null/undefined values
+      const value = obj[propertyKey]
+      if (value == null) {
+        return value
+      }
+
       let ctor: ClassConstructor<unknown>
 
       if (dto == null) {
@@ -54,7 +60,7 @@ export function DTO(dto?: ClassConstructor<unknown> | (() => ClassConstructor<un
         ctor = dto as ClassConstructor<unknown>
       }
 
-      return convertToDto(ctor as ClassConstructor<unknown>, obj[propertyKey])
+      return convertToDto(ctor as ClassConstructor<unknown>, value)
     })(target, propertyKey)
   }
 }

@@ -41,12 +41,15 @@ export class ArmorService {
 
   async removeInstance(id: number) {
     const inst = await this.instanceRepo.findOne({ where: { id }, relations: ['attributes', 'reductions'] })
-    inst.attributes.forEach((att) => {
-      this.instanceAttRepo.remove(att)
-    })
-    inst.reductions.forEach((reduc) => {
-      this.instanceReductionRepo.remove(reduc)
-    })
+    
+    // Remove related entities first
+    if (inst.attributes && inst.attributes.length > 0) {
+      await this.instanceAttRepo.remove(inst.attributes)
+    }
+    if (inst.reductions && inst.reductions.length > 0) {
+      await this.instanceReductionRepo.remove(inst.reductions)
+    }
+    
     return this.instanceRepo.remove(inst)
   }
 

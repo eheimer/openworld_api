@@ -21,6 +21,6 @@ export class CharacterDto {
   raceName: string
 
   @Expose()
-  @DTO(BattleDto)
-  battle: BattleDto
+  @DTO(() => BattleDto)
+  battle?: BattleDto
 }

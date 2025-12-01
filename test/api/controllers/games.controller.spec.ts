@@ -3,15 +3,18 @@ import { buildAuthorizedRequest, createApp, validateResponseStatus } from '../he
 import { registerAndLoginPlayer } from '../helpers/auth.helper'
 import { addPlayerToGame, createGame } from '../helpers/games.helper'
 import { createCharacter } from '../helpers/characters.helper'
+import { v4 as uuidv4 } from 'uuid'
 
 describe('GamesController (Integration)', () => {
   let app: INestApplication
   let player: { id: number; username: string; token: string }
   let createdGameId: number
+  let testGameName: string
 
   beforeAll(async () => {
     app = await createApp()
     player = await registerAndLoginPlayer(app)
+    testGameName = `Test Game ${uuidv4()}`
   })
 
   afterAll(async () => {
@@ -19,12 +22,12 @@ describe('GamesController (Integration)', () => {
   })
 
   test('POST /games should create a new game', async () => {
-    const createGameDto = { name: 'Test Game' }
+    const createGameDto = { name: testGameName }
     const response = await buildAuthorizedRequest(app, 'post', '/games', player.token).send(createGameDto)
 
     validateResponseStatus(response, 201)
     expect(response.body).toHaveProperty('id')
-    expect(response.body).toHaveProperty('name', 'Test Game')
+    expect(response.body).toHaveProperty('name', testGameName)
     createdGameId = response.body.id
   })
 
@@ -40,7 +43,7 @@ describe('GamesController (Integration)', () => {
 
     validateResponseStatus(response, 200)
     expect(response.body).toHaveProperty('id', createdGameId)
-    expect(response.body).toHaveProperty('name', 'Test Game')
+    expect(response.body).toHaveProperty('name', testGameName)
   })
 
   test('PATCH /games/:gameId should update a game', async () => {
