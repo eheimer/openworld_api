@@ -97,3 +97,38 @@ npm run reseed:test                              # Drop, sync, and migrate test 
   - TypeORM entity loading is more reliable with CommonJS
   - Jest testing has better CommonJS support
   - Avoids complex async import issues with dynamic entity loading
+
+## Production Deployment
+
+### Environment
+
+- **Production URL**: https://openworld.heimerman.org
+- **Node.js Version**: 25.x (matches development environment)
+- **Process Manager**: PM2 (manages Node.js process, auto-restart, logging)
+- **Web Server**: Apache with reverse proxy to Node.js on port 3000
+- **SSL**: Let's Encrypt (auto-renewal configured)
+- **Database**: MySQL (localhost)
+
+### Configuration
+
+- **Database credentials**: Currently hardcoded in `ormconfig.ts` (prod section)
+- **JWT secret**: Currently hardcoded in `src/constants.ts`
+- **⚠️ TODO**: Move secrets to environment variables before public launch (tracked in GitHub issues)
+
+### Deployment Files
+
+All deployment configurations are in `/deployment/`:
+- `DEPLOYMENT_GUIDE.md` - Full setup instructions
+- `MAINTENANCE.md` - Quick reference for operations
+- `deploy.sh` - Automated deployment script
+- `ecosystem.config.js` - PM2 process configuration
+- `apache-openworld.conf` - Apache reverse proxy config
+- `backup-db.sh` - Database backup script
+
+### Production Considerations
+
+- Application runs as non-privileged user (not www-data)
+- Logs stored in `/var/log/openworld-api/`
+- PM2 configured for auto-restart on failure and system reboot
+- Database migrations must be run manually during deployments
+- `synchronize: false` in production (schema changes via migrations only)

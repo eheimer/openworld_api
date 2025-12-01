@@ -176,14 +176,95 @@ sudo lsof -i :3000
 sudo kill -9 <PID>
 ```
 
+### Missing Environment Variables
+
+**Symptoms:**
+- Application fails to start
+- Error messages about missing configuration
+- Database connection failures
+- JWT authentication errors
+
+**Quick Fix:**
+
+1. Check if `.env.prod` file exists:
+```bash
+ls -la /opt/openworld-api/.env.prod
+```
+
+2. If missing, see `deployment/DEPLOYMENT_GUIDE.md` Step 5 for creating the file
+
+3. Check application logs for specific missing variables:
+```bash
+pm2 logs openworld-api --lines 100 | grep -i "missing\|environment\|variable"
+```
+
+4. Restart after fixing:
+```bash
+pm2 restart openworld-api
+```
+
+**Common Errors:**
+
+| Error Message | Solution |
+|--------------|----------|
+| "Missing required environment variable: JWT_SECRET" | Add JWT_SECRET to .env.prod |
+| "Missing required environment variable: DB_PASSWORD" | Add DB_PASSWORD to .env.prod |
+| "ENOENT: no such file or directory" | Create /opt/openworld-api/.env.prod (see DEPLOYMENT_GUIDE.md) |
+| "ER_ACCESS_DENIED_ERROR" | Update DB_PASSWORD in .env.prod |
+| "connect ECONNREFUSED" | Verify DB_HOST and DB_PORT values |
+
+### Environment Variable Not Loading
+
+**Quick Fix:**
+
+1. Verify file exists and has correct syntax (no spaces around `=`):
+```bash
+cat /opt/openworld-api/.env.prod
+```
+
+2. Restart PM2 completely:
+```bash
+pm2 restart openworld-api
+```
+
+3. Check logs for errors:
+```bash
+pm2 logs openworld-api --lines 50
+```
+
+## Environment Variables
+
+### Quick Reference
+
+Production environment variables are stored in `/opt/openworld-api/.env.prod` (NOT committed to git).
+
+For complete list of required variables, see `deployment/DEPLOYMENT_GUIDE.md` Step 5.
+
+### Updating Environment Variables
+
+```bash
+# Edit the environment file
+sudo nano /opt/openworld-api/.env.prod
+
+# Restart after changes
+pm2 restart openworld-api
+
+# Verify startup
+pm2 logs openworld-api --lines 50
+```
+
+### Credential Rotation
+
+For credential rotation procedures (JWT secret, database password), see the "Credential Rotation" section in `deployment/DEPLOYMENT_GUIDE.md`.
+
 ## File Locations
 
 - **Application**: `/var/www/openworld-api`
+- **Environment Config**: `/opt/openworld-api/.env.prod` (sensitive - not in git)
 - **Logs**: `/var/log/openworld-api/`
 - **Apache Config**: `/etc/apache2/sites-available/openworld.conf`
 - **SSL Certs**: `/etc/letsencrypt/live/openworld.heimerman.org/`
 - **PM2 Config**: `~/.pm2/`
-- **Database Config**: `/var/www/openworld-api/ormconfig.ts`
 
 ## Important Files to Backup
 

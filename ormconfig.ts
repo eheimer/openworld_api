@@ -1,54 +1,49 @@
-//defaults are based on dev environment
-//this is so that if other environments are not
-//set up correctly, we won't overwrite any data
-//if dev gets overwritten, we don't care
-const configDefault = {
-  type: 'mysql',
-  host: '127.0.0.1',
-  port: '3306',
-  database: 'openworld',
-  username: 'openworld',
-  password: 'entranced',
+import { loadEnvironmentConfig } from './src/config/env'
+
+// Load environment configuration
+const envConfig = loadEnvironmentConfig()
+const env: string = envConfig.nodeEnv
+
+// Build base configuration from environment variables
+const configDefault: any = {
+  type: envConfig.database.type,
   synchronize: false,
   logging: 'warn',
   entities: ['dist/src/**/*.entity.js'],
   subscribers: ['dist/src/**/*.subscriber.js']
 }
 
-// these env values override the defaults
-const dbConfig = {
+// Add database connection parameters based on type
+if (envConfig.database.type === 'mysql') {
+  configDefault.host = envConfig.database.host
+  configDefault.port = envConfig.database.port
+  configDefault.username = envConfig.database.username
+  configDefault.password = envConfig.database.password
+  configDefault.database = envConfig.database.database
+} else {
+  configDefault.database = envConfig.database.database
+}
+
+// Environment-specific overrides for synchronize, logging, and entity paths
+const envOverrides: any = {
   test: {
-    type: 'sqlite',
-    database: 'test.sqlite',
     synchronize: true,
     logging: false,
     entities: ['src/**/*.entity.ts'],
     subscribers: ['src/**/*.subscriber.ts']
   },
   dev: {
-    type: 'sqlite',
-    database: 'dev.sqlite',
     synchronize: true,
     logging: 'warn',
     entities: ['dist/src/**/*.entity.js'],
     subscribers: ['dist/src/**/*.subscriber.js']
-    //   logging: ['query', 'parameters']
   },
   prod: {
-    type: 'mysql',
-    host: 'localhost',
-    port: '3306',
-    synchronize: false,
-    username: 'openworld',
-    password: 'entranced',
-    database: 'openworld'
+    synchronize: false
   }
 }
 
-// again, default to 'dev' if an environment is not specified
-// to prevent production data from being overwritten
-const env: string = process.env.NODE_ENV || 'dev'
-const config = dbConfig[env]
+const config = envOverrides[env] || {}
 
 const cliOptions = {
   migrationsDir: 'migration',

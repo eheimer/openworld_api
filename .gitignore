@@ -39,7 +39,9 @@ lerna-debug.log*
 
 # Environment files
 .env
+*.env.prod
 config/.env.prod
+/opt/openworld-api/.env.prod
 !config/.env.dev
 !config/.env.test
 
