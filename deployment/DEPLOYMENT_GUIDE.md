@@ -10,15 +10,22 @@ This guide walks you through deploying the Openworld API to your VPS at openworl
 - Apache installed
 - Domain DNS pointing to your VPS
 
-## Step 1: Install Node.js and PM2
+## Step 1: Upgrade Node.js and Install PM2
 
 ```bash
-# Install Node.js 20.x (LTS)
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+# Remove old Node.js 14
+sudo apt-get remove -y nodejs
+sudo apt-get autoremove -y
+
+# Remove old NodeSource repository if it exists
+sudo rm -f /etc/apt/sources.list.d/nodesource.list
+
+# Install Node.js 25.x (matches your dev environment)
+curl -fsSL https://deb.nodesource.com/setup_25.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Verify installation
-node --version
+node --version  # Should show v25.x.x
 npm --version
 
 # Install PM2 globally
@@ -26,7 +33,7 @@ sudo npm install -g pm2
 
 # Set up PM2 to start on boot
 pm2 startup systemd
-# Follow the command it outputs
+# Follow the command it outputs (copy/paste the command it gives you)
 ```
 
 ## Step 2: Set Up MySQL Database
