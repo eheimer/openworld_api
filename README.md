@@ -144,10 +144,6 @@ Error flow:
 
 Service methods are generally the only ones that should be logging to the console. Others will just bubble up the errors to the service. Services will rethrow the errors back to the controller so that the controller can handle what details to present to the client in a 500 response.
 
-## API Testing
-
-API testing for now is done manually via the `test/test-*.http` files
-
 ## Production Server
 
 **_Migration NOTE:_** _production server is not currently implemented_

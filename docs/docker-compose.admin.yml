@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  nocodb:
+    image: nocodb/nocodb:latest
+    container_name: openworld-admin
+    ports:
+      - "8080:8080"
+    environment:
+      # Database connection for NocoDB's own data (user accounts, settings, etc.)
+      NC_DB: "sqlite:///usr/app/data/noco.db"
+      
+      # Optional: Set admin email and password
+      # NC_ADMIN_EMAIL: admin@example.com
+      # NC_ADMIN_PASSWORD: changeme
+      
+      # Optional: Disable telemetry
+      NC_DISABLE_TELE: "true"
+      
+      # Optional: Set public URL
+      NC_PUBLIC_URL: "http://localhost:8080"
+    volumes:
+      # Persist NocoDB's own data
+      - nocodb_data:/usr/app/data
+    restart: unless-stopped
+    networks:
+      - openworld-network
+
+  # Optional: If you want to run MySQL in Docker too
+  # mysql:
+  #   image: mysql:8
+  #   container_name: openworld-mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword
+  #     MYSQL_DATABASE: openworld
+  #     MYSQL_USER: openworld
+  #     MYSQL_PASSWORD: entranced
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   networks:
+  #     - openworld-network
+
+volumes:
+  nocodb_data:
+  # mysql_data:
+
+networks:
+  openworld-network:
+    driver: bridge

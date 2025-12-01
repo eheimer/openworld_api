@@ -77,12 +77,14 @@ npm run test:integration       # Run integration tests
 ### Database
 
 ```bash
-npm run migration:run          # Run pending migrations
+npm run migration:run                            # Run pending migrations
 npm run migration:generate migration/DDL/<name>  # Generate migration from entity changes
 npm run migration:create migration/DML/<name>    # Create empty migration
-npm run reseed:dev             # Drop, sync, and migrate dev database
-npm run reseed:test            # Drop, sync, and migrate test database
+npm run reseed:dev                               # Drop, sync, and migrate dev database
+npm run reseed:test                              # Drop, sync, and migrate test database
 ```
+
+**Note:** When generating or creating migrations, you must include the `migration/DDL/` or `migration/DML/` directory prefix as part of the name parameter due to TypeORM CLI behavior.
 
 ## Module System
 

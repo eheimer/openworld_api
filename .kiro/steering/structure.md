@@ -36,6 +36,7 @@ Each feature module follows this pattern:
 
 ### Core Directories
 
+- `/admin` - Admin functionality (placeholder)
 - `/auth` - Authentication (login, JWT)
 - `/players` - Player management
 - `/games` - Game sessions
@@ -52,6 +53,7 @@ Each feature module follows this pattern:
 - `/skills` - Character skills
 - `/race` - Character races
 - `/map` - Map/tile data
+- `/compat` - Compatibility layer (placeholder)
 
 ### Shared Code
 
@@ -144,13 +146,10 @@ Migrations use timestamp prefix: `{timestamp}-{description}.ts`
 ### Test Organization
 
 - Unit tests: Co-located with source (`*.spec.ts`)
-- Integration tests: `/test/integration`
-- API tests: `/test/api` with helper modules
+- Integration tests: `/test/integration` (currently unused)
+- API tests: `/test/api` with helper modules in `/test/api/helpers/`
 - E2E tests: `/test/end2end` with `.http` files for manual testing
-
-### Test Helpers
-
-Located in `/test/api/helpers/` for common test operations
+- Test utilities: `/test/utils` for shared test utilities
 
 ## Configuration
 

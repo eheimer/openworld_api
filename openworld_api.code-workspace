@@ -16,5 +16,7 @@
       "path": "../../archive/openworld/api/models"
     }
   ],
-  "settings": {}
+  "settings": {
+    "kiroAgent.configureMCP": "Disabled"
+  }
 }
