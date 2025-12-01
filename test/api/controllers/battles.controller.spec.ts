@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common'
-import { buildAuthorizedRequest, createApp } from '../helpers/util'
+import { APIUtils } from '../helpers/util'
 import { registerAndLoginPlayer } from '../helpers/auth.helper'
 import { addPlayerToGame, createGame } from '../helpers/games.helper'
 import { createCharacter } from '../helpers/characters.helper'
@@ -10,7 +10,7 @@ describe('BattlesController (Integration)', () => {
   let player: { id: number; username: string; token: string }
 
   beforeAll(async () => {
-    app = await createApp()
+    app = await APIUtils.createApp()
     player = await registerAndLoginPlayer(app)
   })
 
@@ -20,7 +20,7 @@ describe('BattlesController (Integration)', () => {
 
   test('GET /games/:gameId/battles should return all battles for a game', async () => {
     const gameId = await createGame(app, player.token)
-    const response = await buildAuthorizedRequest(app, 'get', `/games/${gameId}/battles`, player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${gameId}/battles`, player.token).send()
 
     expect(response.status).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
@@ -39,7 +39,7 @@ describe('BattlesController (Integration)', () => {
     const characterId = await createCharacter(app, player.token, gameId)
     const battleId = await createBattle(app, player.token, gameId)
 
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/games/${gameId}/battles/${battleId}`,
@@ -55,7 +55,7 @@ describe('BattlesController (Integration)', () => {
     await createCharacter(app, player.token, gameId)
     const battleId = await createBattle(app, player.token, gameId)
 
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/games/${gameId}/battles/${battleId}`,
@@ -73,7 +73,7 @@ describe('BattlesController (Integration)', () => {
     await addPlayerToGame(app, player.token, gameId, player2.id)
     await createCharacter(app, player2.token, gameId)
 
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles/${battleId}/join`,
@@ -90,7 +90,7 @@ describe('BattlesController (Integration)', () => {
     const battleId = await createBattle(app, player.token, gameId)
 
     const createMonsterDto = { monsterId: 1 }
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles/${battleId}/enemies`,
@@ -106,7 +106,7 @@ describe('BattlesController (Integration)', () => {
     const characterId = await createCharacter(app, player.token, gameId)
     const battleId = await createBattle(app, player.token, gameId)
 
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles/${battleId}/nextround`,

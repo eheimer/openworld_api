@@ -1,10 +1,10 @@
 import { INestApplication } from '@nestjs/common'
-import { buildAuthorizedRequest } from './util'
+import { APIUtils } from './util'
 import { v4 as uuidv4 } from 'uuid'
 
 export async function createGame(app: INestApplication, token: string): Promise<number> {
   const createGameDto = { name: `Test Game ${uuidv4()}` }
-  const response = await buildAuthorizedRequest(app, 'post', '/games', token).send(createGameDto)
+  const response = await APIUtils.buildAuthorizedRequest(app, 'post', '/games', token).send(createGameDto)
 
   if (response.status !== 201) {
     throw new Error(`Failed to create game: ${response.status} - ${JSON.stringify(response.body)}`)
@@ -19,7 +19,7 @@ export async function addPlayerToGame(
   gameId: number,
   playerId: number
 ): Promise<void> {
-  const response = await buildAuthorizedRequest(app, 'post', `/games/${gameId}/players/${playerId}`, token).send()
+  const response = await APIUtils.buildAuthorizedRequest(app, 'post', `/games/${gameId}/players/${playerId}`, token).send()
 
   if (response.status !== 201) {
     throw new Error(`Failed to add player to game: ${response.status}`)

@@ -82,6 +82,6 @@ describe('GameDeletePlayerController (e2e)', () => {
       .get(`/games/${gameId}`)
       .set('Authorization', `Bearer ${player2Token}`)
     expect(verifyOwnershipResponse.status).toBe(200)
-    expect(verifyOwnershipResponse.body.ownerId).toBe(player2Id)
+    expect(verifyOwnershipResponse.body.owner).toHaveProperty('id', player2Id)
   })
 })

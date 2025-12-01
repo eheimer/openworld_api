@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common'
 import request from 'supertest'
 import { AppModule } from '../../src/app.module'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from '../api/helpers/util'
+import { APIUtils } from '../api/helpers/util'
 
 // issue the following command to run this test:
 // npx jest --config ./test/jest-e2e.json test/items.e2e-spec.ts
@@ -18,10 +18,10 @@ describe('ItemsController (e2e)', () => {
   let inventoryId: number
 
   beforeAll(async () => {
-    app = await TestUtils.createApp()
-    player = await TestUtils.registerAndLoginPlayer(app)
-    gameId = await TestUtils.createGameAsPlayer(app, player.token)
-    character = await TestUtils.createCharacterAsPlayer(app, gameId, player.token)
+    app = await APIUtils.createApp()
+    player = await APIUtils.registerAndLoginPlayer(app)
+    gameId = await APIUtils.createGameAsPlayer(app, player.token)
+    character = await APIUtils.createCharacterAsPlayer(app, gameId, player.token)
   })
 
   afterAll(async () => {
@@ -30,14 +30,14 @@ describe('ItemsController (e2e)', () => {
 
   it('should create a game and a character', async () => {
     // get character by id
-    const characterResponse = await TestUtils.buildAuthorizedRequest(
+    const characterResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/characters/${character}`,
       player.token
     )
     expect(characterResponse.status).toBe(200)
-    expect(characterResponse.body).toHaveProperty('id', characterId)
+    expect(characterResponse.body).toHaveProperty('id', character)
     expect(characterResponse.body).toHaveProperty('inventory')
     inventoryId = characterResponse.body.inventory.id
   })
@@ -48,24 +48,53 @@ describe('ItemsController (e2e)', () => {
       .set('Authorization', `Bearer ${player.token}`)
     expect(getInventoryResponse.status).toBe(200)
 
-    const addItemResponse = await request(app.getHttpServer())
+    // Add armor and get its ID
+    const addArmorResponse = await request(app.getHttpServer())
       .post(`/inventory/${inventoryId}/random`)
       .set('Authorization', `Bearer ${player.token}`)
       .send({ itemType: 'armor', level: 1 })
-    expect(addItemResponse.status).toBe(201)
+    expect(addArmorResponse.status).toBe(201)
+    expect(addArmorResponse.body).toHaveProperty('armor')
+    const armorId = addArmorResponse.body.armor[0].id
 
+    // Add jewelry and get its ID
+    const addJewelryResponse = await request(app.getHttpServer())
+      .post(`/inventory/${inventoryId}/random`)
+      .set('Authorization', `Bearer ${player.token}`)
+      .send({ itemType: 'jewelry', level: 1 })
+    expect(addJewelryResponse.status).toBe(201)
+    expect(addJewelryResponse.body).toHaveProperty('jewelry')
+    const jewelryId = addJewelryResponse.body.jewelry[0].id
+
+    // Add weapon and get its ID
+    const addWeaponResponse = await request(app.getHttpServer())
+      .post(`/inventory/${inventoryId}/random`)
+      .set('Authorization', `Bearer ${player.token}`)
+      .send({ itemType: 'weapon', level: 1 })
+    expect(addWeaponResponse.status).toBe(201)
+    expect(addWeaponResponse.body).toHaveProperty('weapons')
+    const weaponId = addWeaponResponse.body.weapons[0].id
+
+    // Drop the jewelry item
     const dropItemResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/drop/jewelry/12`)
+      .put(`/inventory/${inventoryId}/drop/jewelry/${jewelryId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(dropItemResponse.status).toBe(200)
 
+    // Equip the armor
     const equipItemResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/equip/armor/1`)
+      .put(`/inventory/${inventoryId}/equip/armor/${armorId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(equipItemResponse.status).toBe(200)
 
+    // Unequip the weapon (first equip it)
+    const equipWeaponResponse = await request(app.getHttpServer())
+      .put(`/inventory/${inventoryId}/equip/weapon/${weaponId}`)
+      .set('Authorization', `Bearer ${player.token}`)
+    expect(equipWeaponResponse.status).toBe(200)
+
     const unequipItemResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/unequip/weapon/2`)
+      .put(`/inventory/${inventoryId}/unequip/weapon/${weaponId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(unequipItemResponse.status).toBe(200)
   })

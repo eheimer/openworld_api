@@ -1,13 +1,13 @@
 import { INestApplication } from '@nestjs/common'
-import { TestUtils } from '../api/helpers/util'
+import { APIUtils } from '../api/helpers/util'
 
 describe('Map functionality (e2e)', () => {
   let app: INestApplication
   let player: { playerId: number; username: string; token: string }
 
   beforeAll(async () => {
-    app = await TestUtils.createApp()
-    player = await TestUtils.registerAndLoginPlayer(app)
+    app = await APIUtils.createApp()
+    player = await APIUtils.registerAndLoginPlayer(app)
   })
 
   afterAll(async () => {
@@ -15,7 +15,7 @@ describe('Map functionality (e2e)', () => {
   })
 
   it('should save and retrieve a map', async () => {
-    const saveMapResponse = await TestUtils.buildAuthorizedRequest(app, 'post', '/map', player.token, [
+    const saveMapResponse = await APIUtils.buildAuthorizedRequest(app, 'post', '/map', player.token, [
       { tileIndex: 0, terrain: 0 },
       { tileIndex: 1, terrain: 0 },
       { tileIndex: 2, terrain: 0 },
@@ -29,7 +29,7 @@ describe('Map functionality (e2e)', () => {
     ])
     expect(saveMapResponse.status).toBe(201)
 
-    const getMapResponse = await TestUtils.buildAuthorizedRequest(app, 'get', '/map', player.token)
+    const getMapResponse = await APIUtils.buildAuthorizedRequest(app, 'get', '/map', player.token)
     expect(getMapResponse.status).toBe(200)
     expect(getMapResponse.body).toBeInstanceOf(Array)
     expect(getMapResponse.body.length).toBeGreaterThan(0)

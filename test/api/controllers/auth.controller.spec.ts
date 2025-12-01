@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common'
 import { CreatePlayerDto } from '../../../src/players/dto/create-player.dto'
 import { PlayerDetailDto } from '../../../src/players/dto/player-detail.dto'
 import { LoginDto } from '../../../src/auth/dto/login.dto'
-import { buildRequest, createApp } from '../helpers/util'
+import { APIUtils } from '../helpers/util'
 import { v4 as uuidv4 } from 'uuid'
 
 describe('AuthController (Integration)', () => {
@@ -13,7 +13,7 @@ describe('AuthController (Integration)', () => {
   const email: string = `${username}@example.com`
 
   beforeAll(async () => {
-    app = await createApp()
+    app = await APIUtils.createApp()
   })
 
   afterAll(async () => {
@@ -22,7 +22,7 @@ describe('AuthController (Integration)', () => {
 
   test('POST /auth/register should return 201 and serialized response', async () => {
     const createPlayerDto: CreatePlayerDto = { username, password, email }
-    const response = await buildRequest(app, 'post', '/auth/register').send(createPlayerDto)
+    const response = await APIUtils.buildRequest(app, 'post', '/auth/register').send(createPlayerDto)
 
     if (response.status !== 201) {
       throw new Error(`Unexpected response: ${JSON.stringify(response.body)}`)
@@ -38,7 +38,7 @@ describe('AuthController (Integration)', () => {
 
   test('POST /auth/login should return 201 and a valid token', async () => {
     const loginDto: LoginDto = { username, password }
-    const response = await buildRequest(app, 'post', '/auth/login').send(loginDto)
+    const response = await APIUtils.buildRequest(app, 'post', '/auth/login').send(loginDto)
 
     if (response.status !== 201) {
       throw new Error(`Unexpected response: ${JSON.stringify(response.body)}`)

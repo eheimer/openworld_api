@@ -12,9 +12,78 @@ export enum Method {
   DELETE
 }
 
-export class TestUtils {
+export class APIUtils {
+  static async createApp(): Promise<INestApplication> {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule]
+    }).compile()
+
+    const app = moduleFixture.createNestApplication()
+    await app.init()
+    return app
+  }
+
+  static buildRequest(app: INestApplication, method: string, endpoint: string, payload?: any): request.Test {
+    const req = request(app.getHttpServer())[method](endpoint)
+    return payload ? req.send(payload) : req
+  }
+
+  static authorizeRequest(requestBuilder: request.Test, token: string): request.Test {
+    return requestBuilder.set('Authorization', `Bearer ${token}`)
+  }
+
+  static buildAuthorizedRequest(
+    app: INestApplication,
+    method: string,
+    endpoint: string,
+    token: string,
+    payload?: any
+  ): request.Test {
+    const requestBuilder = APIUtils.buildRequest(app, method, endpoint, payload)
+    return APIUtils.authorizeRequest(requestBuilder, token)
+  }
+
+  static validateResponseStatus(response: any, expectedStatus: number): void {
+    if (response.status !== expectedStatus) {
+      throw new Error(`Unexpected response: ${response.body?.message || response.status}`)
+    }
+    expect(response.status).toBe(expectedStatus)
+  }
+
+  static async registerAndLoginPlayer(
+    app: INestApplication
+  ): Promise<{ playerId: number; username: string; token: string }> {
+    const username = `player_${uuidv4()}`
+    const email = `${username}@example.com`
+
+    const registerResponse = await APIUtils.buildRequest(app, 'post', '/auth/register', {
+      username,
+      email,
+      password: 'password'
+    })
+
+    if (registerResponse.status !== 201) {
+      throw new Error(`Failed to register player: ${JSON.stringify(registerResponse.body)}`)
+    }
+
+    const loginResponse = await APIUtils.buildRequest(app, 'post', '/auth/login', {
+      username,
+      password: 'password'
+    })
+
+    if (loginResponse.status !== 201) {
+      throw new Error(`Failed to login player: ${JSON.stringify(loginResponse.body)}`)
+    }
+
+    return {
+      playerId: registerResponse.body.id,
+      username: registerResponse.body.username,
+      token: loginResponse.body.token
+    }
+  }
+
   static async createGameAsPlayer(app: INestApplication, playerToken: string): Promise<number> {
-    const gameResponse = await buildAuthorizedRequest(app, 'post', '/games', playerToken, {
+    const gameResponse = await APIUtils.buildAuthorizedRequest(app, 'post', '/games', playerToken, {
       name: `game ${uuidv4()}`
     })
     if (gameResponse.status !== 201) {
@@ -24,7 +93,7 @@ export class TestUtils {
   }
 
   static async addPlayerToGame(app: INestApplication, gameId: number, playerId: number, playerToken: string) {
-    const addPlayerResponse = await buildAuthorizedRequest(
+    const addPlayerResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/players/${playerId}`,
@@ -47,7 +116,7 @@ export class TestUtils {
       raceId: raceId,
       skills: []
     }
-    const characterResponse = await buildAuthorizedRequest(
+    const characterResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/characters`,
@@ -61,50 +130,15 @@ export class TestUtils {
   }
 
   static async getRandomRace(app: INestApplication, token: string): Promise<number> {
-    const raceResponse = await buildAuthorizedRequest(app, 'get', '/race', token)
+    const raceResponse = await APIUtils.buildAuthorizedRequest(app, 'get', '/race', token)
     return raceResponse.body[Math.floor(Math.random() * raceResponse.body.length)].id
   }
 
   static async getRandomMonster(app: INestApplication, token: string): Promise<number> {
-    const monsterResponse = await buildAuthorizedRequest(app, 'get', '/monsters', token)
+    const monsterResponse = await APIUtils.buildAuthorizedRequest(app, 'get', '/monsters', token)
     return monsterResponse.body[Math.floor(Math.random() * monsterResponse.body.length)].id
   }
 }
 
-export function authorizeRequest(requestBuilder: request.Test, token: string): request.Test {
-  return requestBuilder.set('Authorization', `Bearer ${token}`)
-}
-
-export function buildRequest(app: INestApplication, method: string, endpoint: string, payload?: any): request.Test {
-  const req = request(app.getHttpServer())[method](endpoint)
-  return payload ? req.send(payload) : req
-}
-
-export function buildAuthorizedRequest(
-  app: INestApplication,
-  method: string,
-  endpoint: string,
-  token: string,
-  payload?: any
-): request.Test {
-  const requestBuilder = buildRequest(app, method, endpoint, payload)
-  return authorizeRequest(requestBuilder, token)
-}
-
-export function validateResponseStatus(response: any, expectedStatus: number): void {
-  if (response.status !== expectedStatus) {
-    //console.error(response.body?.message || 'Unexpected error')
-    throw new Error(`Unexpected response: ${response.body?.message || response.status}`)
-  }
-  expect(response.status).toBe(expectedStatus)
-}
-
-export async function createApp(): Promise<INestApplication> {
-  const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [AppModule]
-  }).compile()
-
-  const app = moduleFixture.createNestApplication()
-  await app.init()
-  return app
-}
+// Keep TestUtils as an alias for backward compatibility with any external code
+export const TestUtils = APIUtils

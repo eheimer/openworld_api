@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common'
-import { buildAuthorizedRequest } from './util'
+import { APIUtils } from './util'
 import { v4 as uuidv4 } from 'uuid'
 
 export async function createCharacter(app: INestApplication, token: string, gameId: number): Promise<number> {
@@ -10,7 +10,7 @@ export async function createCharacter(app: INestApplication, token: string, game
     intelligence: 10,
     raceId: 1
   }
-  const response = await buildAuthorizedRequest(app, 'post', `/games/${gameId}/characters`, token).send(
+  const response = await APIUtils.buildAuthorizedRequest(app, 'post', `/games/${gameId}/characters`, token).send(
     createCharacterDto
   )
 

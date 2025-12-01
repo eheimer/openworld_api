@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common'
-import { buildAuthorizedRequest, createApp, validateResponseStatus } from '../helpers/util'
+import { APIUtils } from '../helpers/util'
 import { registerAndLoginPlayer } from '../helpers/auth.helper'
 import { addPlayerToGame, createGame } from '../helpers/games.helper'
 import { createCharacter } from '../helpers/characters.helper'
@@ -12,7 +12,7 @@ describe('GamesController (Integration)', () => {
   let testGameName: string
 
   beforeAll(async () => {
-    app = await createApp()
+    app = await APIUtils.createApp()
     player = await registerAndLoginPlayer(app)
     testGameName = `Test Game ${uuidv4()}`
   })
@@ -23,48 +23,48 @@ describe('GamesController (Integration)', () => {
 
   test('POST /games should create a new game', async () => {
     const createGameDto = { name: testGameName }
-    const response = await buildAuthorizedRequest(app, 'post', '/games', player.token).send(createGameDto)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'post', '/games', player.token).send(createGameDto)
 
-    validateResponseStatus(response, 201)
+    APIUtils.validateResponseStatus(response, 201)
     expect(response.body).toHaveProperty('id')
     expect(response.body).toHaveProperty('name', testGameName)
     createdGameId = response.body.id
   })
 
   test('GET /games should return all games for the current player', async () => {
-    const response = await buildAuthorizedRequest(app, 'get', '/games', player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', '/games', player.token).send()
 
-    validateResponseStatus(response, 200)
+    APIUtils.validateResponseStatus(response, 200)
     expect(Array.isArray(response.body)).toBe(true)
   })
 
   test('GET /games/:gameId should return a specific game', async () => {
-    const response = await buildAuthorizedRequest(app, 'get', `/games/${createdGameId}`, player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${createdGameId}`, player.token).send()
 
-    validateResponseStatus(response, 200)
+    APIUtils.validateResponseStatus(response, 200)
     expect(response.body).toHaveProperty('id', createdGameId)
     expect(response.body).toHaveProperty('name', testGameName)
   })
 
   test('PATCH /games/:gameId should update a game', async () => {
     const updateGameDto = { name: 'Updated Game' }
-    const response = await buildAuthorizedRequest(app, 'patch', `/games/${createdGameId}`, player.token).send(
+    const response = await APIUtils.buildAuthorizedRequest(app, 'patch', `/games/${createdGameId}`, player.token).send(
       updateGameDto
     )
 
-    validateResponseStatus(response, 200)
+    APIUtils.validateResponseStatus(response, 200)
     expect(response.body).toHaveProperty('id', createdGameId)
     expect(response.body).toHaveProperty('name', 'Updated Game')
   })
 
   test('DELETE /games/:gameId should remove a game', async () => {
-    const response = await buildAuthorizedRequest(app, 'delete', `/games/${createdGameId}`, player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'delete', `/games/${createdGameId}`, player.token).send()
 
-    validateResponseStatus(response, 200)
+    APIUtils.validateResponseStatus(response, 200)
     //try to retrieve the game and verify a 404
-    const getGameResponse = await buildAuthorizedRequest(app, 'get', `/games/${createdGameId}`, player.token).send()
+    const getGameResponse = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${createdGameId}`, player.token).send()
 
-    validateResponseStatus(getGameResponse, 404)
+    APIUtils.validateResponseStatus(getGameResponse, 404)
 
     expect(getGameResponse.status).toBe(404)
   })
@@ -72,14 +72,14 @@ describe('GamesController (Integration)', () => {
   test('POST /games/:gameId/players/:playerId should add a player to a game', async () => {
     const gameId = await createGame(app, player.token)
     const newPlayer = await registerAndLoginPlayer(app)
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/players/${newPlayer.id}`,
       player.token
     ).send()
 
-    validateResponseStatus(response, 201)
+    APIUtils.validateResponseStatus(response, 201)
     expect(response.body).toHaveProperty('id', gameId)
     expect(response.body.players).toContainEqual(expect.objectContaining({ id: newPlayer.id }))
   })
@@ -89,13 +89,13 @@ describe('GamesController (Integration)', () => {
     const newPlayer = await registerAndLoginPlayer(app)
     await addPlayerToGame(app, player.token, gameId, newPlayer.id)
 
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/games/${gameId}/players/${newPlayer.id}`,
       player.token
     ).send()
-    validateResponseStatus(response, 200)
+    APIUtils.validateResponseStatus(response, 200)
     expect(response.body).toHaveProperty('id', gameId)
     expect(response.body.players).not.toContainEqual(expect.objectContaining({ id: newPlayer.id }))
   })
@@ -109,10 +109,10 @@ describe('GamesController (Integration)', () => {
       intelligence: 10,
       raceId: 1
     }
-    const response = await buildAuthorizedRequest(app, 'post', `/games/${gameId}/characters`, player.token).send(
+    const response = await APIUtils.buildAuthorizedRequest(app, 'post', `/games/${gameId}/characters`, player.token).send(
       createCharacterDto
     )
-    validateResponseStatus(response, 201)
+    APIUtils.validateResponseStatus(response, 201)
     expect(response.body).toHaveProperty('id')
     expect(response.body).toHaveProperty('name', 'Test Character')
   })
@@ -123,9 +123,9 @@ describe('GamesController (Integration)', () => {
     await addPlayerToGame(app, player.token, gameId, player2.id)
     const char1 = await createCharacter(app, player.token, gameId)
     const char2 = await createCharacter(app, player2.token, gameId)
-    const response = await buildAuthorizedRequest(app, 'get', `/games/${gameId}/characters`, player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${gameId}/characters`, player.token).send()
 
-    validateResponseStatus(response, 200)
+    APIUtils.validateResponseStatus(response, 200)
     expect(Array.isArray(response.body)).toBe(true)
     expect(response.body).toContainEqual(
       expect.objectContaining({

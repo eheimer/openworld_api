@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from '../api/helpers/util'
+import { APIUtils } from '../api/helpers/util'
 
 // issue the following command to run this test:
 // npx jest --config ./test/jest-e2e.json test/battles.e2e-spec.ts
@@ -15,13 +15,13 @@ describe('Battle functionality (e2e)', () => {
   let battleId: number
 
   beforeAll(async () => {
-    app = await TestUtils.createApp()
-    player1 = await TestUtils.registerAndLoginPlayer(app)
-    player2 = await TestUtils.registerAndLoginPlayer(app)
-    gameId = await TestUtils.createGameAsPlayer(app, player1.token)
-    await TestUtils.addPlayerToGame(app, gameId, player2.playerId, player1.token)
-    character1Id = await TestUtils.createCharacterAsPlayer(app, gameId, player1.token)
-    character2Id = await TestUtils.createCharacterAsPlayer(app, gameId, player2.token)
+    app = await APIUtils.createApp()
+    player1 = await APIUtils.registerAndLoginPlayer(app)
+    player2 = await APIUtils.registerAndLoginPlayer(app)
+    gameId = await APIUtils.createGameAsPlayer(app, player1.token)
+    await APIUtils.addPlayerToGame(app, gameId, player2.playerId, player1.token)
+    character1Id = await APIUtils.createCharacterAsPlayer(app, gameId, player1.token)
+    character2Id = await APIUtils.createCharacterAsPlayer(app, gameId, player2.token)
   })
 
   afterAll(async () => {
@@ -32,7 +32,7 @@ describe('Battle functionality (e2e)', () => {
   // as player1 to join the battle
 
   it('create a battle, character 2 should join the battle', async () => {
-    const battleResponse = await TestUtils.buildAuthorizedRequest(
+    const battleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles`,
@@ -41,7 +41,7 @@ describe('Battle functionality (e2e)', () => {
     expect(battleResponse.status).toBe(201)
     battleId = battleResponse.body.id
 
-    const joinBattleResponse = await TestUtils.buildAuthorizedRequest(
+    const joinBattleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles/${battleId}/join`,
@@ -49,7 +49,7 @@ describe('Battle functionality (e2e)', () => {
     )
     expect(joinBattleResponse.status).toBe(201)
     // get the battle
-    const getBattleResponse = await TestUtils.buildAuthorizedRequest(
+    const getBattleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/games/${gameId}/battles/${battleId}`,
@@ -67,8 +67,8 @@ describe('Battle functionality (e2e)', () => {
     )
   })
   it('should add a random monster to the battle', async () => {
-    let monsterId = await TestUtils.getRandomMonster(app, player1.token)
-    const addMonsterResponse = await TestUtils.buildAuthorizedRequest(
+    let monsterId = await APIUtils.getRandomMonster(app, player1.token)
+    const addMonsterResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles/${battleId}/enemies`,
@@ -79,7 +79,7 @@ describe('Battle functionality (e2e)', () => {
     )
     expect(addMonsterResponse.status).toBe(201)
     // get the battle
-    const getBattleResponse = await TestUtils.buildAuthorizedRequest(
+    const getBattleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/games/${gameId}/battles/${battleId}`,
@@ -96,7 +96,7 @@ describe('Battle functionality (e2e)', () => {
   })
   it('should advance the round and verify the monster action changes', async () => {
     //get the monster's action name from the battle
-    const getBattleResponse = await TestUtils.buildAuthorizedRequest(
+    const getBattleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/games/${gameId}/battles/${battleId}`,
@@ -105,7 +105,7 @@ describe('Battle functionality (e2e)', () => {
     expect(getBattleResponse.status).toBe(200)
     const monsterActionName = getBattleResponse.body.enemies[0].actionName
     //advance the round
-    const advanceRoundResponse = await TestUtils.buildAuthorizedRequest(
+    const advanceRoundResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/battles/${battleId}/nextround`,
@@ -116,7 +116,7 @@ describe('Battle functionality (e2e)', () => {
   })
 
   it('should delete the battle', async () => {
-    const deleteBattleResponse = await TestUtils.buildAuthorizedRequest(
+    const deleteBattleResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/games/${gameId}/battles/${battleId}`,

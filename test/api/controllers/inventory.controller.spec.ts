@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common'
-import { buildAuthorizedRequest, createApp } from '../helpers/util'
+import { APIUtils } from '../helpers/util'
 import { registerAndLoginPlayer } from '../helpers/auth.helper'
 import { createGame } from '../helpers/games.helper'
 import { createCharacter } from '../helpers/characters.helper'
@@ -14,7 +14,7 @@ describe('InventoryController (Integration)', () => {
   // let inventoryId: number
 
   beforeAll(async () => {
-    app = await createApp()
+    app = await APIUtils.createApp()
     player = await registerAndLoginPlayer(app)
   })
 
@@ -23,7 +23,7 @@ describe('InventoryController (Integration)', () => {
   })
 
   test('GET /inventory should return all inventories', async () => {
-    const response = await buildAuthorizedRequest(app, 'get', '/inventory', player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', '/inventory', player.token).send()
 
     expect(response.status).toBe(200)
     expect(Array.isArray(response.body)).toBe(true)
@@ -33,7 +33,7 @@ describe('InventoryController (Integration)', () => {
     const gameId = await createGame(app, player.token)
     const characterId = await createCharacter(app, player.token, gameId)
     const inventoryId = await fetchInventoryId(app, player.token, characterId)
-    const response = await buildAuthorizedRequest(app, 'get', `/inventory/${inventoryId}`, player.token).send()
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/inventory/${inventoryId}`, player.token).send()
 
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('id', inventoryId)
@@ -47,7 +47,7 @@ describe('InventoryController (Integration)', () => {
     const itemType = 'jewelry'
     // const response = await generateRandomItem(app, player.token, inventoryId, itemType, 5)
     const randomItemDto = { itemType, level: 5 }
-    const response = await buildAuthorizedRequest(app, 'post', `/inventory/${inventoryId}/random`, player.token).send(
+    const response = await APIUtils.buildAuthorizedRequest(app, 'post', `/inventory/${inventoryId}/random`, player.token).send(
       randomItemDto
     )
 
@@ -63,7 +63,7 @@ describe('InventoryController (Integration)', () => {
     const itemType = 'weapon'
     const itemId = await generateRandomItem(app, player.token, inventoryId, itemType, 5)
 
-    const response = await buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'put',
       `/inventory/${inventoryId}/equip/${itemType}/${itemId}`,
@@ -85,7 +85,7 @@ describe('InventoryController (Integration)', () => {
     const itemId = await generateRandomItem(app, player.token, inventoryId, itemType, 5)
     await equipItem(app, player.token, inventoryId, itemType, itemId)
 
-    const unequipResponse = await buildAuthorizedRequest(
+    const unequipResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'put',
       `/inventory/${inventoryId}/unequip/${itemType}/${itemId}`,
@@ -106,7 +106,7 @@ describe('InventoryController (Integration)', () => {
     const itemId = await generateRandomItem(app, player.token, inventoryId, itemType, 5)
 
     // Drop the item
-    const dropResponse = await buildAuthorizedRequest(
+    const dropResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'put',
       `/inventory/${inventoryId}/drop/${itemType}/${itemId}`,
@@ -116,7 +116,7 @@ describe('InventoryController (Integration)', () => {
     expect(dropResponse.status).toBe(200)
 
     // Verify the item is no longer in the inventory
-    const inventoryResponse = await buildAuthorizedRequest(app, 'get', `/inventory/${inventoryId}`, player.token).send()
+    const inventoryResponse = await APIUtils.buildAuthorizedRequest(app, 'get', `/inventory/${inventoryId}`, player.token).send()
 
     expect(inventoryResponse.status).toBe(200)
     expect(inventoryResponse.body.armor).not.toContainEqual(expect.objectContaining({ id: itemId }))

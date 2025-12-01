@@ -1,5 +1,5 @@
 import { INestApplication } from '@nestjs/common'
-import { buildAuthorizedRequest } from './util'
+import { APIUtils } from './util'
 import { InventoryDto } from '../../../src/items/dto/inventory.dto'
 
 export async function fetchInventoryId(
@@ -7,7 +7,7 @@ export async function fetchInventoryId(
   playerToken: string,
   characterId: number
 ): Promise<number> {
-  const characterResponse = await buildAuthorizedRequest(app, 'get', `/characters/${characterId}`, playerToken).send()
+  const characterResponse = await APIUtils.buildAuthorizedRequest(app, 'get', `/characters/${characterId}`, playerToken).send()
   return characterResponse.body.inventory.id
 }
 
@@ -19,7 +19,7 @@ export async function generateRandomItem(
   level: number
 ): Promise<number> {
   const randomItemDto = { itemType, level }
-  const addItemResponse = await buildAuthorizedRequest(
+  const addItemResponse = await APIUtils.buildAuthorizedRequest(
     app,
     'post',
     `/inventory/${inventoryId}/random`,
@@ -40,7 +40,7 @@ export async function equipItem(
   itemType: string,
   itemId: number
 ): Promise<void> {
-  const equipResponse = await buildAuthorizedRequest(
+  const equipResponse = await APIUtils.buildAuthorizedRequest(
     app,
     'put',
     `/inventory/${inventoryId}/equip/${itemType}/${itemId}`,
@@ -59,7 +59,7 @@ export async function unequipItem(
   itemType: string,
   itemId: number
 ): Promise<void> {
-  const unequipResponse = await buildAuthorizedRequest(
+  const unequipResponse = await APIUtils.buildAuthorizedRequest(
     app,
     'put',
     `/inventory/${inventoryId}/unequip/${itemType}/${itemId}`,

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from '../api/helpers/util'
+import { APIUtils } from '../api/helpers/util'
 
 // issue the following command to run this test:
 // npx jest --config ./test/jest-e2e.json test/character.e2e-spec.ts
@@ -13,9 +13,9 @@ describe('Character functionality (e2e)', () => {
   let characterId: number
 
   beforeAll(async () => {
-    app = await TestUtils.createApp()
-    player = await TestUtils.registerAndLoginPlayer(app)
-    gameId = await TestUtils.createGameAsPlayer(app, player.token)
+    app = await APIUtils.createApp()
+    player = await APIUtils.registerAndLoginPlayer(app)
+    gameId = await APIUtils.createGameAsPlayer(app, player.token)
   })
 
   afterAll(async () => {
@@ -23,10 +23,10 @@ describe('Character functionality (e2e)', () => {
   })
 
   it('should create a character', async () => {
-    raceId = await TestUtils.getRandomRace(app, player.token)
+    raceId = await APIUtils.getRandomRace(app, player.token)
 
     // Create a character
-    const characterResponse = await TestUtils.buildAuthorizedRequest(
+    const characterResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${gameId}/characters`,
@@ -48,7 +48,7 @@ describe('Character functionality (e2e)', () => {
   })
 
   it('should verify the players games', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', '/games', player.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', '/games', player.token)
     expect(response.status).toBe(200)
     expect(response.body).toEqual(
       expect.arrayContaining([expect.objectContaining({ game: expect.objectContaining({ id: gameId }) })])
@@ -56,14 +56,14 @@ describe('Character functionality (e2e)', () => {
   })
 
   it('should verify the players character', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', `/characters/${characterId}`, player.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/characters/${characterId}`, player.token)
     expect(response.status).toBe(200)
     expect(response.body).toEqual(expect.objectContaining({ id: characterId }))
   })
 
   //TODO: deletes fail, controller needs fixing
   it('should delete the character', async () => {
-    const deleteCharacterResponse = await TestUtils.buildAuthorizedRequest(
+    const deleteCharacterResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/characters/${characterId}`,
@@ -74,7 +74,7 @@ describe('Character functionality (e2e)', () => {
 
   it('should delete the player', async () => {
     // Delete the player
-    const deletePlayerResponse = await TestUtils.buildAuthorizedRequest(
+    const deletePlayerResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/players/${player.playerId}`,
@@ -83,7 +83,7 @@ describe('Character functionality (e2e)', () => {
     expect(deletePlayerResponse.status).toBe(200)
 
     // Verify the character and battle are deleted
-    const characterResponse = await TestUtils.buildAuthorizedRequest(
+    const characterResponse = await APIUtils.buildAuthorizedRequest(
       app,
       'get',
       `/games/${gameId}/characters/${characterId}`,
@@ -91,7 +91,7 @@ describe('Character functionality (e2e)', () => {
     )
     expect(characterResponse.status).toBe(404)
 
-    const battleResponse = await TestUtils.buildAuthorizedRequest(app, 'get', `/games/${gameId}/battles`, player.token)
+    const battleResponse = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${gameId}/battles`, player.token)
     expect(battleResponse.status).toBe(404)
   })
 })

@@ -25,12 +25,6 @@ export class CharacterPlayerSubscriber implements EntitySubscriberInterface<Play
           relations: ['battle']
         })
         if (characters.length > 0) {
-          for (const character of characters) {
-            if (character.battle) {
-              character.battle = null
-              await event.manager.save(character)
-            }
-          }
           await event.manager.remove(characters)
         }
       } catch (error) {

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from '../api/helpers/util'
+import { APIUtils } from '../api/helpers/util'
 
 describe('GamesController (e2e)', () => {
   let app: INestApplication
@@ -9,9 +9,9 @@ describe('GamesController (e2e)', () => {
   let game: { id: number; name: string }
 
   beforeAll(async () => {
-    app = await TestUtils.createApp()
-    player1 = await TestUtils.registerAndLoginPlayer(app)
-    player2 = await TestUtils.registerAndLoginPlayer(app)
+    app = await APIUtils.createApp()
+    player1 = await APIUtils.registerAndLoginPlayer(app)
+    player2 = await APIUtils.registerAndLoginPlayer(app)
   })
 
   afterAll(async () => {
@@ -20,7 +20,7 @@ describe('GamesController (e2e)', () => {
 
   it('should create a game', async () => {
     game = { id: 0, name: `game ${uuidv4()}` }
-    const response = await TestUtils.buildAuthorizedRequest(app, 'post', '/games', player1.token, {
+    const response = await APIUtils.buildAuthorizedRequest(app, 'post', '/games', player1.token, {
       name: game.name
     })
     expect(response.status).toBe(201)
@@ -34,7 +34,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should get all games', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', '/games', player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', '/games', player1.token)
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(0)
@@ -46,7 +46,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should get a game by id', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', `/games/${game.id}`, player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${game.id}`, player1.token)
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('id')
     expect(response.body.id).toBe(game.id)
@@ -54,7 +54,7 @@ describe('GamesController (e2e)', () => {
 
   it('should update a game name', async () => {
     const updatedGameName = `updated ${game.name}`
-    const response = await TestUtils.buildAuthorizedRequest(app, 'patch', `/games/${game.id}`, player1.token, {
+    const response = await APIUtils.buildAuthorizedRequest(app, 'patch', `/games/${game.id}`, player1.token, {
       name: updatedGameName
     })
     expect(response.status).toBe(200)
@@ -64,15 +64,15 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should delete a game', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'delete', `/games/${game.id}`, player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'delete', `/games/${game.id}`, player1.token)
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('name')
     expect(response.body.name).toBe(game.name)
   })
 
   it('should create a new game and add PLAYER 2 to the game', async () => {
-    game.id = await TestUtils.createGameAsPlayer(app, player1.token)
-    const response = await TestUtils.buildAuthorizedRequest(
+    game.id = await APIUtils.createGameAsPlayer(app, player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'post',
       `/games/${game.id}/players/${player2.playerId}`,
@@ -91,7 +91,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should get the game and verify PLAYER 2 is in the game', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', `/games/${game.id}`, player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${game.id}`, player1.token)
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('id')
     expect(response.body.id).toBe(game.id)
@@ -101,7 +101,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should remove PLAYER 2 from the game', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/games/${game.id}/players/${player2.playerId}`,
@@ -120,7 +120,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should get the game and verify PLAYER 2 is not in the game', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', `/games/${game.id}`, player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', `/games/${game.id}`, player1.token)
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('id')
     expect(response.body.id).toBe(game.id)
@@ -130,7 +130,7 @@ describe('GamesController (e2e)', () => {
   })
 
   it('should fail to delete the game as PLAYER 2', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'delete', `/games/${game.id}`, player2.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'delete', `/games/${game.id}`, player2.token)
     expect(response.status).toBe(403)
   })
 })

@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common'
 import { v4 as uuidv4 } from 'uuid'
-import { TestUtils } from '../api/helpers/util'
+import { APIUtils } from '../api/helpers/util'
 
 describe('Player functionality (e2e)', () => {
   let app: INestApplication
@@ -8,7 +8,7 @@ describe('Player functionality (e2e)', () => {
   let player2: { playerId: number; username: string; token: string }
 
   beforeAll(async () => {
-    app = await TestUtils.createApp()
+    app = await APIUtils.createApp()
   })
 
   afterAll(async () => {
@@ -19,7 +19,7 @@ describe('Player functionality (e2e)', () => {
     const username = `player1_${uuidv4()}`
     const email = `player1_${uuidv4()}@example.com`
 
-    const registerResponse = await TestUtils.buildRequest(app, 'post', '/auth/register', {
+    const registerResponse = await APIUtils.buildRequest(app, 'post', '/auth/register', {
       username,
       email,
       password: 'password'
@@ -36,7 +36,7 @@ describe('Player functionality (e2e)', () => {
       token: ''
     }
 
-    const loginResponse = await TestUtils.buildRequest(app, 'post', '/auth/login', {
+    const loginResponse = await APIUtils.buildRequest(app, 'post', '/auth/login', {
       username: player1.username,
       password: 'password'
     })
@@ -48,7 +48,7 @@ describe('Player functionality (e2e)', () => {
     const username = `player2_${uuidv4()}`
     const email = `player2_${uuidv4()}@example.com`
 
-    const registerResponse = await TestUtils.buildRequest(app, 'post', '/auth/register', {
+    const registerResponse = await APIUtils.buildRequest(app, 'post', '/auth/register', {
       username,
       email,
       password: 'password'
@@ -63,7 +63,7 @@ describe('Player functionality (e2e)', () => {
       token: ''
     }
 
-    const loginResponse = await TestUtils.buildRequest(app, 'post', '/auth/login', {
+    const loginResponse = await APIUtils.buildRequest(app, 'post', '/auth/login', {
       username: player2.username,
       password: 'password'
     })
@@ -72,7 +72,7 @@ describe('Player functionality (e2e)', () => {
   })
 
   it('should get all players', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(app, 'get', '/players', player1.token)
+    const response = await APIUtils.buildAuthorizedRequest(app, 'get', '/players', player1.token)
 
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
@@ -92,7 +92,7 @@ describe('Player functionality (e2e)', () => {
 
   it('PLAYER 1 should update PLAYER 1 email', async () => {
     const payload = { email: `updated_${player1.username}@example.com` }
-    const response = await TestUtils.buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'patch',
       `/players/${player1.playerId}`,
@@ -106,7 +106,7 @@ describe('Player functionality (e2e)', () => {
 
   it('PLAYER 1 should fail to update PLAYER 2 email', async () => {
     const payload = { email: `updated_${player2.username}@example.com` }
-    const response = await TestUtils.buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'patch',
       `/players/${player2.playerId}`,
@@ -118,7 +118,7 @@ describe('Player functionality (e2e)', () => {
   })
 
   it('PLAYER 1 should fail to delete PLAYER 2', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/players/${player2.playerId}`,
@@ -129,7 +129,7 @@ describe('Player functionality (e2e)', () => {
   })
 
   it('PLAYER 1 should delete PLAYER 1', async () => {
-    const response = await TestUtils.buildAuthorizedRequest(
+    const response = await APIUtils.buildAuthorizedRequest(
       app,
       'delete',
       `/players/${player1.playerId}`,

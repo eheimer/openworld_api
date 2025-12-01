@@ -31,7 +31,7 @@ export class Character extends BaseEntity {
   @ManyToOne(() => Player, (player) => player.characters, { nullable: false })
   player: Player
 
-  @ManyToOne(() => Battle, (battle) => battle.participants, { nullable: true })
+  @ManyToOne(() => Battle, (battle) => battle.participants, { nullable: true, onDelete: 'SET NULL' })
   battle: Battle
 
   @OneToOne(() => Inventory, { nullable: false, eager: false })

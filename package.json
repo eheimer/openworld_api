@@ -28,7 +28,6 @@
     "test:integration": "cross-env NODE_ENV=test jest --rootDir=test/integration --testRegex='.*\\.spec\\.ts$'",
     "test:api:reseed": "npm run reseed:test && cross-env NODE_ENV=test jest --rootDir=test/api --testRegex='.*\\.spec\\.ts$' --maxWorkers=1",
     "test:api": "cross-env NODE_ENV=test jest --rootDir=test/api --testRegex='.*\\.spec\\.ts$' --maxWorkers=1",
-    "codemod:entity-registry": "node -r ts-node/register scripts/tsm-fix-entity-registry.ts",
     "**** DATA ****": "",
     "typeorm": "cross-env TYPEORM_CLI=1 ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d ormDataSource.ts",
     "typeorm-no-d": "cross-env TYPEORM_CLI=1 ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
