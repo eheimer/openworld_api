@@ -34,22 +34,18 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# nest migration
-config/.env.prod
-config/.env.test
-config/.env.dev
-config/openapi.yaml
-build/
-tmp/
-temp/
-coverage/
+# Database files
 *.sqlite
-nest_migration_reference/*.sqlite
-nest_migration_reference/build/
-nest_migration_reference/coverage/
-nest_migration_reference/config/.env.prod
-nest_migration_reference/config/openapi.yaml
-openworld-api.code-workspace
 
-# Unity client
-src/_static/client/**/*
+# Environment files
+.env
+config/.env.prod
+!config/.env.dev
+!config/.env.test
+
+# PM2
+.pm2
+
+# Backup files
+*.sql
+*.sql.gz

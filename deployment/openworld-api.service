@@ -1,0 +1,15 @@
+[Unit]
+Description=Openworld API - NestJS Application
+After=network.target mysql.service
+
+[Service]
+Type=forking
+WorkingDirectory=/var/www/openworld-api
+ExecStart=/usr/bin/pm2 start /var/www/openworld-api/deployment/ecosystem.config.js
+ExecReload=/usr/bin/pm2 reload /var/www/openworld-api/deployment/ecosystem.config.js
+ExecStop=/usr/bin/pm2 stop /var/www/openworld-api/deployment/ecosystem.config.js
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
