@@ -11,6 +11,25 @@ When the user references an issue number (e.g., "#42", "issue #42", "issue 42"),
 2. **Check for tasks.md file** in the issue body or comments
    - If the issue contains a tasks.md or task list, use it to track progress
 
+## Spec Creation from Issues
+
+When creating a spec from a GitHub issue:
+
+1. **Record the issue number** in the requirements.md file
+   - Add a metadata section at the top of requirements.md
+   - Format: `**GitHub Issue:** #<issue_number>`
+   - This allows tracking back to the original issue when executing tasks
+
+Example requirements.md header:
+```markdown
+# Requirements Document
+
+**GitHub Issue:** #42
+
+## Introduction
+...
+```
+
 ## Issue Progress Tracking
 
 When working on an issue with a task list, follow this workflow:
@@ -18,8 +37,8 @@ When working on an issue with a task list, follow this workflow:
 ### 1. First Task Started
 
 When you begin working on the first task:
+- NOTE: changing status is not supported with our MCP settings at this time, so ignore this line: **Update the issue status** to "In Progress" using `mcp_github_update_issue`
 - Add a comment to the issue using `mcp_github_add_issue_comment`
-- **Store the comment ID** for later updates
 - Comment should include:
   - Acknowledgment that work has started
   - Complete contents of the tasks.md or task list
@@ -27,7 +46,7 @@ When you begin working on the first task:
 
 Example comment:
 ```
-Starting work on this issue. Task progress:
+Starting work on this issue:
 
 - [ ] Task 1 description
 - [ ] Task 2 description
@@ -36,31 +55,34 @@ Starting work on this issue. Task progress:
 
 ### 2. Task Completion
 
-After completing each task:
-- **Update the original comment** using `mcp_github_update_issue_comment` (NOT add a new comment)
-- Check off the completed task by changing `- [ ]` to `- [x]`
-- Keep the same comment structure, just update the checkboxes
+**MANDATORY**: After completing each task, you MUST:
+- **Add a new comment** using `mcp_github_add_issue_comment` with a brief update
+- This is REQUIRED and must happen automatically without user prompting
+- Comment should mention which task was completed
+- Keep comments limited to the task number and one-line description from tasks.md
+- Format: `✅ Completed task {number}: {task description}`
 
-Example updated comment:
+Example comment:
 ```
-Starting work on this issue. Task progress:
+✅ Completed task 2: Create systemd service for NocoDB container management
+```
 
-- [x] Task 1 description
-- [x] Task 2 description
-- [ ] Task 3 description
-```
+**When to add the comment:**
+- Immediately after marking a task as completed using `taskStatus` tool
+- Before stopping to let the user review
+- This applies to ALL tasks from specs that reference a GitHub issue
 
 ### 3. All Tasks Completed
 
 When the final task is completed:
-- Update the comment one last time with all tasks checked
 - Ask the user if they want to close the issue
 - Wait for user confirmation
 
 ### 4. Closing the Issue
 
 If the user confirms (affirmative response like "yes", "sure", "go ahead", etc.):
-- Add a brief final comment: "Work completed." or similar
+- Add a final comment summarizing completion
+- this comment can be a brief paragraph summary of work completed.  A lot of detail is not necessary.
 - Use `mcp_github_update_issue` to close the issue with `state: "closed"`
 
 ## Best Practices

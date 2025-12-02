@@ -1,0 +1,20 @@
+[Unit]
+Description=NocoDB Admin Interface for Openworld API
+Documentation=https://docs.nocodb.com/
+After=network.target docker.service mysql.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/var/www/openworld-api/deployment
+ExecStart=/usr/bin/docker-compose -f docker-compose.nocodb.yml up -d
+ExecStop=/usr/bin/docker-compose -f docker-compose.nocodb.yml down
+ExecReload=/usr/bin/docker-compose -f docker-compose.nocodb.yml restart
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -84,7 +84,13 @@ npm run reseed:dev                               # Drop, sync, and migrate dev d
 npm run reseed:test                              # Drop, sync, and migrate test database
 ```
 
-**Note:** When generating or creating migrations, you must include the `migration/DDL/` or `migration/DML/` directory prefix as part of the name parameter due to TypeORM CLI behavior.
+**Migration Creation Rules:**
+- **ALWAYS use the npm scripts** (`migration:generate` or `migration:create`) to create migrations
+- **NEVER manually create migration files** - the TypeORM CLI handles timestamps and proper structure
+- When generating or creating migrations, you **must include** the `migration/DDL/` or `migration/DML/` directory prefix as part of the name parameter due to TypeORM CLI behavior
+- **DDL migrations** (`migration/DDL/`) are for schema changes (tables, columns, indexes)
+- **DML migrations** (`migration/DML/`) are for data seeding and manipulation
+- Example: `npm run migration:create migration/DML/create-admin-user`
 
 ## Module System
 

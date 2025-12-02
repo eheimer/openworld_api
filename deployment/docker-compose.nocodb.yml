@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  nocodb:
+    image: nocodb/nocodb:latest
+    container_name: openworld-nocodb
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      # Use SQLite for NocoDB's own metadata (user accounts, settings)
+      NC_DB: "sqlite:///data/nocodb.db"
+      # Public URL for the admin interface
+      NC_PUBLIC_URL: "https://openworld.heimerman.org/admin"
+      # Disable telemetry data collection
+      NC_DISABLE_TELE: "true"
+    volumes:
+      - nocodb_data:/data
+    restart: unless-stopped
+    networks:
+      - default
+
+volumes:
+  nocodb_data:
+    name: nocodb_data
+
+networks:
+  default:
+    driver: bridge
