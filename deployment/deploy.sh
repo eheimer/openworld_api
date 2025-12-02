@@ -20,6 +20,10 @@ npm ci
 echo "🔨 Building application..."
 npm run build
 
+# Run migrations (before deploying, while still in build dir with dev deps)
+echo "�️ e Running database migrations..."
+NODE_ENV=prod npm run migration:run
+
 # Deploy to production directory
 echo "📋 Deploying to production..."
 cd $PROD_DIR
@@ -28,15 +32,12 @@ cp -r $BUILD_DIR/dist ./
 cp -r $BUILD_DIR/deployment ./
 cp $BUILD_DIR/package*.json ./
 
-echo "📦 Installing production dependencies..."
+echo "�️ Installing production dependencies..."
 npm ci --production
-
-# Run migrations
-echo "🗄️  Running database migrations..."
-NODE_ENV=prod npm run migration:run
 
 # Restart application
 echo "♻️  Restarting application..."
+cd $PROD_DIR
 pm2 restart openworld-api
 
 # Show status
