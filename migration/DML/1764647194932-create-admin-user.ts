@@ -24,13 +24,10 @@ export class CreateAdminUser1764647194932 implements MigrationInterface {
     const hash = (await scrypt(password, salt, 64)) as Buffer
     const hashedPassword = `${salt}.${hash.toString('hex')}`
 
-    // Get current timestamp in ISO format (works for both SQLite and MySQL)
-    const now = new Date().toISOString()
-
-    // Create admin user
+    // Create admin user (createdAt and updatedAt handled automatically by TypeORM)
     await queryRunner.query(
-      `INSERT INTO \`player\` (\`username\`, \`password\`, \`email\`, \`isAdmin\`, \`createdAt\`, \`updatedAt\`) 
-       VALUES ('owadmin', '${hashedPassword}', 'admin@openworld.local', 1, '${now}', '${now}')`
+      `INSERT INTO \`player\` (\`username\`, \`password\`, \`email\`, \`isAdmin\`) 
+       VALUES ('owadmin', '${hashedPassword}', 'admin@openworld.local', 1)`
     )
 
     console.log('Admin user "owadmin" created successfully')
