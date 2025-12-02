@@ -50,3 +50,6 @@ config/.env.prod
 # Backup files
 *.sql
 *.sql.gz
+
+# Kiro secrets
+.kiro/settings/mcp.json
