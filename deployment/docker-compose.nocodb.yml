@@ -4,25 +4,21 @@ services:
   nocodb:
     image: nocodb/nocodb:latest
     container_name: openworld-nocodb
-    ports:
-      - "127.0.0.1:8080:8080"
+    network_mode: host
     environment:
-      # Use SQLite for NocoDB's own metadata (user accounts, settings)
-      NC_DB: "sqlite:///data/nocodb.db"
+      # Use MySQL for NocoDB's own metadata (user accounts, settings)
+      # Format: mysql2://host:port?u=user&p=password&d=database
+      NC_DB: "mysql2://127.0.0.1:3306?u=openworld&p=YOUR_MYSQL_PASSWORD&d=nocodb"
       # Public URL for the admin interface
-      NC_PUBLIC_URL: "https://openworld.heimerman.org/admin"
+      NC_PUBLIC_URL: "https://owadmin.heimerman.org"
       # Disable telemetry data collection
       NC_DISABLE_TELE: "true"
+      # Port to listen on
+      NC_PORT: "8080"
     volumes:
       - nocodb_data:/data
     restart: unless-stopped
-    networks:
-      - default
 
 volumes:
   nocodb_data:
     name: nocodb_data
-
-networks:
-  default:
-    driver: bridge
