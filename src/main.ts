@@ -9,7 +9,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
   // Configure global API prefix for all routes
-  app.setGlobalPrefix('api')
+  // Exclude static file routes from the prefix
+  app.setGlobalPrefix('api', {
+    exclude: ['client/*path']
+  })
   Logger.log('Global API prefix set to: /api', 'Bootstrap')
 
   app.use(json({ limit: '50mb' }))
