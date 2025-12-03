@@ -19,12 +19,18 @@ import { join } from 'path'
 import { UtilsModule } from "./utils/utils.module"
 import { LoggerMiddleware } from "./middleware/logger.middleware"
 
+// In dev/prod, code runs from dist/, files are in dist/client
+// In test, code runs from src/ via ts-node, files are in _static/client
+const clientPath = process.env.NODE_ENV === 'test'
+  ? join(__dirname, '..', '_static', 'client')
+  : join(__dirname, '..', 'client')
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '_static', 'client'),
-      serveRoot: '/mapeditor'
+      rootPath: clientPath,
+      serveRoot: '/client',
+      exclude: ['/api*']
     }),
     ConfigModule.forRoot({
       isGlobal: true,

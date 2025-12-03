@@ -44,6 +44,15 @@
   - 120 character line width
   - No trailing commas
 
+## Dependency Management
+
+- **npm** - Package manager (Node.js 25.x includes npm 10.x)
+- **package-lock.json** - MUST be committed to version control
+  - Ensures consistent dependencies across dev/prod
+  - Use `npm ci` for clean installs (respects lockfile exactly)
+  - Use `npm install` only when adding/updating packages
+  - Both root and `client-src/` have separate lockfiles
+
 ## Common Commands
 
 ### Development

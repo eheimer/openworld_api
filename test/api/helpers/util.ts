@@ -22,9 +22,23 @@ export class APIUtils {
     }).compile()
 
     const app = moduleFixture.createNestApplication()
+    
+    // Manually apply static file middleware for tests BEFORE init
+    // ServeStaticModule doesn't work properly in test environment
+    const express = require('express')
+    const { join } = require('path')
+    const clientPath = join(__dirname, '..', '..', '_static', 'client')
+    const httpServer = app.getHttpAdapter().getInstance()
+    httpServer.use('/client', express.static(clientPath))
+    
     // Configure global API prefix to match production configuration
-    app.setGlobalPrefix('api')
+    // Exclude static file routes from the prefix
+    app.setGlobalPrefix('api', {
+      exclude: ['client/*path']
+    })
+    
     await app.init()
+    
     return app
   }
 

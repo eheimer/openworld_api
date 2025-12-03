@@ -5,6 +5,7 @@
 set -e
 
 BUILD_DIR=~/work/openworld-api
+CLIENT_BUILD_DIR=$BUILD_DIR/client-src
 PROD_DIR=/var/www/openworld-api
 
 echo "🚀 Deploying Openworld API..."
@@ -17,6 +18,12 @@ git pull
 echo "📦 Installing dependencies..."
 npm ci
 
+echo "🔨 Building client..."
+cd $CLIENT_BUILD_DIR
+npm ci
+npm run build
+cd ..
+
 echo "🔨 Building application..."
 npm run build
 
@@ -27,13 +34,15 @@ NODE_ENV=prod npm run migration:run
 # Deploy to production directory
 echo "📋 Deploying to production..."
 cd $PROD_DIR
-rm -rf dist/
+rm -rf dist/ _static/
 cp -r $BUILD_DIR/dist ./
+cp -r $BUILD_DIR/_static ./
 cp -r $BUILD_DIR/deployment ./
-cp $BUILD_DIR/package*.json ./
+cp $BUILD_DIR/package.json ./
+cp $BUILD_DIR/package-lock.json ./
 
-echo "�️ Installing production dependencies..."
-npm ci --production
+echo "🛠️ Installing production dependencies..."
+npm ci --omit=dev
 
 # Restart application
 echo "♻️  Restarting application..."

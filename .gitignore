@@ -53,3 +53,11 @@ config/.env.prod
 
 # Kiro secrets
 .kiro/settings/mcp.json
+
+# Spec temporary documentation (see .kiro/steering/spec-development.md)
+.kiro/specs/**/DOCUMENTATION/
+
+# Client
+client-src/node_modules
+client-src/dist
+_static/

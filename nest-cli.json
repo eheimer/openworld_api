@@ -12,6 +12,9 @@
         }
       }
     ],
-    "assets": ["_static/**/*"]
+    "assets": [
+      "_static/**/*",
+      { "include": "../_static/**/*", "outDir": "dist", "watchAssets": true }
+    ]
   }
 }
