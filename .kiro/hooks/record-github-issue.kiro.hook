@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Record GitHub Issue in Spec",
+  "description": "When a requirements.md file is created, check if it's from a GitHub issue and ensure the issue number is recorded at the top of the file in a metadata section",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "**/requirements.md"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A requirements.md file was just created. Check if this spec was created from a GitHub issue. If it was, verify that the issue number is recorded at the top of the requirements.md file in the format: \"**GitHub Issue:** #<issue_number>\". If the issue number is missing, add it to the top of the file in a metadata section. If it's already there, no action is needed."
+  }
+}

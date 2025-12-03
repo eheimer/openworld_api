@@ -21,6 +21,8 @@ describe('CascadesController (e2e)', () => {
     }).compile()
 
     app = moduleFixture.createNestApplication()
+    // Configure global API prefix to match production configuration
+    app.setGlobalPrefix('api')
     await app.init()
   })
 
@@ -30,7 +32,7 @@ describe('CascadesController (e2e)', () => {
 
   it('should register a player', async () => {
     const response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send({
         username: `player_${uuidv4()}`,
         email: `player_${uuidv4()}@example.com`,
@@ -40,14 +42,14 @@ describe('CascadesController (e2e)', () => {
     playerId = response.body.id
     playerToken = (
       await request(app.getHttpServer())
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({ username: response.body.username, password: 'password' })
     ).body.token
   })
 
   it('should create a game', async () => {
     const response = await request(app.getHttpServer())
-      .post('/games')
+      .post('/api/games')
       .set('Authorization', `Bearer ${playerToken}`)
       .send({ name: `test game ${uuidv4()}` })
     expect(response.status).toBe(201)
@@ -56,7 +58,7 @@ describe('CascadesController (e2e)', () => {
 
   it('should create a character', async () => {
     const response = await request(app.getHttpServer())
-      .post(`/games/${gameId}/characters`)
+      .post(`/api/games/${gameId}/characters`)
       .set('Authorization', `Bearer ${playerToken}`)
       .send({
         name: `test character ${uuidv4()}`,
@@ -72,7 +74,7 @@ describe('CascadesController (e2e)', () => {
 
   it('should create a battle', async () => {
     const response = await request(app.getHttpServer())
-      .post(`/games/${gameId}/battles`)
+      .post(`/api/games/${gameId}/battles`)
       .set('Authorization', `Bearer ${playerToken}`)
     expect(response.status).toBe(201)
     battleId = response.body.id
@@ -80,7 +82,7 @@ describe('CascadesController (e2e)', () => {
 
   it('should delete the player and verify cascading effects', async () => {
     const response = await request(app.getHttpServer())
-      .delete(`/players/${playerId}`)
+      .delete(`/api/players/${playerId}`)
       .set('Authorization', `Bearer ${playerToken}`)
     expect(response.status).toBe(200)
   })

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "GitHub Issue Task Comment",
+  "description": "When the agent finishes a task, automatically add a comment to the associated GitHub issue documenting the completion",
+  "version": "1",
+  "when": {
+    "type": "agentEnd"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A task has just been completed. Check if this task is associated with a GitHub issue (look for issue references in the spec or requirements.md). If there is an associated GitHub issue, add a comment to that issue documenting the task completion with format: \"✅ Completed task {number}: {task description}\". Use the mcp_github_add_issue_comment function with repository \"eheimer/openworld_api\"."
+  }
+}

@@ -8,6 +8,10 @@ import { AppModule } from "./app.module"
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
+  // Configure global API prefix for all routes
+  app.setGlobalPrefix('api')
+  Logger.log('Global API prefix set to: /api', 'Bootstrap')
+
   app.use(json({ limit: '50mb' }))
   app.use(urlencoded({ extended: true, limit: '50mb' }))
 
@@ -16,7 +20,7 @@ async function bootstrap() {
     .setDescription('Backend API for Openworld')
     .setVersion('1.0.0')
     .setLicense('All Rights Reserved', undefined)
-    .addServer('http://localhost:3000')
+    .addServer('http://localhost:3000/api')
     .addTag('auth')
     .build()
 
@@ -24,7 +28,8 @@ async function bootstrap() {
   fs.writeFileSync('dist/openapi.json', JSON.stringify(swaggerDocument, null, 2))
   Logger.log('OpenAPI spec written to dist/openapi.json', 'Swagger')
 
-  SwaggerModule.setup('api', app, swaggerDocument)
+  SwaggerModule.setup('api-docs', app, swaggerDocument)
+  Logger.log('Swagger UI available at: /api-docs', 'Swagger')
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }))
 

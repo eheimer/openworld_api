@@ -10,7 +10,7 @@
 # 7. Deleting a character deletes the battle or updates initiator
 # 8. Deleting a battle deletes all monsters
 
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:3000/api
 @rnd = {{$randomInt 1000 9999}}
 @bearerAuth = {{login.response.body.token}}
 @playerName = {{register.response.body.username}}

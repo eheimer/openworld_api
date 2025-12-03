@@ -4,6 +4,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { Test, TestingModule } from '@nestjs/testing'
 import { AppModule } from '../../../src/app.module'
 
+// API prefix constant for consistent path construction
+export const API_PREFIX = '/api'
+
 export enum Method {
   GET,
   POST,
@@ -19,12 +22,16 @@ export class APIUtils {
     }).compile()
 
     const app = moduleFixture.createNestApplication()
+    // Configure global API prefix to match production configuration
+    app.setGlobalPrefix('api')
     await app.init()
     return app
   }
 
   static buildRequest(app: INestApplication, method: string, endpoint: string, payload?: any): request.Test {
-    const req = request(app.getHttpServer())[method](endpoint)
+    // Prepend API prefix to all endpoint paths
+    const prefixedEndpoint = `${API_PREFIX}${endpoint}`
+    const req = request(app.getHttpServer())[method](prefixedEndpoint)
     return payload ? req.send(payload) : req
   }
 

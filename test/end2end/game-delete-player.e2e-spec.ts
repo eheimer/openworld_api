@@ -21,6 +21,8 @@ describe('GameDeletePlayerController (e2e)', () => {
     }).compile()
 
     app = moduleFixture.createNestApplication()
+    // Configure global API prefix to match production configuration
+    app.setGlobalPrefix('api')
     await app.init()
   })
 
@@ -30,7 +32,7 @@ describe('GameDeletePlayerController (e2e)', () => {
 
   it('should register PLAYER 1 and PLAYER 2', async () => {
     const player1Response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send({
         username: `player1_${uuidv4()}`,
         email: `player1_${uuidv4()}@example.com`,
@@ -40,12 +42,12 @@ describe('GameDeletePlayerController (e2e)', () => {
     player1Id = player1Response.body.id
     player1Token = (
       await request(app.getHttpServer())
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({ username: player1Response.body.username, password: 'password' })
     ).body.token
 
     const player2Response = await request(app.getHttpServer())
-      .post('/auth/register')
+      .post('/api/auth/register')
       .send({
         username: `player2_${uuidv4()}`,
         email: `player2_${uuidv4()}@example.com`,
@@ -55,31 +57,31 @@ describe('GameDeletePlayerController (e2e)', () => {
     player2Id = player2Response.body.id
     player2Token = (
       await request(app.getHttpServer())
-        .post('/auth/login')
+        .post('/api/auth/login')
         .send({ username: player2Response.body.username, password: 'password' })
     ).body.token
   })
 
   it('should create a game and transfer ownership on player deletion', async () => {
     const gameResponse = await request(app.getHttpServer())
-      .post('/games')
+      .post('/api/games')
       .set('Authorization', `Bearer ${player1Token}`)
       .send({ name: `test game ${uuidv4()}` })
     expect(gameResponse.status).toBe(201)
     gameId = gameResponse.body.id
 
     const addPlayerResponse = await request(app.getHttpServer())
-      .post(`/games/${gameId}/players/${player2Id}`)
+      .post(`/api/games/${gameId}/players/${player2Id}`)
       .set('Authorization', `Bearer ${player1Token}`)
     expect(addPlayerResponse.status).toBe(201)
 
     const deletePlayerResponse = await request(app.getHttpServer())
-      .delete(`/players/${player1Id}`)
+      .delete(`/api/players/${player1Id}`)
       .set('Authorization', `Bearer ${player1Token}`)
     expect(deletePlayerResponse.status).toBe(200)
 
     const verifyOwnershipResponse = await request(app.getHttpServer())
-      .get(`/games/${gameId}`)
+      .get(`/api/games/${gameId}`)
       .set('Authorization', `Bearer ${player2Token}`)
     expect(verifyOwnershipResponse.status).toBe(200)
     expect(verifyOwnershipResponse.body.owner).toHaveProperty('id', player2Id)

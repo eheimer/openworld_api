@@ -44,13 +44,13 @@ describe('ItemsController (e2e)', () => {
 
   it('should manage inventory items', async () => {
     const getInventoryResponse = await request(app.getHttpServer())
-      .get(`/inventory/${inventoryId}`)
+      .get(`/api/inventory/${inventoryId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(getInventoryResponse.status).toBe(200)
 
     // Add armor and get its ID
     const addArmorResponse = await request(app.getHttpServer())
-      .post(`/inventory/${inventoryId}/random`)
+      .post(`/api/inventory/${inventoryId}/random`)
       .set('Authorization', `Bearer ${player.token}`)
       .send({ itemType: 'armor', level: 1 })
     expect(addArmorResponse.status).toBe(201)
@@ -59,7 +59,7 @@ describe('ItemsController (e2e)', () => {
 
     // Add jewelry and get its ID
     const addJewelryResponse = await request(app.getHttpServer())
-      .post(`/inventory/${inventoryId}/random`)
+      .post(`/api/inventory/${inventoryId}/random`)
       .set('Authorization', `Bearer ${player.token}`)
       .send({ itemType: 'jewelry', level: 1 })
     expect(addJewelryResponse.status).toBe(201)
@@ -68,7 +68,7 @@ describe('ItemsController (e2e)', () => {
 
     // Add weapon and get its ID
     const addWeaponResponse = await request(app.getHttpServer())
-      .post(`/inventory/${inventoryId}/random`)
+      .post(`/api/inventory/${inventoryId}/random`)
       .set('Authorization', `Bearer ${player.token}`)
       .send({ itemType: 'weapon', level: 1 })
     expect(addWeaponResponse.status).toBe(201)
@@ -77,24 +77,24 @@ describe('ItemsController (e2e)', () => {
 
     // Drop the jewelry item
     const dropItemResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/drop/jewelry/${jewelryId}`)
+      .put(`/api/inventory/${inventoryId}/drop/jewelry/${jewelryId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(dropItemResponse.status).toBe(200)
 
     // Equip the armor
     const equipItemResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/equip/armor/${armorId}`)
+      .put(`/api/inventory/${inventoryId}/equip/armor/${armorId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(equipItemResponse.status).toBe(200)
 
     // Unequip the weapon (first equip it)
     const equipWeaponResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/equip/weapon/${weaponId}`)
+      .put(`/api/inventory/${inventoryId}/equip/weapon/${weaponId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(equipWeaponResponse.status).toBe(200)
 
     const unequipItemResponse = await request(app.getHttpServer())
-      .put(`/inventory/${inventoryId}/unequip/weapon/${weaponId}`)
+      .put(`/api/inventory/${inventoryId}/unequip/weapon/${weaponId}`)
       .set('Authorization', `Bearer ${player.token}`)
     expect(unequipItemResponse.status).toBe(200)
   })

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Close GitHub Issue on Spec Completion",
+  "description": "When the final task in a spec is completed, ask the user if they want to close the associated GitHub issue. If they respond affirmatively, use the GitHub MCP to close the issue.",
+  "version": "1",
+  "when": {
+    "type": "agentEnd"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Check if a spec's final task was just completed. If so, and if the spec references a GitHub issue number in requirements.md, ask the user: \"All tasks for this spec are complete. Would you like me to close GitHub issue #[number]?\" If the user responds affirmatively (yes, sure, go ahead, etc.), use mcp_github_add_issue_comment to add a brief completion summary, then use mcp_github_update_issue to close the issue with state: \"closed\"."
+  }
+}
