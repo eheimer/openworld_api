@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsNumberString } from 'class-validator'
+import { IsNotEmpty, IsNumber } from 'class-validator'
 
 export class CreateMonsterInstanceDto {
-  @IsNumberString()
+  @IsNumber()
   @IsNotEmpty()
-  monsterId: string
+  monsterId: number
 }
 
