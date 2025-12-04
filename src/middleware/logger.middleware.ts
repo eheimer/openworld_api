@@ -7,6 +7,7 @@ import { Reflector } from '@nestjs/core'
 export class LoggerMiddleware implements NestMiddleware {
   constructor(private readonly reflector: Reflector) {}
   private readonly routeMap = global['routeMap']
+  private readonly SENSITIVE_FIELDS = ['password', 'token', 'apikey', 'secret']
 
   use(req: Request, res: Response, next: NextFunction) {
     const { method, path: url } = req
@@ -24,7 +25,8 @@ export class LoggerMiddleware implements NestMiddleware {
 
     Logger.debug(`${method} ${url}`, `${controller}`)
 
-    Logger.verbose(`Request body: ${JSON.stringify(req.body, null, 2)}`, 'LoggerMiddleware')
+    const maskedBody = this.maskSensitiveFields(req.body)
+    Logger.verbose(`Request body: ${JSON.stringify(maskedBody, null, 2)}`, 'LoggerMiddleware')
 
     if (next) {
       next()
@@ -37,6 +39,36 @@ export class LoggerMiddleware implements NestMiddleware {
     const parts = path.split('/')
     const newPath = parts.map((part) => (isNaN(parseInt(part)) ? part : '{}')).join('/')
     return newPath
+  }
+
+  private maskSensitiveFields(obj: any): any {
+    // Handle primitives, null, and undefined
+    if (obj === null || obj === undefined || typeof obj !== 'object') {
+      return obj
+    }
+
+    // Handle arrays
+    if (Array.isArray(obj)) {
+      return obj.map((item) => this.maskSensitiveFields(item))
+    }
+
+    // Handle objects
+    const maskedObj = {}
+    for (const key of Object.keys(obj)) {
+      // Check if the key matches any sensitive field (case-insensitive)
+      const isSensitive = this.SENSITIVE_FIELDS.some(
+        (sensitiveField) => key.toLowerCase() === sensitiveField.toLowerCase(),
+      )
+
+      if (isSensitive) {
+        maskedObj[key] = '***REDACTED***'
+      } else {
+        // Recursively mask nested objects
+        maskedObj[key] = this.maskSensitiveFields(obj[key])
+      }
+    }
+
+    return maskedObj
   }
 }
 
