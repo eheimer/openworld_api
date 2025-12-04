@@ -92,10 +92,10 @@
       <div v-if="inventory" class="equipped-container">
         <h3>Equipped Items</h3>
         <div v-if="hasEquippedItems" class="equipped-items">
-          <div v-if="inventory.equippedArmor && inventory.equippedArmor.length > 0" class="equipped-section">
+          <div v-if="equippedArmor && equippedArmor.length > 0" class="equipped-section">
             <h4>Equipped Armor</h4>
             <div class="items-grid">
-              <div v-for="item in inventory.equippedArmor" :key="item.id" class="item-card equipped">
+              <div v-for="item in equippedArmor" :key="item.id" class="item-card equipped">
                 <div class="item-header">
                   <span class="item-name">{{ item.name }}</span>
                   <span class="item-level">Lvl {{ item.level }}</span>
@@ -111,10 +111,10 @@
             </div>
           </div>
 
-          <div v-if="inventory.equippedWeapons && inventory.equippedWeapons.length > 0" class="equipped-section">
+          <div v-if="equippedWeapons && equippedWeapons.length > 0" class="equipped-section">
             <h4>Equipped Weapons</h4>
             <div class="items-grid">
-              <div v-for="item in inventory.equippedWeapons" :key="item.id" class="item-card equipped">
+              <div v-for="item in equippedWeapons" :key="item.id" class="item-card equipped">
                 <div class="item-header">
                   <span class="item-name">{{ item.name }}</span>
                   <span class="item-level">Lvl {{ item.level }}</span>
@@ -130,10 +130,10 @@
             </div>
           </div>
 
-          <div v-if="inventory.equippedJewelry && inventory.equippedJewelry.length > 0" class="equipped-section">
+          <div v-if="equippedJewelry && equippedJewelry.length > 0" class="equipped-section">
             <h4>Equipped Jewelry</h4>
             <div class="items-grid">
-              <div v-for="item in inventory.equippedJewelry" :key="item.id" class="item-card equipped">
+              <div v-for="item in equippedJewelry" :key="item.id" class="item-card equipped">
                 <div class="item-header">
                   <span class="item-name">{{ item.name }}</span>
                   <span class="item-level">Lvl {{ item.level }}</span>
@@ -148,10 +148,10 @@
             </div>
           </div>
 
-          <div v-if="inventory.equippedSpellbooks && inventory.equippedSpellbooks.length > 0" class="equipped-section">
+          <div v-if="equippedSpellbooks && equippedSpellbooks.length > 0" class="equipped-section">
             <h4>Equipped Spellbooks</h4>
             <div class="items-grid">
-              <div v-for="item in inventory.equippedSpellbooks" :key="item.id" class="item-card equipped">
+              <div v-for="item in equippedSpellbooks" :key="item.id" class="item-card equipped">
                 <div class="item-header">
                   <span class="item-name">{{ item.name }}</span>
                   <span class="item-level">Lvl {{ item.level }}</span>
@@ -193,7 +193,18 @@
                   <p><strong>Location:</strong> {{ item.location }}</p>
                 </div>
                 <div class="item-actions">
-                  <button @click="equipItem('armor', item.id)" :disabled="isLoading" class="btn-primary">
+                  <button 
+                    v-if="item.equipped === true"
+                    @click="unequipItem('armor', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-success">
+                    Unequip
+                  </button>
+                  <button 
+                    v-else
+                    @click="equipItem('armor', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-primary">
                     Equip
                   </button>
                   <button @click="dropItem('armor', item.id)" :disabled="isLoading" class="btn-danger">
@@ -218,7 +229,18 @@
                   <p><strong>Damage:</strong> {{ item.damage }}</p>
                 </div>
                 <div class="item-actions">
-                  <button @click="equipItem('weapon', item.id)" :disabled="isLoading" class="btn-primary">
+                  <button 
+                    v-if="item.equipped === true"
+                    @click="unequipItem('weapon', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-success">
+                    Unequip
+                  </button>
+                  <button 
+                    v-else
+                    @click="equipItem('weapon', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-primary">
                     Equip
                   </button>
                   <button @click="dropItem('weapon', item.id)" :disabled="isLoading" class="btn-danger">
@@ -242,7 +264,18 @@
                   <p><strong>Location:</strong> {{ item.location }}</p>
                 </div>
                 <div class="item-actions">
-                  <button @click="equipItem('jewelry', item.id)" :disabled="isLoading" class="btn-primary">
+                  <button 
+                    v-if="item.equipped === true"
+                    @click="unequipItem('jewelry', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-success">
+                    Unequip
+                  </button>
+                  <button 
+                    v-else
+                    @click="equipItem('jewelry', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-primary">
                     Equip
                   </button>
                   <button @click="dropItem('jewelry', item.id)" :disabled="isLoading" class="btn-danger">
@@ -266,7 +299,18 @@
                   <p><strong>School:</strong> {{ item.spellSchool }}</p>
                 </div>
                 <div class="item-actions">
-                  <button @click="equipItem('spellbook', item.id)" :disabled="isLoading" class="btn-primary">
+                  <button 
+                    v-if="item.equipped === true"
+                    @click="unequipItem('spellbook', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-success">
+                    Unequip
+                  </button>
+                  <button 
+                    v-else
+                    @click="equipItem('spellbook', item.id)" 
+                    :disabled="isLoading" 
+                    class="btn-primary">
                     Equip
                   </button>
                   <button @click="dropItem('spellbook', item.id)" :disabled="isLoading" class="btn-danger">
@@ -560,14 +604,30 @@ export default {
       }
     }
 
+    // Computed properties for filtering equipped items
+    const equippedArmor = computed(() => {
+      return inventory.value?.armor?.filter(item => item.equipped === true) || []
+    })
+
+    const equippedWeapons = computed(() => {
+      return inventory.value?.weapons?.filter(item => item.equipped === true) || []
+    })
+
+    const equippedJewelry = computed(() => {
+      return inventory.value?.jewelry?.filter(item => item.equipped === true) || []
+    })
+
+    const equippedSpellbooks = computed(() => {
+      return inventory.value?.spellbooks?.filter(item => item.equipped === true) || []
+    })
+
     // Computed properties
     const hasEquippedItems = computed(() => {
-      if (!inventory.value) return false
       return (
-        (inventory.value.equippedArmor && inventory.value.equippedArmor.length > 0) ||
-        (inventory.value.equippedWeapons && inventory.value.equippedWeapons.length > 0) ||
-        (inventory.value.equippedJewelry && inventory.value.equippedJewelry.length > 0) ||
-        (inventory.value.equippedSpellbooks && inventory.value.equippedSpellbooks.length > 0)
+        equippedArmor.value.length > 0 ||
+        equippedWeapons.value.length > 0 ||
+        equippedJewelry.value.length > 0 ||
+        equippedSpellbooks.value.length > 0
       )
     })
 
@@ -598,6 +658,10 @@ export default {
       error,
       addItemForm,
       addItemSuccess,
+      equippedArmor,
+      equippedWeapons,
+      equippedJewelry,
+      equippedSpellbooks,
       hasEquippedItems,
       hasInventoryItems,
       loadGames,
@@ -700,6 +764,7 @@ h4 {
 /* Buttons */
 .btn-primary,
 .btn-secondary,
+.btn-success,
 .btn-danger {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -731,6 +796,16 @@ h4 {
   transform: translateY(-1px);
 }
 
+.btn-success {
+  background: #27ae60;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #229954;
+  transform: translateY(-1px);
+}
+
 .btn-danger {
   background: #e74c3c;
   color: white;
@@ -743,6 +818,7 @@ h4 {
 
 .btn-primary:disabled,
 .btn-secondary:disabled,
+.btn-success:disabled,
 .btn-danger:disabled {
   opacity: 0.6;
   cursor: not-allowed;
