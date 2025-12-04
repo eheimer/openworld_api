@@ -5,11 +5,18 @@
       <button @click="clearLogs" class="clear-button">Clear Logs</button>
     </div>
 
+    <div class="log-controls">
+      <label>
+        <input type="checkbox" v-model="autoCull" @change="toggleAutoCull" />
+        Auto-cull old log entries (max 100)
+      </label>
+    </div>
+
     <div v-if="logs.length === 0" class="no-logs">
       No API requests yet. Make some API calls to see them logged here.
     </div>
 
-    <div v-else class="log-entries">
+    <div v-else ref="logContainer" class="log-entries">
       <div 
         v-for="(logPair, index) in logPairs" 
         :key="index"
@@ -17,7 +24,7 @@
         :class="{ 'error-entry': logPair.response?.isError }"
       >
         <!-- Request Section -->
-        <div class="log-section request-section">
+        <div v-if="logPair.request" class="log-section request-section">
           <div class="section-header" @click="toggleSection(index, 'request')">
             <span class="toggle-icon">{{ expandedSections[`${index}-request`] ? '▼' : '▶' }}</span>
             <span class="timestamp">{{ formatTimestamp(logPair.request.timestamp) }}</span>
@@ -82,6 +89,8 @@ export default {
   setup() {
     const logs = ref([])
     const expandedSections = ref({})
+    const autoCull = ref(true)
+    const logContainer = ref(null)
 
     // Pair requests with their responses
     const logPairs = computed(() => {
@@ -111,7 +120,8 @@ export default {
         pairs.push({ request: currentRequest, response: null })
       }
 
-      return pairs
+      // Reverse the order so newest entries appear at the top
+      return pairs.reverse()
     })
 
     // Format timestamp
@@ -158,12 +168,40 @@ export default {
       expandedSections.value = {}
     }
 
+    // Load preferences from localStorage
+    const loadPreferences = () => {
+      try {
+        const savedAutoCull = localStorage.getItem('api-log:auto-cull')
+        
+        if (savedAutoCull !== null) {
+          autoCull.value = savedAutoCull === 'true'
+          apiService.setAutoCull(autoCull.value)
+        }
+      } catch (error) {
+        console.warn('Failed to load preferences from localStorage:', error)
+        // Fall back to defaults (already set)
+      }
+    }
+
+    // Toggle auto-cull preference
+    const toggleAutoCull = () => {
+      try {
+        apiService.setAutoCull(autoCull.value)
+        localStorage.setItem('api-log:auto-cull', String(autoCull.value))
+      } catch (error) {
+        console.warn('Failed to save auto-cull preference:', error)
+      }
+    }
+
     // Handle new log entries
     const handleNewLog = () => {
       logs.value = [...apiService.getLogs()]
     }
 
     onMounted(() => {
+      // Load preferences from localStorage
+      loadPreferences()
+      
       // Load existing logs
       logs.value = [...apiService.getLogs()]
       
@@ -179,11 +217,14 @@ export default {
       logs,
       logPairs,
       expandedSections,
+      autoCull,
+      logContainer,
       formatTimestamp,
       formatJson,
       getStatusClass,
       toggleSection,
-      clearLogs
+      clearLogs,
+      toggleAutoCull
     }
   }
 }
@@ -223,6 +264,41 @@ export default {
   background: #c0392b;
 }
 
+.log-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #dee2e6;
+  align-items: center;
+}
+
+.log-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  user-select: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.log-controls label:hover {
+  color: #1a252f;
+}
+
+.log-controls input[type="checkbox"] {
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  accent-color: #3498db;
+}
+
 .no-logs {
   padding: 2rem;
   text-align: center;
@@ -236,6 +312,31 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 0.25rem;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  background: #fafbfc;
+}
+
+/* Custom scrollbar styling for better visibility */
+.log-entries::-webkit-scrollbar {
+  width: 10px;
+}
+
+.log-entries::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.log-entries::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.log-entries::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .log-entry {
@@ -243,6 +344,8 @@ export default {
   border-radius: 6px;
   overflow: hidden;
   background: white;
+  flex-shrink: 0;
+  min-height: fit-content;
 }
 
 .log-entry.error-entry {
@@ -410,21 +513,75 @@ export default {
     gap: 0.5rem;
   }
 
+  .log-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .log-controls label {
+    font-size: 0.95rem;
+  }
+
+  .log-entries {
+    max-height: 400px;
+  }
+
   .section-header {
     flex-wrap: wrap;
     gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .timestamp {
     min-width: auto;
+    font-size: 0.8rem;
   }
 
   .method {
     min-width: auto;
+    font-size: 0.8rem;
   }
 
   .endpoint {
     flex-basis: 100%;
+    font-size: 0.85rem;
+  }
+
+  .json-display {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .api-log-component {
+    padding-top: 1rem;
+  }
+
+  .log-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .clear-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .log-controls {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .log-entries {
+    max-height: 300px;
+  }
+
+  .section-content {
+    padding: 0.75rem;
+  }
+
+  .detail-group h4 {
+    font-size: 0.85rem;
   }
 }
 </style>

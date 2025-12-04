@@ -16,7 +16,8 @@ class ApiService {
 
     // Store for request/response logs
     this.logs = []
-    this.maxLogs = 20
+    this.maxLogs = 100
+    this.autoCullEnabled = true
 
     // Setup interceptors
     this.setupRequestInterceptor()
@@ -114,9 +115,9 @@ class ApiService {
    * Add log entry and maintain max log size
    */
   addLog(log) {
-    this.logs.unshift(log)
-    if (this.logs.length > this.maxLogs) {
-      this.logs.pop()
+    this.logs.push(log)
+    if (this.autoCullEnabled && this.logs.length > this.maxLogs) {
+      this.logs.shift()
     }
     // Emit event for components to update
     window.dispatchEvent(new CustomEvent('api:log', { detail: log }))
@@ -134,6 +135,13 @@ class ApiService {
    */
   clearLogs() {
     this.logs = []
+  }
+
+  /**
+   * Set auto-cull behavior
+   */
+  setAutoCull(enabled) {
+    this.autoCullEnabled = enabled
   }
 
   /**

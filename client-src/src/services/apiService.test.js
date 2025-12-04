@@ -134,16 +134,47 @@ describe('ApiService', () => {
       window.removeEventListener('api:log', logHandler)
     })
 
-    it('should maintain maximum of 20 logs', async () => {
+    it('should maintain maximum of 100 logs when auto-cull is enabled', async () => {
       mock.onGet(/.*/).reply(200, { data: 'test' })
 
-      // Make 25 requests
-      for (let i = 0; i < 25; i++) {
+      // Make 110 requests (220 logs: 110 requests + 110 responses)
+      for (let i = 0; i < 110; i++) {
         await apiService.get(`/test${i}`)
       }
 
       const logs = apiService.getLogs()
-      expect(logs.length).toBeLessThanOrEqual(20)
+      expect(logs.length).toBe(100)
+    })
+
+    it('should allow logs to grow beyond 100 when auto-cull is disabled', async () => {
+      apiService.setAutoCull(false)
+      mock.onGet(/.*/).reply(200, { data: 'test' })
+
+      // Make 60 requests (120 logs: 60 requests + 60 responses)
+      for (let i = 0; i < 60; i++) {
+        await apiService.get(`/test${i}`)
+      }
+
+      const logs = apiService.getLogs()
+      expect(logs.length).toBe(120)
+      
+      // Re-enable auto-cull for other tests
+      apiService.setAutoCull(true)
+    })
+
+    it('should add logs in chronological order (oldest first)', async () => {
+      mock.onGet(/.*/).reply(200, { data: 'test' })
+
+      await apiService.get('/first')
+      await apiService.get('/second')
+      await apiService.get('/third')
+
+      const logs = apiService.getLogs()
+      const requestLogs = logs.filter(log => log.type === 'request')
+      
+      expect(requestLogs[0].endpoint).toBe('/first')
+      expect(requestLogs[1].endpoint).toBe('/second')
+      expect(requestLogs[2].endpoint).toBe('/third')
     })
   })
 
