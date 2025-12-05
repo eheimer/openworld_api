@@ -242,8 +242,8 @@ export default {
     const isCreating = ref(false)
     const errorMessage = ref('')
 
-    // Total stat points available (starts at 8, with 3 already allocated as 1 each)
-    const TOTAL_STAT_POINTS = 11 // 8 + 3 (initial values)
+    // Total stat points available (8 total, with 3 already allocated as 1 each = 5 remaining)
+    const TOTAL_STAT_POINTS = 8 // 3 (initial values) + 5 (to allocate)
     const TOTAL_SKILL_POINTS = 28
 
     /**
