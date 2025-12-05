@@ -1,146 +1,173 @@
 <template>
   <div id="app">
-    <header>
-      <h1>Openworld API Test Client</h1>
-      <div v-if="authToken" class="auth-status">
-        Authenticated as Player {{ playerId }}
-        <button @click="logout">Logout</button>
-      </div>
-    </header>
+    <!-- Hamburger Menu - Requirement 1.1 -->
+    <HamburgerMenu @option-selected="handleMenuOption" />
     
-    <nav class="navigation">
-      <button 
-        v-for="section in sections" 
-        :key="section.id"
-        :class="{ active: currentSection === section.id }"
-        @click="currentSection = section.id"
-      >
-        {{ section.label }}
-      </button>
-    </nav>
-
-    <main class="content-area">
-      <div v-if="currentSection === 'auth'" class="section">
-        <h2>Authentication</h2>
-        <AuthComponent />
-      </div>
-
-      <div v-if="currentSection === 'games'" class="section">
-        <h2>Games</h2>
-        <GamesComponent />
-      </div>
-
-      <div v-if="currentSection === 'characters'" class="section">
-        <h2>Characters</h2>
-        <CharactersComponent />
-      </div>
-
-      <div v-if="currentSection === 'battles'" class="section">
-        <h2>Battles</h2>
-        <BattlesComponent />
-      </div>
-
-      <div v-if="currentSection === 'inventory'" class="section">
-        <h2>Inventory</h2>
-        <InventoryComponent />
-      </div>
-
-      <div v-if="currentSection === 'api-log'" class="section">
-        <h2>API Request/Response Log</h2>
-        <ApiLogComponent />
-      </div>
+    <!-- API Log Panel - Requirement 2.1 -->
+    <ApiLogPanel @toggle="handleApiLogToggle" />
+    
+    <!-- Screen Router - conditionally render based on currentScreen -->
+    <!-- Requirements 4.1, 4.2, 4.3, 4.4, 4.5 -->
+    <main class="content-area" :class="{ 'with-api-log': apiLogOpen }">
+      <!-- Login Screen - Requirement 4.1 -->
+      <LoginScreen v-if="gameState.currentScreen.value === 'login'" />
+      
+      <!-- Register Screen - shown when navigating from login -->
+      <RegisterScreen v-else-if="gameState.currentScreen.value === 'register'" />
+      
+      <!-- Game Select Screen - Requirement 4.2 -->
+      <GameSelectScreen v-else-if="gameState.currentScreen.value === 'game-select'" />
+      
+      <!-- Game Create Screen - shown when creating a game -->
+      <GameCreateScreen v-else-if="gameState.currentScreen.value === 'game-create'" />
+      
+      <!-- Character Create Screen - Requirement 4.3 -->
+      <CharacterCreateScreen v-else-if="gameState.currentScreen.value === 'character-create'" />
+      
+      <!-- Character Screen - Requirement 4.4 -->
+      <CharacterScreen v-else-if="gameState.currentScreen.value === 'character'" />
+      
+      <!-- Battle Create Screen - shown when creating a battle -->
+      <BattleCreateScreen v-else-if="gameState.currentScreen.value === 'battle-create'" />
+      
+      <!-- Battle Screen - Requirement 4.5 -->
+      <BattleScreen v-else-if="gameState.currentScreen.value === 'battle'" />
     </main>
   </div>
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { provide, ref, onMounted, onUnmounted } from 'vue'
+import { useGameState } from './composables/useGameState.js'
 import apiService from './services/apiService.js'
-import AuthComponent from './components/AuthComponent.vue'
-import GamesComponent from './components/GamesComponent.vue'
-import CharactersComponent from './components/CharactersComponent.vue'
-import BattlesComponent from './components/BattlesComponent.vue'
-import InventoryComponent from './components/InventoryComponent.vue'
-import ApiLogComponent from './components/ApiLogComponent.vue'
+import HamburgerMenu from './components/HamburgerMenu.vue'
+import ApiLogPanel from './components/ApiLogPanel.vue'
+import LoginScreen from './components/LoginScreen.vue'
+import RegisterScreen from './components/RegisterScreen.vue'
+import GameSelectScreen from './components/GameSelectScreen.vue'
+import GameCreateScreen from './components/GameCreateScreen.vue'
+import CharacterCreateScreen from './components/CharacterCreateScreen.vue'
+import CharacterScreen from './components/CharacterScreen.vue'
+import BattleCreateScreen from './components/BattleCreateScreen.vue'
+import BattleScreen from './components/BattleScreen.vue'
 
 export default {
   name: 'App',
   components: {
-    AuthComponent,
-    GamesComponent,
-    CharactersComponent,
-    BattlesComponent,
-    InventoryComponent,
-    ApiLogComponent
+    HamburgerMenu,
+    ApiLogPanel,
+    LoginScreen,
+    RegisterScreen,
+    GameSelectScreen,
+    GameCreateScreen,
+    CharacterCreateScreen,
+    CharacterScreen,
+    BattleCreateScreen,
+    BattleScreen
   },
   setup() {
-    // Authentication state
-    const authToken = ref(localStorage.getItem('jwt_token'))
-    const playerId = ref(localStorage.getItem('player_id'))
-    
-    // Navigation state
-    const currentSection = ref('auth')
-    const sections = [
-      { id: 'auth', label: 'Authentication' },
-      { id: 'games', label: 'Games' },
-      { id: 'characters', label: 'Characters' },
-      { id: 'battles', label: 'Battles' },
-      { id: 'inventory', label: 'Inventory' },
-      { id: 'api-log', label: 'API Log' }
-    ]
+    // Setup game state management
+    // Requirement 3.1 - create state object with player, game, character, battle properties
+    const gameState = useGameState()
 
-    // Watch for authentication changes and persist to localStorage
-    watch(authToken, (newToken) => {
-      if (newToken) {
-        localStorage.setItem('jwt_token', newToken)
-      } else {
-        localStorage.removeItem('jwt_token')
-      }
-    })
+    // Track API log panel state
+    const apiLogOpen = ref(false)
 
-    watch(playerId, (newPlayerId) => {
-      if (newPlayerId) {
-        localStorage.setItem('player_id', newPlayerId)
-      } else {
-        localStorage.removeItem('player_id')
-      }
-    })
+    // Provide gameState to all child components
+    // This allows any child component to inject and use the game state
+    provide('gameState', gameState)
 
-    // Handle logout event from child components
-    const handleLogout = () => {
-      authToken.value = null
-      playerId.value = null
+    // Handle navigation events from screens
+    const handleNavigateRegister = () => {
+      gameState.navigateTo('register')
     }
 
-    // Handle login event from child components
-    const handleLogin = (event) => {
-      authToken.value = event.detail.token
-      playerId.value = event.detail.playerId
+    const handleNavigateLogin = () => {
+      gameState.clearTempScreen()
     }
 
-    const logout = () => {
-      localStorage.removeItem('jwt_token')
-      localStorage.removeItem('player_id')
-      handleLogout()
-      currentSection.value = 'auth'
+    const handleNavigateGameCreate = () => {
+      gameState.navigateTo('game-create')
+    }
+
+    const handleNavigateBattleCreate = () => {
+      gameState.navigateTo('battle-create')
+    }
+
+    // Handle API log panel toggle
+    const handleApiLogToggle = (isOpen) => {
+      apiLogOpen.value = isOpen
+    }
+
+    // Handle menu option selection
+    // Requirement 8.5
+    const handleMenuOption = async (optionId) => {
+      switch (optionId) {
+        case 'logout':
+          // Clear all state and navigate to login
+          gameState.logout()
+          break
+        
+        case 'select-game':
+          // Clear game, character, and battle
+          gameState.setGame(null)
+          gameState.setCharacter(null)
+          gameState.setBattle(null)
+          gameState.clearTempScreen()
+          break
+        
+        case 'character':
+          // Clear character and battle, then let state-based routing decide
+          // If character exists for current game, will show character screen
+          // If no character exists, will show character-create screen
+          gameState.setCharacter(null)
+          gameState.setBattle(null)
+          gameState.clearTempScreen()
+          // Trigger auto-load to check if character exists
+          if (gameState.state.game && gameState.state.player) {
+            await gameState.autoLoadCharacter(
+              apiService,
+              gameState.state.game.id,
+              gameState.state.player.id
+            )
+          }
+          break
+        
+        case 'leave-battle':
+          // Clear battle only
+          gameState.setBattle(null)
+          gameState.clearTempScreen()
+          break
+        
+        case 'login':
+          // Navigate to login (clear temp screen)
+          gameState.clearTempScreen()
+          break
+        
+        default:
+          console.warn('Unknown menu option:', optionId)
+      }
     }
 
     onMounted(() => {
-      window.addEventListener('auth:logout', handleLogout)
-      window.addEventListener('auth:login', handleLogin)
+      window.addEventListener('navigate:register', handleNavigateRegister)
+      window.addEventListener('navigate:login', handleNavigateLogin)
+      window.addEventListener('navigate:game-create', handleNavigateGameCreate)
+      window.addEventListener('navigate:battle-create', handleNavigateBattleCreate)
     })
 
     onUnmounted(() => {
-      window.removeEventListener('auth:logout', handleLogout)
-      window.removeEventListener('auth:login', handleLogin)
+      window.removeEventListener('navigate:register', handleNavigateRegister)
+      window.removeEventListener('navigate:login', handleNavigateLogin)
+      window.removeEventListener('navigate:game-create', handleNavigateGameCreate)
+      window.removeEventListener('navigate:battle-create', handleNavigateBattleCreate)
     })
 
     return {
-      authToken,
-      playerId,
-      currentSection,
-      sections,
-      logout
+      gameState,
+      apiLogOpen,
+      handleApiLogToggle,
+      handleMenuOption
     }
   }
 }
@@ -164,134 +191,61 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-/* Header Styles */
-header {
-  background: #2c3e50;
-  color: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.auth-status {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.auth-status button {
-  padding: 0.25rem 0.75rem;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: background 0.2s;
-}
-
-.auth-status button:hover {
-  background: #c0392b;
-}
-
-/* Navigation Styles */
-.navigation {
-  background: #34495e;
-  padding: 0;
-  display: flex;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-}
-
-.navigation button {
-  background: transparent;
-  color: #ecf0f1;
-  border: none;
-  padding: 1rem 1.5rem;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background 0.2s, color 0.2s;
-  white-space: nowrap;
-  border-bottom: 3px solid transparent;
-}
-
-.navigation button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.navigation button.active {
-  background: rgba(255, 255, 255, 0.15);
-  border-bottom-color: #3498db;
-  color: white;
-  font-weight: 500;
-}
-
-/* Content Area Styles */
+/* Content Area Styles - Updated for new layout without old navigation bar */
 .content-area {
   flex: 1;
-  padding: 2rem;
-  max-width: 1400px;
-  width: 100%;
-  margin: 0 auto;
+  width: calc(100% - 60px); /* Account for collapsed API log panel */
+  min-height: 100vh;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* No padding here - screens handle their own layout */
 }
 
-.section {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.content-area.with-api-log {
+  width: calc(100% - 500px); /* Account for expanded API log panel */
 }
 
-.section h2 {
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  font-size: 1.75rem;
-  border-bottom: 2px solid #ecf0f1;
-  padding-bottom: 0.5rem;
+/* Screen Transition Animations */
+.content-area > * {
+  animation: screenFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.section p {
-  color: #7f8c8d;
-  line-height: 1.6;
+@keyframes screenFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  header {
-    padding: 1rem;
-  }
-
-  header h1 {
-    font-size: 1.25rem;
-  }
-
-  .navigation {
-    flex-wrap: wrap;
-  }
-
-  .navigation button {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-  }
-
   .content-area {
-    padding: 1rem;
+    min-height: 100vh;
+  }
+}
+
+/* Mobile-specific adjustments for hamburger menu and API log panel */
+@media (max-width: 768px) {
+  .content-area.with-api-log {
+    width: calc(100% - 400px);
+  }
+}
+
+@media (max-width: 480px) {
+  .content-area {
+    width: calc(100% - 50px);
+    padding-top: 4rem;
   }
 
-  .section {
-    padding: 1.5rem;
-  }
-
-  .section h2 {
-    font-size: 1.5rem;
+  .content-area.with-api-log {
+    width: 0;
+    overflow: hidden;
   }
 }
 </style>

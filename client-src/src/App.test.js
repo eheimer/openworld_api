@@ -1,114 +1,137 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import App from './App.vue'
 
-describe('App Component', () => {
+describe('App Component - State-Driven Architecture', () => {
   beforeEach(() => {
     // Clear localStorage before each test
     localStorage.clear()
   })
 
-  it('renders the app with header', () => {
-    const wrapper = mount(App)
-    expect(wrapper.find('header h1').text()).toBe('Openworld API Test Client')
+  afterEach(() => {
+    // Clean up after each test
+    localStorage.clear()
   })
 
-  it('displays navigation menu with all sections', () => {
+  it('renders the app with hamburger menu and API log panel', () => {
     const wrapper = mount(App)
-    const navButtons = wrapper.findAll('.navigation button')
     
-    expect(navButtons).toHaveLength(5)
-    expect(navButtons[0].text()).toBe('Authentication')
-    expect(navButtons[1].text()).toBe('Games')
-    expect(navButtons[2].text()).toBe('Characters')
-    expect(navButtons[3].text()).toBe('Battles')
-    expect(navButtons[4].text()).toBe('Inventory')
+    // Check for hamburger menu
+    expect(wrapper.findComponent({ name: 'HamburgerMenu' }).exists()).toBe(true)
+    
+    // Check for API log panel
+    expect(wrapper.findComponent({ name: 'ApiLogPanel' }).exists()).toBe(true)
   })
 
-  it('starts with authentication section active', () => {
+  it('displays login screen when no player state exists', () => {
     const wrapper = mount(App)
-    const activeButton = wrapper.find('.navigation button.active')
     
-    expect(activeButton.text()).toBe('Authentication')
-    expect(wrapper.find('.section h2').text()).toBe('Authentication')
+    // Should show LoginScreen when player is null
+    expect(wrapper.findComponent({ name: 'LoginScreen' }).exists()).toBe(true)
   })
 
-  it('switches sections when navigation button is clicked', async () => {
+  it('provides game state to child components', () => {
     const wrapper = mount(App)
-    const navButtons = wrapper.findAll('.navigation button')
     
-    // Click on Games button
-    await navButtons[1].trigger('click')
-    
-    expect(navButtons[1].classes()).toContain('active')
-    expect(wrapper.find('.section h2').text()).toBe('Games')
+    // Verify that gameState is available in the component
+    expect(wrapper.vm.gameState).toBeDefined()
+    expect(wrapper.vm.gameState.state).toBeDefined()
+    expect(wrapper.vm.gameState.currentScreen).toBeDefined()
   })
 
-  it('loads authentication token from localStorage on mount', () => {
-    localStorage.setItem('jwt_token', 'test-token')
-    localStorage.setItem('player_id', '123')
-    
+  it('handles menu option selection', async () => {
     const wrapper = mount(App)
     
-    expect(wrapper.find('.auth-status').exists()).toBe(true)
-    expect(wrapper.find('.auth-status').text()).toContain('Player 123')
-  })
-
-  it('displays logout button when authenticated', () => {
-    localStorage.setItem('jwt_token', 'test-token')
-    localStorage.setItem('player_id', '123')
-    
-    const wrapper = mount(App)
-    
-    expect(wrapper.find('.auth-status button').exists()).toBe(true)
-    expect(wrapper.find('.auth-status button').text()).toBe('Logout')
-  })
-
-  it('clears authentication state on logout', async () => {
-    localStorage.setItem('jwt_token', 'test-token')
-    localStorage.setItem('player_id', '123')
-    
-    const wrapper = mount(App)
-    
-    // Click logout button
-    await wrapper.find('.auth-status button').trigger('click')
-    
-    expect(localStorage.getItem('jwt_token')).toBeNull()
-    expect(localStorage.getItem('player_id')).toBeNull()
-    expect(wrapper.find('.auth-status').exists()).toBe(false)
-  })
-
-  it('persists token to localStorage when authToken changes', async () => {
-    const wrapper = mount(App)
-    
-    // Simulate login event
-    const loginEvent = new CustomEvent('auth:login', {
-      detail: { token: 'new-token', playerId: '456' }
-    })
-    window.dispatchEvent(loginEvent)
-    
-    // Wait for watchers to execute
+    // Set up some state
+    wrapper.vm.gameState.setPlayer({ id: 123, username: 'testuser', token: 'test-token' })
+    wrapper.vm.gameState.setGame({ id: 1, name: 'Test Game', ownerId: 123 })
     await wrapper.vm.$nextTick()
     
-    expect(localStorage.getItem('jwt_token')).toBe('new-token')
-    expect(localStorage.getItem('player_id')).toBe('456')
+    // Trigger select-game menu option
+    await wrapper.vm.handleMenuOption('select-game')
+    await wrapper.vm.$nextTick()
+    
+    // Game should be cleared
+    expect(wrapper.vm.gameState.state.game).toBeNull()
+    
+    // Player should still exist
+    expect(wrapper.vm.gameState.state.player).not.toBeNull()
   })
 
-  it('returns to auth section after logout', async () => {
-    localStorage.setItem('jwt_token', 'test-token')
-    localStorage.setItem('player_id', '123')
-    
+  it('handles logout by clearing all state', async () => {
     const wrapper = mount(App)
     
-    // Navigate to Games section
-    const navButtons = wrapper.findAll('.navigation button')
-    await navButtons[1].trigger('click')
-    expect(wrapper.find('.section h2').text()).toBe('Games')
+    // Set up full state
+    wrapper.vm.gameState.setPlayer({ id: 123, username: 'testuser', token: 'test-token' })
+    wrapper.vm.gameState.setGame({ id: 1, name: 'Test Game', ownerId: 123 })
+    wrapper.vm.gameState.setCharacter({ id: 1, name: 'Test Character', gameId: 1 })
+    wrapper.vm.gameState.setBattle({ id: 1, characterId: 1 })
+    await wrapper.vm.$nextTick()
     
-    // Logout
-    await wrapper.find('.auth-status button').trigger('click')
+    // Trigger logout
+    await wrapper.vm.handleMenuOption('logout')
+    await wrapper.vm.$nextTick()
     
-    // Should return to auth section
-    expect(wrapper.find('.section h2').text()).toBe('Authentication')
+    // All state should be cleared
+    expect(wrapper.vm.gameState.state.player).toBeNull()
+    expect(wrapper.vm.gameState.state.game).toBeNull()
+    expect(wrapper.vm.gameState.state.character).toBeNull()
+    expect(wrapper.vm.gameState.state.battle).toBeNull()
+    
+    // Should show LoginScreen
+    expect(wrapper.findComponent({ name: 'LoginScreen' }).exists()).toBe(true)
+  })
+
+  it('handles select-character menu option', async () => {
+    const wrapper = mount(App)
+    
+    // Set up state with character and battle
+    wrapper.vm.gameState.setPlayer({ id: 123, username: 'testuser', token: 'test-token' })
+    wrapper.vm.gameState.setGame({ id: 1, name: 'Test Game', ownerId: 123 })
+    wrapper.vm.gameState.setCharacter({ id: 1, name: 'Test Character', gameId: 1 })
+    wrapper.vm.gameState.setBattle({ id: 1, characterId: 1 })
+    await wrapper.vm.$nextTick()
+    
+    // Trigger select-character
+    await wrapper.vm.handleMenuOption('select-character')
+    await wrapper.vm.$nextTick()
+    
+    // Character and battle should be cleared
+    expect(wrapper.vm.gameState.state.character).toBeNull()
+    expect(wrapper.vm.gameState.state.battle).toBeNull()
+    
+    // Player and game should still exist
+    expect(wrapper.vm.gameState.state.player).not.toBeNull()
+    expect(wrapper.vm.gameState.state.game).not.toBeNull()
+  })
+
+  it('handles leave-battle menu option', async () => {
+    const wrapper = mount(App)
+    
+    // Set up full state
+    wrapper.vm.gameState.setPlayer({ id: 123, username: 'testuser', token: 'test-token' })
+    wrapper.vm.gameState.setGame({ id: 1, name: 'Test Game', ownerId: 123 })
+    wrapper.vm.gameState.setCharacter({ id: 1, name: 'Test Character', gameId: 1 })
+    wrapper.vm.gameState.setBattle({ id: 1, characterId: 1 })
+    await wrapper.vm.$nextTick()
+    
+    // Trigger leave-battle
+    await wrapper.vm.handleMenuOption('leave-battle')
+    await wrapper.vm.$nextTick()
+    
+    // Only battle should be cleared
+    expect(wrapper.vm.gameState.state.battle).toBeNull()
+    
+    // Other state should remain
+    expect(wrapper.vm.gameState.state.player).not.toBeNull()
+    expect(wrapper.vm.gameState.state.game).not.toBeNull()
+    expect(wrapper.vm.gameState.state.character).not.toBeNull()
+  })
+
+  it('listens for navigation events', () => {
+    const wrapper = mount(App)
+    
+    // Verify event listeners are set up
+    expect(wrapper.vm.handleMenuOption).toBeDefined()
   })
 })

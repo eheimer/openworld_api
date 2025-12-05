@@ -572,3 +572,104 @@ pre {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* ============================================
+   Game Simulator Layout Enhancements
+   ============================================ */
+
+/* Ensure consistent spacing and colors across screens */
+.screen-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--spacing-xl);
+}
+
+/* Common card styling for screen content */
+.screen-card {
+  background: var(--color-bg-primary);
+  padding: var(--spacing-xl) * 1.5;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+  .screen-container {
+    padding: var(--spacing-md);
+  }
+  
+  .screen-card {
+    padding: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .screen-container {
+    padding: var(--spacing-sm);
+    /* Account for fixed hamburger menu and API log button */
+    padding-top: 4rem;
+  }
+  
+  .screen-card {
+    padding: var(--spacing-lg);
+  }
+}
+
+/* Button consistency across screens */
+.btn-primary {
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  background: var(--color-secondary);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-secondary {
+  padding: var(--spacing-md);
+  background: white;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: background var(--transition-normal), color var(--transition-normal), transform var(--transition-normal);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
