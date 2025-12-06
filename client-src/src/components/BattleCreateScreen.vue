@@ -26,12 +26,10 @@
           >
             <div class="monster-image">
               <img 
-                v-if="monster.imageUrl" 
-                :src="monster.imageUrl" 
+                :src="getMonsterImageUrl(monster.name)" 
                 :alt="monster.name"
                 @error="handleImageError"
               />
-              <div v-else class="monster-placeholder">🐉</div>
             </div>
             <div class="monster-info">
               <h3>{{ monster.name }}</h3>
@@ -101,6 +99,15 @@ export default {
      * Requirement 10.1, 10.2 - implement battle constraint check
      */
     const isInBattle = computed(() => gameState.state.battle !== null)
+
+    /**
+     * Generate monster image URL from monster name
+     */
+    const getMonsterImageUrl = (monsterName) => {
+      // Remove all non-alpha characters and convert to lowercase
+      const filename = monsterName.replace(/[^a-zA-Z]/g, '').toLowerCase() + '.png'
+      return `/images/monsters/${filename}`
+    }
 
     /**
      * Load monsters from API
@@ -220,6 +227,7 @@ export default {
       errorMessage,
       isInBattle,
       firstMonsterCard,
+      getMonsterImageUrl,
       selectMonster,
       handleImageError,
       handleCreateBattle,

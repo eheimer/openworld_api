@@ -120,13 +120,20 @@
           <h4>Enemies</h4>
           <div v-if="selectedBattle.enemies && selectedBattle.enemies.length > 0" class="enemies-list">
             <div v-for="enemy in selectedBattle.enemies" :key="enemy.monsterId" class="enemy-item">
-              <div class="enemy-header">
-                <span class="enemy-name">{{ enemy.name }}</span>
-                <span class="enemy-hp">HP: {{ Math.round(enemy.hp * 100) }}%</span>
-              </div>
-              <div class="enemy-action">
-                <span><strong>Next Action:</strong> {{ enemy.actionName }}</span>
-                <span v-if="enemy.actionValue"><strong>Value:</strong> {{ enemy.actionValue }}</span>
+              <img 
+                :src="getMonsterImageUrl(enemy.name)" 
+                :alt="enemy.name"
+                class="monster-image"
+              />
+              <div class="enemy-details">
+                <div class="enemy-header">
+                  <span class="enemy-name">{{ enemy.name }}</span>
+                  <span class="enemy-hp">HP: {{ Math.round(enemy.hp * 100) }}%</span>
+                </div>
+                <div class="enemy-action">
+                  <span><strong>Next Action:</strong> {{ enemy.actionName }}</span>
+                  <span v-if="enemy.actionValue"><strong>Value:</strong> {{ enemy.actionValue }}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -204,6 +211,15 @@ export default {
 
     // Add monster form
     const addMonsterForm = ref({ monsterId: null })
+
+    /**
+     * Generate monster image URL from monster name
+     */
+    const getMonsterImageUrl = (monsterName) => {
+      // Remove all non-alpha characters and convert to lowercase
+      const filename = monsterName.replace(/[^a-zA-Z]/g, '').toLowerCase() + '.png'
+      return `/images/monsters/${filename}`
+    }
 
     /**
      * Load all games for the current player
@@ -483,6 +499,7 @@ export default {
       addMonsterToBattle,
       advanceBattleRound,
       deleteBattle,
+      getMonsterImageUrl,
       Math
     }
   }
@@ -754,10 +771,26 @@ h5 {
 }
 
 .enemy-item {
+  display: flex;
+  gap: 1rem;
   padding: 1rem;
   background: white;
   border-radius: 4px;
   border: 1px solid #e1e4e8;
+}
+
+.monster-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.enemy-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .enemy-header {

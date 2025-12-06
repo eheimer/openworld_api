@@ -60,4 +60,4 @@ config/.env.prod
 # Client
 client-src/node_modules
 client-src/dist
-_static/
+_static/client/

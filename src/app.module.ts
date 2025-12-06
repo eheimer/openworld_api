@@ -25,13 +25,23 @@ const clientPath = process.env.NODE_ENV === 'test'
   ? join(__dirname, '..', '_static', 'client')
   : join(__dirname, '..', 'client')
 
+// Images directory - in dist/images for dev/prod, _static/images for test
+const imagesPath = process.env.NODE_ENV === 'test'
+  ? join(__dirname, '..', '_static', 'images')
+  : join(__dirname, '..', 'images')
+
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
-      rootPath: clientPath,
-      serveRoot: '/client',
-      exclude: ['/api*']
-    }),
+    ServeStaticModule.forRoot(
+      {
+        rootPath: clientPath,
+        serveRoot: '/client'
+      },
+      {
+        rootPath: imagesPath,
+        serveRoot: '/images'
+      }
+    ),
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `./config/.env.${process.env.NODE_ENV}`,
